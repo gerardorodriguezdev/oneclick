@@ -1,0 +1,12 @@
+{
+  "supportedPlatforms": [
+    "jvm"
+  ],
+  "propertyDefinitions": [
+    {
+      "name": "HOST",
+      "propertyType": "String",
+      "nullable": true
+    }
+  ]
+}

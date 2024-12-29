@@ -1,0 +1,20 @@
+[
+  {
+    "platformType": "android",
+    "properties": [
+      {
+        "name": "HOST",
+        "value": "10.0.2.2"
+      }
+    ]
+  },
+  {
+    "platformType": "wasm",
+    "properties": [
+      {
+        "name": "HOST",
+        "value": null
+      }
+    ]
+  }
+]

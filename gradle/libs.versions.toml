@@ -1,0 +1,91 @@
+[versions]
+android-activity = "1.9.3"
+android-gradle-plugin = "8.7.2"
+android-api = "34"
+android-test-junit = "1.7.5"
+android-test-leak-canary = "2.14"
+android-test-navigation = "2.8.4"
+detekt-api = "1.23.7"
+detekt-compose = "0.4.11"
+detekt-formatting = "1.23.7"
+jvm-api = "17"
+jvm-bcrypt = "0.10.2"
+jvm-logback = "1.5.11"
+jvm-test-rebugger = "1.0.0-rc03"
+kmp-kotlin-api = "2.1.0-RC2"
+kmp-atomicfu = "0.25.0"
+kmp-compose = "1.7.0"
+kmp-coroutines = "1.9.0"
+kmp-koin = "4.0.0"
+kmp-date-time = "0.6.1"
+kmp-ktor = "3.0.0"
+kmp-navigation = "2.8.0-alpha10"
+kmp-viewModel = "2.8.2"
+kmp-test-turbine = "1.1.0"
+kmp-buildconfig = "0.15.2"
+kmp-immutable = "0.3.8"
+kmp-window-classes = "0.5.0"
+kmp-serialization = "1.7.3"
+
+[libraries]
+android-activity = { module = "androidx.activity:activity-compose", version.ref = "android-activity" }
+android-test-leak-canary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "android-test-leak-canary" }
+android-test-navigation = { module = "androidx.navigation:navigation-testing", version.ref = "android-test-navigation" }
+android-test-junit = { module = "androidx.compose.ui:ui-test-junit4-android", version.ref = "android-test-junit" }
+android-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "android-test-junit" }
+detekt-api = { module = "io.gitlab.arturbosch.detekt:detekt-api", version.ref = "detekt-api" }
+detekt-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "detekt-compose" }
+detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
+detekt-test = { module = "io.gitlab.arturbosch.detekt:detekt-test", version.ref = "detekt-api" }
+gradle-kmp-api = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kmp-kotlin-api" }
+gradle-kmp-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "kmp-compose" }
+gradle-kmp-ktor = { module = "io.ktor.plugin:plugin", version.ref = "kmp-ktor" }
+gradle-android-application = { module = "com.android.application:com.android.application.gradle.plugin", version.ref = "android-gradle-plugin" }
+gradle-android-library = { module = "com.android.library:com.android.library.gradle.plugin", version.ref = "android-gradle-plugin" }
+jvm-bcrypt = { module = "at.favre.lib:bcrypt", version.ref = "jvm-bcrypt" }
+jvm-ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "kmp-ktor" }
+jvm-ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "kmp-ktor" }
+jvm-logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "jvm-logback" }
+jvm-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kmp-kotlin-api" }
+jvm-test-rebugger = { module = "io.github.theapache64:rebugger", version.ref = "jvm-test-rebugger" }
+kmp-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kmp-coroutines" }
+kmp-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kmp-atomicfu" }
+kmp-koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "kmp-koin" }
+kmp-koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "kmp-koin" }
+kmp-koin-core = { module = "io.insert-koin:koin-core", version.ref = "kmp-koin" }
+kmp-koin-core-viewmodel = { module = "io.insert-koin:koin-core-viewmodel", version.ref = "kmp-koin" }
+kmp-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kmp-date-time" }
+kmp-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "kmp-navigation" }
+kmp-viewModel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "kmp-viewModel" }
+kmp-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kmp-immutable" }
+kmp-window-classes = { module = "dev.chrisbanes.material3:material3-window-size-class-multiplatform", version.ref = "kmp-window-classes" }
+kmp-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kmp-serialization" }
+kmp-ktor-client-cio = { module = "io.ktor:ktor-client-cio", version.ref = "kmp-ktor" }
+kmp-ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "kmp-ktor" }
+kmp-ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "kmp-ktor" }
+kmp-ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "kmp-ktor" }
+kmp-ktor-server-call-id = { module = "io.ktor:ktor-server-call-id", version.ref = "kmp-ktor" }
+kmp-ktor-server-call-logging = { module = "io.ktor:ktor-server-call-logging", version.ref = "kmp-ktor" }
+kmp-ktor-server-cio = { module = "io.ktor:ktor-server-cio", version.ref = "kmp-ktor" }
+kmp-ktor-server-content-negotiation = { module = "io.ktor:ktor-server-content-negotiation", version.ref = "kmp-ktor" }
+kmp-ktor-server-core = { module = "io.ktor:ktor-server-core", version.ref = "kmp-ktor" }
+kmp-ktor-server-rate-limit = { module = "io.ktor:ktor-server-rate-limit", version.ref = "kmp-ktor" }
+kmp-ktor-server-request-validation = { module = "io.ktor:ktor-server-request-validation", version.ref = "kmp-ktor" }
+kmp-ktor-server-status-pages = { module = "io.ktor:ktor-server-status-pages", version.ref = "kmp-ktor" }
+kmp-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kmp-kotlin-api" }
+kmp-test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kmp-coroutines" }
+kmp-test-ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "kmp-ktor" }
+kmp-test-koin = { module = "io.insert-koin:koin-test", version.ref = "kmp-koin" }
+kmp-test-ktor-server-host = { module = "io.ktor:ktor-server-test-host", version.ref = "kmp-ktor" }
+kmp-test-turbine = { module = "app.cash.turbine:turbine", version.ref = "kmp-test-turbine" }
+
+[plugins]
+android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
+android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt-api" }
+kmp-atomicfu = { id = "org.jetbrains.kotlinx.atomicfu", version.ref = "kmp-atomicfu" }
+kmp-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kmp-kotlin-api" }
+kmp-compose-jetbrains = { id = "org.jetbrains.compose", version.ref = "kmp-compose" }
+kmp-kotlin = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kmp-kotlin-api" }
+kmp-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kmp-kotlin-api" }
+kmp-build-config = { id = "com.codingfeline.buildkonfig", version.ref = "kmp-buildconfig" }

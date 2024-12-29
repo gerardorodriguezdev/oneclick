@@ -1,0 +1,100 @@
+name: build-image
+on:
+  push:
+    branches: [ 'release' ]
+
+jobs:
+  build-image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Decrypt Keystore
+        run: |
+          mkdir client/core/local
+          echo "$KEYSTORE_FILE" | base64 --decode > client/core/local/keystore.jks
+        env:
+          KEYSTORE_FILE: ${{ secrets.KEYSTORE_FILE }}
+
+      - name: Run detekt
+        run: ./gradlew :detekt
+
+      - name: Enable KVM
+        run: |
+          echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+          sudo udevadm control --reload-rules
+          sudo udevadm trigger --name-match=kvm
+
+      - name: AVD cache
+        uses: actions/cache@v4
+        id: avd-cache
+        with:
+          path: |
+            ~/.android/avd/*
+            ~/.android/adb*
+          key: avd-34
+
+      - name: Create AVD and generate snapshot for caching
+        if: steps.avd-cache.outputs.cache-hit != 'true'
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: 'x86_64'
+          force-avd-creation: false
+          emulator-options: -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: false
+          script: echo "Generated AVD snapshot for caching."
+
+      - name: Run android tests
+        uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: 34
+          arch: 'x86_64'
+          force-avd-creation: false
+          emulator-options: -no-snapshot-save -no-window -gpu swiftshader_indirect -noaudio -no-boot-anim -camera-back none
+          disable-animations: true
+          script: ./gradlew :client:core:connectedDebugAndroidTest
+
+      - name: Build android app
+        run: |
+          ./gradlew :client:core:assembleRelease \
+          -PKEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }} \
+          -PKEY_ALIAS=${{ secrets.KEY_ALIAS }} \
+          -PKEY_PASSWORD=${{ secrets.KEY_PASSWORD }} \
+
+      - name: Build and upload server image
+        run: |
+          ./gradlew :server:core:publishImage \
+          -PREGISTRY_LOCATION=${{ secrets.REGISTRY_LOCATION }} \
+          -PREGISTRY_USERNAME=${{ secrets.REGISTRY_USERNAME }} \
+          -PREGISTRY_PASSWORD=${{ secrets.REGISTRY_PASSWORD }} \
+          -PGITHUB_SHA=${{ github.sha }} \
+
+      - name: Upload APK as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: theoneclick
+          path: client/core/build/outputs/apk/release/*.apk
+
+      - name: Auth to gcloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.DEPLOY_CREDENTIALS }}
+
+      - name: Deploy server image
+        uses: google-github-actions/deploy-cloudrun@v2
+        with:
+          image: ${{ secrets.REGISTRY_LOCATION }}/theoneclick:${{ github.sha }}
+          service: 'theoneclick'
+          region: ${{ secrets.DEPLOYMENT_REGION }}

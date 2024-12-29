@@ -1,0 +1,15 @@
+package theoneclick.server.core.platform
+
+import theoneclick.shared.core.dataSources.models.entities.Uuid
+import kotlin.uuid.ExperimentalUuidApi
+import kotlin.uuid.Uuid.Companion as KmpUuid
+
+interface UuidProvider {
+    fun uuid(): Uuid
+}
+
+class RealUuidProvider : UuidProvider {
+    @OptIn(ExperimentalUuidApi::class)
+    override fun uuid(): Uuid =
+        Uuid(value = KmpUuid.random().toString())
+}
