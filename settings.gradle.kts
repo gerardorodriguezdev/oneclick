@@ -3,6 +3,7 @@ enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {
     includeBuild("build-logic")
+    includeBuild("/Users/gerardo.rodriguez/IdeaProjects/Projects/chamaleon")
 
     repositories {
         mavenCentral()
