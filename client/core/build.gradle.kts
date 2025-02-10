@@ -1,4 +1,5 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec
+import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.extensions.Extension
 import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
@@ -9,6 +10,7 @@ plugins {
     alias(libs.plugins.kmp.serialization)
     alias(libs.plugins.kmp.atomicfu)
     alias(libs.plugins.kmp.build.config)
+    alias(libs.plugins.chamaleon)
 }
 
 wasmWebsite {
@@ -28,12 +30,9 @@ androidApp {
     versionName.set("1.0")
 
     storeFile.set(file("local/keystore.jks"))
-    storePassword.set("")
-    keyAlias.set("")
-    keyPassword.set("")
-    /*    storePassword.set(propProvider("ANDROID_KEYSTORE_PASSWORD"))
-        keyAlias.set(propProvider("ANDROID_KEY_ALIAS"))
-        keyPassword.set(propProvider("ANDROID_KEY_PASSWORD"))*/
+    storePassword.set(chamaleon.androidProviderString("KEYSTORE_PASSWORD"))
+    keyAlias.set(chamaleon.androidProviderString("KEY_ALIAS"))
+    keyPassword.set(chamaleon.androidProviderString("KEY_PASSWORD"))
 
     composeEnabled.set(true)
 }
@@ -120,19 +119,43 @@ buildkonfig {
             buildConfigField(FieldSpec.Type.STRING, name = "PROTOCOL", value = null, nullable = true)
             buildConfigField(FieldSpec.Type.STRING, name = "HOST", value = null, nullable = true)
             buildConfigField(FieldSpec.Type.INT, name = "PORT", value = null, nullable = true)
-            //buildConfigField(FieldSpec.Type.BOOLEAN, name = "IS_DEBUG", value = prop("WASM_IS_DEBUG"))
-            buildConfigField(FieldSpec.Type.BOOLEAN, name = "IS_DEBUG", value = "false")
+            buildConfigField(
+                FieldSpec.Type.BOOLEAN,
+                name = "IS_DEBUG",
+                value = chamaleon.selectedEnvironment().wasmPlatform().propertyBooleanValue("IS_DEBUG").toString()
+            )
         }
 
         create("android") {
-            /*buildConfigField(FieldSpec.Type.STRING, name = "PROTOCOL", value = prop("ANDROID_PROTOCOL"), nullable = true)
-            buildConfigField(FieldSpec.Type.STRING, name = "HOST", value = prop("ANDROID_HOST"), nullable = true)
-            buildConfigField(FieldSpec.Type.INT, name = "PORT", value = prop("ANDROID_PORT"), nullable = true)
-            buildConfigField(FieldSpec.Type.BOOLEAN, name = "IS_DEBUG", value = prop("ANDROID_IS_DEBUG"))*/
-            buildConfigField(FieldSpec.Type.STRING, name = "PROTOCOL", value = "", nullable = true)
-            buildConfigField(FieldSpec.Type.STRING, name = "HOST", value = "", nullable = true)
-            buildConfigField(FieldSpec.Type.INT, name = "PORT", value = "", nullable = true)
-            buildConfigField(FieldSpec.Type.BOOLEAN, name = "IS_DEBUG", value = "true")
+            buildConfigField(
+                FieldSpec.Type.STRING,
+                name = "PROTOCOL",
+                value = chamaleon.androidProviderString("PROTOCOL").get(),
+                nullable = true
+            )
+            buildConfigField(
+                FieldSpec.Type.STRING,
+                name = "HOST",
+                value = chamaleon.androidProviderString("HOST").get(),
+                nullable = true
+            )
+            buildConfigField(
+                FieldSpec.Type.INT,
+                name = "PORT",
+                value = chamaleon.androidProviderString("PORT").get(),
+                nullable = true
+            )
+            buildConfigField(
+                FieldSpec.Type.BOOLEAN,
+                name = "IS_DEBUG",
+                value = chamaleon.androidProviderBoolean("IS_DEBUG").get().toString()
+            )
         }
     }
 }
+
+fun Extension.androidProviderString(name: String): Provider<String> =
+    provider { chamaleon.selectedEnvironment().androidPlatform().propertyStringValue(name) }
+
+fun Extension.androidProviderBoolean(name: String): Provider<Boolean> =
+    provider { chamaleon.selectedEnvironment().androidPlatform().propertyBooleanValue(name) }

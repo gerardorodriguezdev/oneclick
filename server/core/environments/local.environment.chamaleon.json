@@ -36,7 +36,7 @@
       },
       {
         "name": "JVM_HOST",
-        "value": "localhost"
+        "value": "0.0.0.0"
       },
       {
         "name": "JVM_ENABLE_QAAPI",

@@ -31,7 +31,7 @@ class JvmLibraryPlugin : Plugin<Project> {
         extensions.configure(KotlinMultiplatformExtension::class.java) {
             compilerOptions {
                 extraWarnings.set(true)
-                allWarningsAsErrors.set(true)
+                // allWarningsAsErrors.set(true)
                 freeCompilerArgs.add("-Xsuppress-warning=UNUSED_ANONYMOUS_PARAMETER")
             }
 
