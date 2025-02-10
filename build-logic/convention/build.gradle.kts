@@ -34,6 +34,8 @@ dependencies {
     implementation(libs.gradle.android.application)
     implementation(libs.gradle.android.library)
     implementation(libs.kmp.serialization)
+    implementation(libs.gradle.chamaleon)
+    implementation(libs.jvm.chamaleon)
 
     testImplementation(libs.kmp.test)
 }
@@ -79,11 +81,6 @@ gradlePlugin {
         register("android-library") {
             id = "theoneclick.android.library"
             implementationClass = "buildLogic.convention.plugins.AndroidLibraryPlugin"
-        }
-
-        register("local-run-environment") {
-            id = "theoneclick.local.run.environment"
-            implementationClass = "buildLogic.convention.plugins.LocalRunEnvironmentPlugin"
         }
     }
 }

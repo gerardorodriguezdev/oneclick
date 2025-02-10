@@ -1,9 +1,10 @@
 package buildLogic.convention.plugins
 
 import buildLogic.convention.extensions.plugins.JvmServerExtension
-import buildLogic.convention.extensions.plugins.LocalRunEnvironmentExtension
 import buildLogic.convention.extensions.toJavaLanguageVersion
 import buildLogic.convention.extensions.toJavaVersion
+import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.GradlePlugin
+import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.extensions.Extension
 import io.ktor.plugin.*
 import io.ktor.plugin.features.*
 import org.gradle.api.Plugin
@@ -12,7 +13,6 @@ import org.gradle.api.plugins.JavaApplication
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.bundling.Jar
-import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.named
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
@@ -22,11 +22,12 @@ class JvmServerPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             applyPlugins()
+            val chamaleonExtension = extensions.findByType(Extension::class.java)
             val jvmServerExtension = createJvmServerExtension()
             configureKotlinMultiplatformExtension(jvmServerExtension)
             configureJavaApplicationExtension(jvmServerExtension)
-            configureKtorExtension(jvmServerExtension)
-            registerTasks()
+            configureKtorExtension(chamaleonExtension, jvmServerExtension)
+            registerTasks(chamaleonExtension)
         }
     }
 
@@ -34,7 +35,7 @@ class JvmServerPlugin : Plugin<Project> {
         pluginManager.apply {
             apply(KotlinMultiplatformPluginWrapper::class.java)
             apply(KtorGradlePlugin::class.java)
-            apply(LocalRunEnvironmentPlugin::class.java)
+            apply(GradlePlugin::class.java)
         }
     }
 
@@ -63,7 +64,7 @@ class JvmServerPlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.configureKtorExtension(jvmServerExtension: JvmServerExtension) {
+    private fun Project.configureKtorExtension(chamaleonExtension: Extension?, jvmServerExtension: JvmServerExtension) {
         project.ktorExtensions.configure(DockerExtension::class.java) {
             localImageName.set(jvmServerExtension.dockerConfiguration.imageName)
             jreVersion.set(jvmServerExtension.jvmTarget.toJavaVersion())
@@ -80,7 +81,7 @@ class JvmServerPlugin : Plugin<Project> {
                 )
             )
 
-            propertiesMap.forEach { (key, value) ->
+            chamaleonExtension.toMap().forEach { (key, value) ->
                 environmentVariables.add(
                     DockerEnvironmentVariable(
                         variable = key,
@@ -91,7 +92,7 @@ class JvmServerPlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.registerTasks() {
+    private fun Project.registerTasks(chamaleonExtension: Extension?) {
         tasks.named(BUILD_DOCKER_IMAGE_TASK_NAME) {
             dependsOn(tasks.named(TESTS_TASK_NAME))
         }
@@ -100,18 +101,19 @@ class JvmServerPlugin : Plugin<Project> {
             dependsOn(tasks.named<Jar>(JVM_JAR_TASK_NAME))
             classpath(tasks.named<Jar>(JVM_JAR_TASK_NAME))
 
-            propertiesMap.forEach { (key, value) ->
+            chamaleonExtension.toMap().forEach { (key, value) ->
                 environment(key, value)
             }
         }
     }
 
-    private val Project.propertiesMap: Map<String, String>
-        get() {
-            val localRunEnvironmentExtension = project.extensions.getByType<LocalRunEnvironmentExtension>()
-            val localPropertiesMap = localRunEnvironmentExtension.propertiesMap
-            return localPropertiesMap.get()
-        }
+    private fun Extension?.toMap(): List<Pair<String, String>> {
+        if (this == null) return emptyList()
+
+        val properties = selectedEnvironmentOrNull()?.jvmPlatformOrNull()?.properties ?: return emptyList()
+
+        return properties.map { property -> property.name to property.value.toString() }
+    }
 
     private fun Project.externalRegistryProject(
         imageRegistryUrl: Provider<String>,

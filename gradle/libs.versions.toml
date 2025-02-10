@@ -26,6 +26,7 @@ kmp-buildconfig = "0.15.2"
 kmp-immutable = "0.3.8"
 kmp-window-classes = "0.5.0"
 kmp-serialization = "1.7.3"
+jvm-chamaleon = "1.0.7"
 
 [libraries]
 android-activity = { module = "androidx.activity:activity-compose", version.ref = "android-activity" }
@@ -42,6 +43,8 @@ gradle-kmp-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", v
 gradle-kmp-ktor = { module = "io.ktor.plugin:plugin", version.ref = "kmp-ktor" }
 gradle-android-application = { module = "com.android.application:com.android.application.gradle.plugin", version.ref = "android-gradle-plugin" }
 gradle-android-library = { module = "com.android.library:com.android.library.gradle.plugin", version.ref = "android-gradle-plugin" }
+gradle-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:gradle-plugin", version.ref = "jvm-chamaleon"}
+jvm-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:chamaleon-core", version.ref = "jvm-chamaleon"}
 jvm-bcrypt = { module = "at.favre.lib:bcrypt", version.ref = "jvm-bcrypt" }
 jvm-ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "kmp-ktor" }
 jvm-ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "kmp-ktor" }

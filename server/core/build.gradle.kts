@@ -1,4 +1,4 @@
-import buildLogic.convention.extensions.propProvider
+import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.extensions.Extension
 
 plugins {
     id("theoneclick.jvm.server")
@@ -12,12 +12,15 @@ jvmServer {
 
     dockerConfiguration {
         imageName.set("theoneclick")
-        imageTag.set(propProvider("GITHUB_SHA"))
-        imageRegistryUrl.set(propProvider("REGISTRY_LOCATION"))
-        imageRegistryUsername.set(propProvider("REGISTRY_USERNAME"))
-        imageRegistryPassword.set(propProvider("REGISTRY_PASSWORD"))
+        imageTag.set(chamaleon.propertyProvider("GITHUB_SHA"))
+        imageRegistryUrl.set(chamaleon.propertyProvider("REGISTRY_LOCATION"))
+        imageRegistryUsername.set(chamaleon.propertyProvider("REGISTRY_USERNAME"))
+        imageRegistryPassword.set(chamaleon.propertyProvider("REGISTRY_PASSWORD"))
     }
 }
+
+fun Extension.propertyProvider(name: String): Provider<String> =
+    provider { selectedEnvironment().jvmPlatform().propertyStringValue(name) }
 
 kotlin {
     sourceSets {
