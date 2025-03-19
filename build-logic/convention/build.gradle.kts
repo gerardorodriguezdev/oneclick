@@ -18,7 +18,6 @@ java {
 
 kotlin {
     compilerOptions {
-        // allWarningsAsErrors = true
         jvmTarget = when (libs.versions.jvm.api.get().toInt()) {
             17 -> JvmTarget.JVM_17
             21 -> JvmTarget.JVM_21

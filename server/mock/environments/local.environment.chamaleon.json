@@ -1,0 +1,11 @@
+[
+  {
+    "platformType": "jvm",
+    "properties": [
+      {
+        "name": "host",
+        "value": "value"
+      }
+    ]
+  }
+]

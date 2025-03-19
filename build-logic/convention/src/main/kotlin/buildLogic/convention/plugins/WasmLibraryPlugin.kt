@@ -25,7 +25,6 @@ class WasmLibraryPlugin : Plugin<Project> {
         extensions.configure(KotlinMultiplatformExtension::class.java) {
             compilerOptions {
                 extraWarnings.set(true)
-                // allWarningsAsErrors.set(true) Failing because of redundant visibility modifier
                 freeCompilerArgs.addAll(
                     "-Xsuppress-warning=UNUSED_ANONYMOUS_PARAMETER",
                     "-Xexpect-actual-classes"

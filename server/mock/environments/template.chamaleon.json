@@ -1,0 +1,14 @@
+{
+  "supportedPlatforms": [
+    "jvm"
+  ],
+  "propertyDefinitions": [
+    {
+      "name": "host",
+      "propertyType": "String",
+      "supportedPlatforms": [
+        "jvm"
+      ]
+    }
+  ]
+}

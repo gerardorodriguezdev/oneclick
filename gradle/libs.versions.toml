@@ -26,7 +26,7 @@ kmp-buildconfig = "0.15.2"
 kmp-immutable = "0.3.8"
 kmp-window-classes = "0.5.0"
 kmp-serialization = "1.7.3"
-chamaleon = "1.0.9"
+chamaleon = "1.0.10"
 
 [libraries]
 android-activity = { module = "androidx.activity:activity-compose", version.ref = "android-activity" }

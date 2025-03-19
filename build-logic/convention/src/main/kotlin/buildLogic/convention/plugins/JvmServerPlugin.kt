@@ -3,8 +3,8 @@ package buildLogic.convention.plugins
 import buildLogic.convention.extensions.plugins.JvmServerExtension
 import buildLogic.convention.extensions.toJavaLanguageVersion
 import buildLogic.convention.extensions.toJavaVersion
-import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.GradlePlugin
-import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.extensions.Extension
+import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.ChamaleonGradlePlugin
+import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.extensions.ChamaleonExtension
 import io.ktor.plugin.*
 import io.ktor.plugin.features.*
 import org.gradle.api.Plugin
@@ -22,7 +22,7 @@ class JvmServerPlugin : Plugin<Project> {
     override fun apply(target: Project) {
         with(target) {
             applyPlugins()
-            val chamaleonExtension = extensions.findByType(Extension::class.java)
+            val chamaleonExtension = extensions.findByType(ChamaleonExtension::class.java)
             val jvmServerExtension = createJvmServerExtension()
             configureKotlinMultiplatformExtension(jvmServerExtension)
             configureJavaApplicationExtension(jvmServerExtension)
@@ -35,7 +35,7 @@ class JvmServerPlugin : Plugin<Project> {
         pluginManager.apply {
             apply(KotlinMultiplatformPluginWrapper::class.java)
             apply(KtorGradlePlugin::class.java)
-            apply(GradlePlugin::class.java)
+            apply(ChamaleonGradlePlugin::class.java)
         }
     }
 
@@ -64,7 +64,10 @@ class JvmServerPlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.configureKtorExtension(chamaleonExtension: Extension?, jvmServerExtension: JvmServerExtension) {
+    private fun Project.configureKtorExtension(
+        chamaleonExtension: ChamaleonExtension?,
+        jvmServerExtension: JvmServerExtension
+    ) {
         project.ktorExtensions.configure(DockerExtension::class.java) {
             localImageName.set(jvmServerExtension.dockerConfiguration.imageName)
             jreVersion.set(jvmServerExtension.jvmTarget.toJavaVersion())
@@ -92,7 +95,7 @@ class JvmServerPlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.registerTasks(chamaleonExtension: Extension?) {
+    private fun Project.registerTasks(chamaleonExtension: ChamaleonExtension?) {
         tasks.named(BUILD_DOCKER_IMAGE_TASK_NAME) {
             dependsOn(tasks.named(TESTS_TASK_NAME))
         }
@@ -107,12 +110,12 @@ class JvmServerPlugin : Plugin<Project> {
         }
     }
 
-    private fun Extension?.toMap(): List<Pair<String, String>> {
+    private fun ChamaleonExtension?.toMap(): List<Pair<String, String>> {
         if (this == null) return emptyList()
 
-        val properties = selectedEnvironmentOrNull()?.jvmPlatformOrNull()?.properties ?: return emptyList()
+        val properties = selectedEnvironmentOrNull()?.jvmPlatformOrNull?.properties?.values ?: return emptyList()
 
-        return properties.map { property -> property.name to property.value.toString() }
+        return properties.map { property -> property.name.value to property.value.toString() }
     }
 
     private fun Project.externalRegistryProject(

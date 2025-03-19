@@ -1,4 +1,4 @@
-import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.extensions.Extension
+import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.extensions.ChamaleonExtension
 
 plugins {
     id("theoneclick.jvm.server")
@@ -19,8 +19,8 @@ jvmServer {
     }
 }
 
-fun Extension.propertyProvider(name: String): Provider<String> =
-    provider { selectedEnvironment().jvmPlatform().propertyStringValue(name) }
+fun ChamaleonExtension.propertyProvider(name: String): Provider<String> =
+    provider { selectedEnvironment().jvmPlatform.propertyStringValue(name) }
 
 kotlin {
     sourceSets {

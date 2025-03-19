@@ -1,5 +1,5 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec
-import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.extensions.Extension
+import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.extensions.ChamaleonExtension
 import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
@@ -122,7 +122,7 @@ buildkonfig {
             buildConfigField(
                 FieldSpec.Type.BOOLEAN,
                 name = "IS_DEBUG",
-                value = chamaleon.selectedEnvironment().wasmPlatform().propertyBooleanValue("IS_DEBUG").toString()
+                value = chamaleon.selectedEnvironment().wasmPlatform.propertyBooleanValue("IS_DEBUG").toString()
             )
         }
 
@@ -154,8 +154,8 @@ buildkonfig {
     }
 }
 
-fun Extension.androidProviderString(name: String): Provider<String> =
-    provider { chamaleon.selectedEnvironment().androidPlatform().propertyStringValue(name) }
+fun ChamaleonExtension.androidProviderString(name: String): Provider<String> =
+    provider { chamaleon.selectedEnvironment().androidPlatform.propertyStringValue(name) }
 
-fun Extension.androidProviderBoolean(name: String): Provider<Boolean> =
-    provider { chamaleon.selectedEnvironment().androidPlatform().propertyBooleanValue(name) }
+fun ChamaleonExtension.androidProviderBoolean(name: String): Provider<Boolean> =
+    provider { chamaleon.selectedEnvironment().androidPlatform.propertyBooleanValue(name) }
