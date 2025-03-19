@@ -33,10 +33,6 @@ class WasmWebsitePlugin : Plugin<Project> {
         extensions.configure(KotlinMultiplatformExtension::class.java) {
             compilerOptions {
                 extraWarnings.set(true)
-                freeCompilerArgs.addAll(
-                    "-Xsuppress-warning=UNUSED_ANONYMOUS_PARAMETER",
-                    "-Xexpect-actual-classes",
-                )
             }
 
             wasmJs {

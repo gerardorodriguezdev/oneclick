@@ -148,7 +148,7 @@ buildkonfig {
             buildConfigField(
                 FieldSpec.Type.BOOLEAN,
                 name = "IS_DEBUG",
-                value = chamaleon.androidProviderBoolean("IS_DEBUG").get().toString()
+                value = chamaleon.selectedEnvironment().androidPlatform.propertyBooleanValue("IS_DEBUG").toString()
             )
         }
     }
@@ -156,6 +156,3 @@ buildkonfig {
 
 fun ChamaleonExtension.androidProviderString(name: String): Provider<String> =
     provider { chamaleon.selectedEnvironment().androidPlatform.propertyStringValue(name) }
-
-fun ChamaleonExtension.androidProviderBoolean(name: String): Provider<Boolean> =
-    provider { chamaleon.selectedEnvironment().androidPlatform.propertyBooleanValue(name) }
