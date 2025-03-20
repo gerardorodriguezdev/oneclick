@@ -4,12 +4,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import theoneclick.shared.core.dataSources.models.entities.Device
 
-fun <T> ImmutableList<T>.updateItem(index: Int, updatedItem: T): ImmutableList<T> {
-    val newList = toMutableList()
-    newList[index] = updatedItem
-    return newList.toImmutableList()
-}
-
 fun <T> ImmutableList<T>.updateItems(
     transform: (index: Int, currentItem: T) -> T
 ): ImmutableList<T> {

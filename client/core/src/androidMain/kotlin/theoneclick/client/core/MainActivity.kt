@@ -15,9 +15,7 @@ class MainActivity : ComponentActivity() {
         val entrypoint = (application as BaseAndroidApplication).appEntrypoint
 
         setContent {
-            with(entrypoint) {
-                App()
-            }
+            entrypoint.App()
         }
     }
 }
