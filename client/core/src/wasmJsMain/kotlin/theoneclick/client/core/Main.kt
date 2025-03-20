@@ -12,8 +12,6 @@ fun main() {
     appEntrypoint.startKoin(appDependencies = appDependencies())
 
     ComposeViewport(requireNotNull(document.body)) {
-        with(appEntrypoint) {
-            App()
-        }
+        appEntrypoint.App()
     }
 }

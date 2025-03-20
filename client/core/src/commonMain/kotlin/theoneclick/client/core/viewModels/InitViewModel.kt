@@ -14,7 +14,6 @@ import theoneclick.shared.core.routes.AppRoute
 class InitViewModel(
     private val navigationController: NavigationController,
     private val authenticationDataSource: AuthenticationDataSource,
-    private val startingRoute: AppRoute,
 ) : ViewModel() {
     private var isSignedRequestJob: Job? = null
 
@@ -42,7 +41,7 @@ class InitViewModel(
     private suspend fun handleUserLogged() {
         navigationController.sendNavigationEvent(
             Navigate(
-                destinationRoute = startingRoute,
+                destinationRoute = AppRoute.Home,
                 launchSingleTop = true,
                 popUpTo = popUpToInclusive(startRoute = AppRoute.Init)
             )

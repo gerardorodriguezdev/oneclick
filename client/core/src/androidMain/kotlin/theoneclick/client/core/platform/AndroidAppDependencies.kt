@@ -5,7 +5,6 @@ import theoneclick.client.core.buildkonfig.BuildKonfig
 import theoneclick.client.core.extensions.urlProtocol
 import theoneclick.shared.core.idlingResources.EmptyIdlingResource
 import theoneclick.shared.core.idlingResources.IdlingResource
-import theoneclick.shared.core.routes.AppRoute
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.dispatchers.platform.dispatchersProvider
 import theoneclick.shared.timeProvider.SystemTimeProvider
@@ -20,7 +19,6 @@ class AndroidAppDependencies : AppDependencies {
             isDebug = BuildKonfig.IS_DEBUG,
         )
     override val dispatchersProvider: DispatchersProvider = dispatchersProvider()
-    override val startingRoute: AppRoute = AppRoute.Home
     override val timeProvider: TimeProvider = SystemTimeProvider()
     override val httpEngine: HttpClientEngine = androidHttpClientEngine(timeProvider = timeProvider)
     override val idlingResource: IdlingResource = EmptyIdlingResource()

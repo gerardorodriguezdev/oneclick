@@ -29,7 +29,6 @@ import theoneclick.client.core.viewModels.InitViewModel
 import theoneclick.client.core.viewModels.LoginViewModel
 import theoneclick.shared.core.dataSources.AuthenticationDataSource
 import theoneclick.shared.core.dataSources.RemoteAuthenticationDataSource
-import theoneclick.shared.core.routes.AppRoute
 import theoneclick.shared.core.routes.AppRoute.*
 
 class AppEntrypoint {
@@ -89,7 +88,7 @@ class AppEntrypoint {
     // Only visible for testing
     fun buildAppModules(appDependencies: AppDependencies): List<Module> {
         val coreModule = buildCoreModule(appDependencies)
-        val appModule = buildAppModule(coreModule, appDependencies)
+        val appModule = buildAppModule(coreModule)
 
         return listOf(
             coreModule,
@@ -98,16 +97,14 @@ class AppEntrypoint {
         )
     }
 
-    private fun buildAppModule(coreModule: Module, appDependencies: AppDependencies): Module =
+    private fun buildAppModule(coreModule: Module): Module =
         module {
             includes(coreModule)
 
-            single<AppRoute> { appDependencies.startingRoute }
             singleOf(::RemoteAuthenticationDataSource) bind AuthenticationDataSource::class
             viewModel {
                 InitViewModel(
                     navigationController = get(),
-                    startingRoute = appDependencies.startingRoute,
                     authenticationDataSource = get(),
                 )
             }

@@ -9,7 +9,6 @@ import theoneclick.client.core.routes.NavigationController
 import theoneclick.client.core.routes.RealNavigationController
 import theoneclick.shared.core.extensions.defaultHttpClient
 import theoneclick.shared.core.idlingResources.IdlingResource
-import theoneclick.shared.core.routes.AppRoute
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.timeProvider.TimeProvider
 
@@ -22,7 +21,6 @@ expect fun appDependencies(): AppDependencies
 interface CoreDependencies {
     val environment: Environment
     val dispatchersProvider: DispatchersProvider
-    val startingRoute: AppRoute
     val httpEngine: HttpClientEngine
     val idlingResource: IdlingResource
 }

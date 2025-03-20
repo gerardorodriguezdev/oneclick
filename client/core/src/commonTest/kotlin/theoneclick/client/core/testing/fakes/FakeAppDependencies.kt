@@ -5,7 +5,6 @@ import io.ktor.client.engine.mock.*
 import theoneclick.client.core.platform.AppDependencies
 import theoneclick.client.core.platform.Environment
 import theoneclick.client.core.testing.idlingResources.TestIdlingResource
-import theoneclick.shared.core.routes.AppRoute
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.dispatchers.platform.dispatchersProvider
 import theoneclick.shared.testing.timeProvider.FakeTimeProvider
@@ -16,7 +15,6 @@ class FakeAppDependencies(
 ) : AppDependencies {
     override val environment: Environment = Environment(protocol = null, host = null, port = null, isDebug = true)
     override val dispatchersProvider: DispatchersProvider = dispatchersProvider()
-    override val startingRoute: AppRoute = AppRoute.Home
     override val httpEngine: HttpClientEngine = mockEngine
     override val idlingResource: TestIdlingResource = TestIdlingResource()
     override val timeProvider: TimeProvider = FakeTimeProvider(fakeCurrentTimeInMillis = 1L)
