@@ -1,6 +1,7 @@
 if (config.devServer) {
     config.devServer = {
         ...config.devServer,
+        port: 3000,
         historyApiFallback: {
             rewrites: [{
                 from: /./,
@@ -9,7 +10,7 @@ if (config.devServer) {
         },
         proxy: [{
             context: ['/api'],
-            target: 'http://localhost:3000'
+            target: 'http://localhost:8080'
         }]
     }
 }

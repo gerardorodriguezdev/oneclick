@@ -8,7 +8,8 @@
       "propertyType": "String",
       "supportedPlatforms": [
         "jvm"
-      ]
+      ],
+      "nullable": true
     }
   ]
 }

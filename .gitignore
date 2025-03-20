@@ -9,3 +9,4 @@
 # Files
 .DS_Store
 local.properties
+production.environment.chamaleon.json
