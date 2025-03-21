@@ -11,6 +11,7 @@ import javax.net.SocketFactory
 fun androidHttpClientEngine(timeProvider: TimeProvider): HttpClientEngine =
     OkHttp.create {
         config {
+            followRedirects(false)
             socketFactory(
                 DelegatingSocketFactory(
                     configureSocket = {
