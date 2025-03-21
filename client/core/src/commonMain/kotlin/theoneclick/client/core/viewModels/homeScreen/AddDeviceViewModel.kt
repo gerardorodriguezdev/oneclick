@@ -14,7 +14,7 @@ import theoneclick.client.core.routes.NavigationController.NavigationEvent.Navig
 import theoneclick.client.core.ui.events.homeScreen.AddDeviceEvent
 import theoneclick.client.core.ui.states.homeScreen.AddDeviceState
 import theoneclick.client.core.dataSources.LoggedDataSource
-import theoneclick.shared.core.models.results.AddDeviceResult
+import theoneclick.client.core.models.results.AddDeviceResult
 import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.core.validators.deviceNameValidator
 import theoneclick.shared.core.validators.roomNameValidator

@@ -1,4 +1,4 @@
-package theoneclick.shared.core.models.results
+package theoneclick.client.core.models.results
 
 sealed interface UserLoggedResult {
     data object Logged : UserLoggedResult

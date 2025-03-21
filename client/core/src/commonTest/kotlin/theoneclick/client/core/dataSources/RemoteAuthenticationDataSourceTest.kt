@@ -11,8 +11,8 @@ import theoneclick.shared.core.models.endpoints.ClientEndpoints
 import theoneclick.shared.core.models.requests.RequestLoginRequest
 import theoneclick.shared.core.models.responses.RequestLoginResponse
 import theoneclick.shared.core.models.responses.UserLoggedResponse
-import theoneclick.shared.core.models.results.RequestLoginResult
-import theoneclick.shared.core.models.results.UserLoggedResult
+import theoneclick.client.core.models.results.RequestLoginResult
+import theoneclick.client.core.models.results.UserLoggedResult
 import theoneclick.shared.core.extensions.defaultHttpClient
 import theoneclick.client.core.idlingResources.EmptyIdlingResource
 import theoneclick.shared.core.models.routes.AppRoute

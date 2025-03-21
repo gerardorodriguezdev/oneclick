@@ -8,10 +8,10 @@ import kotlinx.coroutines.flow.*
 import theoneclick.shared.core.models.requests.RequestLoginRequest
 import theoneclick.shared.core.models.responses.RequestLoginResponse
 import theoneclick.shared.core.models.responses.UserLoggedResponse
-import theoneclick.shared.core.models.results.RequestLoginResult
-import theoneclick.shared.core.models.results.RequestLoginResult.UnknownError
-import theoneclick.shared.core.models.results.RequestLoginResult.ValidLogin
-import theoneclick.shared.core.models.results.UserLoggedResult
+import theoneclick.client.core.models.results.RequestLoginResult
+import theoneclick.client.core.models.results.RequestLoginResult.UnknownError
+import theoneclick.client.core.models.results.RequestLoginResult.ValidLogin
+import theoneclick.client.core.models.results.UserLoggedResult
 import theoneclick.client.core.idlingResources.IdlingResource
 import theoneclick.shared.core.models.endpoints.ClientEndpoints
 import theoneclick.shared.dispatchers.platform.DispatchersProvider

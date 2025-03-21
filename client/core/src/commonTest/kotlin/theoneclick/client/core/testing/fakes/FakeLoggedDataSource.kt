@@ -5,9 +5,9 @@ import kotlinx.coroutines.flow.flowOf
 import theoneclick.client.core.dataSources.LoggedDataSource
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.DeviceType
-import theoneclick.shared.core.models.results.AddDeviceResult
-import theoneclick.shared.core.models.results.DevicesResult
-import theoneclick.shared.core.models.results.UpdateDeviceResult
+import theoneclick.client.core.models.results.AddDeviceResult
+import theoneclick.client.core.models.results.DevicesResult
+import theoneclick.client.core.models.results.UpdateDeviceResult
 
 class FakeLoggedDataSource(
     var addDeviceResultFlow: Flow<AddDeviceResult> = flowOf(),

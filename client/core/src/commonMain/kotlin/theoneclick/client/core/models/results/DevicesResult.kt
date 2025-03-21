@@ -1,4 +1,4 @@
-package theoneclick.shared.core.models.results
+package theoneclick.client.core.models.results
 
 import theoneclick.shared.core.models.entities.Device
 

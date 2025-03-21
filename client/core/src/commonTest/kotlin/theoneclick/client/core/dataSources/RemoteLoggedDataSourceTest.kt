@@ -16,9 +16,9 @@ import theoneclick.shared.core.models.entities.Uuid
 import theoneclick.shared.core.models.requests.AddDeviceRequest
 import theoneclick.shared.core.models.requests.UpdateDeviceRequest
 import theoneclick.shared.core.models.responses.DevicesResponse
-import theoneclick.shared.core.models.results.AddDeviceResult
-import theoneclick.shared.core.models.results.DevicesResult
-import theoneclick.shared.core.models.results.UpdateDeviceResult
+import theoneclick.client.core.models.results.AddDeviceResult
+import theoneclick.client.core.models.results.DevicesResult
+import theoneclick.client.core.models.results.UpdateDeviceResult
 import theoneclick.shared.testing.dispatchers.FakeDispatchersProvider
 import theoneclick.shared.testing.extensions.mockEngine
 import theoneclick.shared.testing.extensions.respondJson

@@ -5,7 +5,7 @@ import theoneclick.client.core.extensions.popUpToInclusive
 import theoneclick.client.core.routes.NavigationController.NavigationEvent
 import theoneclick.client.core.testing.fakes.FakeAuthenticationDataSource
 import theoneclick.client.core.testing.fakes.FakeNavigationController
-import theoneclick.shared.core.models.results.UserLoggedResult
+import theoneclick.client.core.models.results.UserLoggedResult
 import theoneclick.shared.core.models.routes.AppRoute.*
 import theoneclick.shared.core.models.routes.base.Route
 import theoneclick.shared.testing.dispatchers.CoroutinesTest

@@ -7,7 +7,7 @@ import theoneclick.client.core.testing.fakes.FakeAuthenticationDataSource
 import theoneclick.client.core.testing.fakes.FakeNavigationController
 import theoneclick.client.core.ui.events.LoginEvent.*
 import theoneclick.client.core.ui.states.LoginState
-import theoneclick.shared.core.models.results.RequestLoginResult
+import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.testing.dispatchers.CoroutinesTest
 import theoneclick.shared.testing.extensions.assertContains

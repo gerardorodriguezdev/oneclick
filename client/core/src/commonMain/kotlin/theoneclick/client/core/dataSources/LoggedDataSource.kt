@@ -12,9 +12,9 @@ import theoneclick.shared.core.models.entities.DeviceType
 import theoneclick.shared.core.models.requests.AddDeviceRequest
 import theoneclick.shared.core.models.requests.UpdateDeviceRequest
 import theoneclick.shared.core.models.responses.DevicesResponse
-import theoneclick.shared.core.models.results.AddDeviceResult
-import theoneclick.shared.core.models.results.DevicesResult
-import theoneclick.shared.core.models.results.UpdateDeviceResult
+import theoneclick.client.core.models.results.AddDeviceResult
+import theoneclick.client.core.models.results.DevicesResult
+import theoneclick.client.core.models.results.UpdateDeviceResult
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
 interface LoggedDataSource {

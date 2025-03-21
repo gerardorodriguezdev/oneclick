@@ -16,8 +16,8 @@ import theoneclick.client.core.routes.NavigationController.NavigationEvent.Navig
 import theoneclick.client.core.ui.events.homeScreen.DevicesListEvent
 import theoneclick.client.core.ui.states.homeScreen.DevicesListState
 import theoneclick.client.core.dataSources.LoggedDataSource
-import theoneclick.shared.core.models.results.DevicesResult
-import theoneclick.shared.core.models.results.UpdateDeviceResult
+import theoneclick.client.core.models.results.DevicesResult
+import theoneclick.client.core.models.results.UpdateDeviceResult
 import theoneclick.shared.core.models.routes.AppRoute
 
 class DevicesListViewModel(
