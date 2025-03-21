@@ -10,7 +10,8 @@ import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.extensions.post
 import theoneclick.server.core.extensions.userSessionAuthentication
 import theoneclick.server.core.plugins.koin.inject
-import theoneclick.shared.core.models.endpoints.Endpoint
+import theoneclick.server.core.data.models.endpoints.ServerEndpoints
+import theoneclick.shared.core.models.endpoints.ClientEndpoints
 
 fun Routing.updateDeviceEndpoint() {
     val paramsValidator: ParamsValidator by inject()
@@ -18,7 +19,7 @@ fun Routing.updateDeviceEndpoint() {
 
     userSessionAuthentication {
         post(
-            endpoint = Endpoint.UPDATE_DEVICE,
+            endpoint = ClientEndpoints.UPDATE_DEVICE,
             requestValidation = paramsValidator::isUpdateDeviceRequestValid,
         ) { updateDeviceValidationResult ->
             when (updateDeviceValidationResult) {

@@ -8,7 +8,7 @@ import io.ktor.server.engine.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import theoneclick.shared.core.models.endpoints.Endpoint
+import theoneclick.shared.core.models.endpoints.ClientEndpoints
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.Uuid
 import theoneclick.shared.core.models.requests.RequestLoginRequest
@@ -35,15 +35,15 @@ private fun Application.configureContentNegotiation() {
 
 private fun Application.configureRouting() {
     routing {
-        get(Endpoint.IS_USER_LOGGED.route) {
+        get(ClientEndpoints.IS_USER_LOGGED.route) {
             call.respond<UserLoggedResponse>(UserLoggedResponse.NotLogged)
         }
 
-        post(Endpoint.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
+        post(ClientEndpoints.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
             call.respond<RequestLoginResponse>(RequestLoginResponse.LocalRedirect(AppRoute.Home))
         }
 
-        get(Endpoint.DEVICES.route) {
+        get(ClientEndpoints.DEVICES.route) {
             call.respond(
                 DevicesResponse(
                     devices = listOf(
@@ -73,7 +73,7 @@ private fun Application.configureRouting() {
             )
         }
 
-        post(Endpoint.ADD_DEVICE.route) {
+        post(ClientEndpoints.ADD_DEVICE.route) {
             call.respond(HttpStatusCode.Unauthorized)
         }
     }

@@ -20,10 +20,11 @@ import theoneclick.server.core.platform.Environment
 import theoneclick.server.core.platform.SecurityUtils
 import theoneclick.server.core.platform.UuidProvider
 import theoneclick.server.core.plugins.koin.inject
-import theoneclick.shared.core.models.endpoints.Endpoint
+import theoneclick.server.core.data.models.endpoints.ServerEndpoints
 import theoneclick.shared.core.models.requests.RequestLoginRequest
 import theoneclick.shared.core.models.responses.RequestLoginResponse
 import theoneclick.shared.core.extensions.urlBuilder
+import theoneclick.shared.core.models.endpoints.ClientEndpoints
 import theoneclick.shared.core.models.routes.AppRoute
 
 fun Routing.requestLoginEndpoint() {
@@ -34,7 +35,7 @@ fun Routing.requestLoginEndpoint() {
     val uuidProvider: UuidProvider by inject()
 
     post(
-        endpoint = Endpoint.REQUEST_LOGIN,
+        endpoint = ClientEndpoints.REQUEST_LOGIN,
         paramsParsing = {
             val requestLoginRequest: RequestLoginRequest = call.receive()
             RequestLoginParams(
@@ -111,7 +112,7 @@ private suspend fun RoutingContext.handleAuthorizeParams(
             val authorizeParamsUrlBuilder = urlBuilder {
                 protocol = URLProtocol.HTTPS
                 host = environment.host
-                path(Endpoint.AUTHORIZE.route)
+                path(ServerEndpoints.AUTHORIZE.route)
                 parameters.appendParameters(authorizeValidationResult)
             }
 

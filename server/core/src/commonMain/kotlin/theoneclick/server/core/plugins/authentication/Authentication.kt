@@ -17,7 +17,7 @@ import theoneclick.server.core.extensions.redirectUri
 import theoneclick.server.core.extensions.responseType
 import theoneclick.server.core.extensions.state
 import theoneclick.server.core.plugins.koin.inject
-import theoneclick.shared.core.models.endpoints.Endpoint
+import theoneclick.server.core.data.models.endpoints.ServerEndpoints
 import theoneclick.shared.core.extensions.ifNotNull
 
 fun Application.configureAuthentication() {
@@ -62,7 +62,7 @@ private fun AuthenticationConfig.registerSessionAuthentication(paramsValidator: 
                             responseType = authorizeValidationResult.responseType,
                         )
                     )
-                    call.respondRedirect(Endpoint.LOGIN.route)
+                    call.respondRedirect(ServerEndpoints.LOGIN.route)
                 }
 
                 is InvalidAuthorizeParams -> call.respond(HttpStatusCode.Unauthorized)

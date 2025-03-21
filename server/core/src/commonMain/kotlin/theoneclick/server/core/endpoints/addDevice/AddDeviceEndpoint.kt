@@ -11,7 +11,7 @@ import theoneclick.server.core.extensions.post
 import theoneclick.server.core.extensions.userSessionAuthentication
 import theoneclick.server.core.platform.UuidProvider
 import theoneclick.server.core.plugins.koin.inject
-import theoneclick.shared.core.models.endpoints.Endpoint
+import theoneclick.shared.core.models.endpoints.ClientEndpoints
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.DeviceType
 import theoneclick.shared.core.models.entities.Uuid
@@ -23,7 +23,7 @@ fun Routing.addDeviceEndpoint() {
 
     userSessionAuthentication {
         post(
-            endpoint = Endpoint.ADD_DEVICE,
+            endpoint = ClientEndpoints.ADD_DEVICE,
             requestValidation = paramsValidator::isAddDeviceRequestValid,
         ) { addDeviceValidationResult ->
             when (addDeviceValidationResult) {

@@ -5,7 +5,8 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.flow.*
-import theoneclick.shared.core.models.endpoints.Endpoint
+import theoneclick.client.core.idlingResources.IdlingResource
+import theoneclick.shared.core.models.endpoints.ClientEndpoints
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.DeviceType
 import theoneclick.shared.core.models.requests.AddDeviceRequest
@@ -14,7 +15,6 @@ import theoneclick.shared.core.models.responses.DevicesResponse
 import theoneclick.shared.core.models.results.AddDeviceResult
 import theoneclick.shared.core.models.results.DevicesResult
 import theoneclick.shared.core.models.results.UpdateDeviceResult
-import theoneclick.client.core.idlingResources.IdlingResource
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
 interface LoggedDataSource {
@@ -41,7 +41,7 @@ class RemoteLoggedDataSource(
         type: DeviceType
     ): Flow<AddDeviceResult> =
         flow {
-            val response = client.post(Endpoint.ADD_DEVICE.route) {
+            val response = client.post(ClientEndpoints.ADD_DEVICE.route) {
                 contentType(ContentType.Application.Json)
                 setBody(
                     AddDeviceRequest(
@@ -65,7 +65,7 @@ class RemoteLoggedDataSource(
 
     override fun devices(): Flow<DevicesResult> =
         flow {
-            val response = client.get(Endpoint.DEVICES.route) {
+            val response = client.get(ClientEndpoints.DEVICES.route) {
                 contentType(ContentType.Application.Json)
             }
 
@@ -87,7 +87,7 @@ class RemoteLoggedDataSource(
 
     override fun updateDevice(updatedDevice: Device): Flow<UpdateDeviceResult> =
         flow {
-            val response = client.post(Endpoint.UPDATE_DEVICE.route) {
+            val response = client.post(ClientEndpoints.UPDATE_DEVICE.route) {
                 contentType(ContentType.Application.Json)
                 setBody(UpdateDeviceRequest(updatedDevice))
             }

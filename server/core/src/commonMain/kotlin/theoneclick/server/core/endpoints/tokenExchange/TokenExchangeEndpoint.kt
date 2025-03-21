@@ -12,7 +12,7 @@ import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.extensions.*
 import theoneclick.server.core.platform.SecurityUtils
 import theoneclick.server.core.plugins.koin.inject
-import theoneclick.shared.core.models.endpoints.Endpoint
+import theoneclick.server.core.data.models.endpoints.ServerEndpoints
 
 fun Routing.tokenExchangeEndpoint() {
     val userDataSource: UserDataSource by inject()
@@ -20,7 +20,7 @@ fun Routing.tokenExchangeEndpoint() {
     val paramsValidator: ParamsValidator by inject()
 
     post(
-        endpoint = Endpoint.TOKEN_EXCHANGE,
+        endpoint = ServerEndpoints.TOKEN_EXCHANGE,
         paramsParsing = { call.receiveParameters().tokenExchangeParams() },
         paramsValidation = paramsValidator::isTokenExchangeParamsValid,
     ) { tokenExchangeValidationResult: TokenExchangeValidationResult ->

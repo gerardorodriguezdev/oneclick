@@ -9,22 +9,22 @@ import theoneclick.server.core.data.models.UserSession
 import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.endpoints.authorize.AuthorizeParams
 import theoneclick.server.core.plugins.koin.inject
-import theoneclick.shared.core.models.endpoints.Endpoint
+import theoneclick.server.core.data.models.endpoints.ServerEndpoints
 
 fun Routing.qaapi() {
     val userDataSource: UserDataSource by inject()
 
-    post(Endpoint.ADD_USER_DATA.route) { userData: UserData ->
+    post(ServerEndpoints.ADD_USER_DATA.route) { userData: UserData ->
         userDataSource.saveUserData(userData)
         call.respond(HttpStatusCode.OK)
     }
 
-    post(Endpoint.ADD_USER_SESSION.route) { userSession: UserSession ->
+    post(ServerEndpoints.ADD_USER_SESSION.route) { userSession: UserSession ->
         call.sessions.set(userSession)
         call.respond(HttpStatusCode.OK)
     }
 
-    post(Endpoint.ADD_AUTHORIZE_REDIRECT.route) { authorizeParams: AuthorizeParams ->
+    post(ServerEndpoints.ADD_AUTHORIZE_REDIRECT.route) { authorizeParams: AuthorizeParams ->
         call.sessions.set(authorizeParams)
         call.respond(HttpStatusCode.OK)
     }

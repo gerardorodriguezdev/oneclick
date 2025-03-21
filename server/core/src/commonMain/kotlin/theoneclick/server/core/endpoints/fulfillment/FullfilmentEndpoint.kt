@@ -11,14 +11,14 @@ import theoneclick.server.core.endpoints.fulfillment.FulfillmentResponse.Payload
 import theoneclick.server.core.extensions.bearerAuthentication
 import theoneclick.server.core.extensions.post
 import theoneclick.server.core.plugins.koin.inject
-import theoneclick.shared.core.models.endpoints.Endpoint
+import theoneclick.server.core.data.models.endpoints.ServerEndpoints
 
 fun Routing.fulfillmentEndpoint() {
     val paramsValidator: ParamsValidator by inject()
 
     bearerAuthentication {
         post(
-            endpoint = Endpoint.FULFILLMENT,
+            endpoint = ServerEndpoints.FULFILLMENT,
             requestValidation = paramsValidator::isFulfillmentRequestValid,
         ) { fulfillmentRequestValidationResult ->
             when (fulfillmentRequestValidationResult) {

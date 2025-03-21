@@ -5,7 +5,6 @@ import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.flow.*
-import theoneclick.shared.core.models.endpoints.Endpoint
 import theoneclick.shared.core.models.requests.RequestLoginRequest
 import theoneclick.shared.core.models.responses.RequestLoginResponse
 import theoneclick.shared.core.models.responses.UserLoggedResponse
@@ -14,6 +13,7 @@ import theoneclick.shared.core.models.results.RequestLoginResult.UnknownError
 import theoneclick.shared.core.models.results.RequestLoginResult.ValidLogin
 import theoneclick.shared.core.models.results.UserLoggedResult
 import theoneclick.client.core.idlingResources.IdlingResource
+import theoneclick.shared.core.models.endpoints.ClientEndpoints
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
 interface AuthenticationDataSource {
@@ -33,7 +33,7 @@ class RemoteAuthenticationDataSource(
     override fun isUserLogged(): Flow<UserLoggedResult> =
         flow {
             val response: UserLoggedResponse = client.get(
-                Endpoint.IS_USER_LOGGED.route
+                ClientEndpoints.IS_USER_LOGGED.route
             ).body()
             emit(response.toUserLoggedResult())
         }
@@ -48,7 +48,7 @@ class RemoteAuthenticationDataSource(
     ): Flow<RequestLoginResult> =
         flow {
             val response: RequestLoginResponse = client.post(
-                Endpoint.REQUEST_LOGIN.route
+                ClientEndpoints.REQUEST_LOGIN.route
             ) {
                 contentType(ContentType.Application.Json)
                 setBody(

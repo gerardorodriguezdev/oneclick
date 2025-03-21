@@ -1,16 +1,13 @@
-package theoneclick.shared.core.models.endpoints
+package theoneclick.server.core.data.models.endpoints
 
-enum class Endpoint(val route: String) {
+import theoneclick.shared.core.models.endpoints.base.Endpoint
+
+enum class ServerEndpoints(override val route: String) : Endpoint {
     // Apis
     TOKEN_EXCHANGE("/api/token-exchange"),
-    REQUEST_LOGIN("/api/request-login"),
     FULFILLMENT("/api/fulfillment"),
     AUTHORIZE("/api/authorize"),
     HEALTHZ("/api/healthz"),
-    ADD_DEVICE("/api/add-device"),
-    DEVICES("/api/devices"),
-    UPDATE_DEVICE("/api/update-device"),
-    IS_USER_LOGGED("/api/is-user-logged"),
 
     // Qaapis
     ADD_USER_SESSION("/qaapi/add-user-session"),

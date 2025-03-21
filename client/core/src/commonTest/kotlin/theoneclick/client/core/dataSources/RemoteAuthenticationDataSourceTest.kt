@@ -7,7 +7,7 @@ import io.ktor.http.*
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
-import theoneclick.shared.core.models.endpoints.Endpoint
+import theoneclick.shared.core.models.endpoints.ClientEndpoints
 import theoneclick.shared.core.models.requests.RequestLoginRequest
 import theoneclick.shared.core.models.responses.RequestLoginResponse
 import theoneclick.shared.core.models.responses.UserLoggedResponse
@@ -57,7 +57,7 @@ class RemoteAuthenticationDataSourceTest {
             val remoteAuthenticationDataSource = remoteAuthenticationDataSource(
                 client = defaultHttpClient(
                     mockEngine(
-                        pathToFake = Endpoint.IS_USER_LOGGED.route,
+                        pathToFake = ClientEndpoints.IS_USER_LOGGED.route,
                         onPathFound = { respondError(HttpStatusCode.BadRequest) },
                     )
                 )
@@ -123,7 +123,7 @@ class RemoteAuthenticationDataSourceTest {
             val remoteAuthenticationDataSource = remoteAuthenticationDataSource(
                 client = defaultHttpClient(
                     mockEngine(
-                        pathToFake = Endpoint.REQUEST_LOGIN.route,
+                        pathToFake = ClientEndpoints.REQUEST_LOGIN.route,
                         onPathFound = { respondError(HttpStatusCode.InternalServerError) },
                     )
                 )
@@ -151,7 +151,7 @@ class RemoteAuthenticationDataSourceTest {
         private fun userLoggedEndpointMockHttpClient(result: UserLoggedResponse): HttpClient =
             defaultHttpClient(
                 mockEngine(
-                    pathToFake = Endpoint.IS_USER_LOGGED.route,
+                    pathToFake = ClientEndpoints.IS_USER_LOGGED.route,
                     onPathFound = {
                         respondJson<UserLoggedResponse>(result)
                     },
@@ -161,7 +161,7 @@ class RemoteAuthenticationDataSourceTest {
         private fun requestLoginEndpointMockHttpClient(isLocalRedirect: Boolean): HttpClient =
             defaultHttpClient(
                 mockEngine(
-                    pathToFake = Endpoint.REQUEST_LOGIN.route,
+                    pathToFake = ClientEndpoints.REQUEST_LOGIN.route,
                     onPathFound = { request ->
                         val requestLoginRequest = request.toRequestBodyObject<RequestLoginRequest>()
 
