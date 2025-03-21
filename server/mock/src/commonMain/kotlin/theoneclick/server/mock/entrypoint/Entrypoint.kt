@@ -20,7 +20,7 @@ import theoneclick.shared.core.models.routes.AppRoute
 fun server(): EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration> =
     embeddedServer(
         factory = CIO,
-        port = 3000,
+        port = 8080,
         module = {
             configureContentNegotiation()
             configureRouting()
@@ -74,7 +74,7 @@ private fun Application.configureRouting() {
         }
 
         post(ClientEndpoints.ADD_DEVICE.route) {
-            call.respond(HttpStatusCode.Unauthorized)
+            call.respondRedirect("/login")
         }
     }
 }
