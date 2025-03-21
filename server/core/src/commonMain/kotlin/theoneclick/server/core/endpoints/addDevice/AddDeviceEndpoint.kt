@@ -28,9 +28,9 @@ fun Routing.addDeviceEndpoint() {
         ) { addDeviceValidationResult ->
             when (addDeviceValidationResult) {
                 is ValidDevice -> handleValidDevice(
-                    addDeviceValidationResult,
-                    userDataSource,
-                    uuidProvider,
+                    validDevice = addDeviceValidationResult,
+                    userDataSource = userDataSource,
+                    uuidProvider = uuidProvider,
                 )
 
                 is InvalidDevice -> call.respond(HttpStatusCode.BadRequest)

@@ -9,9 +9,3 @@ fun Routing.userSessionAuthentication(block: Route.() -> Unit): Route =
         configurations = arrayOf(AuthenticationConstants.SESSION_AUTHENTICATION),
         build = block,
     )
-
-fun Routing.bearerAuthentication(block: Route.() -> Unit): Route =
-    authenticate(
-        configurations = arrayOf(AuthenticationConstants.BEARER_AUTHENTICATION),
-        build = block,
-    )

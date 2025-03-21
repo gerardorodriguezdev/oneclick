@@ -2,17 +2,13 @@ package theoneclick.server.core.testing
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import theoneclick.server.core.endpoints.authorize.AuthorizeParams
-import theoneclick.server.core.endpoints.authorize.AuthorizeParams.Companion.RESPONSE_TYPE_CODE
 import theoneclick.server.core.models.EncryptedToken
-import theoneclick.server.core.models.GoogleHomeActionsRedirectUrl
 import theoneclick.server.core.models.HashedPassword
 import theoneclick.server.core.models.UserData
 import theoneclick.server.core.models.UserSession
 import theoneclick.server.core.platform.Environment
 import theoneclick.shared.core.models.entities.Device.Blind
 import theoneclick.shared.core.models.entities.Uuid
-import theoneclick.shared.testing.extensions.generateLongString
 
 @Suppress("MaxLineLength")
 object TestData {
@@ -20,8 +16,6 @@ object TestData {
     const val UUID = "aad99301-5ede-481a-979a-3dfe32af40e8"
 
     // Secrets
-    const val SECRET_GOOGLE_HOME_ACTIONS_CLIENT_ID = "theoneclick-325647"
-    const val SECRET_GOOGLE_HOME_ACTIONS_SECRET = "SuperStrongSecret!!"
     const val SECRET_SIGN_KEY = "30db10b1baa440d7da9a68bee86e8a0b4f90d83c057ea490688a6da3da0f4a79"
     const val SECRET_ENCRYPTION_KEY = "00112233445566778899aabbccddeeff"
 
@@ -38,27 +32,9 @@ object TestData {
     const val SECURE_RANDOM_SEED = 1L
     const val ENCRYPTED_TOKEN_VALUE =
         "c9Uau9icuBlvDvtokvlNaMMQBXUiGxSN5oDSfERIfy5aGFKNOyYlGkM2dwkHiBExZSyi2fpP6kHh3Z9+9nzVE+58aMCLWi7FoZa+g1h80/Q="
-    val state = generateLongString(100)
-
-    val googleHomeActionsRedirectWithClientIdUrl =
-        GoogleHomeActionsRedirectUrl.create(SECRET_GOOGLE_HOME_ACTIONS_CLIENT_ID)
-
-    val googleHomeActionsRedirectUrlStringWithParametersUrlString: String =
-        GoogleHomeActionsRedirectUrl.create(
-            clientId = SECRET_GOOGLE_HOME_ACTIONS_CLIENT_ID,
-            authorizationCode = ENCRYPTED_TOKEN_VALUE,
-            state = state,
-        ).value
 
     val validUserSession = UserSession(
         sessionToken = ENCRYPTED_TOKEN_VALUE
-    )
-
-    val validAuthorizeParams = AuthorizeParams(
-        state = state,
-        clientId = SECRET_GOOGLE_HOME_ACTIONS_CLIENT_ID,
-        redirectUri = googleHomeActionsRedirectWithClientIdUrl.value,
-        responseType = RESPONSE_TYPE_CODE,
     )
 
     val encryptedToken = EncryptedToken(
@@ -80,10 +56,6 @@ object TestData {
         username = USERNAME,
         hashedPassword = HashedPassword(HASHED_PASSWORD),
         sessionToken = encryptedToken,
-        authorizationCode = encryptedToken,
-        accessToken = encryptedToken,
-        refreshToken = encryptedToken,
-        state = state,
         devices = devices,
     )
 
@@ -92,8 +64,6 @@ object TestData {
     val userDataByteArray = userDataString.encodeToByteArray()
 
     val environment = Environment(
-        secretGoogleHomeActionsClientId = SECRET_GOOGLE_HOME_ACTIONS_CLIENT_ID,
-        secretGoogleHomeActionsSecret = SECRET_GOOGLE_HOME_ACTIONS_SECRET,
         secretSignKey = SECRET_SIGN_KEY,
         secretEncryptionKey = SECRET_ENCRYPTION_KEY,
         host = "localhost",

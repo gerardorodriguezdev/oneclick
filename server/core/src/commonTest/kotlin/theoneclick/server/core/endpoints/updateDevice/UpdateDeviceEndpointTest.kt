@@ -46,10 +46,6 @@ class UpdateDeviceEndpointTest : IntegrationTest(), KoinTest {
             assertEquals(expected = HttpStatusCode.OK, actual = response.status)
             assertEquals(
                 expected = TestData.userData.copy(
-                    authorizationCode = null,
-                    accessToken = null,
-                    refreshToken = null,
-                    state = null,
                     devices = listOf(updatedDevice),
                 ),
                 actual = repository.userData()

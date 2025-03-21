@@ -1,31 +1,21 @@
 package theoneclick.server.core.validators
 
+import theoneclick.server.core.endpoints.requestLogin.RequestLoginParams
 import theoneclick.server.core.models.UserData
 import theoneclick.server.core.models.UserSession
-import theoneclick.server.core.validators.ParamsValidator.*
-import theoneclick.server.core.validators.ParamsValidator.AccessTokenValidationResult.InvalidAccessToken
-import theoneclick.server.core.validators.ParamsValidator.AccessTokenValidationResult.ValidAccessToken
-import theoneclick.server.core.validators.ParamsValidator.AuthorizeValidationResult.InvalidAuthorizeParams
-import theoneclick.server.core.validators.ParamsValidator.AuthorizeValidationResult.ValidAuthorizeParams
-import theoneclick.server.core.validators.ParamsValidator.RequestLoginValidationResult.InvalidRequestLoginParams
-import theoneclick.server.core.validators.ParamsValidator.RequestLoginValidationResult.ValidRequestLogin
-import theoneclick.server.core.validators.ParamsValidator.TokenExchangeValidationResult.InvalidTokenExchangeParams
-import theoneclick.server.core.endpoints.authorize.AuthorizeParams
-import theoneclick.server.core.endpoints.fulfillment.FulfillmentRequest
-import theoneclick.server.core.endpoints.fulfillment.FulfillmentRequest.InputString
-import theoneclick.server.core.endpoints.requestLogin.RequestLoginParams
-import theoneclick.server.core.endpoints.tokenExchange.TokenExchangeParams
 import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.fakes.FakeSecurityUtils
 import theoneclick.server.core.testing.fakes.FakeUserDataSource
-import theoneclick.server.core.validators.ParamsValidator
+import theoneclick.server.core.validators.ParamsValidator.AddDeviceRequestValidationResult
+import theoneclick.server.core.validators.ParamsValidator.RequestLoginValidationResult.InvalidRequestLoginParams
+import theoneclick.server.core.validators.ParamsValidator.RequestLoginValidationResult.ValidRequestLogin
+import theoneclick.server.core.validators.ParamsValidator.UpdateDeviceValidationResult
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.DeviceType
 import theoneclick.shared.core.models.entities.Uuid
 import theoneclick.shared.core.models.requests.AddDeviceRequest
 import theoneclick.shared.core.models.requests.UpdateDeviceRequest
-import theoneclick.shared.core.extensions.ifNotNull
 import theoneclick.shared.testing.extensions.generateLongString
 import theoneclick.shared.testing.extensions.parameterizedTest
 import theoneclick.shared.testing.models.testScenario
@@ -85,12 +75,6 @@ class ParamsValidatorTest : IntegrationTest() {
                 expected = ValidRequestLogin.RegistrableUser(
                     username = TestData.USERNAME,
                     password = TestData.RAW_PASSWORD,
-                    authorizeValidationResult = ValidAuthorizeParams.WithoutUserData(
-                        state = TestData.state,
-                        clientId = TestData.SECRET_GOOGLE_HOME_ACTIONS_CLIENT_ID,
-                        responseType = AuthorizeParams.RESPONSE_TYPE_CODE,
-                        redirectUri = TestData.googleHomeActionsRedirectWithClientIdUrl.value,
-                    ),
                 ),
             ),
             testScenario(
@@ -99,13 +83,6 @@ class ParamsValidatorTest : IntegrationTest() {
                 ),
                 expected = ValidRequestLogin.ValidUser(
                     userData = TestData.userData,
-                    authorizeValidationResult = ValidAuthorizeParams.WithUserData(
-                        state = TestData.state,
-                        clientId = TestData.SECRET_GOOGLE_HOME_ACTIONS_CLIENT_ID,
-                        responseType = AuthorizeParams.RESPONSE_TYPE_CODE,
-                        redirectUri = TestData.googleHomeActionsRedirectWithClientIdUrl.value,
-                        userData = TestData.userData,
-                    )
                 ),
             ),
 
@@ -115,257 +92,6 @@ class ParamsValidatorTest : IntegrationTest() {
                     isPasswordValid = input.isPasswordValid,
                 )
                 paramsValidator.isRequestLoginParamsValid(input.requestLoginParams)
-            }
-        )
-    }
-
-    @Test
-    fun `GIVEN testScenario WHEN isAuthorizeParamsValid THEN returns expected`() {
-        parameterizedTest(
-            // Null
-            testScenario(
-                input = AuthorizeParamsValidScenario(
-                    state = null,
-                    clientId = null,
-                    redirectUri = null,
-                    responseType = null,
-                ),
-                expected = InvalidAuthorizeParams,
-            ),
-
-            // ClientId
-            testScenario(
-                input = AuthorizeParamsValidScenario(
-                    clientId = TestData.SECRET_GOOGLE_HOME_ACTIONS_CLIENT_ID + '1',
-                ),
-                expected = InvalidAuthorizeParams,
-            ),
-
-            // RedirectUri
-            testScenario(
-                input = AuthorizeParamsValidScenario(
-                    redirectUri = TestData.googleHomeActionsRedirectWithClientIdUrl.value + "/o",
-                ),
-                expected = InvalidAuthorizeParams,
-            ),
-
-            // ResponseType
-            testScenario(
-                input = AuthorizeParamsValidScenario(
-                    responseType = "other",
-                ),
-                expected = InvalidAuthorizeParams,
-            ),
-
-            // State
-            testScenario(
-                input = AuthorizeParamsValidScenario(
-                    state = null,
-                ),
-                expected = InvalidAuthorizeParams,
-            ),
-
-            // Valid
-            testScenario(
-                input = AuthorizeParamsValidScenario(),
-                expected = ValidAuthorizeParams.WithUserData(
-                    state = TestData.state,
-                    clientId = TestData.SECRET_GOOGLE_HOME_ACTIONS_CLIENT_ID,
-                    redirectUri = TestData.googleHomeActionsRedirectWithClientIdUrl.value,
-                    responseType = AuthorizeParams.RESPONSE_TYPE_CODE,
-                    userData = TestData.userData,
-                ),
-            ),
-
-            block = { index, input ->
-                val paramsValidator = paramsValidator()
-                paramsValidator.isAuthorizeParamsValid(input.authorizeParams)
-            }
-        )
-    }
-
-    @Suppress("LongMethod")
-    @Test
-    fun `GIVEN testScenario WHEN isTokenExchangeParamValid THEN returns expected`() {
-        parameterizedTest(
-            // ClientId
-            testScenario(
-                input = TokenExchangeParamsValidScenario(clientId = null),
-                expected = InvalidTokenExchangeParams
-            ),
-            testScenario(
-                input = TokenExchangeParamsValidScenario(clientId = "theoneclick-325646"),
-                expected = InvalidTokenExchangeParams
-            ),
-
-            // ClientSecret
-            testScenario(
-                input = TokenExchangeParamsValidScenario(clientSecret = null),
-                expected = InvalidTokenExchangeParams
-            ),
-            testScenario(
-                input = TokenExchangeParamsValidScenario(clientSecret = "SuperStrongSecret!"),
-                expected = InvalidTokenExchangeParams,
-            ),
-
-            // AuthorizationCodeType
-            testScenario(
-                input = TokenExchangeParamsValidScenario(
-                    grantType = TokenExchangeParams.AUTHORIZATION_CODE_TYPE,
-                    userData = null,
-                ),
-                expected = InvalidTokenExchangeParams,
-            ),
-            testScenario(
-                input = TokenExchangeParamsValidScenario(
-                    grantType = TokenExchangeParams.AUTHORIZATION_CODE_TYPE,
-                    authorizationCode = null,
-                ),
-                expected = InvalidTokenExchangeParams,
-            ),
-            testScenario(
-                input = TokenExchangeParamsValidScenario(
-                    grantType = TokenExchangeParams.AUTHORIZATION_CODE_TYPE,
-                    authorizationCode = TestData.ENCRYPTED_TOKEN_VALUE + '=',
-                ),
-                expected = InvalidTokenExchangeParams,
-            ),
-            testScenario(
-                input = TokenExchangeParamsValidScenario(
-                    grantType = TokenExchangeParams.AUTHORIZATION_CODE_TYPE,
-                    currentTimeInMillis =
-                    TestData.CURRENT_TIME_IN_MILLIS + ParamsValidator.AUTHORIZATION_CODE_TOKEN_EXPIRATION_IN_MILLIS + 1,
-                ),
-                expected = InvalidTokenExchangeParams,
-            ),
-            testScenario(
-                input = TokenExchangeParamsValidScenario(
-                    grantType = TokenExchangeParams.AUTHORIZATION_CODE_TYPE,
-                    redirectUri = TestData.googleHomeActionsRedirectWithClientIdUrl.value + "/o"
-                ),
-                expected = InvalidTokenExchangeParams,
-            ),
-
-            // RefreshTokenType
-            testScenario(
-                input = TokenExchangeParamsValidScenario(
-                    grantType = TokenExchangeParams.REFRESH_TOKEN_TYPE,
-                    userData = null,
-                ),
-                expected = InvalidTokenExchangeParams,
-            ),
-            testScenario(
-                input = TokenExchangeParamsValidScenario(
-                    grantType = TokenExchangeParams.REFRESH_TOKEN_TYPE,
-                    refreshToken = null,
-                ),
-                expected = InvalidTokenExchangeParams,
-            ),
-            testScenario(
-                input = TokenExchangeParamsValidScenario(
-                    grantType = TokenExchangeParams.REFRESH_TOKEN_TYPE,
-                    refreshToken = TestData.ENCRYPTED_TOKEN_VALUE + '=',
-                ),
-                expected = InvalidTokenExchangeParams,
-            ),
-
-            // Valid
-            testScenario(
-                input = TokenExchangeParamsValidScenario(grantType = TokenExchangeParams.AUTHORIZATION_CODE_TYPE),
-                expected = TokenExchangeValidationResult.ValidAuthorizationCodeType(TestData.userData),
-            ),
-            testScenario(
-                input = TokenExchangeParamsValidScenario(grantType = TokenExchangeParams.REFRESH_TOKEN_TYPE),
-                expected = TokenExchangeValidationResult.ValidRefreshTokenType(TestData.userData),
-            ),
-
-            block = { index, input ->
-                val paramsValidator = paramsValidator(
-                    currentTimeInMillis = input.currentTimeInMillis,
-                    userData = input.userData,
-                )
-                paramsValidator.isTokenExchangeParamsValid(input.tokenExchangeParams)
-            }
-        )
-    }
-
-    @Test
-    fun `GIVEN testScenario WHEN isAccessTokenValid THEN returns expected`() {
-        parameterizedTest(
-            // Invalid
-            testScenario(
-                input = AccessTokenValidScenario(
-                    userData = null,
-                ),
-                expected = InvalidAccessToken,
-            ),
-            testScenario(
-                input = AccessTokenValidScenario(
-                    userData = TestData.userData.copy(
-                        accessToken = null,
-                    ),
-                ),
-                expected = InvalidAccessToken,
-            ),
-            testScenario(
-                input = AccessTokenValidScenario(
-                    currentTimeInMillis =
-                    TestData.CURRENT_TIME_IN_MILLIS + ParamsValidator.ACCESS_TOKEN_EXPIRATION_IN_MILLIS + 1
-                ),
-                expected = InvalidAccessToken,
-            ),
-            testScenario(
-                input = AccessTokenValidScenario(
-                    accessToken = TestData.ENCRYPTED_TOKEN_VALUE + '='
-                ),
-                expected = InvalidAccessToken,
-            ),
-
-            // Valid
-            testScenario(
-                input = AccessTokenValidScenario(),
-                expected = ValidAccessToken(TestData.userData),
-            ),
-
-            block = { index, input ->
-                val paramsValidator = paramsValidator(
-                    currentTimeInMillis = input.currentTimeInMillis,
-                    userData = input.userData,
-                )
-                paramsValidator.isAccessTokenValid(input.accessToken)
-            }
-        )
-    }
-
-    @Test
-    fun `GIVEN fulfillmentRequest WHEN isFulfillmentRequestValid THEN returns expected`() {
-        parameterizedTest(
-            // Invalid
-            testScenario(
-                input = FulfillmentRequest(
-                    requestId = "",
-                    inputsStrings = listOf(InputString(FulfillmentRequest.Input.Intent.SYNC_INTENT)),
-                ),
-                expected = FulfillmentRequestValidationResult.InvalidFulfillmentRequest,
-            ),
-
-            // Valid
-            testScenario(
-                input = FulfillmentRequest(
-                    requestId = "1",
-                    inputsStrings = listOf(
-                        InputString(FulfillmentRequest.Input.Intent.SYNC_INTENT),
-                    ),
-                ),
-                expected = FulfillmentRequestValidationResult.ValidFulfillmentRequest.Sync(
-                    requestId = "1",
-                    userData = TestData.userData,
-                )
-            ),
-
-            block = { index, input ->
-                val paramsValidator = paramsValidator()
-                paramsValidator.isFulfillmentRequestValid(input)
             }
         )
     }
@@ -391,7 +117,7 @@ class ParamsValidatorTest : IntegrationTest() {
             testScenario(
                 input = UserSessionValidScenario(
                     currentTimeInMillis =
-                    TestData.CURRENT_TIME_IN_MILLIS + ParamsValidator.USER_SESSION_TOKEN_EXPIRATION_IN_MILLIS + 1
+                        TestData.CURRENT_TIME_IN_MILLIS + ParamsValidator.USER_SESSION_TOKEN_EXPIRATION_IN_MILLIS + 1
                 ),
                 expected = false,
             ),
@@ -617,7 +343,6 @@ class ParamsValidatorTest : IntegrationTest() {
             isPasswordValid: Boolean = false,
         ): ParamsValidator =
             ParamsValidator(
-                environment = TestData.environment,
                 timeProvider = FakeTimeProvider(currentTimeInMillis),
                 securityUtils = FakeSecurityUtils(
                     verifyPasswordResult = isPasswordValid,
@@ -628,7 +353,6 @@ class ParamsValidatorTest : IntegrationTest() {
         data class RequestLoginParamsScenario(
             private val username: String = TestData.USERNAME,
             private val password: String = TestData.RAW_PASSWORD,
-            private val authorizeParams: AuthorizeParams? = TestData.validAuthorizeParams,
 
             val userData: UserData? = TestData.userData,
             val isPasswordValid: Boolean = false,
@@ -636,54 +360,8 @@ class ParamsValidatorTest : IntegrationTest() {
             val requestLoginParams = RequestLoginParams(
                 username = username,
                 password = password,
-                authorizeParams = authorizeParams,
             )
         }
-
-        data class AuthorizeParamsValidScenario(
-            private val state: String? = TestData.state,
-            private val clientId: String? = TestData.SECRET_GOOGLE_HOME_ACTIONS_CLIENT_ID,
-            private val redirectUri: String? = TestData.googleHomeActionsRedirectWithClientIdUrl.value,
-            private val responseType: String? = AuthorizeParams.RESPONSE_TYPE_CODE,
-        ) {
-            val authorizeParams: AuthorizeParams? =
-                ifNotNull(state, clientId, redirectUri, responseType) { state, clientId, redirectUri, responseType ->
-                    AuthorizeParams(
-                        state = state,
-                        clientId = clientId,
-                        redirectUri = redirectUri,
-                        responseType = responseType,
-                    )
-                }
-        }
-
-        data class TokenExchangeParamsValidScenario(
-            private val clientId: String? = TestData.SECRET_GOOGLE_HOME_ACTIONS_CLIENT_ID,
-            private val clientSecret: String? = TestData.SECRET_GOOGLE_HOME_ACTIONS_SECRET,
-            private val grantType: String? = TokenExchangeParams.AUTHORIZATION_CODE_TYPE,
-            private val authorizationCode: String? = TestData.ENCRYPTED_TOKEN_VALUE,
-            private val refreshToken: String? = TestData.ENCRYPTED_TOKEN_VALUE,
-            private val redirectUri: String? = TestData.googleHomeActionsRedirectWithClientIdUrl.value,
-
-            val currentTimeInMillis: Long = TestData.CURRENT_TIME_IN_MILLIS,
-            val userData: UserData? = TestData.userData,
-        ) {
-            val tokenExchangeParams = TokenExchangeParams(
-                clientId = clientId,
-                clientSecret = clientSecret,
-                grantType = grantType,
-                authorizationCode = authorizationCode,
-                refreshToken = refreshToken,
-                redirectUri = redirectUri,
-            )
-        }
-
-        data class AccessTokenValidScenario(
-            val accessToken: String = TestData.ENCRYPTED_TOKEN_VALUE,
-
-            val currentTimeInMillis: Long = TestData.CURRENT_TIME_IN_MILLIS,
-            val userData: UserData? = TestData.userData,
-        )
 
         data class UserSessionValidScenario(
             private val userSessionToken: String = TestData.ENCRYPTED_TOKEN_VALUE,

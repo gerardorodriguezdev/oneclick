@@ -4,13 +4,11 @@ import io.ktor.client.call.*
 import io.ktor.http.*
 import org.koin.test.KoinTest
 import org.koin.test.inject
+import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.models.HashedPassword
 import theoneclick.server.core.models.UserData
-import theoneclick.server.core.dataSources.UserDataSource
-import theoneclick.server.core.endpoints.authorize.AuthorizeParams
 import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
-import theoneclick.server.core.testing.helpers.TestEndpointsHelper.authorizeUrlString
 import theoneclick.server.core.testing.helpers.TestEndpointsHelper.requestLogin
 import theoneclick.shared.core.models.entities.Uuid
 import theoneclick.shared.core.models.responses.RequestLoginResponse
@@ -38,7 +36,6 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
                     val response = client.requestLogin(
                         username = input.username,
                         password = input.password,
-                        authorizeParams = input.authorizeParams,
                     )
 
                     assertEquals(
@@ -67,28 +64,6 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
             val userSessionCookie = response.userSessionCookie
             assertEquals(TestData.ENCRYPTED_USER_SESSION_DATA_STRING, userSessionCookie)
 
-            assertEquals(expected = expectedUserData, actual = repository.userData())
-        }
-    }
-
-    @Test
-    fun `GIVEN valid login data with authorizeParams WHEN request login THEN returns valid session`() {
-        val repository: UserDataSource by inject()
-
-        testApplication {
-            val response =
-                client.requestLogin(authorizeParams = TestData.validAuthorizeParams)
-
-            assertEquals(expected = HttpStatusCode.OK, actual = response.status)
-            assertEquals<RequestLoginResponse>(
-                expected = RequestLoginResponse.ExternalRedirect(urlString = expectedAuthorizeUrl),
-                actual = response.body(),
-            )
-
-            assertEquals(
-                expected = TestData.ENCRYPTED_USER_SESSION_DATA_STRING,
-                actual = response.userSessionCookie
-            )
             assertEquals(expected = expectedUserData, actual = repository.userData())
         }
     }
@@ -131,38 +106,8 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
         }
     }
 
-    @Test
-    fun `GIVEN valid login data with authorize redirect WHEN request login THEN returns valid session`() {
-        val repository: UserDataSource by inject()
-
-        testApplication {
-            val response = client.requestLogin(
-                userData = savedUserData,
-                authorizeParams = TestData.validAuthorizeParams,
-            )
-
-            assertEquals(expected = HttpStatusCode.OK, actual = response.status)
-            assertEquals<RequestLoginResponse>(
-                expected = RequestLoginResponse.ExternalRedirect(urlString = expectedAuthorizeUrl),
-                actual = response.body(),
-            )
-
-            assertEquals(
-                expected = TestData.ENCRYPTED_USER_SESSION_DATA_STRING,
-                actual = response.userSessionCookie
-            )
-            assertEquals(expected = expectedUserData, actual = repository.userData())
-        }
-    }
-
     private companion object {
-        val expectedAuthorizeUrl = authorizeUrlString()
-
         val expectedUserData = TestData.userData.copy(
-            authorizationCode = null,
-            state = null,
-            accessToken = null,
-            refreshToken = null,
             devices = emptyList(),
         )
 
@@ -175,7 +120,6 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
         data class UserDataEmptyTestsScenario(
             val username: String = TestData.USERNAME,
             val password: String = TestData.RAW_PASSWORD,
-            val authorizeParams: AuthorizeParams? = null,
         )
     }
 }

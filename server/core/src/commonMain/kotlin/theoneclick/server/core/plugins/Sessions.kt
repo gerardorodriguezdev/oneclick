@@ -6,10 +6,8 @@ import io.ktor.util.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import theoneclick.server.core.models.UserSession
-import theoneclick.server.core.endpoints.authorize.AuthorizeParams
 import theoneclick.server.core.platform.Environment
 import theoneclick.server.core.platform.IvGenerator
-import theoneclick.server.core.plugins.authentication.AuthenticationConstants.AUTHORIZE_REDIRECT_SESSION
 import theoneclick.server.core.plugins.authentication.AuthenticationConstants.COOKIE_SESSION_DURATION_IN_SECONDS
 import theoneclick.server.core.plugins.authentication.AuthenticationConstants.USER_SESSION_NAME
 import theoneclick.server.core.plugins.koin.inject
@@ -21,15 +19,6 @@ fun Application.configureSessions() {
 
     install(Sessions) {
         cookie<UserSession>(USER_SESSION_NAME) {
-            cookie.path = "/"
-            cookie.maxAgeInSeconds = COOKIE_SESSION_DURATION_IN_SECONDS
-            cookie.secure = true
-            cookie.httpOnly = true
-            serializer = sessionSerializer()
-            transform(sessionTransformer)
-        }
-
-        cookie<AuthorizeParams>(AUTHORIZE_REDIRECT_SESSION) {
             cookie.path = "/"
             cookie.maxAgeInSeconds = COOKIE_SESSION_DURATION_IN_SECONDS
             cookie.secure = true

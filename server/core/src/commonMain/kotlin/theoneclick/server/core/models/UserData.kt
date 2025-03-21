@@ -11,11 +11,6 @@ data class UserData(
     val hashedPassword: HashedPassword,
     val sessionToken: EncryptedToken? = null,
 
-    val authorizationCode: EncryptedToken? = null,
-    val state: String? = null,
-    val accessToken: EncryptedToken? = null,
-    val refreshToken: EncryptedToken? = null,
-
     val devices: List<Device> = emptyList(),
 ) {
     fun hasDevice(deviceName: String): Boolean =
