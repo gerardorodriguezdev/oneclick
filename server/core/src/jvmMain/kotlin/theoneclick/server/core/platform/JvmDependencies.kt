@@ -1,6 +1,6 @@
 package theoneclick.server.core.platform
 
-import theoneclick.server.core.data.models.Path
+import theoneclick.server.core.models.Path
 import theoneclick.server.core.platform.base.Dependencies
 import theoneclick.shared.timeProvider.SystemTimeProvider
 import theoneclick.shared.timeProvider.TimeProvider

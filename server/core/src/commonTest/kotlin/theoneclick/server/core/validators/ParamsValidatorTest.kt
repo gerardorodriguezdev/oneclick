@@ -1,15 +1,15 @@
-package theoneclick.server.core.data.validators
+package theoneclick.server.core.validators
 
-import theoneclick.server.core.data.models.UserData
-import theoneclick.server.core.data.models.UserSession
-import theoneclick.server.core.data.validators.ParamsValidator.*
-import theoneclick.server.core.data.validators.ParamsValidator.AccessTokenValidationResult.InvalidAccessToken
-import theoneclick.server.core.data.validators.ParamsValidator.AccessTokenValidationResult.ValidAccessToken
-import theoneclick.server.core.data.validators.ParamsValidator.AuthorizeValidationResult.InvalidAuthorizeParams
-import theoneclick.server.core.data.validators.ParamsValidator.AuthorizeValidationResult.ValidAuthorizeParams
-import theoneclick.server.core.data.validators.ParamsValidator.RequestLoginValidationResult.InvalidRequestLoginParams
-import theoneclick.server.core.data.validators.ParamsValidator.RequestLoginValidationResult.ValidRequestLogin
-import theoneclick.server.core.data.validators.ParamsValidator.TokenExchangeValidationResult.InvalidTokenExchangeParams
+import theoneclick.server.core.models.UserData
+import theoneclick.server.core.models.UserSession
+import theoneclick.server.core.validators.ParamsValidator.*
+import theoneclick.server.core.validators.ParamsValidator.AccessTokenValidationResult.InvalidAccessToken
+import theoneclick.server.core.validators.ParamsValidator.AccessTokenValidationResult.ValidAccessToken
+import theoneclick.server.core.validators.ParamsValidator.AuthorizeValidationResult.InvalidAuthorizeParams
+import theoneclick.server.core.validators.ParamsValidator.AuthorizeValidationResult.ValidAuthorizeParams
+import theoneclick.server.core.validators.ParamsValidator.RequestLoginValidationResult.InvalidRequestLoginParams
+import theoneclick.server.core.validators.ParamsValidator.RequestLoginValidationResult.ValidRequestLogin
+import theoneclick.server.core.validators.ParamsValidator.TokenExchangeValidationResult.InvalidTokenExchangeParams
 import theoneclick.server.core.endpoints.authorize.AuthorizeParams
 import theoneclick.server.core.endpoints.fulfillment.FulfillmentRequest
 import theoneclick.server.core.endpoints.fulfillment.FulfillmentRequest.InputString
@@ -19,6 +19,7 @@ import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.fakes.FakeSecurityUtils
 import theoneclick.server.core.testing.fakes.FakeUserDataSource
+import theoneclick.server.core.validators.ParamsValidator
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.DeviceType
 import theoneclick.shared.core.models.entities.Uuid

@@ -2,9 +2,9 @@
 
 package theoneclick.server.core.testing.fakes
 
-import theoneclick.server.core.data.models.EncryptedToken
-import theoneclick.server.core.data.models.HashedPassword
-import theoneclick.server.core.data.models.HashedPassword.Companion.create
+import theoneclick.server.core.models.EncryptedToken
+import theoneclick.server.core.models.HashedPassword
+import theoneclick.server.core.models.HashedPassword.Companion.create
 import theoneclick.server.core.platform.SecurityUtils
 import theoneclick.server.core.testing.TestData
 

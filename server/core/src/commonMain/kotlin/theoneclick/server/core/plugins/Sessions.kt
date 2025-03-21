@@ -5,7 +5,7 @@ import io.ktor.server.sessions.*
 import io.ktor.util.*
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import theoneclick.server.core.data.models.UserSession
+import theoneclick.server.core.models.UserSession
 import theoneclick.server.core.endpoints.authorize.AuthorizeParams
 import theoneclick.server.core.platform.Environment
 import theoneclick.server.core.platform.IvGenerator

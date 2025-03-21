@@ -2,7 +2,7 @@ package theoneclick.server.core.endpoints.tokenExchange
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import theoneclick.server.core.data.validators.ParamsValidator
+import theoneclick.server.core.validators.ParamsValidator
 
 @Serializable
 data class TokenExchangeResponse(

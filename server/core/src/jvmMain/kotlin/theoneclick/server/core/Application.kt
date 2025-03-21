@@ -1,6 +1,6 @@
 package theoneclick.server.core
 
-import theoneclick.server.core.data.models.Path
+import theoneclick.server.core.models.Path
 import theoneclick.server.core.entrypoint.server
 import theoneclick.server.core.platform.Environment
 import theoneclick.server.core.platform.JvmDependencies

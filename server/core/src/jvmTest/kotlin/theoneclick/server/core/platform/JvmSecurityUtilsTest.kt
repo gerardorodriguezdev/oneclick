@@ -1,6 +1,6 @@
 package theoneclick.server.core.platform
 
-import theoneclick.server.core.data.models.HashedPassword
+import theoneclick.server.core.models.HashedPassword
 import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.fakes.FakeJvmSecureRandomProvider

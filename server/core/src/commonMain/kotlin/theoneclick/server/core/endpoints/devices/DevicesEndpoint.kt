@@ -5,7 +5,6 @@ import io.ktor.server.routing.*
 import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.extensions.userSessionAuthentication
 import theoneclick.server.core.plugins.koin.inject
-import theoneclick.server.core.data.models.endpoints.ServerEndpoints
 import theoneclick.shared.core.models.endpoints.ClientEndpoints
 import theoneclick.shared.core.models.responses.DevicesResponse
 

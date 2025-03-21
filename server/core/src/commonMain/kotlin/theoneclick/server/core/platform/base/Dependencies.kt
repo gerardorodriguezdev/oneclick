@@ -5,7 +5,7 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
-import theoneclick.server.core.data.validators.ParamsValidator
+import theoneclick.server.core.validators.ParamsValidator
 import theoneclick.server.core.dataSources.FileSystemUserDataSource
 import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.platform.*

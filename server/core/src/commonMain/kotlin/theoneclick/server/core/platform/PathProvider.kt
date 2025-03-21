@@ -1,6 +1,6 @@
 package theoneclick.server.core.platform
 
-import theoneclick.server.core.data.models.Path
+import theoneclick.server.core.models.Path
 
 class PathProvider(
     private val directory: Path,

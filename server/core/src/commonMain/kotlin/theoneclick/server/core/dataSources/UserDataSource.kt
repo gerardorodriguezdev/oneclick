@@ -2,7 +2,7 @@ package theoneclick.server.core.dataSources
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import theoneclick.server.core.data.models.UserData
+import theoneclick.server.core.models.UserData
 import theoneclick.server.core.dataSources.UserDataSource.Companion.FILE_NAME
 import theoneclick.server.core.platform.FileSystem
 import theoneclick.server.core.platform.PathProvider

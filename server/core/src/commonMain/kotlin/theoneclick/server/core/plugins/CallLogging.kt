@@ -7,7 +7,7 @@ import io.ktor.server.request.*
 import io.ktor.util.logging.*
 import org.slf4j.event.Level
 import theoneclick.server.core.plugins.koin.inject
-import theoneclick.server.core.data.models.endpoints.ServerEndpoints
+import theoneclick.server.core.models.endpoints.ServerEndpoints
 import theoneclick.shared.timeProvider.TimeProvider
 
 fun Application.configureCallLogging() {

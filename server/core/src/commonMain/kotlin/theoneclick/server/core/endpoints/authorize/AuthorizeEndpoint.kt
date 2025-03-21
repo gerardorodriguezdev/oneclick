@@ -3,16 +3,16 @@ package theoneclick.server.core.endpoints.authorize
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import theoneclick.server.core.data.models.GoogleHomeActionsRedirectUrl
-import theoneclick.server.core.data.validators.ParamsValidator
-import theoneclick.server.core.data.validators.ParamsValidator.AuthorizeValidationResult.InvalidAuthorizeParams
-import theoneclick.server.core.data.validators.ParamsValidator.AuthorizeValidationResult.ValidAuthorizeParams
+import theoneclick.server.core.models.GoogleHomeActionsRedirectUrl
+import theoneclick.server.core.validators.ParamsValidator
+import theoneclick.server.core.validators.ParamsValidator.AuthorizeValidationResult.InvalidAuthorizeParams
+import theoneclick.server.core.validators.ParamsValidator.AuthorizeValidationResult.ValidAuthorizeParams
 import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.extensions.*
 import theoneclick.server.core.extensions.responseType
 import theoneclick.server.core.platform.SecurityUtils
 import theoneclick.server.core.plugins.koin.inject
-import theoneclick.server.core.data.models.endpoints.ServerEndpoints
+import theoneclick.server.core.models.endpoints.ServerEndpoints
 
 fun Routing.authorizeEndpoint() {
     val securityUtils: SecurityUtils by inject()

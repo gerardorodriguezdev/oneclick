@@ -5,9 +5,9 @@ import io.ktor.client.request.*
 import io.ktor.client.request.forms.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import theoneclick.server.core.data.models.UserData
-import theoneclick.server.core.data.models.UserSession
-import theoneclick.server.core.data.models.endpoints.ServerEndpoints
+import theoneclick.server.core.models.UserData
+import theoneclick.server.core.models.UserSession
+import theoneclick.server.core.models.endpoints.ServerEndpoints
 import theoneclick.server.core.endpoints.authorize.AuthorizeParams
 import theoneclick.server.core.endpoints.authorize.AuthorizeParams.Companion.RESPONSE_TYPE_CODE
 import theoneclick.server.core.endpoints.fulfillment.FulfillmentRequest

@@ -1,4 +1,4 @@
-package theoneclick.server.core.data.models
+package theoneclick.server.core.models
 
 import kotlinx.serialization.Serializable
 

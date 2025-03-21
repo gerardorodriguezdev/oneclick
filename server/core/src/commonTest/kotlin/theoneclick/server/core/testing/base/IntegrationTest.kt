@@ -8,7 +8,7 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.testing.*
-import theoneclick.server.core.data.models.Path
+import theoneclick.server.core.models.Path
 import theoneclick.server.core.entrypoint.configureModules
 import theoneclick.server.core.platform.Environment
 import theoneclick.server.core.platform.fileSystem

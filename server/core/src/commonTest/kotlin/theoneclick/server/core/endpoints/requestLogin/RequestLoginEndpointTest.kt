@@ -4,8 +4,8 @@ import io.ktor.client.call.*
 import io.ktor.http.*
 import org.koin.test.KoinTest
 import org.koin.test.inject
-import theoneclick.server.core.data.models.HashedPassword
-import theoneclick.server.core.data.models.UserData
+import theoneclick.server.core.models.HashedPassword
+import theoneclick.server.core.models.UserData
 import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.endpoints.authorize.AuthorizeParams
 import theoneclick.server.core.testing.TestData

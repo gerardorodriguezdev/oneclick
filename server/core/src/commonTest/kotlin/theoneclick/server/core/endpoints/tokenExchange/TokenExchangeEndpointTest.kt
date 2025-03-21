@@ -4,7 +4,7 @@ import io.ktor.client.call.*
 import io.ktor.http.*
 import org.koin.test.KoinTest
 import org.koin.test.inject
-import theoneclick.server.core.data.validators.ParamsValidator
+import theoneclick.server.core.validators.ParamsValidator
 import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.TestData.googleHomeActionsRedirectWithClientIdUrl

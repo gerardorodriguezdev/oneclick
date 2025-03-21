@@ -5,19 +5,19 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.sessions.*
-import theoneclick.server.core.data.models.UserSession
-import theoneclick.server.core.data.validators.ParamsValidator
-import theoneclick.server.core.data.validators.ParamsValidator.AccessTokenValidationResult.InvalidAccessToken
-import theoneclick.server.core.data.validators.ParamsValidator.AccessTokenValidationResult.ValidAccessToken
-import theoneclick.server.core.data.validators.ParamsValidator.AuthorizeValidationResult.InvalidAuthorizeParams
-import theoneclick.server.core.data.validators.ParamsValidator.AuthorizeValidationResult.ValidAuthorizeParams
+import theoneclick.server.core.models.UserSession
+import theoneclick.server.core.validators.ParamsValidator
+import theoneclick.server.core.validators.ParamsValidator.AccessTokenValidationResult.InvalidAccessToken
+import theoneclick.server.core.validators.ParamsValidator.AccessTokenValidationResult.ValidAccessToken
+import theoneclick.server.core.validators.ParamsValidator.AuthorizeValidationResult.InvalidAuthorizeParams
+import theoneclick.server.core.validators.ParamsValidator.AuthorizeValidationResult.ValidAuthorizeParams
 import theoneclick.server.core.endpoints.authorize.AuthorizeParams
 import theoneclick.server.core.extensions.clientId
 import theoneclick.server.core.extensions.redirectUri
 import theoneclick.server.core.extensions.responseType
 import theoneclick.server.core.extensions.state
 import theoneclick.server.core.plugins.koin.inject
-import theoneclick.server.core.data.models.endpoints.ServerEndpoints
+import theoneclick.server.core.models.endpoints.ServerEndpoints
 import theoneclick.shared.core.extensions.ifNotNull
 
 fun Application.configureAuthentication() {

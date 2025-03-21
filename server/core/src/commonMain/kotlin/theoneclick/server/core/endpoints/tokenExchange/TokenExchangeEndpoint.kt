@@ -4,15 +4,15 @@ import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import theoneclick.server.core.data.models.UserData
-import theoneclick.server.core.data.validators.ParamsValidator
-import theoneclick.server.core.data.validators.ParamsValidator.TokenExchangeValidationResult
-import theoneclick.server.core.data.validators.ParamsValidator.TokenExchangeValidationResult.*
+import theoneclick.server.core.models.UserData
+import theoneclick.server.core.validators.ParamsValidator
+import theoneclick.server.core.validators.ParamsValidator.TokenExchangeValidationResult
+import theoneclick.server.core.validators.ParamsValidator.TokenExchangeValidationResult.*
 import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.extensions.*
 import theoneclick.server.core.platform.SecurityUtils
 import theoneclick.server.core.plugins.koin.inject
-import theoneclick.server.core.data.models.endpoints.ServerEndpoints
+import theoneclick.server.core.models.endpoints.ServerEndpoints
 
 fun Routing.tokenExchangeEndpoint() {
     val userDataSource: UserDataSource by inject()

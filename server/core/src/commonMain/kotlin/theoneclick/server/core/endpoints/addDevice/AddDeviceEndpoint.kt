@@ -3,9 +3,9 @@ package theoneclick.server.core.endpoints.addDevice
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import theoneclick.server.core.data.validators.ParamsValidator
-import theoneclick.server.core.data.validators.ParamsValidator.AddDeviceRequestValidationResult.InvalidDevice
-import theoneclick.server.core.data.validators.ParamsValidator.AddDeviceRequestValidationResult.ValidDevice
+import theoneclick.server.core.validators.ParamsValidator
+import theoneclick.server.core.validators.ParamsValidator.AddDeviceRequestValidationResult.InvalidDevice
+import theoneclick.server.core.validators.ParamsValidator.AddDeviceRequestValidationResult.ValidDevice
 import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.extensions.post
 import theoneclick.server.core.extensions.userSessionAuthentication

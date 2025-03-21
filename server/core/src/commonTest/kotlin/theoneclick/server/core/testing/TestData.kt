@@ -2,9 +2,13 @@ package theoneclick.server.core.testing
 
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import theoneclick.server.core.data.models.*
 import theoneclick.server.core.endpoints.authorize.AuthorizeParams
 import theoneclick.server.core.endpoints.authorize.AuthorizeParams.Companion.RESPONSE_TYPE_CODE
+import theoneclick.server.core.models.EncryptedToken
+import theoneclick.server.core.models.GoogleHomeActionsRedirectUrl
+import theoneclick.server.core.models.HashedPassword
+import theoneclick.server.core.models.UserData
+import theoneclick.server.core.models.UserSession
 import theoneclick.server.core.platform.Environment
 import theoneclick.shared.core.models.entities.Device.Blind
 import theoneclick.shared.core.models.entities.Uuid

@@ -3,7 +3,7 @@ package theoneclick.server.core.endpoints
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import theoneclick.server.core.data.models.UserSession
+import theoneclick.server.core.models.UserSession
 import theoneclick.shared.core.models.endpoints.ClientEndpoints
 import theoneclick.shared.core.models.responses.UserLoggedResponse
 

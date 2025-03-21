@@ -2,7 +2,7 @@ package theoneclick.server.core.platform
 
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.verify.verify
-import theoneclick.server.core.data.models.Path
+import theoneclick.server.core.models.Path
 import theoneclick.server.core.platform.base.buildModule
 import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest

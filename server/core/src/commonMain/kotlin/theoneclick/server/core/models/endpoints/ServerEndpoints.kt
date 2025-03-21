@@ -1,4 +1,4 @@
-package theoneclick.server.core.data.models.endpoints
+package theoneclick.server.core.models.endpoints
 
 import theoneclick.shared.core.models.endpoints.base.Endpoint
 

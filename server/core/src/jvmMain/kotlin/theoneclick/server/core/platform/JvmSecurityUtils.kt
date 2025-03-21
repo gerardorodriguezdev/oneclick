@@ -2,16 +2,16 @@ package theoneclick.server.core.platform
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import io.ktor.util.*
-import theoneclick.server.core.data.models.EncryptedToken
-import theoneclick.server.core.data.models.HashedPassword
+import theoneclick.server.core.models.EncryptedToken
+import theoneclick.server.core.models.HashedPassword
 import theoneclick.shared.timeProvider.TimeProvider
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import kotlin.text.toCharArray
-import theoneclick.server.core.data.models.EncryptedToken.Companion.create as createEncryptedToken
-import theoneclick.server.core.data.models.HashedPassword.Companion.create as createHashedPassword
+import theoneclick.server.core.models.EncryptedToken.Companion.create as createEncryptedToken
+import theoneclick.server.core.models.HashedPassword.Companion.create as createHashedPassword
 
 class JvmSecurityUtils(
     private val secretEncryptionKey: String,
