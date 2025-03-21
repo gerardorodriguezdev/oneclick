@@ -7,6 +7,7 @@ import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.helpers.TestEndpointsHelper.requestAddDevice
+import theoneclick.shared.core.extensions.rawCurrentUrl
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.Uuid
 import theoneclick.shared.core.models.routes.AppRoute

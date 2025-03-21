@@ -49,7 +49,7 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
     }
 
     @Test
-    fun `GIVEN loginData without authorizeParams and userDataEmpty WHEN requestLogin THEN returns valid session`() {
+    fun `GIVEN loginData without userDataEmpty WHEN requestLogin THEN returns valid session`() {
         val repository: UserDataSource by inject()
 
         testApplication {
@@ -88,7 +88,7 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
     }
 
     @Test
-    fun `GIVEN loginData without authorizeParams and userDataSaved WHEN requestLogin THEN returns valid session`() {
+    fun `GIVEN loginData without userDataSaved WHEN requestLogin THEN returns valid session`() {
         val repository: UserDataSource by inject()
 
         testApplication {

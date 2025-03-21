@@ -24,7 +24,7 @@ private fun AuthenticationConfig.registerSessionAuthentication(paramsValidator: 
         }
 
         challenge {
-            call.respondRedirect(AppRoute.Login.path) //TODO: How to handle?
+            call.respondRedirect(AppRoute.Login.path)
         }
     }
 }

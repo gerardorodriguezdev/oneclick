@@ -23,6 +23,7 @@ kotlin {
             21 -> JvmTarget.JVM_21
             else -> throw IllegalStateException("Version $this not supported")
         }
+        freeCompilerArgs.add("-Xwhen-guards")
     }
 }
 

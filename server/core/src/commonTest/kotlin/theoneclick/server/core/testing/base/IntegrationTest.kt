@@ -78,8 +78,6 @@ abstract class IntegrationTest {
                 val cookies = parseClientCookiesHeader(cookieHeader)
                 return cookies[AuthenticationConstants.USER_SESSION]
             }
-
-        val HttpResponse.rawCurrentUrl: String? get() = headers[HttpHeaders.Location]
     }
 }
 

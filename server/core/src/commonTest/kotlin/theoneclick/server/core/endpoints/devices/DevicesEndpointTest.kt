@@ -6,6 +6,7 @@ import org.koin.test.KoinTest
 import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.helpers.TestEndpointsHelper.requestDevices
+import theoneclick.shared.core.extensions.rawCurrentUrl
 import theoneclick.shared.core.models.responses.DevicesResponse
 import theoneclick.shared.core.models.routes.AppRoute
 import kotlin.test.Test
