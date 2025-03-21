@@ -5,9 +5,6 @@ import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import theoneclick.shared.core.models.endpoints.base.Endpoint
 
-val HttpHeaders.ContentSecurityPolicy: String
-    get() = "Content-Security-Policy"
-
 fun <Params, ValidationResult> Routing.get(
     endpoint: Endpoint,
     paramsParsing: suspend RoutingContext.() -> Params,

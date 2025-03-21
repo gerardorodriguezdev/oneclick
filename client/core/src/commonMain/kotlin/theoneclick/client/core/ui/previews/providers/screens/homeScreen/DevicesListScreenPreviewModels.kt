@@ -22,7 +22,6 @@ class DevicesListScreenPreviewModels : PreviewModelProvider<DevicesListState> {
     )
 
     companion object {
-        val UUID = Uuid("1")
         const val DEVICE_NAME = "Device name"
         const val ROOM_NAME = "Room name"
 

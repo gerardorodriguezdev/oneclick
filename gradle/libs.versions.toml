@@ -13,12 +13,12 @@ jvm-bcrypt = "0.10.2"
 jvm-logback = "1.5.16"
 jvm-test-rebugger = "1.0.0-rc03"
 kmp-kotlin-api = "2.1.10"
-kmp-atomicfu = "0.26.1"
+kmp-atomicfu = "0.27.0"
 kmp-compose = "1.7.3"
 kmp-coroutines = "1.10.1"
 kmp-koin = "4.0.0"
 kmp-date-time = "0.6.1"
-kmp-ktor = "3.0.0"
+kmp-ktor = "3.1.1"
 kmp-navigation = "2.8.0-alpha10"
 kmp-viewModel = "2.8.2"
 kmp-test-turbine = "1.1.0"
@@ -50,7 +50,6 @@ jvm-ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = 
 jvm-ktor-server-auth = { module = "io.ktor:ktor-server-auth", version.ref = "kmp-ktor" }
 jvm-logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "jvm-logback" }
 jvm-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kmp-kotlin-api" }
-jvm-test-rebugger = { module = "io.github.theapache64:rebugger", version.ref = "jvm-test-rebugger" }
 kmp-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kmp-coroutines" }
 kmp-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kmp-atomicfu" }
 kmp-koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "kmp-koin" }

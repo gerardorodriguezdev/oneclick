@@ -1,6 +1,5 @@
 package theoneclick.shared.core.validators.base
 
-import theoneclick.shared.core.validators.base.StringsValidator
 import theoneclick.shared.testing.extensions.generateLongString
 import theoneclick.shared.testing.extensions.parameterizedTest
 import theoneclick.shared.testing.models.testScenario

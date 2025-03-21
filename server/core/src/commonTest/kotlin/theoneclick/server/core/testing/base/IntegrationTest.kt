@@ -8,8 +8,8 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.testing.*
-import theoneclick.server.core.models.Path
 import theoneclick.server.core.entrypoint.configureModules
+import theoneclick.server.core.models.Path
 import theoneclick.server.core.platform.Environment
 import theoneclick.server.core.platform.fileSystem
 import theoneclick.server.core.plugins.authentication.AuthenticationConstants
@@ -41,7 +41,7 @@ abstract class IntegrationTest {
         ktorTestApplication {
             application {
                 configureModules(
-                    testDependencies(environment, timeProvider, tempDirectory)
+                    testDependencies(environment = environment, timeProvider = timeProvider, directory = tempDirectory)
                 )
             }
 
@@ -78,8 +78,6 @@ abstract class IntegrationTest {
                 val cookies = parseClientCookiesHeader(cookieHeader)
                 return cookies[AuthenticationConstants.USER_SESSION_NAME]
             }
-
-        val HttpResponse.rawCurrentUrl: String? get() = headers[HttpHeaders.Location]
     }
 }
 
