@@ -17,7 +17,7 @@ import theoneclick.server.core.extensions.redirectUri
 import theoneclick.server.core.extensions.responseType
 import theoneclick.server.core.extensions.state
 import theoneclick.server.core.plugins.koin.inject
-import theoneclick.shared.core.dataSources.models.endpoints.Endpoint
+import theoneclick.shared.core.models.endpoints.Endpoint
 import theoneclick.shared.core.extensions.ifNotNull
 
 fun Application.configureAuthentication() {

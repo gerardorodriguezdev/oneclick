@@ -5,8 +5,8 @@ import theoneclick.client.core.ui.previews.providers.base.PreviewModelProvider
 import theoneclick.client.core.ui.previews.providers.base.darkThemeCompactPreviewModel
 import theoneclick.client.core.ui.previews.providers.base.lightThemeCompactPreviewModel
 import theoneclick.client.core.ui.states.homeScreen.DevicesListState
-import theoneclick.shared.core.dataSources.models.entities.Device
-import theoneclick.shared.core.dataSources.models.entities.Uuid
+import theoneclick.shared.core.models.entities.Device
+import theoneclick.shared.core.models.entities.Uuid
 
 class DevicesListScreenPreviewModels : PreviewModelProvider<DevicesListState> {
     override val values = sequenceOf(

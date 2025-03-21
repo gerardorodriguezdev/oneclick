@@ -2,12 +2,12 @@ package theoneclick.client.core.testing.fakes
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import theoneclick.shared.core.dataSources.LoggedDataSource
-import theoneclick.shared.core.dataSources.models.entities.Device
-import theoneclick.shared.core.dataSources.models.entities.DeviceType
-import theoneclick.shared.core.dataSources.models.results.AddDeviceResult
-import theoneclick.shared.core.dataSources.models.results.DevicesResult
-import theoneclick.shared.core.dataSources.models.results.UpdateDeviceResult
+import theoneclick.client.core.dataSources.LoggedDataSource
+import theoneclick.shared.core.models.entities.Device
+import theoneclick.shared.core.models.entities.DeviceType
+import theoneclick.shared.core.models.results.AddDeviceResult
+import theoneclick.shared.core.models.results.DevicesResult
+import theoneclick.shared.core.models.results.UpdateDeviceResult
 
 class FakeLoggedDataSource(
     var addDeviceResultFlow: Flow<AddDeviceResult> = flowOf(),

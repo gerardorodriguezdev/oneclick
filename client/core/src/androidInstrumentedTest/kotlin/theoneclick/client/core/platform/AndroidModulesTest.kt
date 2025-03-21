@@ -7,8 +7,8 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.verify.verifyAll
 import theoneclick.client.core.entrypoint.AppEntrypoint
 import theoneclick.client.core.routes.NavigationController
-import theoneclick.shared.core.dataSources.AuthenticationDataSource
-import theoneclick.shared.core.routes.AppRoute
+import theoneclick.client.core.dataSources.AuthenticationDataSource
+import theoneclick.shared.core.models.routes.AppRoute
 
 class AndroidModulesTest {
 

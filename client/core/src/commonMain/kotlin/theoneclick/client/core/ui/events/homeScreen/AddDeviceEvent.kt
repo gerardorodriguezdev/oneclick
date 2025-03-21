@@ -1,6 +1,6 @@
 package theoneclick.client.core.ui.events.homeScreen
 
-import theoneclick.shared.core.dataSources.models.entities.DeviceType
+import theoneclick.shared.core.models.entities.DeviceType
 
 sealed interface AddDeviceEvent {
     data class DeviceNameChanged(val newDeviceName: String) : AddDeviceEvent

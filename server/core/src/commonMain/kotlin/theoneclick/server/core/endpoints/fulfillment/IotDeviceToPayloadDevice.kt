@@ -2,7 +2,7 @@ package theoneclick.server.core.endpoints.fulfillment
 
 import theoneclick.server.core.endpoints.fulfillment.FulfillmentResponse.Payload
 import theoneclick.server.core.endpoints.fulfillment.FulfillmentResponse.Payload.GenericDevice.Attribute.RotationDegreesRange
-import theoneclick.shared.core.dataSources.models.entities.Device
+import theoneclick.shared.core.models.entities.Device
 
 fun Device.toDevice(): Payload.GenericDevice =
     when (this) {

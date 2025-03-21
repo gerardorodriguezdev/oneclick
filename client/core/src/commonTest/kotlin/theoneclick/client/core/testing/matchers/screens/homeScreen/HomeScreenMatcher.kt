@@ -2,7 +2,7 @@ package theoneclick.client.core.testing.matchers.screens.homeScreen
 
 import androidx.compose.ui.test.*
 import theoneclick.client.core.ui.screens.homeScreen.HomeScreenScaffoldTestTags.navigationItemTestTag
-import theoneclick.shared.core.routes.HomeRoute
+import theoneclick.shared.core.models.routes.HomeRoute
 
 @OptIn(ExperimentalTestApi::class)
 class HomeScreenMatcher(composeUiTest: ComposeUiTest) {

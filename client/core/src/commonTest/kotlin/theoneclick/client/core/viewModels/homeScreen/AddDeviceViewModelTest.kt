@@ -7,9 +7,9 @@ import theoneclick.client.core.testing.fakes.FakeLoggedDataSource
 import theoneclick.client.core.testing.fakes.FakeNavigationController
 import theoneclick.client.core.ui.events.homeScreen.AddDeviceEvent.*
 import theoneclick.client.core.ui.states.homeScreen.AddDeviceState
-import theoneclick.shared.core.dataSources.models.entities.DeviceType
-import theoneclick.shared.core.dataSources.models.results.AddDeviceResult
-import theoneclick.shared.core.routes.AppRoute
+import theoneclick.shared.core.models.entities.DeviceType
+import theoneclick.shared.core.models.results.AddDeviceResult
+import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.testing.dispatchers.CoroutinesTest
 import theoneclick.shared.testing.extensions.assertContains
 import theoneclick.shared.testing.extensions.assertIsEmpty

@@ -7,7 +7,7 @@ import theoneclick.client.core.testing.matchers.screens.homeScreen.AddDeviceScre
 import theoneclick.client.core.ui.events.homeScreen.AddDeviceEvent
 import theoneclick.client.core.ui.previews.providers.screens.homeScreen.AddDeviceScreenPreviewModels
 import theoneclick.client.core.ui.states.homeScreen.AddDeviceState
-import theoneclick.shared.core.dataSources.models.entities.DeviceType
+import theoneclick.shared.core.models.entities.DeviceType
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

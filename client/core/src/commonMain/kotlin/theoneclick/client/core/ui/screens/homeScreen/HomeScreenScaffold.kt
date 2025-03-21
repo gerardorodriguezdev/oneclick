@@ -21,9 +21,9 @@ import theoneclick.client.core.ui.previews.dev.MockContent
 import theoneclick.client.core.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.core.ui.previews.providers.base.PreviewModel
 import theoneclick.client.core.ui.screenProperties.LocalScreenProperties
-import theoneclick.shared.core.routes.HomeRoute
-import theoneclick.shared.core.routes.HomeRoute.AddDevice
-import theoneclick.shared.core.routes.HomeRoute.DevicesList
+import theoneclick.shared.core.models.routes.HomeRoute
+import theoneclick.shared.core.models.routes.HomeRoute.AddDevice
+import theoneclick.shared.core.models.routes.HomeRoute.DevicesList
 
 @Composable
 fun HomeScreenScaffold(

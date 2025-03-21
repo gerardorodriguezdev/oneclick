@@ -6,7 +6,7 @@ import org.koin.test.KoinTest
 import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.helpers.TestEndpointsHelper.requestDevices
-import theoneclick.shared.core.dataSources.models.responses.DevicesResponse
+import theoneclick.shared.core.models.responses.DevicesResponse
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

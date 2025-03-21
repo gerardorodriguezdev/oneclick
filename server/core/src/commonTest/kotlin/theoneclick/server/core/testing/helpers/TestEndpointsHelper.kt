@@ -12,12 +12,12 @@ import theoneclick.server.core.endpoints.authorize.AuthorizeParams.Companion.RES
 import theoneclick.server.core.endpoints.fulfillment.FulfillmentRequest
 import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.extensions.appendIfNotNull
-import theoneclick.shared.core.dataSources.models.endpoints.Endpoint
-import theoneclick.shared.core.dataSources.models.entities.Device
-import theoneclick.shared.core.dataSources.models.entities.DeviceType
-import theoneclick.shared.core.dataSources.models.requests.AddDeviceRequest
-import theoneclick.shared.core.dataSources.models.requests.RequestLoginRequest
-import theoneclick.shared.core.dataSources.models.requests.UpdateDeviceRequest
+import theoneclick.shared.core.models.endpoints.Endpoint
+import theoneclick.shared.core.models.entities.Device
+import theoneclick.shared.core.models.entities.DeviceType
+import theoneclick.shared.core.models.requests.AddDeviceRequest
+import theoneclick.shared.core.models.requests.RequestLoginRequest
+import theoneclick.shared.core.models.requests.UpdateDeviceRequest
 import theoneclick.shared.core.extensions.urlBuilder
 import theoneclick.shared.core.extensions.urlString
 

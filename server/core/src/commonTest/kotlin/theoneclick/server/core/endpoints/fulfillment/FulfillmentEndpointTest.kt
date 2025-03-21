@@ -10,7 +10,7 @@ import theoneclick.server.core.testing.TestData.ROOM
 import theoneclick.server.core.testing.TestData.UUID
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.helpers.TestEndpointsHelper.requestFulfillment
-import theoneclick.shared.core.dataSources.models.entities.Device
+import theoneclick.shared.core.models.entities.Device
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

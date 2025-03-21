@@ -2,7 +2,7 @@ package theoneclick.client.core.routes
 
 import app.cash.turbine.turbineScope
 import kotlinx.coroutines.test.runTest
-import theoneclick.shared.core.routes.AppRoute
+import theoneclick.shared.core.models.routes.AppRoute
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

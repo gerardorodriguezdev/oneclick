@@ -14,9 +14,9 @@ import theoneclick.client.core.routes.NavigationController.NavigationEvent.Exter
 import theoneclick.client.core.routes.NavigationController.NavigationEvent.Navigate
 import theoneclick.client.core.ui.events.LoginEvent
 import theoneclick.client.core.ui.states.LoginState
-import theoneclick.shared.core.dataSources.AuthenticationDataSource
-import theoneclick.shared.core.dataSources.models.results.RequestLoginResult
-import theoneclick.shared.core.routes.AppRoute
+import theoneclick.client.core.dataSources.AuthenticationDataSource
+import theoneclick.shared.core.models.results.RequestLoginResult
+import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.core.validators.passwordValidator
 import theoneclick.shared.core.validators.usernameValidator
 

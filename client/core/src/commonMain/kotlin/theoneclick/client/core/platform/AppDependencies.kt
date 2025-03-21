@@ -8,7 +8,7 @@ import org.koin.dsl.module
 import theoneclick.client.core.routes.NavigationController
 import theoneclick.client.core.routes.RealNavigationController
 import theoneclick.shared.core.extensions.defaultHttpClient
-import theoneclick.shared.core.idlingResources.IdlingResource
+import theoneclick.client.core.idlingResources.IdlingResource
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.timeProvider.TimeProvider
 

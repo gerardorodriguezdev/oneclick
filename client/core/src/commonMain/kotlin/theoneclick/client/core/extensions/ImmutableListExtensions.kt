@@ -2,7 +2,7 @@ package theoneclick.client.core.extensions
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
-import theoneclick.shared.core.dataSources.models.entities.Device
+import theoneclick.shared.core.models.entities.Device
 
 fun <T> ImmutableList<T>.updateItems(
     transform: (index: Int, currentItem: T) -> T

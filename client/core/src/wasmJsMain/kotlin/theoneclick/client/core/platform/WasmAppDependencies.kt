@@ -4,8 +4,8 @@ import io.ktor.client.engine.*
 import io.ktor.client.engine.js.*
 import theoneclick.client.core.buildkonfig.BuildKonfig
 import theoneclick.client.core.extensions.urlProtocol
-import theoneclick.shared.core.idlingResources.EmptyIdlingResource
-import theoneclick.shared.core.idlingResources.IdlingResource
+import theoneclick.client.core.idlingResources.EmptyIdlingResource
+import theoneclick.client.core.idlingResources.IdlingResource
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.dispatchers.platform.dispatchersProvider
 import theoneclick.shared.timeProvider.SystemTimeProvider

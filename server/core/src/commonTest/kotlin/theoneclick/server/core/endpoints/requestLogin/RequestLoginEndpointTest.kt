@@ -12,9 +12,9 @@ import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.helpers.TestEndpointsHelper.authorizeUrlString
 import theoneclick.server.core.testing.helpers.TestEndpointsHelper.requestLogin
-import theoneclick.shared.core.dataSources.models.entities.Uuid
-import theoneclick.shared.core.dataSources.models.responses.RequestLoginResponse
-import theoneclick.shared.core.routes.AppRoute
+import theoneclick.shared.core.models.entities.Uuid
+import theoneclick.shared.core.models.responses.RequestLoginResponse
+import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.testing.extensions.runOnlyParameterizedTest
 import kotlin.test.Test
 import kotlin.test.assertEquals

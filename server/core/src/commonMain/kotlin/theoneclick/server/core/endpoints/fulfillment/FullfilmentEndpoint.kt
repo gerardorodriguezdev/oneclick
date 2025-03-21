@@ -11,7 +11,7 @@ import theoneclick.server.core.endpoints.fulfillment.FulfillmentResponse.Payload
 import theoneclick.server.core.extensions.bearerAuthentication
 import theoneclick.server.core.extensions.post
 import theoneclick.server.core.plugins.koin.inject
-import theoneclick.shared.core.dataSources.models.endpoints.Endpoint
+import theoneclick.shared.core.models.endpoints.Endpoint
 
 fun Routing.fulfillmentEndpoint() {
     val paramsValidator: ParamsValidator by inject()

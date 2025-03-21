@@ -6,8 +6,8 @@ import theoneclick.server.core.data.models.*
 import theoneclick.server.core.endpoints.authorize.AuthorizeParams
 import theoneclick.server.core.endpoints.authorize.AuthorizeParams.Companion.RESPONSE_TYPE_CODE
 import theoneclick.server.core.platform.Environment
-import theoneclick.shared.core.dataSources.models.entities.Device.Blind
-import theoneclick.shared.core.dataSources.models.entities.Uuid
+import theoneclick.shared.core.models.entities.Device.Blind
+import theoneclick.shared.core.models.entities.Uuid
 import theoneclick.shared.testing.extensions.generateLongString
 
 @Suppress("MaxLineLength")

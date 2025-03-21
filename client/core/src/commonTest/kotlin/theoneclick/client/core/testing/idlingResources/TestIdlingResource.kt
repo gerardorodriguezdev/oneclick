@@ -1,7 +1,7 @@
 package theoneclick.client.core.testing.idlingResources
 
 import kotlinx.atomicfu.atomic
-import theoneclick.shared.core.idlingResources.IdlingResource
+import theoneclick.client.core.idlingResources.IdlingResource
 import androidx.compose.ui.test.IdlingResource as ComposeIdlingResource
 
 class TestIdlingResource : IdlingResource, ComposeIdlingResource {

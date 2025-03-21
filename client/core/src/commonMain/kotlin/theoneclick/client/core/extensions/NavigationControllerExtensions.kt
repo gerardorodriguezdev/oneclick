@@ -7,7 +7,7 @@ import theoneclick.client.core.platform.NavigationControllerObserver
 import theoneclick.client.core.platform.rememberNavigationObserver
 import theoneclick.client.core.routes.NavigationController
 import theoneclick.client.core.routes.NavigationController.NavigationEvent
-import theoneclick.shared.core.routes.base.Route
+import theoneclick.shared.core.models.routes.base.Route
 
 fun popUpToInclusive(
     startRoute: Route,

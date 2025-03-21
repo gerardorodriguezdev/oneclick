@@ -16,8 +16,8 @@ import theoneclick.client.core.platform.buildCoreModule
 import theoneclick.client.core.testing.fakes.FakeHomeDependencies
 import theoneclick.client.core.testing.matchers.screens.homeScreen.HomeScreenMatcher
 import theoneclick.client.core.ui.previews.providers.screens.homeScreen.DevicesListScreenPreviewModels
-import theoneclick.shared.core.dataSources.models.endpoints.Endpoint
-import theoneclick.shared.core.dataSources.models.responses.DevicesResponse
+import theoneclick.shared.core.models.endpoints.Endpoint
+import theoneclick.shared.core.models.responses.DevicesResponse
 import theoneclick.shared.testing.extensions.respondJson
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest

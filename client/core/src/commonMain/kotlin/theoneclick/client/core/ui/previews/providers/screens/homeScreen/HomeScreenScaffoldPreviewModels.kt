@@ -1,7 +1,7 @@
 package theoneclick.client.core.ui.previews.providers.screens.homeScreen
 
 import theoneclick.client.core.ui.previews.providers.base.*
-import theoneclick.shared.core.routes.HomeRoute
+import theoneclick.shared.core.models.routes.HomeRoute
 
 class HomeScreenScaffoldPreviewModels : PreviewModelProvider<HomeRoute> {
 

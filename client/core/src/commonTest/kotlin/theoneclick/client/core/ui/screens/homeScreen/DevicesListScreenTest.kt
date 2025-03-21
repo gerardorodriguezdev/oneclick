@@ -11,7 +11,7 @@ import theoneclick.client.core.ui.events.homeScreen.DevicesListEvent
 import theoneclick.client.core.ui.previews.providers.screens.homeScreen.DevicesListScreenPreviewModels
 import theoneclick.client.core.ui.previews.providers.screens.homeScreen.DevicesListScreenPreviewModels.Companion.loadedState
 import theoneclick.client.core.ui.states.homeScreen.DevicesListState
-import theoneclick.shared.core.dataSources.models.entities.Device
+import theoneclick.shared.core.models.entities.Device
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

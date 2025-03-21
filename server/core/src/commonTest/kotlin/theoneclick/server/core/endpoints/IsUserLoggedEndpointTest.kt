@@ -3,9 +3,9 @@ package theoneclick.server.core.endpoints
 import io.ktor.client.call.*
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.helpers.TestEndpointsHelper.requestIsUserLogged
-import theoneclick.shared.core.dataSources.models.responses.UserLoggedResponse
-import theoneclick.shared.core.dataSources.models.responses.UserLoggedResponse.Logged
-import theoneclick.shared.core.dataSources.models.responses.UserLoggedResponse.NotLogged
+import theoneclick.shared.core.models.responses.UserLoggedResponse
+import theoneclick.shared.core.models.responses.UserLoggedResponse.Logged
+import theoneclick.shared.core.models.responses.UserLoggedResponse.NotLogged
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

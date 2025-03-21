@@ -20,11 +20,16 @@ import theoneclick.server.core.endpoints.requestLogin.RequestLoginParams
 import theoneclick.server.core.endpoints.tokenExchange.TokenExchangeParams
 import theoneclick.server.core.platform.Environment
 import theoneclick.server.core.platform.SecurityUtils
-import theoneclick.shared.core.dataSources.models.entities.Device
-import theoneclick.shared.core.dataSources.models.entities.DeviceType
-import theoneclick.shared.core.dataSources.models.requests.AddDeviceRequest
-import theoneclick.shared.core.dataSources.models.requests.UpdateDeviceRequest
-import theoneclick.server.shared.validators.*
+import theoneclick.shared.core.validators.deviceIdValidator
+import theoneclick.shared.core.validators.deviceNameValidator
+import theoneclick.shared.core.validators.encryptedTokenValidator
+import theoneclick.shared.core.validators.passwordValidator
+import theoneclick.shared.core.validators.roomNameValidator
+import theoneclick.shared.core.validators.usernameValidator
+import theoneclick.shared.core.models.entities.Device
+import theoneclick.shared.core.models.entities.DeviceType
+import theoneclick.shared.core.models.requests.AddDeviceRequest
+import theoneclick.shared.core.models.requests.UpdateDeviceRequest
 import theoneclick.shared.timeProvider.TimeProvider
 
 @Suppress("TooManyFunctions")

@@ -1,8 +1,8 @@
 package theoneclick.server.core.data.models
 
 import kotlinx.serialization.Serializable
-import theoneclick.shared.core.dataSources.models.entities.Device
-import theoneclick.shared.core.dataSources.models.entities.Uuid
+import theoneclick.shared.core.models.entities.Device
+import theoneclick.shared.core.models.entities.Uuid
 
 @Serializable
 data class UserData(

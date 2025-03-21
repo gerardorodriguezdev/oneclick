@@ -7,9 +7,9 @@ import kotlinx.coroutines.launch
 import theoneclick.client.core.extensions.popUpToInclusive
 import theoneclick.client.core.routes.NavigationController
 import theoneclick.client.core.routes.NavigationController.NavigationEvent.Navigate
-import theoneclick.shared.core.dataSources.AuthenticationDataSource
-import theoneclick.shared.core.dataSources.models.results.UserLoggedResult
-import theoneclick.shared.core.routes.AppRoute
+import theoneclick.client.core.dataSources.AuthenticationDataSource
+import theoneclick.shared.core.models.results.UserLoggedResult
+import theoneclick.shared.core.models.routes.AppRoute
 
 class InitViewModel(
     private val navigationController: NavigationController,

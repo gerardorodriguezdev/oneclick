@@ -5,10 +5,9 @@ import theoneclick.client.core.extensions.popUpToInclusive
 import theoneclick.client.core.routes.NavigationController.NavigationEvent
 import theoneclick.client.core.testing.fakes.FakeAuthenticationDataSource
 import theoneclick.client.core.testing.fakes.FakeNavigationController
-import theoneclick.shared.core.dataSources.models.results.UserLoggedResult
-import theoneclick.shared.core.routes.AppRoute
-import theoneclick.shared.core.routes.AppRoute.*
-import theoneclick.shared.core.routes.base.Route
+import theoneclick.shared.core.models.results.UserLoggedResult
+import theoneclick.shared.core.models.routes.AppRoute.*
+import theoneclick.shared.core.models.routes.base.Route
 import theoneclick.shared.testing.dispatchers.CoroutinesTest
 import theoneclick.shared.testing.extensions.assertContains
 import kotlin.test.Test
@@ -22,7 +21,7 @@ class InitViewModelTest : CoroutinesTest() {
         val startingRoute = Home
         dataSource.userLoggedResult = flowOf(UserLoggedResult.Logged)
 
-        initViewModel(startingRoute = startingRoute)
+        initViewModel()
 
         navigationController.events.assertContains(
             expectedNavigationEvents(startingRoute = startingRoute)
@@ -33,7 +32,7 @@ class InitViewModelTest : CoroutinesTest() {
     fun `GIVEN not logged WHEN init THEN goes to login route`() {
         dataSource.userLoggedResult = flowOf(UserLoggedResult.NotLogged)
 
-        initViewModel(startingRoute = Home)
+        initViewModel()
 
         navigationController.events.assertContains(
             expectedNavigationEvents(Login)
@@ -44,7 +43,7 @@ class InitViewModelTest : CoroutinesTest() {
     fun `GIVEN data source error WHEN init THEN goes to login route`() {
         dataSource.userLoggedResult = flowOf(UserLoggedResult.UnknownError)
 
-        initViewModel(startingRoute = Home)
+        initViewModel()
 
         navigationController.events.assertContains(
             expectedNavigationEvents(Login)
@@ -58,10 +57,9 @@ class InitViewModelTest : CoroutinesTest() {
             launchSingleTop = true,
         )
 
-    private fun initViewModel(startingRoute: AppRoute): InitViewModel =
+    private fun initViewModel(): InitViewModel =
         InitViewModel(
             authenticationDataSource = dataSource,
             navigationController = navigationController,
-            startingRoute = startingRoute,
         )
 }

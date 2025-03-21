@@ -1,6 +1,6 @@
 package theoneclick.client.core.ui.events.homeScreen
 
-import theoneclick.shared.core.dataSources.models.entities.Device
+import theoneclick.shared.core.models.entities.Device
 
 sealed interface DevicesListEvent {
     data object Refresh : DevicesListEvent

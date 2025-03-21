@@ -4,8 +4,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import theoneclick.server.core.data.models.UserSession
-import theoneclick.shared.core.dataSources.models.endpoints.Endpoint
-import theoneclick.shared.core.dataSources.models.responses.UserLoggedResponse
+import theoneclick.shared.core.models.endpoints.Endpoint
+import theoneclick.shared.core.models.responses.UserLoggedResponse
 
 fun Routing.isUserLoggedEndpoint() {
     get(Endpoint.IS_USER_LOGGED.route) {

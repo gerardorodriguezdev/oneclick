@@ -10,7 +10,7 @@ import theoneclick.client.core.testing.matchers.components.DefaultSnackbarMatche
 import theoneclick.client.core.testing.matchers.hasRole
 import theoneclick.client.core.ui.screens.homeScreen.AddDeviceScreenTestTags
 import theoneclick.client.core.ui.screens.homeScreen.AddDeviceScreenTestTags.dropDownItemTestTag
-import theoneclick.shared.core.dataSources.models.entities.DeviceType
+import theoneclick.shared.core.models.entities.DeviceType
 
 @OptIn(ExperimentalTestApi::class)
 class AddDeviceScreenMatcher(composeUiTest: ComposeUiTest) {

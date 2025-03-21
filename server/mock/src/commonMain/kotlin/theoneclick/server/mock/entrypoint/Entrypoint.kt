@@ -8,14 +8,14 @@ import io.ktor.server.engine.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import theoneclick.shared.core.dataSources.models.endpoints.Endpoint
-import theoneclick.shared.core.dataSources.models.entities.Device
-import theoneclick.shared.core.dataSources.models.entities.Uuid
-import theoneclick.shared.core.dataSources.models.requests.RequestLoginRequest
-import theoneclick.shared.core.dataSources.models.responses.DevicesResponse
-import theoneclick.shared.core.dataSources.models.responses.RequestLoginResponse
-import theoneclick.shared.core.dataSources.models.responses.UserLoggedResponse
-import theoneclick.shared.core.routes.AppRoute
+import theoneclick.shared.core.models.endpoints.Endpoint
+import theoneclick.shared.core.models.entities.Device
+import theoneclick.shared.core.models.entities.Uuid
+import theoneclick.shared.core.models.requests.RequestLoginRequest
+import theoneclick.shared.core.models.responses.DevicesResponse
+import theoneclick.shared.core.models.responses.RequestLoginResponse
+import theoneclick.shared.core.models.responses.UserLoggedResponse
+import theoneclick.shared.core.models.routes.AppRoute
 
 fun server(): EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration> =
     embeddedServer(

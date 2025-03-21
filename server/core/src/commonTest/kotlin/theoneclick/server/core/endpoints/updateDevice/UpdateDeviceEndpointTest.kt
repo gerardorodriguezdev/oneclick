@@ -7,7 +7,7 @@ import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.helpers.TestEndpointsHelper.requestUpdateDevice
-import theoneclick.shared.core.dataSources.models.entities.Uuid
+import theoneclick.shared.core.models.entities.Uuid
 import kotlin.test.Test
 import kotlin.test.assertEquals
 

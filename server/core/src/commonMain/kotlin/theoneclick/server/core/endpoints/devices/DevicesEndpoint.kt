@@ -5,8 +5,8 @@ import io.ktor.server.routing.*
 import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.extensions.userSessionAuthentication
 import theoneclick.server.core.plugins.koin.inject
-import theoneclick.shared.core.dataSources.models.endpoints.Endpoint
-import theoneclick.shared.core.dataSources.models.responses.DevicesResponse
+import theoneclick.shared.core.models.endpoints.Endpoint
+import theoneclick.shared.core.models.responses.DevicesResponse
 
 fun Routing.devicesEndpoint() {
     val userDataSource: UserDataSource by inject()

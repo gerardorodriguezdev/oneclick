@@ -20,11 +20,11 @@ import theoneclick.server.core.platform.Environment
 import theoneclick.server.core.platform.SecurityUtils
 import theoneclick.server.core.platform.UuidProvider
 import theoneclick.server.core.plugins.koin.inject
-import theoneclick.shared.core.dataSources.models.endpoints.Endpoint
-import theoneclick.shared.core.dataSources.models.requests.RequestLoginRequest
-import theoneclick.shared.core.dataSources.models.responses.RequestLoginResponse
+import theoneclick.shared.core.models.endpoints.Endpoint
+import theoneclick.shared.core.models.requests.RequestLoginRequest
+import theoneclick.shared.core.models.responses.RequestLoginResponse
 import theoneclick.shared.core.extensions.urlBuilder
-import theoneclick.shared.core.routes.AppRoute
+import theoneclick.shared.core.models.routes.AppRoute
 
 fun Routing.requestLoginEndpoint() {
     val userDataSource: UserDataSource by inject()

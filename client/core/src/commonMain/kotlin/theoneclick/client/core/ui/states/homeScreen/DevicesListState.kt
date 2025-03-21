@@ -2,7 +2,7 @@ package theoneclick.client.core.ui.states.homeScreen
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import theoneclick.shared.core.dataSources.models.entities.Device
+import theoneclick.shared.core.models.entities.Device
 
 data class DevicesListState(
     val devices: ImmutableList<Device> = persistentListOf(),

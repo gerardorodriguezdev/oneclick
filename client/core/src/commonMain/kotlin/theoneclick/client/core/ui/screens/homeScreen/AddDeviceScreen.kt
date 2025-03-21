@@ -25,7 +25,7 @@ import theoneclick.client.core.ui.screens.homeScreen.AddDeviceScreenTestTags.ROO
 import theoneclick.client.core.ui.screens.homeScreen.AddDeviceScreenTestTags.TITLE_TEST_TAG
 import theoneclick.client.core.ui.screens.homeScreen.AddDeviceScreenTestTags.dropDownItemTestTag
 import theoneclick.client.core.ui.states.homeScreen.AddDeviceState
-import theoneclick.shared.core.dataSources.models.entities.DeviceType
+import theoneclick.shared.core.models.entities.DeviceType
 
 @Composable
 fun AddDeviceScreen(

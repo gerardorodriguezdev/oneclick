@@ -12,7 +12,7 @@ import theoneclick.server.core.extensions.*
 import theoneclick.server.core.extensions.responseType
 import theoneclick.server.core.platform.SecurityUtils
 import theoneclick.server.core.plugins.koin.inject
-import theoneclick.shared.core.dataSources.models.endpoints.Endpoint
+import theoneclick.shared.core.models.endpoints.Endpoint
 
 fun Routing.authorizeEndpoint() {
     val securityUtils: SecurityUtils by inject()

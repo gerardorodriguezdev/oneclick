@@ -10,7 +10,7 @@ import theoneclick.client.core.ui.previews.annotations.PreviewLargeScreen
 import theoneclick.client.core.ui.previews.providers.base.PreviewModel
 import theoneclick.client.core.ui.previews.providers.screens.homeScreen.HomeScreenScaffoldPreviewModels
 import theoneclick.client.core.ui.screens.homeScreen.HomeScreenScaffoldPreview
-import theoneclick.shared.core.routes.HomeRoute
+import theoneclick.shared.core.models.routes.HomeRoute
 
 @PreviewCompactScreen
 @Composable

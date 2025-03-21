@@ -13,8 +13,8 @@ import org.koin.core.context.unloadKoinModules
 import theoneclick.client.core.entrypoint.AppEntrypoint
 import theoneclick.client.core.testing.fakes.FakeAppDependencies
 import theoneclick.client.core.testing.matchers.screens.AppMatcher
-import theoneclick.shared.core.dataSources.models.endpoints.Endpoint
-import theoneclick.shared.core.dataSources.models.responses.UserLoggedResponse
+import theoneclick.shared.core.models.endpoints.Endpoint
+import theoneclick.shared.core.models.responses.UserLoggedResponse
 import theoneclick.shared.testing.extensions.respondJson
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest

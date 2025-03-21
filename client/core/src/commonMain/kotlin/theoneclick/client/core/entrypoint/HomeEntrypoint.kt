@@ -24,11 +24,11 @@ import theoneclick.client.core.ui.screens.homeScreen.HomeScreenScaffold
 import theoneclick.client.core.viewModels.homeScreen.AddDeviceViewModel
 import theoneclick.client.core.viewModels.homeScreen.DevicesListViewModel
 import theoneclick.client.core.viewModels.homeScreen.HomeViewModel
-import theoneclick.shared.core.dataSources.LoggedDataSource
-import theoneclick.shared.core.dataSources.RemoteLoggedDataSource
-import theoneclick.shared.core.routes.HomeRoute
-import theoneclick.shared.core.routes.HomeRoute.AddDevice
-import theoneclick.shared.core.routes.HomeRoute.DevicesList
+import theoneclick.client.core.dataSources.LoggedDataSource
+import theoneclick.client.core.dataSources.RemoteLoggedDataSource
+import theoneclick.shared.core.models.routes.HomeRoute
+import theoneclick.shared.core.models.routes.HomeRoute.AddDevice
+import theoneclick.shared.core.models.routes.HomeRoute.DevicesList
 
 class HomeEntrypoint {
 

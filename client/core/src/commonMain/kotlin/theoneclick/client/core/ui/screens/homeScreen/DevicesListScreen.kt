@@ -31,9 +31,9 @@ import theoneclick.client.core.ui.screens.homeScreen.DevicesListScreenTestTags.R
 import theoneclick.client.core.ui.screens.homeScreen.DevicesListScreenTestTags.ROTATION_SLIDER
 import theoneclick.client.core.ui.screens.homeScreen.DevicesListScreenTestTags.labelTestTag
 import theoneclick.client.core.ui.states.homeScreen.DevicesListState
-import theoneclick.shared.core.dataSources.models.entities.Device
-import theoneclick.shared.core.dataSources.models.entities.DeviceFeature.Openable
-import theoneclick.shared.core.dataSources.models.entities.DeviceFeature.Rotateable
+import theoneclick.shared.core.models.entities.Device
+import theoneclick.shared.core.models.entities.DeviceFeature.Openable
+import theoneclick.shared.core.models.entities.DeviceFeature.Rotateable
 
 @Composable
 fun DevicesListScreen(

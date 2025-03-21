@@ -3,7 +3,7 @@ package theoneclick.client.core.routes
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import theoneclick.client.core.routes.NavigationController.NavigationEvent
-import theoneclick.shared.core.routes.base.Route
+import theoneclick.shared.core.models.routes.base.Route
 
 interface NavigationController {
 

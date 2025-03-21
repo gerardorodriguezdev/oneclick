@@ -1,6 +1,6 @@
 package theoneclick.client.core.ui.states.homeScreen
 
-import theoneclick.shared.core.dataSources.models.entities.DeviceType
+import theoneclick.shared.core.models.entities.DeviceType
 
 data class AddDeviceState(
     val deviceName: String = "",

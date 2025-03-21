@@ -27,9 +27,9 @@ import theoneclick.client.core.ui.screens.LoginScreen
 import theoneclick.client.core.ui.theme.TheOneClickTheme
 import theoneclick.client.core.viewModels.InitViewModel
 import theoneclick.client.core.viewModels.LoginViewModel
-import theoneclick.shared.core.dataSources.AuthenticationDataSource
-import theoneclick.shared.core.dataSources.RemoteAuthenticationDataSource
-import theoneclick.shared.core.routes.AppRoute.*
+import theoneclick.client.core.dataSources.AuthenticationDataSource
+import theoneclick.client.core.dataSources.RemoteAuthenticationDataSource
+import theoneclick.shared.core.models.routes.AppRoute.*
 
 class AppEntrypoint {
     private val homeEntrypoint = HomeEntrypoint()

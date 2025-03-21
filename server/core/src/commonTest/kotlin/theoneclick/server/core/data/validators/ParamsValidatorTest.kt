@@ -19,11 +19,11 @@ import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.fakes.FakeSecurityUtils
 import theoneclick.server.core.testing.fakes.FakeUserDataSource
-import theoneclick.shared.core.dataSources.models.entities.Device
-import theoneclick.shared.core.dataSources.models.entities.DeviceType
-import theoneclick.shared.core.dataSources.models.entities.Uuid
-import theoneclick.shared.core.dataSources.models.requests.AddDeviceRequest
-import theoneclick.shared.core.dataSources.models.requests.UpdateDeviceRequest
+import theoneclick.shared.core.models.entities.Device
+import theoneclick.shared.core.models.entities.DeviceType
+import theoneclick.shared.core.models.entities.Uuid
+import theoneclick.shared.core.models.requests.AddDeviceRequest
+import theoneclick.shared.core.models.requests.UpdateDeviceRequest
 import theoneclick.shared.core.extensions.ifNotNull
 import theoneclick.shared.testing.extensions.generateLongString
 import theoneclick.shared.testing.extensions.parameterizedTest

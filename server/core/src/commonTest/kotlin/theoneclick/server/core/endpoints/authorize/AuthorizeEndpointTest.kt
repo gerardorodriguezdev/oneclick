@@ -5,7 +5,7 @@ import theoneclick.server.core.endpoints.authorize.AuthorizeParams.Companion.RES
 import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.helpers.TestEndpointsHelper.requestAuthorize
-import theoneclick.shared.core.dataSources.models.endpoints.Endpoint.LOGIN
+import theoneclick.shared.core.models.endpoints.Endpoint.LOGIN
 import theoneclick.shared.testing.extensions.runOnlyParameterizedTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
