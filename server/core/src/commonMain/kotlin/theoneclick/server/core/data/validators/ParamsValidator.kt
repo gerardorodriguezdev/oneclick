@@ -24,7 +24,7 @@ import theoneclick.shared.core.dataSources.models.entities.Device
 import theoneclick.shared.core.dataSources.models.entities.DeviceType
 import theoneclick.shared.core.dataSources.models.requests.AddDeviceRequest
 import theoneclick.shared.core.dataSources.models.requests.UpdateDeviceRequest
-import theoneclick.shared.core.validators.*
+import theoneclick.server.shared.validators.*
 import theoneclick.shared.timeProvider.TimeProvider
 
 @Suppress("TooManyFunctions")

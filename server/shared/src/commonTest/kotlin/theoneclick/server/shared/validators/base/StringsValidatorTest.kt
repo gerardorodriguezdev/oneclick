@@ -1,4 +1,4 @@
-package theoneclick.shared.core.validators.base
+package theoneclick.server.shared.validators.base
 
 import theoneclick.shared.testing.extensions.generateLongString
 import theoneclick.shared.testing.extensions.parameterizedTest

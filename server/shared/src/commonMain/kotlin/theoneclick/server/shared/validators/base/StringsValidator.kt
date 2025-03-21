@@ -1,4 +1,4 @@
-package theoneclick.shared.core.validators.base
+package theoneclick.server.shared.validators.base
 
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.contract

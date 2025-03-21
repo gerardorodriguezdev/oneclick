@@ -39,6 +39,7 @@ kotlin {
                 implementation(libs.kmp.koin.core)
                 implementation(projects.shared.core)
                 implementation(projects.shared.timeProvider)
+                implementation(projects.server.shared)
             }
         }
 

@@ -1,6 +1,6 @@
-package theoneclick.shared.core.validators
+package theoneclick.server.shared.validators
 
-import theoneclick.shared.core.validators.base.StringsValidator
+import theoneclick.server.shared.validators.base.StringsValidator
 
 val encryptedTokenValidator = StringsValidator(
     acceptDigits = true,
