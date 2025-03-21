@@ -7,17 +7,19 @@ import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.helpers.TestEndpointsHelper.requestDevices
 import theoneclick.shared.core.models.responses.DevicesResponse
+import theoneclick.shared.core.models.routes.AppRoute
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class DevicesEndpointTest : IntegrationTest(), KoinTest {
 
     @Test
-    fun `GIVEN user not logged WHEN devices requested THEN unauthorized returned`() {
+    fun `GIVEN user not logged WHEN devices requested THEN redirects to login`() {
         testApplication {
             val response = client.requestDevices(userSession = null)
 
-            assertEquals(expected = HttpStatusCode.Unauthorized, actual = response.status)
+            assertEquals(expected = HttpStatusCode.Found, actual = response.status)
+            assertEquals(expected = AppRoute.Login.path, actual = response.rawCurrentUrl)
         }
     }
 

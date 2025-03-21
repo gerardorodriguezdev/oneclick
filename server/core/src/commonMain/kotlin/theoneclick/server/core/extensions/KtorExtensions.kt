@@ -5,7 +5,7 @@ import io.ktor.server.request.*
 import io.ktor.server.routing.*
 import theoneclick.shared.core.models.endpoints.base.Endpoint
 
-fun <Params, ValidationResult> Routing.get(
+fun <Params, ValidationResult> Route.get(
     endpoint: Endpoint,
     paramsParsing: suspend RoutingContext.() -> Params,
     paramsValidation: (Params) -> ValidationResult,
@@ -20,7 +20,7 @@ fun <Params, ValidationResult> Routing.get(
     }
 }
 
-fun <Params, ValidationResult> Routing.post(
+fun <Params, ValidationResult> Route.post(
     endpoint: Endpoint,
     paramsParsing: suspend RoutingContext.() -> Params,
     paramsValidation: (Params) -> ValidationResult,
@@ -35,7 +35,7 @@ fun <Params, ValidationResult> Routing.post(
     }
 }
 
-inline fun <reified Params : Any, reified ValidationResult : Any> Routing.post(
+inline fun <reified Params : Any, reified ValidationResult : Any> Route.post(
     endpoint: Endpoint,
     crossinline requestValidation: (Params) -> ValidationResult,
     crossinline block: suspend RoutingContext.(ValidationResult) -> Unit

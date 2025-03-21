@@ -6,6 +6,6 @@ import theoneclick.server.core.plugins.authentication.AuthenticationConstants
 
 fun Routing.userSessionAuthentication(block: Route.() -> Unit): Route =
     authenticate(
-        configurations = arrayOf(AuthenticationConstants.SESSION_AUTHENTICATION),
+        configurations = arrayOf(AuthenticationConstants.AUTH_SESSION),
         build = block,
     )
