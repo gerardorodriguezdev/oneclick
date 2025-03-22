@@ -8,6 +8,7 @@ import theoneclick.client.core.routes.NavigationController.NavigationEvent
 import theoneclick.client.core.routes.NavigationController.NavigationEvent.Navigate
 import theoneclick.client.core.routes.NavigationController.NavigationEvent.PopBackStack
 
+//TODO: Repeated
 class AndroidNavigationControllerObserver(
     override val navigationController: NavigationController,
     override val navHostController: NavHostController,

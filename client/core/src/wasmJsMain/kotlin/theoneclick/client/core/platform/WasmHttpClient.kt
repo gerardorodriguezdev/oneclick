@@ -8,6 +8,7 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import theoneclick.shared.core.models.agents.Agent
 
+//TODO: Repeated
 fun wasmHttpClient(
     urlProtocol: URLProtocol?,
     host: String?,

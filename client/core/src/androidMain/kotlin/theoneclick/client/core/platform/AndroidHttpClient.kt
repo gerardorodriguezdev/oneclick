@@ -8,6 +8,7 @@ import io.ktor.serialization.kotlinx.json.*
 import theoneclick.shared.core.models.agents.Agent
 import theoneclick.shared.timeProvider.TimeProvider
 
+//TODO: Repeated
 fun androidHttpClient(
     urlProtocol: URLProtocol?,
     host: String?,
