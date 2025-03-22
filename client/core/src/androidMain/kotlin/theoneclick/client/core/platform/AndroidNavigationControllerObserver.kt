@@ -5,7 +5,8 @@ import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import theoneclick.client.core.routes.NavigationController
 import theoneclick.client.core.routes.NavigationController.NavigationEvent
-import theoneclick.client.core.routes.NavigationController.NavigationEvent.*
+import theoneclick.client.core.routes.NavigationController.NavigationEvent.Navigate
+import theoneclick.client.core.routes.NavigationController.NavigationEvent.PopBackStack
 
 class AndroidNavigationControllerObserver(
     override val navigationController: NavigationController,
@@ -26,8 +27,6 @@ class AndroidNavigationControllerObserver(
             }
 
             is PopBackStack -> navHostController.popBackStack()
-
-            is ExternalRedirect -> Unit
         }
     }
 }

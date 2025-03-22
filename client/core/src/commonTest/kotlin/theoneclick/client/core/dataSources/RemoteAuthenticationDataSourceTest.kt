@@ -7,14 +7,14 @@ import io.ktor.http.*
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import theoneclick.client.core.idlingResources.EmptyIdlingResource
+import theoneclick.client.core.models.results.RequestLoginResult
+import theoneclick.client.core.models.results.UserLoggedResult
+import theoneclick.shared.core.extensions.defaultHttpClient
 import theoneclick.shared.core.models.endpoints.ClientEndpoints
 import theoneclick.shared.core.models.requests.RequestLoginRequest
 import theoneclick.shared.core.models.responses.RequestLoginResponse
 import theoneclick.shared.core.models.responses.UserLoggedResponse
-import theoneclick.client.core.models.results.RequestLoginResult
-import theoneclick.client.core.models.results.UserLoggedResult
-import theoneclick.shared.core.extensions.defaultHttpClient
-import theoneclick.client.core.idlingResources.EmptyIdlingResource
 import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.testing.dispatchers.FakeDispatchersProvider
 import theoneclick.shared.testing.extensions.mockEngine
@@ -74,7 +74,7 @@ class RemoteAuthenticationDataSourceTest {
     fun `GIVEN valid data with local redirect WHEN requestLogin THEN returns validLocalRedirect`() {
         runTest {
             val remoteAuthenticationDataSource = remoteAuthenticationDataSource(
-                client = requestLoginEndpointMockHttpClient(isLocalRedirect = true)
+                client = requestLoginEndpointMockHttpClient()
             )
 
             remoteAuthenticationDataSource.requestLogin(username = USERNAME, password = PASSWORD).test {
@@ -85,29 +85,10 @@ class RemoteAuthenticationDataSourceTest {
     }
 
     @Test
-    fun `GIVEN valid data with external redirect WHEN requestLogin THEN returns validExternalRedirect`() {
-        runTest {
-            val remoteAuthenticationDataSource = remoteAuthenticationDataSource(
-                client = requestLoginEndpointMockHttpClient(isLocalRedirect = false)
-            )
-
-            remoteAuthenticationDataSource.requestLogin(username = USERNAME, password = PASSWORD).test {
-                assertEquals(
-                    expected = RequestLoginResult.ValidLogin.ExternalRedirect(
-                        REDIRECT_URL
-                    ),
-                    actual = awaitItem(),
-                )
-                cancelAndIgnoreRemainingEvents()
-            }
-        }
-    }
-
-    @Test
     fun `GIVEN invalid data WHEN requestLogin THEN returns unknown error`() {
         runTest {
             val remoteAuthenticationDataSource = remoteAuthenticationDataSource(
-                client = requestLoginEndpointMockHttpClient(isLocalRedirect = false)
+                client = requestLoginEndpointMockHttpClient()
             )
 
             remoteAuthenticationDataSource.requestLogin(username = "", password = "").test {
@@ -158,7 +139,7 @@ class RemoteAuthenticationDataSourceTest {
                 )
             )
 
-        private fun requestLoginEndpointMockHttpClient(isLocalRedirect: Boolean): HttpClient =
+        private fun requestLoginEndpointMockHttpClient(): HttpClient =
             defaultHttpClient(
                 mockEngine(
                     pathToFake = ClientEndpoints.REQUEST_LOGIN.route,
@@ -169,7 +150,7 @@ class RemoteAuthenticationDataSourceTest {
                             requestLoginRequest == null -> respondError(HttpStatusCode.BadRequest)
                             requestLoginRequest.username != USERNAME -> respondError(HttpStatusCode.BadRequest)
                             requestLoginRequest.password != PASSWORD -> respondError(HttpStatusCode.BadRequest)
-                            else -> respondJson(requestLoginResponse(isLocalRedirect))
+                            else -> respondJson(requestLoginResponse())
                         }
                     },
                 )
@@ -178,11 +159,6 @@ class RemoteAuthenticationDataSourceTest {
         private fun defaultHttpClient(mockEngine: MockEngine): HttpClient =
             defaultHttpClient(engine = mockEngine, protocol = null, host = null, port = null)
 
-        private fun requestLoginResponse(isLocalRedirect: Boolean): RequestLoginResponse =
-            if (isLocalRedirect) {
-                RequestLoginResponse.LocalRedirect(AppRoute.Home)
-            } else {
-                RequestLoginResponse.ExternalRedirect(REDIRECT_URL)
-            }
+        private fun requestLoginResponse(): RequestLoginResponse = RequestLoginResponse.LocalRedirect(AppRoute.Home)
     }
 }

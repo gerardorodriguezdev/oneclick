@@ -7,10 +7,5 @@ import theoneclick.shared.core.models.routes.AppRoute
 sealed interface RequestLoginResponse {
 
     @Serializable
-    data class LocalRedirect(val appRoute: AppRoute) :
-        RequestLoginResponse
-
-    @Serializable
-    data class ExternalRedirect(val urlString: String) :
-        RequestLoginResponse
+    data class LocalRedirect(val appRoute: AppRoute) : RequestLoginResponse
 }

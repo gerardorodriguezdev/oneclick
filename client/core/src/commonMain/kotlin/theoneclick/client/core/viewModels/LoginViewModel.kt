@@ -8,14 +8,13 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import theoneclick.client.core.dataSources.AuthenticationDataSource
 import theoneclick.client.core.extensions.popUpToInclusive
+import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.client.core.routes.NavigationController
-import theoneclick.client.core.routes.NavigationController.NavigationEvent.ExternalRedirect
 import theoneclick.client.core.routes.NavigationController.NavigationEvent.Navigate
 import theoneclick.client.core.ui.events.LoginEvent
 import theoneclick.client.core.ui.states.LoginState
-import theoneclick.client.core.dataSources.AuthenticationDataSource
-import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.core.validators.passwordValidator
 import theoneclick.shared.core.validators.usernameValidator
@@ -105,8 +104,6 @@ class LoginViewModel(
                     launchSingleTop = true,
                     popUpTo = popUpToInclusive(startRoute = AppRoute.Login),
                 )
-
-            is RequestLoginResult.ValidLogin.ExternalRedirect -> ExternalRedirect(urlString)
         }
 
     private fun LoginEvent.ErrorShown.handleErrorShown() {

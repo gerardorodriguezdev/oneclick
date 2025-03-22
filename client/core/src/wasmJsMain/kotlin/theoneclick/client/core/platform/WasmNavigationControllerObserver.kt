@@ -3,10 +3,10 @@ package theoneclick.client.core.platform
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
-import kotlinx.browser.window
 import theoneclick.client.core.routes.NavigationController
 import theoneclick.client.core.routes.NavigationController.NavigationEvent
-import theoneclick.client.core.routes.NavigationController.NavigationEvent.*
+import theoneclick.client.core.routes.NavigationController.NavigationEvent.Navigate
+import theoneclick.client.core.routes.NavigationController.NavigationEvent.PopBackStack
 
 class WasmNavigationControllerObserver(
     override val navigationController: NavigationController,
@@ -27,8 +27,6 @@ class WasmNavigationControllerObserver(
             }
 
             is PopBackStack -> navHostController.popBackStack()
-
-            is ExternalRedirect -> window.location.href = navigationEvent.urlString
         }
     }
 }

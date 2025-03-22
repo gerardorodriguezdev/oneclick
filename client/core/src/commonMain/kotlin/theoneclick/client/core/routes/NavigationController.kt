@@ -26,7 +26,6 @@ interface NavigationController {
         }
 
         data object PopBackStack : NavigationEvent
-        data class ExternalRedirect(val urlString: String) : NavigationEvent
     }
 }
 
