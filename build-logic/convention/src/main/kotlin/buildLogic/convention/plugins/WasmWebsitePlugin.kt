@@ -6,6 +6,7 @@ import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
+import org.jetbrains.kotlin.gradle.targets.js.webpack.KotlinWebpackConfig
 
 class WasmWebsitePlugin : Plugin<Project> {
 
@@ -30,6 +31,9 @@ class WasmWebsitePlugin : Plugin<Project> {
 
     @OptIn(ExperimentalWasmDsl::class)
     private fun Project.configureKotlinMultiplatformExtension(wasmWebsiteExtension: WasmWebsiteExtension) {
+        val rootDirPath = rootDir.path
+        val projectDirPath = projectDir.path
+
         extensions.configure(KotlinMultiplatformExtension::class.java) {
             compilerOptions {
                 extraWarnings.set(true)
@@ -40,6 +44,19 @@ class WasmWebsitePlugin : Plugin<Project> {
                 browser {
                     commonWebpackConfig {
                         outputFileName = wasmWebsiteExtension.outputFileName.get()
+                        devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
+                            static = (static ?: mutableListOf()).apply {
+                                add(rootDirPath)
+                                add(projectDirPath)
+                            }
+                            port = 3000
+                            proxy = mutableListOf(
+                                KotlinWebpackConfig.DevServer.Proxy(
+                                    context = mutableListOf("/api"),
+                                    target = "http://0.0.0.0:8080",
+                                )
+                            )
+                        }
                     }
 
                     testTask {
