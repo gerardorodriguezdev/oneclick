@@ -17,8 +17,6 @@ import theoneclick.server.core.validators.ParamsValidator.RequestLoginValidation
 import theoneclick.server.core.validators.ParamsValidator.RequestLoginValidationResult.ValidRequestLogin
 import theoneclick.shared.core.models.endpoints.ClientEndpoints
 import theoneclick.shared.core.models.requests.RequestLoginRequest
-import theoneclick.shared.core.models.responses.RequestLoginResponse
-import theoneclick.shared.core.models.routes.AppRoute
 
 fun Routing.requestLoginEndpoint() {
     val userDataSource: UserDataSource by inject()
@@ -66,7 +64,7 @@ private suspend fun RoutingContext.handleSuccess(
     )
 
     call.sessions.set(UserSession(sessionToken = sessionToken.value))
-    call.respond<RequestLoginResponse>(RequestLoginResponse.LocalRedirect(AppRoute.Home))
+    call.respond(HttpStatusCode.OK)
 }
 
 private fun ValidRequestLogin.userData(

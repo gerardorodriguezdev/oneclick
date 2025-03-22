@@ -10,7 +10,4 @@ sealed interface UserLoggedResponse {
 
     @Serializable
     data object NotLogged : UserLoggedResponse
-
-    @Serializable
-    data object UnknownError : UserLoggedResponse
 }

@@ -9,15 +9,15 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import theoneclick.client.core.dataSources.LoggedDataSource
 import theoneclick.client.core.extensions.popUpToInclusive
 import theoneclick.client.core.extensions.updateDevice
+import theoneclick.client.core.models.results.DevicesResult
+import theoneclick.client.core.models.results.UpdateDeviceResult
 import theoneclick.client.core.routes.NavigationController
 import theoneclick.client.core.routes.NavigationController.NavigationEvent.Navigate
 import theoneclick.client.core.ui.events.homeScreen.DevicesListEvent
 import theoneclick.client.core.ui.states.homeScreen.DevicesListState
-import theoneclick.client.core.dataSources.LoggedDataSource
-import theoneclick.client.core.models.results.DevicesResult
-import theoneclick.client.core.models.results.UpdateDeviceResult
 import theoneclick.shared.core.models.routes.AppRoute
 
 class DevicesListViewModel(

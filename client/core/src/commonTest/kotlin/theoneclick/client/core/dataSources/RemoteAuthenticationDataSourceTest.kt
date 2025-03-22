@@ -13,9 +13,7 @@ import theoneclick.client.core.models.results.UserLoggedResult
 import theoneclick.shared.core.extensions.defaultHttpClient
 import theoneclick.shared.core.models.endpoints.ClientEndpoints
 import theoneclick.shared.core.models.requests.RequestLoginRequest
-import theoneclick.shared.core.models.responses.RequestLoginResponse
 import theoneclick.shared.core.models.responses.UserLoggedResponse
-import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.testing.dispatchers.FakeDispatchersProvider
 import theoneclick.shared.testing.extensions.mockEngine
 import theoneclick.shared.testing.extensions.respondJson
@@ -78,7 +76,7 @@ class RemoteAuthenticationDataSourceTest {
             )
 
             remoteAuthenticationDataSource.requestLogin(username = USERNAME, password = PASSWORD).test {
-                assertEquals(RequestLoginResult.ValidLogin.LocalRedirect(AppRoute.Home), awaitItem())
+                assertEquals(RequestLoginResult.ValidLogin, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -120,7 +118,6 @@ class RemoteAuthenticationDataSourceTest {
     companion object {
         const val USERNAME = "Username1"
         const val PASSWORD = "Password1"
-        const val REDIRECT_URL = "/redirect"
 
         private fun TestScope.remoteAuthenticationDataSource(client: HttpClient): RemoteAuthenticationDataSource =
             RemoteAuthenticationDataSource(
@@ -150,7 +147,7 @@ class RemoteAuthenticationDataSourceTest {
                             requestLoginRequest == null -> respondError(HttpStatusCode.BadRequest)
                             requestLoginRequest.username != USERNAME -> respondError(HttpStatusCode.BadRequest)
                             requestLoginRequest.password != PASSWORD -> respondError(HttpStatusCode.BadRequest)
-                            else -> respondJson(requestLoginResponse())
+                            else -> respondOk()
                         }
                     },
                 )
@@ -158,7 +155,5 @@ class RemoteAuthenticationDataSourceTest {
 
         private fun defaultHttpClient(mockEngine: MockEngine): HttpClient =
             defaultHttpClient(engine = mockEngine, protocol = null, host = null, port = null)
-
-        private fun requestLoginResponse(): RequestLoginResponse = RequestLoginResponse.LocalRedirect(AppRoute.Home)
     }
 }

@@ -12,7 +12,6 @@ import theoneclick.client.core.models.results.RequestLoginResult.ValidLogin
 import theoneclick.client.core.models.results.UserLoggedResult
 import theoneclick.shared.core.models.endpoints.ClientEndpoints
 import theoneclick.shared.core.models.requests.RequestLoginRequest
-import theoneclick.shared.core.models.responses.RequestLoginResponse
 import theoneclick.shared.core.models.responses.UserLoggedResponse
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
@@ -47,9 +46,7 @@ class RemoteAuthenticationDataSource(
         password: String
     ): Flow<RequestLoginResult> =
         flow {
-            val response: RequestLoginResponse = client.post(
-                ClientEndpoints.REQUEST_LOGIN.route
-            ) {
+            val response = client.post(ClientEndpoints.REQUEST_LOGIN.route) {
                 contentType(ContentType.Application.Json)
                 setBody(
                     RequestLoginRequest(
@@ -57,9 +54,12 @@ class RemoteAuthenticationDataSource(
                         password = password,
                     )
                 )
-            }.body()
+            }
 
-            emit(response.toRequestLoginResult())
+            when (response.status) {
+                HttpStatusCode.OK -> emit(ValidLogin)
+                else -> emit(UnknownError)
+            }
         }
             .onStart { idlingResource.increment() }
             .onCompletion { idlingResource.decrement() }
@@ -70,11 +70,5 @@ class RemoteAuthenticationDataSource(
         when (this) {
             is UserLoggedResponse.Logged -> UserLoggedResult.Logged
             is UserLoggedResponse.NotLogged -> UserLoggedResult.NotLogged
-            is UserLoggedResponse.UnknownError -> UserLoggedResult.UnknownError
-        }
-
-    private fun RequestLoginResponse.toRequestLoginResult(): RequestLoginResult =
-        when (this) {
-            is RequestLoginResponse.LocalRedirect -> ValidLogin.LocalRedirect(appRoute = appRoute)
         }
 }

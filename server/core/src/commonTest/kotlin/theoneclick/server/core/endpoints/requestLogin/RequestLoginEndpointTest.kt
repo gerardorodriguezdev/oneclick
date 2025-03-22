@@ -1,6 +1,5 @@
 package theoneclick.server.core.endpoints.requestLogin
 
-import io.ktor.client.call.*
 import io.ktor.http.*
 import org.koin.test.KoinTest
 import org.koin.test.inject
@@ -11,8 +10,6 @@ import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.helpers.TestEndpointsHelper.requestLogin
 import theoneclick.shared.core.models.entities.Uuid
-import theoneclick.shared.core.models.responses.RequestLoginResponse
-import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.testing.extensions.runOnlyParameterizedTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -56,10 +53,6 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
             val response = client.requestLogin()
 
             assertEquals(HttpStatusCode.OK, response.status)
-            assertEquals<RequestLoginResponse>(
-                expected = RequestLoginResponse.LocalRedirect(AppRoute.Home),
-                actual = response.body(),
-            )
 
             val userSessionCookie = response.userSessionCookie
             assertEquals(TestData.ENCRYPTED_USER_SESSION_DATA_STRING, userSessionCookie)
@@ -95,10 +88,6 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
             val response = client.requestLogin(userData = savedUserData)
 
             assertEquals(HttpStatusCode.OK, response.status)
-            assertEquals<RequestLoginResponse>(
-                expected = RequestLoginResponse.LocalRedirect(AppRoute.Home),
-                actual = response.body(),
-            )
 
             val userSessionCookie = response.userSessionCookie
             assertEquals(expected = TestData.ENCRYPTED_USER_SESSION_DATA_STRING, actual = userSessionCookie)

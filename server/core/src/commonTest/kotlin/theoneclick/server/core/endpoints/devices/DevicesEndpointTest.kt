@@ -6,9 +6,7 @@ import org.koin.test.KoinTest
 import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.helpers.TestEndpointsHelper.requestDevices
-import theoneclick.shared.core.extensions.rawCurrentUrl
 import theoneclick.shared.core.models.responses.DevicesResponse
-import theoneclick.shared.core.models.routes.AppRoute
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -19,8 +17,7 @@ class DevicesEndpointTest : IntegrationTest(), KoinTest {
         testApplication {
             val response = client.requestDevices(userSession = null)
 
-            assertEquals(expected = HttpStatusCode.Found, actual = response.status)
-            assertEquals(expected = AppRoute.Login.path, actual = response.rawCurrentUrl)
+            assertEquals(expected = HttpStatusCode.Unauthorized, actual = response.status)
         }
     }
 

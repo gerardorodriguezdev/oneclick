@@ -3,21 +3,18 @@ package theoneclick.client.core.dataSources
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
-import io.ktor.client.statement.*
 import io.ktor.http.*
 import kotlinx.coroutines.flow.*
 import theoneclick.client.core.idlingResources.IdlingResource
 import theoneclick.client.core.models.results.AddDeviceResult
 import theoneclick.client.core.models.results.DevicesResult
 import theoneclick.client.core.models.results.UpdateDeviceResult
-import theoneclick.shared.core.extensions.rawCurrentUrl
 import theoneclick.shared.core.models.endpoints.ClientEndpoints
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.DeviceType
 import theoneclick.shared.core.models.requests.AddDeviceRequest
 import theoneclick.shared.core.models.requests.UpdateDeviceRequest
 import theoneclick.shared.core.models.responses.DevicesResponse
-import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
 interface LoggedDataSource {
@@ -57,7 +54,7 @@ class RemoteLoggedDataSource(
 
             when (response.status) {
                 HttpStatusCode.OK -> emit(AddDeviceResult.Success)
-                HttpStatusCode.Found if response.isLoginRedirect() -> emit(AddDeviceResult.Failure.NotLogged)
+                HttpStatusCode.Unauthorized -> emit(AddDeviceResult.Failure.NotLogged)
                 else -> emit(AddDeviceResult.Failure.UnknownError)
             }
         }
@@ -78,10 +75,7 @@ class RemoteLoggedDataSource(
                         response.body<DevicesResponse>()
                     emit(responseBody.toDevicesResult())
                 }
-
-                HttpStatusCode.Found if response.isLoginRedirect() ->
-                    emit(DevicesResult.Failure.NotLogged)
-
+                HttpStatusCode.Unauthorized -> emit(DevicesResult.Failure.NotLogged)
                 else -> emit(DevicesResult.Failure.UnknownError)
             }
         }
@@ -99,10 +93,7 @@ class RemoteLoggedDataSource(
 
             when (response.status) {
                 HttpStatusCode.OK -> emit(UpdateDeviceResult.Success)
-
-                HttpStatusCode.Found if response.isLoginRedirect() ->
-                    emit(UpdateDeviceResult.Failure.NotLogged)
-
+                HttpStatusCode.Unauthorized -> emit(UpdateDeviceResult.Failure.NotLogged)
                 else -> emit(UpdateDeviceResult.Failure.UnknownError)
             }
         }
@@ -113,7 +104,4 @@ class RemoteLoggedDataSource(
 
     private fun DevicesResponse.toDevicesResult(): DevicesResult =
         DevicesResult.Success(devices = devices)
-
-    private fun HttpResponse.isLoginRedirect(): Boolean =
-        rawCurrentUrl == AppRoute.Login.path
 }

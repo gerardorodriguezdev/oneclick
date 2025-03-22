@@ -83,7 +83,7 @@ class LoginViewModelTest : CoroutinesTest() {
 
     @Test
     fun `GIVEN valid request with local redirect WHEN register button clicked event THEN returns updated state`() {
-        dataSource.requestLoginResultFlow = flowOf(RequestLoginResult.ValidLogin.LocalRedirect(AppRoute.Home))
+        dataSource.requestLoginResultFlow = flowOf(RequestLoginResult.ValidLogin)
         viewModel.onEvent(UsernameChanged("username"))
         viewModel.onEvent(PasswordChanged("password12"))
 

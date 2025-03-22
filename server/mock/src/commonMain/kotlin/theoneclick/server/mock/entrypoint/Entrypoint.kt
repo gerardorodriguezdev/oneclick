@@ -13,9 +13,7 @@ import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.Uuid
 import theoneclick.shared.core.models.requests.RequestLoginRequest
 import theoneclick.shared.core.models.responses.DevicesResponse
-import theoneclick.shared.core.models.responses.RequestLoginResponse
 import theoneclick.shared.core.models.responses.UserLoggedResponse
-import theoneclick.shared.core.models.routes.AppRoute
 
 fun server(): EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration> =
     embeddedServer(
@@ -40,7 +38,7 @@ private fun Application.configureRouting() {
         }
 
         post(ClientEndpoints.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
-            call.respond<RequestLoginResponse>(RequestLoginResponse.LocalRedirect(AppRoute.Home))
+            call.respond(HttpStatusCode.OK)
         }
 
         get(ClientEndpoints.DEVICES.route) {
@@ -74,7 +72,7 @@ private fun Application.configureRouting() {
         }
 
         post(ClientEndpoints.ADD_DEVICE.route) {
-            call.respondRedirect("/login")
+            call.respond(HttpStatusCode.Unauthorized)
         }
     }
 }

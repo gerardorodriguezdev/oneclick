@@ -1,5 +1,6 @@
 package theoneclick.server.core.plugins.authentication
 
+import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
@@ -7,7 +8,6 @@ import theoneclick.server.core.models.UserSession
 import theoneclick.server.core.plugins.authentication.AuthenticationConstants.AUTH_SESSION
 import theoneclick.server.core.plugins.koin.inject
 import theoneclick.server.core.validators.ParamsValidator
-import theoneclick.shared.core.models.routes.AppRoute
 
 fun Application.configureAuthentication() {
     val paramsValidator: ParamsValidator by inject()
@@ -24,7 +24,7 @@ private fun AuthenticationConfig.registerSessionAuthentication(paramsValidator: 
         }
 
         challenge {
-            call.respondRedirect(AppRoute.Login.path)
+            call.respond(HttpStatusCode.Unauthorized)
         }
     }
 }

@@ -97,14 +97,11 @@ class LoginViewModel(
     }
 
     private fun RequestLoginResult.ValidLogin.toNavigationEvent(): NavigationController.NavigationEvent =
-        when (this) {
-            is RequestLoginResult.ValidLogin.LocalRedirect ->
-                Navigate(
-                    destinationRoute = appRoute,
-                    launchSingleTop = true,
-                    popUpTo = popUpToInclusive(startRoute = AppRoute.Login),
-                )
-        }
+        Navigate(
+            destinationRoute = AppRoute.Home,
+            launchSingleTop = true,
+            popUpTo = popUpToInclusive(startRoute = AppRoute.Login),
+        )
 
     private fun LoginEvent.ErrorShown.handleErrorShown() {
         _state.value = _state.value.copy(showError = false)
