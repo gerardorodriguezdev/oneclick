@@ -71,6 +71,10 @@ private fun Application.configureRouting() {
             )
         }
 
+        post(ClientEndpoints.UPDATE_DEVICE.route) {
+            call.respond(HttpStatusCode.OK)
+        }
+
         post(ClientEndpoints.ADD_DEVICE.route) {
             call.respond(HttpStatusCode.Unauthorized)
         }
