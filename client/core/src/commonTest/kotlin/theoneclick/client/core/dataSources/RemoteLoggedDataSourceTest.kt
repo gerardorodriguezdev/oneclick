@@ -8,17 +8,16 @@ import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import theoneclick.client.core.idlingResources.EmptyIdlingResource
-import theoneclick.shared.core.extensions.defaultHttpClient
-import theoneclick.shared.core.models.endpoints.ClientEndpoints
+import theoneclick.client.core.models.results.AddDeviceResult
+import theoneclick.client.core.models.results.DevicesResult
+import theoneclick.client.core.models.results.UpdateDeviceResult
+import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.DeviceType
 import theoneclick.shared.core.models.entities.Uuid
 import theoneclick.shared.core.models.requests.AddDeviceRequest
 import theoneclick.shared.core.models.requests.UpdateDeviceRequest
 import theoneclick.shared.core.models.responses.DevicesResponse
-import theoneclick.client.core.models.results.AddDeviceResult
-import theoneclick.client.core.models.results.DevicesResult
-import theoneclick.client.core.models.results.UpdateDeviceResult
 import theoneclick.shared.testing.dispatchers.FakeDispatchersProvider
 import theoneclick.shared.testing.extensions.mockEngine
 import theoneclick.shared.testing.extensions.respondJson
@@ -205,7 +204,7 @@ class RemoteLoggedDataSourceTest {
         ): HttpClient =
             defaultHttpClient(
                 mockEngine(
-                    pathToFake = ClientEndpoints.ADD_DEVICE.route,
+                    pathToFake = ClientEndpoint.ADD_DEVICE.route,
                     onPathFound = { request ->
                         val addDeviceRequest = request.toRequestBodyObject<AddDeviceRequest>()
 
@@ -226,7 +225,7 @@ class RemoteLoggedDataSourceTest {
         ): HttpClient =
             defaultHttpClient(
                 mockEngine(
-                    pathToFake = ClientEndpoints.DEVICES.route,
+                    pathToFake = ClientEndpoint.DEVICES.route,
                     onPathFound = { request ->
                         if (isLogged) {
                             respondJson(DevicesResponse(devices))
@@ -242,7 +241,7 @@ class RemoteLoggedDataSourceTest {
         ): HttpClient =
             defaultHttpClient(
                 mockEngine(
-                    pathToFake = ClientEndpoints.UPDATE_DEVICE.route,
+                    pathToFake = ClientEndpoint.UPDATE_DEVICE.route,
                     onPathFound = { request ->
                         val updateDeviceRequest = request.toRequestBodyObject<UpdateDeviceRequest>()
 

@@ -4,8 +4,11 @@ import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 import theoneclick.server.core.plugins.authentication.AuthenticationConstants
 
-fun Routing.userSessionAuthentication(block: Route.() -> Unit): Route =
+fun Routing.defaultAuthentication(block: Route.() -> Unit): Route =
     authenticate(
-        configurations = arrayOf(AuthenticationConstants.AUTH_SESSION),
+        configurations = arrayOf(
+            AuthenticationConstants.SESSION_AUTHENTICATION,
+            AuthenticationConstants.TOKEN_AUTHENTICATION,
+        ),
         build = block,
     )

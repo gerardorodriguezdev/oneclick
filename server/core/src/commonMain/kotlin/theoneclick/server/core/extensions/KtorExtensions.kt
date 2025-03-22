@@ -1,9 +1,10 @@
 package theoneclick.server.core.extensions
 
-import io.ktor.client.statement.HttpResponse
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
+import theoneclick.shared.core.models.agents.Agent
+import theoneclick.shared.core.models.agents.Agent.Companion.toAgent
 import theoneclick.shared.core.models.endpoints.base.Endpoint
 
 fun <Params, ValidationResult> Route.get(
@@ -45,3 +46,11 @@ inline fun <reified Params : Any, reified ValidationResult : Any> Route.post(
     val validationResult = requestValidation(request)
     block(validationResult)
 }
+
+val RoutingRequest.agent: Agent
+    get() {
+        val userAgent = userAgent()
+        return userAgent.toAgent()
+    }
+
+fun urlString(block: URLBuilder.() -> Unit = {}): String = URLBuilder().apply(block).buildString()

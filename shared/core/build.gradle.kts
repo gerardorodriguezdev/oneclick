@@ -23,18 +23,13 @@ kotlin {
             dependencies {
                 implementation(libs.kmp.ktor.serialization.kotlinx.json)
                 implementation(libs.kmp.ktor.client.core)
-                implementation(libs.kmp.ktor.client.content.negotiation)
                 implementation(libs.kmp.datetime)
-                implementation(projects.shared.dispatchers)
             }
         }
 
         commonTest {
             dependencies {
                 implementation(libs.kmp.test)
-                implementation(libs.kmp.test.ktor.client.mock)
-                implementation(libs.kmp.test.turbine)
-                implementation(libs.kmp.test.coroutines)
                 implementation(projects.shared.testing)
             }
         }

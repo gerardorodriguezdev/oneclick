@@ -6,6 +6,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import theoneclick.server.core.dataSources.UserDataSource
+import theoneclick.server.core.extensions.agent
 import theoneclick.server.core.extensions.post
 import theoneclick.server.core.models.UserData
 import theoneclick.server.core.models.UserSession
@@ -15,8 +16,10 @@ import theoneclick.server.core.plugins.koin.inject
 import theoneclick.server.core.validators.ParamsValidator
 import theoneclick.server.core.validators.ParamsValidator.RequestLoginValidationResult.InvalidRequestLoginParams
 import theoneclick.server.core.validators.ParamsValidator.RequestLoginValidationResult.ValidRequestLogin
-import theoneclick.shared.core.models.endpoints.ClientEndpoints
+import theoneclick.shared.core.models.agents.Agent
+import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.requests.RequestLoginRequest
+import theoneclick.shared.core.models.responses.RequestLoginResponse
 
 fun Routing.requestLoginEndpoint() {
     val userDataSource: UserDataSource by inject()
@@ -25,7 +28,7 @@ fun Routing.requestLoginEndpoint() {
     val uuidProvider: UuidProvider by inject()
 
     post(
-        endpoint = ClientEndpoints.REQUEST_LOGIN,
+        endpoint = ClientEndpoint.REQUEST_LOGIN,
         paramsParsing = {
             val requestLoginRequest: RequestLoginRequest = call.receive()
             RequestLoginParams(
@@ -63,8 +66,8 @@ private suspend fun RoutingContext.handleSuccess(
         userData.copy(sessionToken = sessionToken)
     )
 
-    call.sessions.set(UserSession(sessionToken = sessionToken.value))
-    call.respond(HttpStatusCode.OK)
+    val userSession = UserSession(sessionToken = sessionToken.value)
+    handleSuccess(userSession)
 }
 
 private fun ValidRequestLogin.userData(
@@ -81,3 +84,16 @@ private fun ValidRequestLogin.userData(
             )
         }
     }
+
+private suspend fun RoutingContext.handleSuccess(userSession: UserSession) {
+    when (call.request.agent) {
+        Agent.MOBILE -> {
+            call.respond(RequestLoginResponse(userSession.sessionToken))
+        }
+
+        Agent.BROWSER -> {
+            call.sessions.set(userSession)
+            call.respond(HttpStatusCode.OK)
+        }
+    }
+}

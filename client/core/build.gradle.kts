@@ -49,6 +49,7 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.kmp.coroutines)
+                implementation(libs.kmp.ktor.client.auth)
                 implementation(libs.kmp.navigation)
                 implementation(libs.kmp.viewModel)
                 implementation(libs.kmp.ktor.serialization.kotlinx.json)

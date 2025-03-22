@@ -7,18 +7,18 @@ import io.ktor.server.sessions.*
 import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.models.UserData
 import theoneclick.server.core.models.UserSession
-import theoneclick.server.core.models.endpoints.ServerEndpoints
+import theoneclick.server.core.models.endpoints.ServerEndpoint
 import theoneclick.server.core.plugins.koin.inject
 
 fun Routing.qaapi() {
     val userDataSource: UserDataSource by inject()
 
-    post(ServerEndpoints.ADD_USER_DATA.route) { userData: UserData ->
+    post(ServerEndpoint.ADD_USER_DATA.route) { userData: UserData ->
         userDataSource.saveUserData(userData)
         call.respond(HttpStatusCode.OK)
     }
 
-    post(ServerEndpoints.ADD_USER_SESSION.route) { userSession: UserSession ->
+    post(ServerEndpoint.ADD_USER_SESSION.route) { userSession: UserSession ->
         call.sessions.set(userSession)
         call.respond(HttpStatusCode.OK)
     }

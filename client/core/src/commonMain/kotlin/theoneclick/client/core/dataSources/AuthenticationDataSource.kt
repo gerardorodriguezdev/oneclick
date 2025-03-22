@@ -10,7 +10,7 @@ import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.client.core.models.results.RequestLoginResult.UnknownError
 import theoneclick.client.core.models.results.RequestLoginResult.ValidLogin
 import theoneclick.client.core.models.results.UserLoggedResult
-import theoneclick.shared.core.models.endpoints.ClientEndpoints
+import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.requests.RequestLoginRequest
 import theoneclick.shared.core.models.responses.UserLoggedResponse
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
@@ -32,7 +32,7 @@ class RemoteAuthenticationDataSource(
     override fun isUserLogged(): Flow<UserLoggedResult> =
         flow {
             val response: UserLoggedResponse = client.get(
-                ClientEndpoints.IS_USER_LOGGED.route
+                ClientEndpoint.IS_USER_LOGGED.route
             ).body()
             emit(response.toUserLoggedResult())
         }
@@ -46,7 +46,7 @@ class RemoteAuthenticationDataSource(
         password: String
     ): Flow<RequestLoginResult> =
         flow {
-            val response = client.post(ClientEndpoints.REQUEST_LOGIN.route) {
+            val response = client.post(ClientEndpoint.REQUEST_LOGIN.route) {
                 contentType(ContentType.Application.Json)
                 setBody(
                     RequestLoginRequest(

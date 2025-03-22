@@ -1,14 +1,12 @@
 package theoneclick.client.core.platform
 
 import io.ktor.client.*
-import io.ktor.client.engine.*
 import org.koin.core.module.Module
 import org.koin.dsl.bind
 import org.koin.dsl.module
+import theoneclick.client.core.idlingResources.IdlingResource
 import theoneclick.client.core.routes.NavigationController
 import theoneclick.client.core.routes.RealNavigationController
-import theoneclick.shared.core.extensions.defaultHttpClient
-import theoneclick.client.core.idlingResources.IdlingResource
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.timeProvider.TimeProvider
 
@@ -21,7 +19,7 @@ expect fun appDependencies(): AppDependencies
 interface CoreDependencies {
     val environment: Environment
     val dispatchersProvider: DispatchersProvider
-    val httpEngine: HttpClientEngine
+    val httpClient: HttpClient
     val idlingResource: IdlingResource
 }
 
@@ -29,13 +27,6 @@ fun buildCoreModule(coreDependencies: CoreDependencies): Module =
     module {
         single<DispatchersProvider> { coreDependencies.dispatchersProvider }
         single<IdlingResource> { coreDependencies.idlingResource }
-        single<HttpClient> {
-            defaultHttpClient(
-                engine = coreDependencies.httpEngine,
-                protocol = coreDependencies.environment.protocol,
-                host = coreDependencies.environment.host,
-                port = coreDependencies.environment.port,
-            )
-        }
+        single<HttpClient> { coreDependencies.httpClient }
         single { RealNavigationController() } bind NavigationController::class
     }

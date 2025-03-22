@@ -7,7 +7,7 @@ import io.ktor.server.request.*
 import io.ktor.util.logging.*
 import org.slf4j.event.Level
 import theoneclick.server.core.plugins.koin.inject
-import theoneclick.server.core.models.endpoints.ServerEndpoints
+import theoneclick.server.core.models.endpoints.ServerEndpoint
 import theoneclick.shared.timeProvider.TimeProvider
 
 fun Application.configureCallLogging() {
@@ -21,7 +21,7 @@ fun Application.configureCallLogging() {
         clock { timeProvider.currentTimeMillis() }
 
         filter { call ->
-            call.request.path() != ServerEndpoints.HEALTHZ.route
+            call.request.path() != ServerEndpoint.HEALTHZ.route
         }
 
         callIdMdc("call-id")

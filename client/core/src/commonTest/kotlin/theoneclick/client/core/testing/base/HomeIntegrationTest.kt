@@ -16,7 +16,7 @@ import theoneclick.client.core.platform.buildCoreModule
 import theoneclick.client.core.testing.fakes.FakeHomeDependencies
 import theoneclick.client.core.testing.matchers.screens.homeScreen.HomeScreenMatcher
 import theoneclick.client.core.ui.previews.providers.screens.homeScreen.DevicesListScreenPreviewModels
-import theoneclick.shared.core.models.endpoints.ClientEndpoints
+import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.responses.DevicesResponse
 import theoneclick.shared.testing.extensions.respondJson
 import kotlin.test.AfterTest
@@ -76,7 +76,7 @@ abstract class HomeIntegrationTest {
         FakeHomeDependencies(
             mockEngine = MockEngine { request ->
                 when (request.url.fullPath) {
-                    ClientEndpoints.DEVICES.route -> handleDevices(isUserLogged)
+                    ClientEndpoint.DEVICES.route -> handleDevices(isUserLogged)
                     else -> respondError(HttpStatusCode.NotFound)
                 }
             },

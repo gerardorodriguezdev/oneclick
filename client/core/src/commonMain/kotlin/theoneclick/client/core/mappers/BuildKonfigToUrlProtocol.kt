@@ -1,4 +1,4 @@
-package theoneclick.client.core.extensions
+package theoneclick.client.core.mappers
 
 import io.ktor.http.*
 import theoneclick.client.core.buildkonfig.BuildKonfig

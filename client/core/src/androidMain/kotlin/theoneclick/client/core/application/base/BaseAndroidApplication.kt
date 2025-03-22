@@ -73,7 +73,7 @@ abstract class BaseAndroidApplication(
             detectLeakedSqlLiteObjects()
             // detectLeakedClosableObjects() | Required to be disabled. Related to keyboard
 
-            if (environment.protocol == URLProtocol.HTTPS) {
+            if (environment.urlProtocol == URLProtocol.HTTPS) {
                 detectCleartextNetwork()
             }
         }

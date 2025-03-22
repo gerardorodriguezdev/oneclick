@@ -8,7 +8,7 @@ import io.ktor.server.engine.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import theoneclick.shared.core.models.endpoints.ClientEndpoints
+import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.Uuid
 import theoneclick.shared.core.models.requests.RequestLoginRequest
@@ -33,15 +33,15 @@ private fun Application.configureContentNegotiation() {
 
 private fun Application.configureRouting() {
     routing {
-        get(ClientEndpoints.IS_USER_LOGGED.route) {
+        get(ClientEndpoint.IS_USER_LOGGED.route) {
             call.respond<UserLoggedResponse>(UserLoggedResponse.NotLogged)
         }
 
-        post(ClientEndpoints.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
+        post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
             call.respond(HttpStatusCode.OK)
         }
 
-        get(ClientEndpoints.DEVICES.route) {
+        get(ClientEndpoint.DEVICES.route) {
             call.respond(
                 DevicesResponse(
                     devices = listOf(
@@ -71,11 +71,11 @@ private fun Application.configureRouting() {
             )
         }
 
-        post(ClientEndpoints.UPDATE_DEVICE.route) {
+        post(ClientEndpoint.UPDATE_DEVICE.route) {
             call.respond(HttpStatusCode.OK)
         }
 
-        post(ClientEndpoints.ADD_DEVICE.route) {
+        post(ClientEndpoint.ADD_DEVICE.route) {
             call.respond(HttpStatusCode.Unauthorized)
         }
     }

@@ -11,7 +11,7 @@ import theoneclick.client.core.idlingResources.EmptyIdlingResource
 import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.client.core.models.results.UserLoggedResult
 import theoneclick.shared.core.extensions.defaultHttpClient
-import theoneclick.shared.core.models.endpoints.ClientEndpoints
+import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.requests.RequestLoginRequest
 import theoneclick.shared.core.models.responses.UserLoggedResponse
 import theoneclick.shared.testing.dispatchers.FakeDispatchersProvider
@@ -55,7 +55,7 @@ class RemoteAuthenticationDataSourceTest {
             val remoteAuthenticationDataSource = remoteAuthenticationDataSource(
                 client = defaultHttpClient(
                     mockEngine(
-                        pathToFake = ClientEndpoints.IS_USER_LOGGED.route,
+                        pathToFake = ClientEndpoint.IS_USER_LOGGED.route,
                         onPathFound = { respondError(HttpStatusCode.BadRequest) },
                     )
                 )
@@ -102,7 +102,7 @@ class RemoteAuthenticationDataSourceTest {
             val remoteAuthenticationDataSource = remoteAuthenticationDataSource(
                 client = defaultHttpClient(
                     mockEngine(
-                        pathToFake = ClientEndpoints.REQUEST_LOGIN.route,
+                        pathToFake = ClientEndpoint.REQUEST_LOGIN.route,
                         onPathFound = { respondError(HttpStatusCode.InternalServerError) },
                     )
                 )
@@ -129,7 +129,7 @@ class RemoteAuthenticationDataSourceTest {
         private fun userLoggedEndpointMockHttpClient(result: UserLoggedResponse): HttpClient =
             defaultHttpClient(
                 mockEngine(
-                    pathToFake = ClientEndpoints.IS_USER_LOGGED.route,
+                    pathToFake = ClientEndpoint.IS_USER_LOGGED.route,
                     onPathFound = {
                         respondJson<UserLoggedResponse>(result)
                     },
@@ -139,7 +139,7 @@ class RemoteAuthenticationDataSourceTest {
         private fun requestLoginEndpointMockHttpClient(): HttpClient =
             defaultHttpClient(
                 mockEngine(
-                    pathToFake = ClientEndpoints.REQUEST_LOGIN.route,
+                    pathToFake = ClientEndpoint.REQUEST_LOGIN.route,
                     onPathFound = { request ->
                         val requestLoginRequest = request.toRequestBodyObject<RequestLoginRequest>()
 

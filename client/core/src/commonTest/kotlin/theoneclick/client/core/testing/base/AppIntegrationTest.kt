@@ -13,7 +13,7 @@ import org.koin.core.context.unloadKoinModules
 import theoneclick.client.core.entrypoint.AppEntrypoint
 import theoneclick.client.core.testing.fakes.FakeAppDependencies
 import theoneclick.client.core.testing.matchers.screens.AppMatcher
-import theoneclick.shared.core.models.endpoints.ClientEndpoints
+import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.responses.UserLoggedResponse
 import theoneclick.shared.testing.extensions.respondJson
 import kotlin.test.AfterTest
@@ -67,7 +67,7 @@ abstract class AppIntegrationTest {
         FakeAppDependencies(
             mockEngine = MockEngine { request ->
                 when (request.url.fullPath) {
-                    ClientEndpoints.IS_USER_LOGGED.route -> handleIsUserLogged(isUserLogged)
+                    ClientEndpoint.IS_USER_LOGGED.route -> handleIsUserLogged(isUserLogged)
                     else -> respondError(HttpStatusCode.NotFound)
                 }
             },

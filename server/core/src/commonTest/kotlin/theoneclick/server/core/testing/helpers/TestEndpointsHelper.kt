@@ -6,10 +6,10 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import theoneclick.server.core.models.UserData
 import theoneclick.server.core.models.UserSession
-import theoneclick.server.core.models.endpoints.ServerEndpoints
+import theoneclick.server.core.models.endpoints.ServerEndpoint
 import theoneclick.server.core.testing.TestData
 import theoneclick.shared.core.extensions.urlString
-import theoneclick.shared.core.models.endpoints.ClientEndpoints
+import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.DeviceType
 import theoneclick.shared.core.models.requests.AddDeviceRequest
@@ -19,7 +19,7 @@ import theoneclick.shared.core.models.requests.UpdateDeviceRequest
 object TestEndpointsHelper {
 
     // Healthz
-    suspend fun HttpClient.requestHealthz(): HttpResponse = get(ServerEndpoints.HEALTHZ.route)
+    suspend fun HttpClient.requestHealthz(): HttpResponse = get(ServerEndpoint.HEALTHZ.route)
 
     // RequestLogin
     suspend fun HttpClient.requestLogin(
@@ -35,7 +35,7 @@ object TestEndpointsHelper {
             urlString = urlString {
                 protocol = URLProtocol.HTTPS
                 host = TestData.environment.host
-                path(ClientEndpoints.REQUEST_LOGIN.route)
+                path(ClientEndpoint.REQUEST_LOGIN.route)
             }
         ) {
             contentType(ContentType.Application.Json)
@@ -66,7 +66,7 @@ object TestEndpointsHelper {
             urlString = urlString {
                 protocol = URLProtocol.HTTPS
                 host = TestData.environment.host
-                path(ClientEndpoints.ADD_DEVICE.route)
+                path(ClientEndpoint.ADD_DEVICE.route)
             },
             block = {
                 contentType(ContentType.Application.Json)
@@ -97,7 +97,7 @@ object TestEndpointsHelper {
             urlString = urlString {
                 protocol = URLProtocol.HTTPS
                 host = TestData.environment.host
-                path(ClientEndpoints.DEVICES.route)
+                path(ClientEndpoint.DEVICES.route)
             },
             block = {
                 contentType(ContentType.Application.Json)
@@ -122,7 +122,7 @@ object TestEndpointsHelper {
             urlString = urlString {
                 protocol = URLProtocol.HTTPS
                 host = TestData.environment.host
-                path(ClientEndpoints.UPDATE_DEVICE.route)
+                path(ClientEndpoint.UPDATE_DEVICE.route)
             },
             block = {
                 contentType(ContentType.Application.Json)
@@ -148,20 +148,20 @@ object TestEndpointsHelper {
             urlString = urlString {
                 protocol = URLProtocol.HTTPS
                 host = TestData.environment.host
-                path(ClientEndpoints.IS_USER_LOGGED.route)
+                path(ClientEndpoint.IS_USER_LOGGED.route)
             }
         )
     }
 
     // QAAPI
     private suspend fun HttpClient.addUserSession(userSession: UserSession): HttpResponse =
-        post(ServerEndpoints.ADD_USER_SESSION.route) {
+        post(ServerEndpoint.ADD_USER_SESSION.route) {
             contentType(ContentType.Application.Json)
             setBody(userSession)
         }
 
     private suspend fun HttpClient.addUserData(userData: UserData): HttpResponse =
-        post(ServerEndpoints.ADD_USER_DATA.route) {
+        post(ServerEndpoint.ADD_USER_DATA.route) {
             contentType(ContentType.Application.Json)
             setBody(userData)
         }

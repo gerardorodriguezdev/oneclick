@@ -9,7 +9,7 @@ import theoneclick.client.core.idlingResources.IdlingResource
 import theoneclick.client.core.models.results.AddDeviceResult
 import theoneclick.client.core.models.results.DevicesResult
 import theoneclick.client.core.models.results.UpdateDeviceResult
-import theoneclick.shared.core.models.endpoints.ClientEndpoints
+import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.DeviceType
 import theoneclick.shared.core.models.requests.AddDeviceRequest
@@ -41,7 +41,7 @@ class RemoteLoggedDataSource(
         type: DeviceType
     ): Flow<AddDeviceResult> =
         flow {
-            val response = client.post(ClientEndpoints.ADD_DEVICE.route) {
+            val response = client.post(ClientEndpoint.ADD_DEVICE.route) {
                 contentType(ContentType.Application.Json)
                 setBody(
                     AddDeviceRequest(
@@ -65,7 +65,7 @@ class RemoteLoggedDataSource(
 
     override fun devices(): Flow<DevicesResult> =
         flow {
-            val response = client.get(ClientEndpoints.DEVICES.route) {
+            val response = client.get(ClientEndpoint.DEVICES.route) {
                 contentType(ContentType.Application.Json)
             }
 
@@ -86,7 +86,7 @@ class RemoteLoggedDataSource(
 
     override fun updateDevice(updatedDevice: Device): Flow<UpdateDeviceResult> =
         flow {
-            val response = client.post(ClientEndpoints.UPDATE_DEVICE.route) {
+            val response = client.post(ClientEndpoint.UPDATE_DEVICE.route) {
                 contentType(ContentType.Application.Json)
                 setBody(UpdateDeviceRequest(updatedDevice))
             }

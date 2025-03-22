@@ -1,4 +1,4 @@
-package theoneclick.client.core.extensions
+package theoneclick.client.core.mappers
 
 import androidx.compose.runtime.Composable
 import org.jetbrains.compose.resources.stringResource

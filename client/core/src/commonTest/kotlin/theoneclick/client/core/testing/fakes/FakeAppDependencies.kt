@@ -13,7 +13,7 @@ import theoneclick.shared.timeProvider.TimeProvider
 class FakeAppDependencies(
     var mockEngine: MockEngine,
 ) : AppDependencies {
-    override val environment: Environment = Environment(protocol = null, host = null, port = null, isDebug = true)
+    override val environment: Environment = Environment(urlProtocol = null, host = null, port = null, isDebug = true)
     override val dispatchersProvider: DispatchersProvider = dispatchersProvider()
     override val httpEngine: HttpClientEngine = mockEngine
     override val idlingResource: TestIdlingResource = TestIdlingResource()
