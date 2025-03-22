@@ -15,12 +15,16 @@ class AndroidAppDependencies : AppDependencies {
         Environment(
             isDebug = BuildKonfig.IS_DEBUG,
             urlProtocol = BuildKonfig.urlProtocol(),
+            host = BuildKonfig.HOST,
+            port = BuildKonfig.PORT,
         )
     override val dispatchersProvider: DispatchersProvider = dispatchersProvider()
     override val timeProvider: TimeProvider = SystemTimeProvider()
     override val idlingResource: IdlingResource = EmptyIdlingResource()
     override val httpClient: HttpClient = androidHttpClient(
         urlProtocol = environment.urlProtocol,
+        host = environment.host,
+        port = environment.port,
         timeProvider = timeProvider,
         tokenProvider = DiskTokenProvider(),
     )

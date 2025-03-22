@@ -6,10 +6,13 @@ import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import theoneclick.client.core.buildkonfig.BuildKonfig
 import theoneclick.shared.core.models.agents.Agent
 
-fun wasmHttpClient(urlProtocol: URLProtocol?): HttpClient {
+fun wasmHttpClient(
+    urlProtocol: URLProtocol?,
+    host: String?,
+    port: Int?,
+): HttpClient {
     val engine = Js.create()
 
     return HttpClient(engine) {
@@ -22,11 +25,11 @@ fun wasmHttpClient(urlProtocol: URLProtocol?): HttpClient {
                 url.protocol = urlProtocol
             }
 
-            BuildKonfig.HOST?.let {
+            host?.let {
                 this.host = host
             }
 
-            BuildKonfig.PORT?.let {
+            port?.let {
                 this.port = port
             }
 

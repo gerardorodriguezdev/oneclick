@@ -5,12 +5,13 @@ import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import theoneclick.client.core.buildkonfig.BuildKonfig
 import theoneclick.shared.core.models.agents.Agent
 import theoneclick.shared.timeProvider.TimeProvider
 
 fun androidHttpClient(
     urlProtocol: URLProtocol?,
+    host: String?,
+    port: Int?,
     timeProvider: TimeProvider,
     tokenProvider: TokenProvider,
 ): HttpClient {
@@ -25,11 +26,11 @@ fun androidHttpClient(
                 url.protocol = urlProtocol
             }
 
-            BuildKonfig.HOST?.let {
+            host?.let {
                 this.host = host
             }
 
-            BuildKonfig.PORT?.let {
+            port?.let {
                 this.port = port
             }
 
