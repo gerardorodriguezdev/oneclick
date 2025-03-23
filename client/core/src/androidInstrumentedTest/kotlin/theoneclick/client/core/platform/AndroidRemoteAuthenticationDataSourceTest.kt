@@ -10,7 +10,6 @@ import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import theoneclick.client.core.dataSources.EmptyTokenDataSource
-import theoneclick.client.core.idlingResources.EmptyIdlingResource
 import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.client.core.models.results.UserLoggedResult
 import theoneclick.client.core.navigation.RealNavigationController
@@ -160,7 +159,6 @@ class AndroidRemoteAuthenticationDataSourceTest {
             androidHttpClient(
                 httpClientEngine = httpClientEngine,
                 tokenDataSource = EmptyTokenDataSource(),
-                idlingResource = EmptyIdlingResource(),
                 navigationController = RealNavigationController(),
             )
     }

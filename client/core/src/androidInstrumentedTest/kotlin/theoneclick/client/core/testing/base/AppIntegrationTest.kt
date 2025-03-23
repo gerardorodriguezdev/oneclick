@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import io.ktor.client.engine.mock.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import kotlinx.coroutines.runBlocking
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 import theoneclick.client.core.entrypoint.AppEntrypoint
@@ -54,6 +55,12 @@ abstract class AppIntegrationTest {
         block: AppMatcher.(mainClock: MainTestClock) -> Unit,
     ) {
         this.isUserLogged = isUserLogged
+
+        if (isUserLogged) {
+            runBlocking {
+                tokenDataSource.set("token")
+            }
+        }
 
         runComposeUiTest {
             setupBlock()

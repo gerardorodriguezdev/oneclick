@@ -8,7 +8,6 @@ import io.ktor.http.*
 import theoneclick.client.core.buildkonfig.BuildKonfig
 import theoneclick.client.core.dataSources.AndroidLocalTokenDataSource
 import theoneclick.client.core.entrypoint.AppEntrypoint
-import theoneclick.client.core.idlingResources.EmptyIdlingResource
 import theoneclick.client.core.mappers.urlProtocol
 import theoneclick.client.core.platform.AndroidAppDependencies
 import theoneclick.client.core.platform.androidHttpClientEngine
@@ -24,7 +23,6 @@ class TheOneClickApplication : Application() {
 
         val appDependencies = AndroidAppDependencies(
             httpClientEngine = androidHttpClientEngine(timeProvider = SystemTimeProvider()),
-            idlingResource = EmptyIdlingResource(),
             tokenDataSource = AndroidLocalTokenDataSource(),
         )
         appEntrypoint.startKoin(appDependencies = appDependencies)

@@ -7,7 +7,6 @@ import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.verify.verifyAll
 import theoneclick.client.core.dataSources.AndroidLocalTokenDataSource
 import theoneclick.client.core.entrypoint.AppEntrypoint
-import theoneclick.client.core.idlingResources.EmptyIdlingResource
 import theoneclick.client.core.navigation.NavigationController
 import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.timeProvider.SystemTimeProvider
@@ -23,7 +22,6 @@ class AndroidModulesTest {
                 httpClientEngine = androidHttpClientEngine(
                     timeProvider = SystemTimeProvider(),
                 ),
-                idlingResource = EmptyIdlingResource(),
                 tokenDataSource = AndroidLocalTokenDataSource(),
             )
         )
