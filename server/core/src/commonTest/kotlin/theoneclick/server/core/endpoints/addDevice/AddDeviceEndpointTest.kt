@@ -17,7 +17,7 @@ class AddDeviceEndpointTest : IntegrationTest(), KoinTest {
     @Test
     fun `GIVEN invalid request WHEN addDevice requested THEN returns bad request`() {
         testApplication {
-            val response = client.requestAddDevice(deviceName = "")
+            val response = httpClient.requestAddDevice(deviceName = "")
 
             assertEquals(expected = HttpStatusCode.BadRequest, actual = response.status)
         }
@@ -26,7 +26,7 @@ class AddDeviceEndpointTest : IntegrationTest(), KoinTest {
     @Test
     fun `GIVEN no user session WHEN addDevice requested THEN redirects to login`() {
         testApplication {
-            val response = client.requestAddDevice(userSession = null)
+            val response = httpClient.requestAddDevice(userSession = null)
 
             assertEquals(expected = HttpStatusCode.Unauthorized, actual = response.status)
         }
@@ -37,7 +37,7 @@ class AddDeviceEndpointTest : IntegrationTest(), KoinTest {
         val repository: UserDataSource by inject()
 
         testApplication {
-            val response = client.requestAddDevice()
+            val response = httpClient.requestAddDevice()
 
             assertEquals(expected = HttpStatusCode.OK, actual = response.status)
             assertEquals(

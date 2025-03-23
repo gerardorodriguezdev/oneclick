@@ -6,6 +6,7 @@ import android.os.StrictMode.ThreadPolicy
 import android.os.StrictMode.VmPolicy
 import io.ktor.http.*
 import theoneclick.client.core.buildkonfig.BuildKonfig
+import theoneclick.client.core.dataSources.AndroidLocalTokenDataSource
 import theoneclick.client.core.entrypoint.AppEntrypoint
 import theoneclick.client.core.idlingResources.EmptyIdlingResource
 import theoneclick.client.core.mappers.urlProtocol
@@ -21,10 +22,10 @@ class TheOneClickApplication : Application() {
         setupStrictVmPolicy()
         super.onCreate()
 
-        val timeProvider = SystemTimeProvider()
         val appDependencies = AndroidAppDependencies(
-            httpClientEngine = androidHttpClientEngine(timeProvider = timeProvider),
+            httpClientEngine = androidHttpClientEngine(timeProvider = SystemTimeProvider()),
             idlingResource = EmptyIdlingResource(),
+            tokenDataSource = AndroidLocalTokenDataSource(),
         )
         appEntrypoint.startKoin(appDependencies = appDependencies)
     }

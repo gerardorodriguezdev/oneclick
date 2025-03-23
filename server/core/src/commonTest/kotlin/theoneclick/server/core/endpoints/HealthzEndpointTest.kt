@@ -11,7 +11,7 @@ class HealthzEndpointTest : IntegrationTest() {
     @Test
     fun `GIVEN server healthy WHEN healthz requested THEN returns ok`() {
         testApplication {
-            val response = client.requestHealthz()
+            val response = httpClient.requestHealthz()
 
             assertEquals(expected = HttpStatusCode.OK, actual = response.status)
         }

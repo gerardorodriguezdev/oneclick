@@ -16,13 +16,13 @@ import theoneclick.shared.core.models.responses.UserLoggedResponse
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
 class WasmRemoteAuthenticationDataSource(
-    private val client: HttpClient,
+    private val httpClient: HttpClient,
     private val dispatchersProvider: DispatchersProvider,
 ) : AuthenticationDataSource {
 
     override fun isUserLogged(): Flow<UserLoggedResult> =
         flow {
-            val response: UserLoggedResponse = client.get(ClientEndpoint.IS_USER_LOGGED.route).body()
+            val response: UserLoggedResponse = httpClient.get(ClientEndpoint.IS_USER_LOGGED.route).body()
             emit(response.toUserLoggedResult())
         }
             .catch { emit(UserLoggedResult.UnknownError) }
@@ -39,7 +39,7 @@ class WasmRemoteAuthenticationDataSource(
         password: String
     ): Flow<RequestLoginResult> =
         flow {
-            val response = client.post(ClientEndpoint.REQUEST_LOGIN.route) {
+            val response = httpClient.post(ClientEndpoint.REQUEST_LOGIN.route) {
                 setBody(
                     RequestLoginRequest(
                         username = username,

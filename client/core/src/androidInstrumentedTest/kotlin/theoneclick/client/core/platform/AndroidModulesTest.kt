@@ -5,6 +5,7 @@ import io.ktor.client.engine.*
 import org.junit.Test
 import org.koin.core.annotation.KoinExperimentalAPI
 import org.koin.test.verify.verifyAll
+import theoneclick.client.core.dataSources.AndroidLocalTokenDataSource
 import theoneclick.client.core.entrypoint.AppEntrypoint
 import theoneclick.client.core.idlingResources.EmptyIdlingResource
 import theoneclick.client.core.navigation.NavigationController
@@ -23,6 +24,7 @@ class AndroidModulesTest {
                     timeProvider = SystemTimeProvider(),
                 ),
                 idlingResource = EmptyIdlingResource(),
+                tokenDataSource = AndroidLocalTokenDataSource(),
             )
         )
 

@@ -4,7 +4,6 @@ import io.ktor.client.engine.mock.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.http.content.*
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 
 fun mockEngine(

@@ -16,7 +16,7 @@ class UpdateDeviceEndpointTest : IntegrationTest(), KoinTest {
     @Test
     fun `GIVEN invalid request WHEN updateDevice requested THEN returns bad request`() {
         testApplication {
-            val response = client.requestUpdateDevice(
+            val response = httpClient.requestUpdateDevice(
                 updatedDevice = TestData.blind.copy(id = Uuid(value = "1"))
             )
 
@@ -27,7 +27,7 @@ class UpdateDeviceEndpointTest : IntegrationTest(), KoinTest {
     @Test
     fun `GIVEN no user session WHEN updateDevice requested THEN redirects to login`() {
         testApplication {
-            val response = client.requestUpdateDevice(updatedDevice = TestData.blind, userSession = null)
+            val response = httpClient.requestUpdateDevice(updatedDevice = TestData.blind, userSession = null)
 
             assertEquals(expected = HttpStatusCode.Unauthorized, actual = response.status)
         }
@@ -39,7 +39,7 @@ class UpdateDeviceEndpointTest : IntegrationTest(), KoinTest {
         val updatedDevice = TestData.blind.copy(isOpened = true)
 
         testApplication {
-            val response = client.requestUpdateDevice(
+            val response = httpClient.requestUpdateDevice(
                 updatedDevice = updatedDevice,
             )
 

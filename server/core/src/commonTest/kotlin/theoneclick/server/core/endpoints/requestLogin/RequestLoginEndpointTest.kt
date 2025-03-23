@@ -30,7 +30,7 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
 
             block = { index, input ->
                 testApplication {
-                    val response = client.requestLogin(
+                    val response = httpClient.requestLogin(
                         username = input.username,
                         password = input.password,
                     )
@@ -50,7 +50,7 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
         val repository: UserDataSource by inject()
 
         testApplication {
-            val response = client.requestLogin()
+            val response = httpClient.requestLogin()
 
             assertEquals(HttpStatusCode.OK, response.status)
 
@@ -65,7 +65,7 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
     @Test
     fun `GIVEN username is invalid WHEN request login THEN returns bad request`() {
         testApplication {
-            val response = client.requestLogin(username = "InvalidUsername", userData = savedUserData)
+            val response = httpClient.requestLogin(username = "InvalidUsername", userData = savedUserData)
 
             assertEquals(expected = HttpStatusCode.BadRequest, actual = response.status)
         }
@@ -74,7 +74,7 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
     @Test
     fun `GIVEN password is invalid WHEN request login THEN returns bad request`() {
         testApplication {
-            val response = client.requestLogin(password = "InvalidPassword", userData = savedUserData)
+            val response = httpClient.requestLogin(password = "InvalidPassword", userData = savedUserData)
 
             assertEquals(expected = HttpStatusCode.BadRequest, actual = response.status)
         }
@@ -85,7 +85,7 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
         val repository: UserDataSource by inject()
 
         testApplication {
-            val response = client.requestLogin(userData = savedUserData)
+            val response = httpClient.requestLogin(userData = savedUserData)
 
             assertEquals(HttpStatusCode.OK, response.status)
 

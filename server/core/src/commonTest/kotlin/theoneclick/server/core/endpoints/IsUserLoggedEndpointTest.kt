@@ -14,7 +14,7 @@ class IsUserLoggedEndpointTest : IntegrationTest() {
     @Test
     fun `GIVEN user logged WHEN isUserLogged requested THEN returns user logged`() {
         testApplication {
-            val response = client.requestIsUserLogged()
+            val response = httpClient.requestIsUserLogged()
 
             assertEquals<UserLoggedResponse>(expected = Logged, actual = response.body())
         }
@@ -23,7 +23,7 @@ class IsUserLoggedEndpointTest : IntegrationTest() {
     @Test
     fun `GIVEN user not logged WHEN isUserLogged requested THEN returns user not logged`() {
         testApplication {
-            val response = client.requestIsUserLogged(userSession = null)
+            val response = httpClient.requestIsUserLogged(userSession = null)
 
             assertEquals<UserLoggedResponse>(expected = NotLogged, actual = response.body())
         }

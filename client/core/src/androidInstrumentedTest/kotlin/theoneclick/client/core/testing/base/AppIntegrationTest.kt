@@ -13,6 +13,7 @@ import org.koin.core.context.unloadKoinModules
 import theoneclick.client.core.entrypoint.AppEntrypoint
 import theoneclick.client.core.platform.AndroidAppDependencies
 import theoneclick.client.core.platform.AppDependencies
+import theoneclick.client.core.testing.dataSources.FakeTokenDataSource
 import theoneclick.client.core.testing.idlingResources.TestIdlingResource
 import theoneclick.client.core.testing.matchers.screens.AppMatcher
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
@@ -22,6 +23,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 
 abstract class AppIntegrationTest {
+    private val tokenDataSource = FakeTokenDataSource()
     private val idlingResource = TestIdlingResource()
     private val appDependencies: AppDependencies = AndroidAppDependencies(
         httpClientEngine = MockEngine { request ->
@@ -31,6 +33,7 @@ abstract class AppIntegrationTest {
             }
         },
         idlingResource = idlingResource,
+        tokenDataSource = tokenDataSource,
     )
     private val appEntrypoint = AppEntrypoint()
     private val modules = appEntrypoint.buildAppModules(appDependencies)

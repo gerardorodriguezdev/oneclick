@@ -23,8 +23,8 @@ fun androidHttpClient(
     tokenDataSource: TokenDataSource,
     idlingResource: IdlingResource,
     navigationController: NavigationController,
-): HttpClient {
-    return HttpClient(httpClientEngine) {
+): HttpClient =
+    HttpClient(httpClientEngine) {
         install(ContentNegotiation) {
             json()
         }
@@ -70,4 +70,3 @@ fun androidHttpClient(
             }
         }
     }
-}

@@ -14,6 +14,7 @@ import org.koin.core.module.Module
 import theoneclick.client.core.entrypoint.HomeEntrypoint
 import theoneclick.client.core.entrypoint.buildCoreModule
 import theoneclick.client.core.platform.AndroidAppDependencies
+import theoneclick.client.core.testing.dataSources.FakeTokenDataSource
 import theoneclick.client.core.testing.idlingResources.TestIdlingResource
 import theoneclick.client.core.testing.matchers.screens.homeScreen.HomeScreenMatcher
 import theoneclick.client.core.ui.previews.providers.screens.homeScreen.DevicesListScreenPreviewModels
@@ -24,6 +25,7 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 
 abstract class HomeIntegrationTest {
+    private val tokenDataSource = FakeTokenDataSource()
     private val idlingResource = TestIdlingResource()
     private val appDependencies = AndroidAppDependencies(
         httpClientEngine = MockEngine { request ->
@@ -33,6 +35,7 @@ abstract class HomeIntegrationTest {
             }
         },
         idlingResource = idlingResource,
+        tokenDataSource = tokenDataSource,
     )
     private val homeEntrypoint = HomeEntrypoint()
     private val modules: List<Module> = buildModules()

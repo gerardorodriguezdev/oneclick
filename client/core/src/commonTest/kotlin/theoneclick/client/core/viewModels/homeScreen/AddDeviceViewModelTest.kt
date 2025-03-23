@@ -1,24 +1,17 @@
 package theoneclick.client.core.viewModels.homeScreen
 
 import kotlinx.coroutines.flow.flowOf
-import theoneclick.client.core.extensions.popUpToInclusive
 import theoneclick.client.core.models.results.AddDeviceResult
-import theoneclick.client.core.navigation.NavigationController.NavigationEvent.Navigate
 import theoneclick.client.core.testing.fakes.FakeLoggedDataSource
-import theoneclick.client.core.testing.fakes.FakeNavigationController
 import theoneclick.client.core.ui.events.homeScreen.AddDeviceEvent.*
 import theoneclick.client.core.ui.states.homeScreen.AddDeviceState
 import theoneclick.shared.core.models.entities.DeviceType
-import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.testing.dispatchers.CoroutinesTest
-import theoneclick.shared.testing.extensions.assertContains
-import theoneclick.shared.testing.extensions.assertIsEmpty
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class AddDeviceViewModelTest : CoroutinesTest() {
 
-    private val fakeNavigationController = FakeNavigationController()
     private val dataSource = FakeLoggedDataSource()
     private val viewModel =
         AddDeviceViewModel(loggedDataSource = dataSource)
@@ -118,39 +111,7 @@ class AddDeviceViewModelTest : CoroutinesTest() {
     }
 
     @Test
-    fun `GIVEN not logged WHEN add device button clicked event THEN navigates back`() {
-        dataSource.addDeviceResultFlow = flowOf(AddDeviceResult.Failure)
-        viewModel.onEvent(DeviceNameChanged("DeviceName"))
-        viewModel.onEvent(RoomNameChanged("RoomName"))
-
-        viewModel.onEvent(AddDeviceButtonClicked)
-
-        assertEquals(
-            expected = AddDeviceState(
-                deviceName = "DeviceName",
-                isDeviceNameValid = true,
-                roomName = "RoomName",
-                isRoomNameValid = true,
-                deviceType = DeviceType.BLIND,
-                isAddDeviceButtonEnabled = true,
-                showError = true,
-                showSuccess = false,
-            ),
-            actual = viewModel.state.value,
-        )
-
-        fakeNavigationController.events.assertContains(
-            Navigate(
-                destinationRoute = AppRoute.Login,
-                popUpTo = popUpToInclusive(
-                    startRoute = AppRoute.Home,
-                )
-            )
-        )
-    }
-
-    @Test
-    fun `GIVEN unknown error WHEN add device button clicked event THEN returns updated state`() {
+    fun `GIVEN failure WHEN add device button clicked event THEN returns failure`() {
         dataSource.addDeviceResultFlow = flowOf(AddDeviceResult.Failure)
         viewModel.onEvent(DeviceNameChanged("DeviceName"))
         viewModel.onEvent(RoomNameChanged("RoomName"))
@@ -192,7 +153,6 @@ class AddDeviceViewModelTest : CoroutinesTest() {
             ),
             actual = viewModel.state.value,
         )
-        fakeNavigationController.events.assertIsEmpty()
     }
 
     @Test
@@ -215,6 +175,5 @@ class AddDeviceViewModelTest : CoroutinesTest() {
             ),
             actual = viewModel.state.value,
         )
-        fakeNavigationController.events.assertIsEmpty()
     }
 }

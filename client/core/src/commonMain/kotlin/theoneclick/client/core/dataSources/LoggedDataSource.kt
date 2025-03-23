@@ -32,7 +32,7 @@ interface LoggedDataSource {
 }
 
 class RemoteLoggedDataSource(
-    private val client: HttpClient,
+    private val httpClient: HttpClient,
     private val dispatchersProvider: DispatchersProvider,
 ) : LoggedDataSource {
 
@@ -42,7 +42,7 @@ class RemoteLoggedDataSource(
         type: DeviceType
     ): Flow<AddDeviceResult> =
         flow {
-            val response = client.post(ClientEndpoint.ADD_DEVICE.route) {
+            val response = httpClient.post(ClientEndpoint.ADD_DEVICE.route) {
                 setBody(
                     AddDeviceRequest(
                         deviceName = deviceName,
@@ -62,7 +62,7 @@ class RemoteLoggedDataSource(
 
     override fun devices(): Flow<DevicesResult> =
         flow {
-            val response = client.get(ClientEndpoint.DEVICES.route)
+            val response = httpClient.get(ClientEndpoint.DEVICES.route)
 
             when (response.status) {
                 HttpStatusCode.OK -> {
@@ -78,7 +78,7 @@ class RemoteLoggedDataSource(
 
     override fun updateDevice(updatedDevice: Device): Flow<UpdateDeviceResult> =
         flow {
-            val response = client.post(ClientEndpoint.UPDATE_DEVICE.route) {
+            val response = httpClient.post(ClientEndpoint.UPDATE_DEVICE.route) {
                 setBody(UpdateDeviceRequest(updatedDevice))
             }
 

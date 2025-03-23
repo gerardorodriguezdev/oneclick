@@ -15,7 +15,7 @@ class DevicesEndpointTest : IntegrationTest(), KoinTest {
     @Test
     fun `GIVEN user not logged WHEN devices requested THEN redirects to login`() {
         testApplication {
-            val response = client.requestDevices(userSession = null)
+            val response = httpClient.requestDevices(userSession = null)
 
             assertEquals(expected = HttpStatusCode.Unauthorized, actual = response.status)
         }
@@ -24,7 +24,7 @@ class DevicesEndpointTest : IntegrationTest(), KoinTest {
     @Test
     fun `GIVEN user logged with no devices WHEN devices requested THEN returns empty list`() {
         testApplication {
-            val response = client.requestDevices(devices = emptyList())
+            val response = httpClient.requestDevices(devices = emptyList())
 
             assertEquals(expected = HttpStatusCode.OK, actual = response.status)
             assertEquals(expected = DevicesResponse(devices = emptyList()), actual = response.body())
@@ -34,7 +34,7 @@ class DevicesEndpointTest : IntegrationTest(), KoinTest {
     @Test
     fun `GIVEN user logged with devices WHEN devices requested THEN devices returned`() {
         testApplication {
-            val response = client.requestDevices()
+            val response = httpClient.requestDevices()
 
             assertEquals(expected = HttpStatusCode.OK, actual = response.status)
             assertEquals(expected = DevicesResponse(devices = TestData.devices.toList()), actual = response.body())

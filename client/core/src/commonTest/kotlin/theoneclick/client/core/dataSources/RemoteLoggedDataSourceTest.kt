@@ -10,6 +10,7 @@ import kotlinx.coroutines.test.runTest
 import theoneclick.client.core.models.results.AddDeviceResult
 import theoneclick.client.core.models.results.DevicesResult
 import theoneclick.client.core.models.results.UpdateDeviceResult
+import theoneclick.client.core.testing.fakes.fakeHttpClient
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.DeviceType
@@ -30,7 +31,7 @@ class RemoteLoggedDataSourceTest {
     fun `GIVEN user logged with valid device WHEN addDevice called THEN returns ok`() {
         runTest {
             val remoteLoggedDataSource =
-                remoteLoggedDataSource(client = addDeviceEndpointMockHttpClient(isLogged = true))
+                remoteLoggedDataSource(httpClient = addDeviceEndpointMockHttpClient(isLogged = true))
 
             remoteLoggedDataSource.addDevice(deviceName = DEVICE_NAME, room = ROOM_NAME, type = DeviceType.BLIND)
                 .test {
@@ -41,10 +42,10 @@ class RemoteLoggedDataSourceTest {
     }
 
     @Test
-    fun `GIVEN user not logged WHEN addDevice called THEN returns not logged error`() {
+    fun `GIVEN user not logged WHEN addDevice called THEN returns failure`() {
         runTest {
             val remoteLoggedDataSource =
-                remoteLoggedDataSource(client = addDeviceEndpointMockHttpClient(isLogged = false))
+                remoteLoggedDataSource(httpClient = addDeviceEndpointMockHttpClient(isLogged = false))
 
             remoteLoggedDataSource.addDevice(deviceName = DEVICE_NAME, room = ROOM_NAME, type = DeviceType.BLIND)
                 .test {
@@ -55,10 +56,10 @@ class RemoteLoggedDataSourceTest {
     }
 
     @Test
-    fun `GIVEN user logged with invalid device WHEN addDevice called THEN returns unknown error`() {
+    fun `GIVEN user logged with invalid device WHEN addDevice called THEN returns failure`() {
         runTest {
             val remoteLoggedDataSource =
-                remoteLoggedDataSource(client = addDeviceEndpointMockHttpClient(isLogged = true))
+                remoteLoggedDataSource(httpClient = addDeviceEndpointMockHttpClient(isLogged = true))
 
             remoteLoggedDataSource.addDevice(deviceName = "", room = "", type = DeviceType.BLIND).test {
                 assertEquals(AddDeviceResult.Failure, awaitItem())
@@ -72,7 +73,7 @@ class RemoteLoggedDataSourceTest {
         runTest {
             val remoteLoggedDataSource =
                 remoteLoggedDataSource(
-                    client = devicesEndpointMockHttpClient(
+                    httpClient = devicesEndpointMockHttpClient(
                         isLogged = true,
                         devices = emptyList()
                     )
@@ -90,7 +91,7 @@ class RemoteLoggedDataSourceTest {
         runTest {
             val remoteLoggedDataSource =
                 remoteLoggedDataSource(
-                    client = devicesEndpointMockHttpClient(
+                    httpClient = devicesEndpointMockHttpClient(
                         isLogged = true,
                         devices = devices
                     )
@@ -104,11 +105,11 @@ class RemoteLoggedDataSourceTest {
     }
 
     @Test
-    fun `GIVEN user not logged WHEN devices called THEN returns unauthorized`() {
+    fun `GIVEN user not logged WHEN devices called THEN returns failure`() {
         runTest {
             val remoteLoggedDataSource =
                 remoteLoggedDataSource(
-                    client = devicesEndpointMockHttpClient(
+                    httpClient = devicesEndpointMockHttpClient(
                         isLogged = false,
                         devices = emptyList()
                     )
@@ -125,7 +126,7 @@ class RemoteLoggedDataSourceTest {
     fun `GIVEN user logged with valid device WHEN updateDevice called THEN returns ok`() {
         runTest {
             val remoteLoggedDataSource =
-                remoteLoggedDataSource(client = updateDeviceEndpointMockHttpClient(isLogged = true))
+                remoteLoggedDataSource(httpClient = updateDeviceEndpointMockHttpClient(isLogged = true))
 
             remoteLoggedDataSource.updateDevice(updatedDevice = device)
                 .test {
@@ -136,10 +137,10 @@ class RemoteLoggedDataSourceTest {
     }
 
     @Test
-    fun `GIVEN user logged with invalid device WHEN updateDevice called THEN returns unknown error`() {
+    fun `GIVEN user logged with invalid device WHEN updateDevice called THEN returns failure`() {
         runTest {
             val remoteLoggedDataSource =
-                remoteLoggedDataSource(client = updateDeviceEndpointMockHttpClient(isLogged = true))
+                remoteLoggedDataSource(httpClient = updateDeviceEndpointMockHttpClient(isLogged = true))
 
             remoteLoggedDataSource.updateDevice(updatedDevice = invalidDevice)
                 .test {
@@ -150,10 +151,10 @@ class RemoteLoggedDataSourceTest {
     }
 
     @Test
-    fun `GIVEN user not logged WHEN updateDevice called THEN returns not logged error`() {
+    fun `GIVEN user not logged WHEN updateDevice called THEN returns failure`() {
         runTest {
             val remoteLoggedDataSource =
-                remoteLoggedDataSource(client = updateDeviceEndpointMockHttpClient(isLogged = false))
+                remoteLoggedDataSource(httpClient = updateDeviceEndpointMockHttpClient(isLogged = false))
 
             remoteLoggedDataSource.updateDevice(updatedDevice = device)
                 .test {
@@ -191,16 +192,14 @@ class RemoteLoggedDataSourceTest {
             )
         )
 
-        private fun TestScope.remoteLoggedDataSource(client: HttpClient): RemoteLoggedDataSource =
+        private fun TestScope.remoteLoggedDataSource(httpClient: HttpClient): RemoteLoggedDataSource =
             RemoteLoggedDataSource(
                 dispatchersProvider = FakeDispatchersProvider(StandardTestDispatcher(testScheduler)),
-                client = client,
+                httpClient = httpClient,
             )
 
-        private fun addDeviceEndpointMockHttpClient(
-            isLogged: Boolean,
-        ): HttpClient =
-            defaultHttpClient(
+        private fun addDeviceEndpointMockHttpClient(isLogged: Boolean): HttpClient =
+            fakeHttpClient(
                 mockEngine(
                     pathToFake = ClientEndpoint.ADD_DEVICE.route,
                     onPathFound = { request ->
@@ -221,7 +220,7 @@ class RemoteLoggedDataSourceTest {
             isLogged: Boolean,
             devices: List<Device>,
         ): HttpClient =
-            defaultHttpClient(
+            fakeHttpClient(
                 mockEngine(
                     pathToFake = ClientEndpoint.DEVICES.route,
                     onPathFound = { request ->
@@ -237,7 +236,7 @@ class RemoteLoggedDataSourceTest {
         private fun updateDeviceEndpointMockHttpClient(
             isLogged: Boolean,
         ): HttpClient =
-            defaultHttpClient(
+            fakeHttpClient(
                 mockEngine(
                     pathToFake = ClientEndpoint.UPDATE_DEVICE.route,
                     onPathFound = { request ->
@@ -252,8 +251,5 @@ class RemoteLoggedDataSourceTest {
                     },
                 )
             )
-
-        private fun defaultHttpClient(mockEngine: MockEngine): HttpClient =
-            defaultHttpClient(mockEngine = mockEngine)
     }
 }

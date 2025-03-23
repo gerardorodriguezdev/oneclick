@@ -62,7 +62,7 @@ abstract class IntegrationTest {
             }
 
             val scope = object : ApplicationScope {
-                override val client: HttpClient = client
+                override val httpClient: HttpClient = client
             }
 
             scope.testExecutionBlock()
@@ -70,7 +70,7 @@ abstract class IntegrationTest {
     }
 
     interface ApplicationScope {
-        val client: HttpClient
+        val httpClient: HttpClient
 
         val HttpResponse.userSessionCookie: String?
             get() {

@@ -2,10 +2,10 @@ package theoneclick.client.core.viewModels
 
 import kotlinx.coroutines.flow.flowOf
 import theoneclick.client.core.extensions.popUpToInclusive
+import theoneclick.client.core.models.results.UserLoggedResult
 import theoneclick.client.core.navigation.NavigationController.NavigationEvent
 import theoneclick.client.core.testing.fakes.FakeAuthenticationDataSource
 import theoneclick.client.core.testing.fakes.FakeNavigationController
-import theoneclick.client.core.models.results.UserLoggedResult
 import theoneclick.shared.core.models.routes.AppRoute.*
 import theoneclick.shared.core.models.routes.base.Route
 import theoneclick.shared.testing.dispatchers.CoroutinesTest
@@ -18,13 +18,12 @@ class InitViewModelTest : CoroutinesTest() {
 
     @Test
     fun `GIVEN user logged WHEN init THEN goes to starting route`() {
-        val startingRoute = Home
         dataSource.userLoggedResult = flowOf(UserLoggedResult.Logged)
 
         initViewModel()
 
         navigationController.events.assertContains(
-            expectedNavigationEvents(startingRoute = startingRoute)
+            expectedNavigationEvents(Home)
         )
     }
 
@@ -50,9 +49,9 @@ class InitViewModelTest : CoroutinesTest() {
         )
     }
 
-    private fun expectedNavigationEvents(startingRoute: Route): NavigationEvent =
+    private fun expectedNavigationEvents(destination: Route): NavigationEvent =
         NavigationEvent.Navigate(
-            destinationRoute = startingRoute,
+            destinationRoute = destination,
             popUpTo = popUpToInclusive(startRoute = Init),
             launchSingleTop = true,
         )
