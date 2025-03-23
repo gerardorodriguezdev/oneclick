@@ -24,31 +24,23 @@
       "nullable": true
     },
     {
-      "name": "JVM_SECRET_GOOGLE_HOME_ACTIONS_CLIENT_ID",
+      "name": "SECRET_SIGN_KEY",
       "propertyType": "String"
     },
     {
-      "name": "JVM_SECRET_GOOGLE_HOME_ACTIONS_SECRET",
+      "name": "SECRET_ENCRYPTION_KEY",
       "propertyType": "String"
     },
     {
-      "name": "JVM_SECRET_SIGN_KEY",
+      "name": "HOST",
       "propertyType": "String"
     },
     {
-      "name": "JVM_SECRET_ENCRYPTION_KEY",
-      "propertyType": "String"
-    },
-    {
-      "name": "JVM_HOST",
-      "propertyType": "String"
-    },
-    {
-      "name": "JVM_ENABLE_QAAPI",
+      "name": "ENABLE_QAAPI",
       "propertyType": "Boolean"
     },
     {
-      "name": "JVM_DISABLE_RATE_LIMIT",
+      "name": "DISABLE_RATE_LIMIT",
       "propertyType": "Boolean"
     }
   ]

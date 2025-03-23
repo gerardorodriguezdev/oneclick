@@ -22,6 +22,7 @@ fun Routing.isUserLoggedEndpoint() {
     }
 }
 
+//TODO: Test this 2 cases
 private fun RoutingContext.userSession(): UserSession? =
     when (call.request.agent) {
         Agent.MOBILE -> call.principal<UserSession>()
