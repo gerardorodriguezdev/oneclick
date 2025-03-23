@@ -15,7 +15,6 @@ import theoneclick.client.core.entrypoint.HomeEntrypoint
 import theoneclick.client.core.entrypoint.buildCoreModule
 import theoneclick.client.core.platform.AndroidAppDependencies
 import theoneclick.client.core.testing.dataSources.FakeTokenDataSource
-import theoneclick.client.core.testing.idlingResources.TestIdlingResource
 import theoneclick.client.core.testing.matchers.screens.homeScreen.HomeScreenMatcher
 import theoneclick.client.core.ui.previews.providers.screens.homeScreen.DevicesListScreenPreviewModels
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
@@ -26,7 +25,6 @@ import kotlin.test.BeforeTest
 
 abstract class HomeIntegrationTest {
     private val tokenDataSource = FakeTokenDataSource()
-    private val idlingResource = TestIdlingResource()
     private val appDependencies = AndroidAppDependencies(
         httpClientEngine = MockEngine { request ->
             when (request.url.fullPath) {
@@ -34,7 +32,6 @@ abstract class HomeIntegrationTest {
                 else -> respondError(HttpStatusCode.NotFound)
             }
         },
-        idlingResource = idlingResource,
         tokenDataSource = tokenDataSource,
     )
     private val homeEntrypoint = HomeEntrypoint()
@@ -67,21 +64,15 @@ abstract class HomeIntegrationTest {
         this.isUserLogged = isUserLogged
 
         runComposeUiTest {
-            registerIdlingResource(idlingResource)
-
             setupBlock()
 
             setContent {
-                with(homeEntrypoint) {
-                    HomeScreen(
-                        navHostController = rememberNavController(),
-                    )
-                }
+                homeEntrypoint.HomeScreen(
+                    navHostController = rememberNavController(),
+                )
             }
 
             HomeScreenMatcher(this).block(mainClock)
-
-            unregisterIdlingResource(idlingResource)
         }
     }
 

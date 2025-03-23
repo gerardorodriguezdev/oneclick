@@ -9,8 +9,6 @@ import io.ktor.serialization.kotlinx.json.*
 import theoneclick.client.core.buildkonfig.BuildKonfig
 import theoneclick.client.core.dataSources.TokenDataSource
 import theoneclick.client.core.extensions.popUpToInclusive
-import theoneclick.client.core.idlingResources.IdlingResource
-import theoneclick.client.core.idlingResources.IdlingResourcesManager
 import theoneclick.client.core.mappers.urlProtocol
 import theoneclick.client.core.navigation.NavigationController
 import theoneclick.client.core.plugins.LogoutManager
@@ -21,7 +19,6 @@ import theoneclick.shared.core.models.routes.AppRoute
 fun androidHttpClient(
     httpClientEngine: HttpClientEngine,
     tokenDataSource: TokenDataSource,
-    idlingResource: IdlingResource,
     navigationController: NavigationController,
 ): HttpClient =
     HttpClient(httpClientEngine) {
@@ -50,10 +47,6 @@ fun androidHttpClient(
 
         install(TokenManager) {
             this.tokenDataSource = tokenDataSource
-        }
-
-        install(IdlingResourcesManager) {
-            this.idlingResource = idlingResource
         }
 
         install(LogoutManager) {
