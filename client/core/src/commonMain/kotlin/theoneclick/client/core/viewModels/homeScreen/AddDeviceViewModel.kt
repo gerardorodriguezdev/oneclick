@@ -8,21 +8,14 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import theoneclick.client.core.extensions.popUpToInclusive
-import theoneclick.client.core.routes.NavigationController
-import theoneclick.client.core.routes.NavigationController.NavigationEvent.Navigate
-import theoneclick.client.core.ui.events.homeScreen.AddDeviceEvent
-import theoneclick.client.core.ui.states.homeScreen.AddDeviceState
 import theoneclick.client.core.dataSources.LoggedDataSource
 import theoneclick.client.core.models.results.AddDeviceResult
-import theoneclick.shared.core.models.routes.AppRoute
+import theoneclick.client.core.ui.events.homeScreen.AddDeviceEvent
+import theoneclick.client.core.ui.states.homeScreen.AddDeviceState
 import theoneclick.shared.core.validators.deviceNameValidator
 import theoneclick.shared.core.validators.roomNameValidator
 
-class AddDeviceViewModel(
-    private val loggedDataSource: LoggedDataSource,
-    private val navigationController: NavigationController,
-) : ViewModel() {
+class AddDeviceViewModel(private val loggedDataSource: LoggedDataSource) : ViewModel() {
     private val _state = mutableStateOf(AddDeviceState())
     val state: State<AddDeviceState> = _state
 
@@ -100,24 +93,8 @@ class AddDeviceViewModel(
                         is AddDeviceResult.Success ->
                             _state.value = _state.value.copy(showSuccess = true)
 
-                        is AddDeviceResult.Failure -> {
-                            when (addDeviceResult) {
-                                is AddDeviceResult.Failure.NotLogged -> {
-                                    _state.value = _state.value.copy(showError = true)
-                                    navigationController.sendNavigationEvent(
-                                        Navigate(
-                                            destinationRoute = AppRoute.Login,
-                                            popUpTo = popUpToInclusive(
-                                                startRoute = AppRoute.Home,
-                                            )
-                                        )
-                                    )
-                                }
-
-                                is AddDeviceResult.Failure.UnknownError ->
-                                    _state.value = _state.value.copy(showError = true)
-                            }
-                        }
+                        is AddDeviceResult.Failure ->
+                            _state.value = _state.value.copy(showError = true)
                     }
                 }
         }

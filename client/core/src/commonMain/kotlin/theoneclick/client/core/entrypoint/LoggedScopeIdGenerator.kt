@@ -1,4 +1,4 @@
-package theoneclick.client.core.scopeIdGenerator
+package theoneclick.client.core.entrypoint
 
 interface LoggedScopeIdGenerator {
     fun scopeId(): String

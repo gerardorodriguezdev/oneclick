@@ -2,7 +2,7 @@ package theoneclick.client.core.viewModels.homeScreen
 
 import kotlinx.coroutines.flow.flowOf
 import theoneclick.client.core.extensions.popUpToInclusive
-import theoneclick.client.core.routes.NavigationController.NavigationEvent.Navigate
+import theoneclick.client.core.navigation.NavigationController.NavigationEvent.Navigate
 import theoneclick.client.core.testing.fakes.FakeLoggedDataSource
 import theoneclick.client.core.testing.fakes.FakeNavigationController
 import theoneclick.client.core.ui.events.homeScreen.AddDeviceEvent.*

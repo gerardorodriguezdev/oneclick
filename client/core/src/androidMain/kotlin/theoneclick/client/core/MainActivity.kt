@@ -4,7 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import theoneclick.client.core.application.base.BaseAndroidApplication
+import theoneclick.client.core.application.TheOneClickApplication
 
 class MainActivity : ComponentActivity() {
 
@@ -12,7 +12,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
-        val entrypoint = (application as BaseAndroidApplication).appEntrypoint
+        val entrypoint = (application as TheOneClickApplication).appEntrypoint
 
         setContent {
             entrypoint.App()

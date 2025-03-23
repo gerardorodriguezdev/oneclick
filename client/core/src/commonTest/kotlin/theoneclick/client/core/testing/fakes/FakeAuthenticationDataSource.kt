@@ -2,7 +2,7 @@ package theoneclick.client.core.testing.fakes
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
-import theoneclick.client.core.dataSources.AuthenticationDataSource
+import theoneclick.client.core.platform.AuthenticationDataSource
 import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.client.core.models.results.UserLoggedResult
 
@@ -14,7 +14,7 @@ class FakeAuthenticationDataSource(
     override fun isUserLogged(): Flow<UserLoggedResult> =
         userLoggedResult
 
-    override fun requestLogin(
+    override fun login(
         username: String,
         password: String
     ): Flow<RequestLoginResult> = requestLoginResultFlow

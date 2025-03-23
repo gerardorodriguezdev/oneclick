@@ -2,7 +2,7 @@ package theoneclick.client.core.viewModels
 
 import kotlinx.coroutines.flow.flowOf
 import theoneclick.client.core.extensions.popUpToInclusive
-import theoneclick.client.core.routes.NavigationController.NavigationEvent
+import theoneclick.client.core.navigation.NavigationController.NavigationEvent
 import theoneclick.client.core.testing.fakes.FakeAuthenticationDataSource
 import theoneclick.client.core.testing.fakes.FakeNavigationController
 import theoneclick.client.core.models.results.UserLoggedResult

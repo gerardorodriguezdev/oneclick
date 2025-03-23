@@ -10,7 +10,7 @@ import kotlinx.coroutines.test.runTest
 import theoneclick.client.core.idlingResources.EmptyIdlingResource
 import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.client.core.models.results.UserLoggedResult
-import theoneclick.shared.core.extensions.defaultHttpClient
+import theoneclick.client.core.platform.RemoteAuthenticationManager
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.requests.RequestLoginRequest
 import theoneclick.shared.core.models.responses.UserLoggedResponse
@@ -119,8 +119,8 @@ class RemoteAuthenticationDataSourceTest {
         const val USERNAME = "Username1"
         const val PASSWORD = "Password1"
 
-        private fun TestScope.remoteAuthenticationDataSource(client: HttpClient): RemoteAuthenticationDataSource =
-            RemoteAuthenticationDataSource(
+        private fun TestScope.remoteAuthenticationDataSource(client: HttpClient): RemoteAuthenticationManager =
+            RemoteAuthenticationManager(
                 dispatchersProvider = FakeDispatchersProvider(StandardTestDispatcher(testScheduler)),
                 client = client,
                 idlingResource = EmptyIdlingResource(),

@@ -17,15 +17,14 @@ import org.koin.core.module.dsl.scopedOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.bind
 import org.koin.dsl.module
-import theoneclick.client.core.scopeIdGenerator.StaticLoggedScopeIdGenerator
+import theoneclick.client.core.dataSources.LoggedDataSource
+import theoneclick.client.core.dataSources.RemoteLoggedDataSource
 import theoneclick.client.core.ui.screens.homeScreen.AddDeviceScreen
 import theoneclick.client.core.ui.screens.homeScreen.DevicesListScreen
 import theoneclick.client.core.ui.screens.homeScreen.HomeScreenScaffold
 import theoneclick.client.core.viewModels.homeScreen.AddDeviceViewModel
 import theoneclick.client.core.viewModels.homeScreen.DevicesListViewModel
 import theoneclick.client.core.viewModels.homeScreen.HomeViewModel
-import theoneclick.client.core.dataSources.LoggedDataSource
-import theoneclick.client.core.dataSources.RemoteLoggedDataSource
 import theoneclick.shared.core.models.routes.HomeRoute
 import theoneclick.shared.core.models.routes.HomeRoute.AddDevice
 import theoneclick.shared.core.models.routes.HomeRoute.DevicesList
@@ -50,14 +49,12 @@ class HomeEntrypoint {
             viewModel {
                 DevicesListViewModel(
                     loggedDataSource = getScope(loggedScopeIdGenerator.scopeId()).get(),
-                    navigationController = get(),
                 )
             }
 
             viewModel {
                 AddDeviceViewModel(
                     loggedDataSource = getScope(loggedScopeIdGenerator.scopeId()).get(),
-                    navigationController = get(),
                 )
             }
         }

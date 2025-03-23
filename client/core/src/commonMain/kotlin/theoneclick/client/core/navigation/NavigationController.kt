@@ -1,8 +1,8 @@
-package theoneclick.client.core.routes
+package theoneclick.client.core.navigation
 
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import theoneclick.client.core.routes.NavigationController.NavigationEvent
+import theoneclick.client.core.navigation.NavigationController.NavigationEvent
 import theoneclick.shared.core.models.routes.base.Route
 
 interface NavigationController {

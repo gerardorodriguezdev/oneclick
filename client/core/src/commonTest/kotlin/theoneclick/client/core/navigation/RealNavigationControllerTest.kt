@@ -1,4 +1,4 @@
-package theoneclick.client.core.routes
+package theoneclick.client.core.navigation
 
 import app.cash.turbine.turbineScope
 import kotlinx.coroutines.test.runTest

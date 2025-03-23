@@ -4,8 +4,10 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import kotlinx.coroutines.flow.*
-import theoneclick.client.core.idlingResources.IdlingResource
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import theoneclick.client.core.models.results.AddDeviceResult
 import theoneclick.client.core.models.results.DevicesResult
 import theoneclick.client.core.models.results.UpdateDeviceResult
@@ -32,7 +34,6 @@ interface LoggedDataSource {
 class RemoteLoggedDataSource(
     private val client: HttpClient,
     private val dispatchersProvider: DispatchersProvider,
-    private val idlingResource: IdlingResource,
 ) : LoggedDataSource {
 
     override fun addDevice(
@@ -42,7 +43,6 @@ class RemoteLoggedDataSource(
     ): Flow<AddDeviceResult> =
         flow {
             val response = client.post(ClientEndpoint.ADD_DEVICE.route) {
-                contentType(ContentType.Application.Json)
                 setBody(
                     AddDeviceRequest(
                         deviceName = deviceName,
@@ -54,52 +54,40 @@ class RemoteLoggedDataSource(
 
             when (response.status) {
                 HttpStatusCode.OK -> emit(AddDeviceResult.Success)
-                HttpStatusCode.Unauthorized -> emit(AddDeviceResult.Failure.NotLogged)
-                else -> emit(AddDeviceResult.Failure.UnknownError)
+                else -> emit(AddDeviceResult.Failure)
             }
         }
-            .onStart { idlingResource.increment() }
-            .onCompletion { idlingResource.decrement() }
-            .catch { emit(AddDeviceResult.Failure.UnknownError) }
+            .catch { emit(AddDeviceResult.Failure) }
             .flowOn(dispatchersProvider.io())
 
     override fun devices(): Flow<DevicesResult> =
         flow {
-            val response = client.get(ClientEndpoint.DEVICES.route) {
-                contentType(ContentType.Application.Json)
-            }
+            val response = client.get(ClientEndpoint.DEVICES.route)
 
             when (response.status) {
                 HttpStatusCode.OK -> {
-                    val responseBody =
-                        response.body<DevicesResponse>()
+                    val responseBody = response.body<DevicesResponse>()
                     emit(responseBody.toDevicesResult())
                 }
-                HttpStatusCode.Unauthorized -> emit(DevicesResult.Failure.NotLogged)
-                else -> emit(DevicesResult.Failure.UnknownError)
+
+                else -> emit(DevicesResult.Failure)
             }
         }
-            .onStart { idlingResource.increment() }
-            .onCompletion { idlingResource.decrement() }
-            .catch { emit(DevicesResult.Failure.UnknownError) }
+            .catch { emit(DevicesResult.Failure) }
             .flowOn(dispatchersProvider.io())
 
     override fun updateDevice(updatedDevice: Device): Flow<UpdateDeviceResult> =
         flow {
             val response = client.post(ClientEndpoint.UPDATE_DEVICE.route) {
-                contentType(ContentType.Application.Json)
                 setBody(UpdateDeviceRequest(updatedDevice))
             }
 
             when (response.status) {
                 HttpStatusCode.OK -> emit(UpdateDeviceResult.Success)
-                HttpStatusCode.Unauthorized -> emit(UpdateDeviceResult.Failure.NotLogged)
-                else -> emit(UpdateDeviceResult.Failure.UnknownError)
+                else -> emit(UpdateDeviceResult.Failure)
             }
         }
-            .onStart { idlingResource.increment() }
-            .onCompletion { idlingResource.decrement() }
-            .catch { emit(UpdateDeviceResult.Failure.UnknownError) }
+            .catch { emit(UpdateDeviceResult.Failure) }
             .flowOn(dispatchersProvider.io())
 
     private fun DevicesResponse.toDevicesResult(): DevicesResult =

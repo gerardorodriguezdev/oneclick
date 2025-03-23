@@ -6,6 +6,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import theoneclick.server.core.models.UserSession
 import theoneclick.server.core.plugins.authentication.AuthenticationConstants.SESSION_AUTHENTICATION
+import theoneclick.server.core.plugins.authentication.AuthenticationConstants.TOKEN_AUTHENTICATION
 import theoneclick.server.core.plugins.koin.inject
 import theoneclick.server.core.validators.ParamsValidator
 
@@ -31,7 +32,7 @@ private fun AuthenticationConfig.registerSessionAuthentication(paramsValidator: 
 }
 
 private fun AuthenticationConfig.registerTokenAuthentication(paramsValidator: ParamsValidator) {
-    bearer {
+    bearer(TOKEN_AUTHENTICATION) {
         realm = "Access to the '/' path"
 
         authenticate { tokenCredential ->

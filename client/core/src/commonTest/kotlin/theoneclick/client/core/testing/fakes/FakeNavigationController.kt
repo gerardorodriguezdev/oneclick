@@ -2,8 +2,8 @@ package theoneclick.client.core.testing.fakes
 
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import theoneclick.client.core.routes.NavigationController
-import theoneclick.client.core.routes.NavigationController.NavigationEvent
+import theoneclick.client.core.navigation.NavigationController
+import theoneclick.client.core.navigation.NavigationController.NavigationEvent
 
 class FakeNavigationController(
     var emitNavigationEvents: Boolean = false,

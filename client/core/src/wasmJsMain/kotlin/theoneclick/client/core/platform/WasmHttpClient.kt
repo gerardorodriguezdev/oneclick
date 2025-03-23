@@ -6,14 +6,13 @@ import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import theoneclick.client.core.extensions.popUpToInclusive
+import theoneclick.client.core.navigation.NavigationController
+import theoneclick.client.core.plugins.LogoutManager
 import theoneclick.shared.core.models.agents.Agent
+import theoneclick.shared.core.models.routes.AppRoute
 
-//TODO: Repeated
-fun wasmHttpClient(
-    urlProtocol: URLProtocol?,
-    host: String?,
-    port: Int?,
-): HttpClient {
+fun wasmHttpClient(navigationController: NavigationController): HttpClient {
     val engine = Js.create()
 
     return HttpClient(engine) {
@@ -22,19 +21,21 @@ fun wasmHttpClient(
         }
 
         install(DefaultRequest) {
-            urlProtocol?.let {
-                url.protocol = urlProtocol
-            }
-
-            host?.let {
-                this.host = host
-            }
-
-            port?.let {
-                this.port = port
-            }
+            contentType(ContentType.Application.Json)
 
             userAgent(Agent.BROWSER.value)
+        }
+
+        install(LogoutManager) {
+            onLogout = {
+                navigationController.sendNavigationEvent(
+                    NavigationController.NavigationEvent.Navigate(
+                        destinationRoute = AppRoute.Login,
+                        launchSingleTop = true,
+                        popUpTo = popUpToInclusive(startRoute = AppRoute.Init)
+                    )
+                )
+            }
         }
     }
 }

@@ -10,19 +10,14 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import theoneclick.client.core.dataSources.LoggedDataSource
-import theoneclick.client.core.extensions.popUpToInclusive
 import theoneclick.client.core.extensions.updateDevice
 import theoneclick.client.core.models.results.DevicesResult
 import theoneclick.client.core.models.results.UpdateDeviceResult
-import theoneclick.client.core.routes.NavigationController
-import theoneclick.client.core.routes.NavigationController.NavigationEvent.Navigate
 import theoneclick.client.core.ui.events.homeScreen.DevicesListEvent
 import theoneclick.client.core.ui.states.homeScreen.DevicesListState
-import theoneclick.shared.core.models.routes.AppRoute
 
 class DevicesListViewModel(
     private val loggedDataSource: LoggedDataSource,
-    private val navigationController: NavigationController,
 ) : ViewModel() {
 
     private val _state = mutableStateOf(DevicesListState())
@@ -64,28 +59,10 @@ class DevicesListViewModel(
                             )
                         }
 
-                        is DevicesResult.Failure -> {
-                            when (devicesResult) {
-                                is DevicesResult.Failure.NotLogged -> handleUserNotLogged()
-                                is DevicesResult.Failure.UnknownError -> handleUnknownError()
-                            }
-                        }
+                        is DevicesResult.Failure -> handleUnknownError()
                     }
                 }
         }
-    }
-
-    private suspend fun handleUserNotLogged() {
-        _state.value = _state.value.copy(showError = true)
-
-        navigationController.sendNavigationEvent(
-            Navigate(
-                destinationRoute = AppRoute.Login,
-                popUpTo = popUpToInclusive(
-                    startRoute = AppRoute.Home,
-                )
-            )
-        )
     }
 
     private fun handleUnknownError() {
@@ -111,12 +88,7 @@ class DevicesListViewModel(
                 .collect { updatedDeviceResult ->
                     when (updatedDeviceResult) {
                         is UpdateDeviceResult.Success -> Unit
-                        is UpdateDeviceResult.Failure -> {
-                            when (updatedDeviceResult) {
-                                is UpdateDeviceResult.Failure.NotLogged -> handleUserNotLogged()
-                                is UpdateDeviceResult.Failure.UnknownError -> handleUnknownError()
-                            }
-                        }
+                        is UpdateDeviceResult.Failure -> handleUnknownError()
                     }
                 }
         }

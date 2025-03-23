@@ -1,15 +1,30 @@
-package theoneclick.client.core.platform
+package theoneclick.client.core.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
-import theoneclick.client.core.routes.NavigationController
-import theoneclick.client.core.routes.NavigationController.NavigationEvent
-import theoneclick.client.core.routes.NavigationController.NavigationEvent.Navigate
-import theoneclick.client.core.routes.NavigationController.NavigationEvent.PopBackStack
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import theoneclick.client.core.navigation.NavigationController.NavigationEvent
+import theoneclick.client.core.navigation.NavigationController.NavigationEvent.Navigate
+import theoneclick.client.core.navigation.NavigationController.NavigationEvent.PopBackStack
 
-//TODO: Repeated
-class WasmNavigationControllerObserver(
+interface NavigationControllerObserver {
+    val navigationController: NavigationController
+    val navHostController: NavHostController
+
+    suspend fun subscribe() {
+        coroutineScope {
+            launch {
+                navigationController.navigationEvents.collect(::onNavigationEvent)
+            }
+        }
+    }
+
+    fun onNavigationEvent(navigationEvent: NavigationEvent)
+}
+
+class RealNavigationControllerObserver(
     override val navigationController: NavigationController,
     override val navHostController: NavHostController,
 ) : NavigationControllerObserver {
@@ -33,10 +48,10 @@ class WasmNavigationControllerObserver(
 }
 
 @Composable
-actual fun rememberNavigationObserver(
+fun rememberNavigationObserver(
     navigationController: NavigationController,
     navHostController: NavHostController,
 ): NavigationControllerObserver =
-    remember(navHostController) {
-        WasmNavigationControllerObserver(navigationController, navHostController)
+    remember {
+        RealNavigationControllerObserver(navigationController, navHostController)
     }

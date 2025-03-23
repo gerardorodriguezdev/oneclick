@@ -12,8 +12,7 @@ import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 import org.koin.core.module.Module
 import theoneclick.client.core.entrypoint.HomeEntrypoint
-import theoneclick.client.core.platform.buildCoreModule
-import theoneclick.client.core.testing.fakes.FakeHomeDependencies
+import theoneclick.client.core.entrypoint.buildCoreModule
 import theoneclick.client.core.testing.matchers.screens.homeScreen.HomeScreenMatcher
 import theoneclick.client.core.ui.previews.providers.screens.homeScreen.DevicesListScreenPreviewModels
 import theoneclick.shared.core.models.endpoints.ClientEndpoint

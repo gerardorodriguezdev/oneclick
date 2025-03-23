@@ -4,11 +4,11 @@ import io.ktor.client.*
 import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
+import theoneclick.server.core.extensions.urlString
 import theoneclick.server.core.models.UserData
 import theoneclick.server.core.models.UserSession
 import theoneclick.server.core.models.endpoints.ServerEndpoint
 import theoneclick.server.core.testing.TestData
-import theoneclick.shared.core.extensions.urlString
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.DeviceType

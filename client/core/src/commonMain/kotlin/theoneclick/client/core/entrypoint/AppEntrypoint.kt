@@ -14,21 +14,16 @@ import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.context.startKoin
 import org.koin.core.module.Module
-import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
-import org.koin.dsl.bind
 import org.koin.dsl.module
 import theoneclick.client.core.extensions.RegisterNavigationControllerObserver
 import theoneclick.client.core.platform.AppDependencies
-import theoneclick.client.core.platform.buildCoreModule
 import theoneclick.client.core.ui.screenProperties.ScreenProperties
 import theoneclick.client.core.ui.screens.LoadingScreen
 import theoneclick.client.core.ui.screens.LoginScreen
 import theoneclick.client.core.ui.theme.TheOneClickTheme
 import theoneclick.client.core.viewModels.InitViewModel
 import theoneclick.client.core.viewModels.LoginViewModel
-import theoneclick.client.core.dataSources.AuthenticationDataSource
-import theoneclick.client.core.dataSources.RemoteAuthenticationDataSource
 import theoneclick.shared.core.models.routes.AppRoute.*
 
 class AppEntrypoint {
@@ -101,7 +96,6 @@ class AppEntrypoint {
         module {
             includes(coreModule)
 
-            singleOf(::RemoteAuthenticationDataSource) bind AuthenticationDataSource::class
             viewModel {
                 InitViewModel(
                     navigationController = get(),
