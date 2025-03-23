@@ -6,14 +6,13 @@ import theoneclick.client.core.dataSources.TokenDataSource
 import theoneclick.client.core.navigation.NavigationController
 import theoneclick.client.core.navigation.RealNavigationController
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
-import theoneclick.shared.dispatchers.platform.dispatchersProvider
 
 class AndroidAppDependencies(
     httpClientEngine: HttpClientEngine,
     tokenDataSource: TokenDataSource,
+    override val dispatchersProvider: DispatchersProvider,
 ) : AppDependencies {
     override val navigationController: NavigationController = RealNavigationController()
-    override val dispatchersProvider: DispatchersProvider = dispatchersProvider()
     override val httpClient: HttpClient = androidHttpClient(
         httpClientEngine = httpClientEngine,
         tokenDataSource = tokenDataSource,

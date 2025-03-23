@@ -11,6 +11,7 @@ import theoneclick.client.core.entrypoint.AppEntrypoint
 import theoneclick.client.core.mappers.urlProtocol
 import theoneclick.client.core.platform.AndroidAppDependencies
 import theoneclick.client.core.platform.androidHttpClientEngine
+import theoneclick.shared.dispatchers.platform.dispatchersProvider
 import theoneclick.shared.timeProvider.SystemTimeProvider
 
 class TheOneClickApplication : Application() {
@@ -24,6 +25,7 @@ class TheOneClickApplication : Application() {
         val appDependencies = AndroidAppDependencies(
             httpClientEngine = androidHttpClientEngine(timeProvider = SystemTimeProvider()),
             tokenDataSource = AndroidLocalTokenDataSource(),
+            dispatchersProvider = dispatchersProvider(),
         )
         appEntrypoint.startKoin(appDependencies = appDependencies)
     }

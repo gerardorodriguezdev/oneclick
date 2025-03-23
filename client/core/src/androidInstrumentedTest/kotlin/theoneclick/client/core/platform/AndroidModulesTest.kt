@@ -9,6 +9,7 @@ import theoneclick.client.core.dataSources.AndroidLocalTokenDataSource
 import theoneclick.client.core.entrypoint.AppEntrypoint
 import theoneclick.client.core.navigation.NavigationController
 import theoneclick.shared.core.models.routes.AppRoute
+import theoneclick.shared.dispatchers.platform.dispatchersProvider
 import theoneclick.shared.timeProvider.SystemTimeProvider
 
 class AndroidModulesTest {
@@ -23,6 +24,7 @@ class AndroidModulesTest {
                     timeProvider = SystemTimeProvider(),
                 ),
                 tokenDataSource = AndroidLocalTokenDataSource(),
+                dispatchersProvider = dispatchersProvider(),
             )
         )
 

@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import io.ktor.client.engine.mock.*
 import io.ktor.client.request.*
 import io.ktor.http.*
+import kotlinx.coroutines.Dispatchers
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 import org.koin.core.module.Module
@@ -19,11 +20,17 @@ import theoneclick.client.core.testing.matchers.screens.homeScreen.HomeScreenMat
 import theoneclick.client.core.ui.previews.providers.screens.homeScreen.DevicesListScreenPreviewModels
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.responses.DevicesResponse
+import theoneclick.shared.testing.dispatchers.FakeDispatchersProvider
 import theoneclick.shared.testing.extensions.respondJson
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 
+//TODO: Maybe testContainer test?
 abstract class HomeIntegrationTest {
+    private val dispatchersProvider = FakeDispatchersProvider(
+        fakeIo = Dispatchers.Unconfined,
+        fakeMain = Dispatchers.Unconfined,
+    )
     private val tokenDataSource = FakeTokenDataSource()
     private val appDependencies = AndroidAppDependencies(
         httpClientEngine = MockEngine { request ->
@@ -33,6 +40,7 @@ abstract class HomeIntegrationTest {
             }
         },
         tokenDataSource = tokenDataSource,
+        dispatchersProvider = dispatchersProvider,
     )
     private val homeEntrypoint = HomeEntrypoint()
     private val modules: List<Module> = buildModules()
