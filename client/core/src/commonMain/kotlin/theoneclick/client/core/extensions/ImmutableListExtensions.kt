@@ -4,6 +4,7 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import theoneclick.shared.core.models.entities.Device
 
+//TODO: Test
 fun <T> ImmutableList<T>.updateItems(
     transform: (index: Int, currentItem: T) -> T
 ): ImmutableList<T> {

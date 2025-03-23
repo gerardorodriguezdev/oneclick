@@ -114,7 +114,7 @@ class LoginViewModelTest : CoroutinesTest() {
 
     @Test
     fun `GIVEN invalid request WHEN register button clicked event THEN returns updated state`() {
-        dataSource.requestLoginResultFlow = flowOf(RequestLoginResult.UnknownError)
+        dataSource.requestLoginResultFlow = flowOf(RequestLoginResult.Failure)
         viewModel.onEvent(UsernameChanged("username"))
         viewModel.onEvent(PasswordChanged("password12"))
 
@@ -136,7 +136,7 @@ class LoginViewModelTest : CoroutinesTest() {
 
     @Test
     fun `WHEN error shown event THEN returns updated state`() {
-        dataSource.requestLoginResultFlow = flowOf(RequestLoginResult.UnknownError)
+        dataSource.requestLoginResultFlow = flowOf(RequestLoginResult.Failure)
         viewModel.onEvent(UsernameChanged("username"))
         viewModel.onEvent(PasswordChanged("password12"))
         viewModel.onEvent(RegisterButtonClicked)

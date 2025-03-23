@@ -2,13 +2,13 @@ package theoneclick.client.core.viewModels.homeScreen
 
 import kotlinx.coroutines.flow.flowOf
 import theoneclick.client.core.extensions.popUpToInclusive
+import theoneclick.client.core.models.results.AddDeviceResult
 import theoneclick.client.core.navigation.NavigationController.NavigationEvent.Navigate
 import theoneclick.client.core.testing.fakes.FakeLoggedDataSource
 import theoneclick.client.core.testing.fakes.FakeNavigationController
 import theoneclick.client.core.ui.events.homeScreen.AddDeviceEvent.*
 import theoneclick.client.core.ui.states.homeScreen.AddDeviceState
 import theoneclick.shared.core.models.entities.DeviceType
-import theoneclick.client.core.models.results.AddDeviceResult
 import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.testing.dispatchers.CoroutinesTest
 import theoneclick.shared.testing.extensions.assertContains
@@ -21,7 +21,7 @@ class AddDeviceViewModelTest : CoroutinesTest() {
     private val fakeNavigationController = FakeNavigationController()
     private val dataSource = FakeLoggedDataSource()
     private val viewModel =
-        AddDeviceViewModel(navigationController = fakeNavigationController, loggedDataSource = dataSource)
+        AddDeviceViewModel(loggedDataSource = dataSource)
 
     @Test
     fun `GIVEN initial state THEN returns initial state`() {
@@ -119,7 +119,7 @@ class AddDeviceViewModelTest : CoroutinesTest() {
 
     @Test
     fun `GIVEN not logged WHEN add device button clicked event THEN navigates back`() {
-        dataSource.addDeviceResultFlow = flowOf(AddDeviceResult.Failure.NotLogged)
+        dataSource.addDeviceResultFlow = flowOf(AddDeviceResult.Failure)
         viewModel.onEvent(DeviceNameChanged("DeviceName"))
         viewModel.onEvent(RoomNameChanged("RoomName"))
 
@@ -151,7 +151,7 @@ class AddDeviceViewModelTest : CoroutinesTest() {
 
     @Test
     fun `GIVEN unknown error WHEN add device button clicked event THEN returns updated state`() {
-        dataSource.addDeviceResultFlow = flowOf(AddDeviceResult.Failure.UnknownError)
+        dataSource.addDeviceResultFlow = flowOf(AddDeviceResult.Failure)
         viewModel.onEvent(DeviceNameChanged("DeviceName"))
         viewModel.onEvent(RoomNameChanged("RoomName"))
 
@@ -174,7 +174,7 @@ class AddDeviceViewModelTest : CoroutinesTest() {
 
     @Test
     fun `WHEN error shown event THEN returns updated state`() {
-        dataSource.addDeviceResultFlow = flowOf(AddDeviceResult.Failure.UnknownError)
+        dataSource.addDeviceResultFlow = flowOf(AddDeviceResult.Failure)
         viewModel.onEvent(DeviceNameChanged("DeviceName"))
         viewModel.onEvent(RoomNameChanged("RoomName"))
         viewModel.onEvent(AddDeviceButtonClicked)

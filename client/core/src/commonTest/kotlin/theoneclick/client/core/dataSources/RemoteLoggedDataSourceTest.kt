@@ -7,7 +7,6 @@ import io.ktor.http.*
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
-import theoneclick.client.core.idlingResources.EmptyIdlingResource
 import theoneclick.client.core.models.results.AddDeviceResult
 import theoneclick.client.core.models.results.DevicesResult
 import theoneclick.client.core.models.results.UpdateDeviceResult
@@ -49,7 +48,7 @@ class RemoteLoggedDataSourceTest {
 
             remoteLoggedDataSource.addDevice(deviceName = DEVICE_NAME, room = ROOM_NAME, type = DeviceType.BLIND)
                 .test {
-                    assertEquals(AddDeviceResult.Failure.NotLogged, awaitItem())
+                    assertEquals(AddDeviceResult.Failure, awaitItem())
                     cancelAndIgnoreRemainingEvents()
                 }
         }
@@ -62,7 +61,7 @@ class RemoteLoggedDataSourceTest {
                 remoteLoggedDataSource(client = addDeviceEndpointMockHttpClient(isLogged = true))
 
             remoteLoggedDataSource.addDevice(deviceName = "", room = "", type = DeviceType.BLIND).test {
-                assertEquals(AddDeviceResult.Failure.UnknownError, awaitItem())
+                assertEquals(AddDeviceResult.Failure, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -116,7 +115,7 @@ class RemoteLoggedDataSourceTest {
                 )
 
             remoteLoggedDataSource.devices().test {
-                assertEquals(DevicesResult.Failure.NotLogged, awaitItem())
+                assertEquals(DevicesResult.Failure, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -144,7 +143,7 @@ class RemoteLoggedDataSourceTest {
 
             remoteLoggedDataSource.updateDevice(updatedDevice = invalidDevice)
                 .test {
-                    assertEquals(UpdateDeviceResult.Failure.UnknownError, awaitItem())
+                    assertEquals(UpdateDeviceResult.Failure, awaitItem())
                     cancelAndIgnoreRemainingEvents()
                 }
         }
@@ -158,7 +157,7 @@ class RemoteLoggedDataSourceTest {
 
             remoteLoggedDataSource.updateDevice(updatedDevice = device)
                 .test {
-                    assertEquals(UpdateDeviceResult.Failure.NotLogged, awaitItem())
+                    assertEquals(UpdateDeviceResult.Failure, awaitItem())
                     cancelAndIgnoreRemainingEvents()
                 }
         }
@@ -196,7 +195,6 @@ class RemoteLoggedDataSourceTest {
             RemoteLoggedDataSource(
                 dispatchersProvider = FakeDispatchersProvider(StandardTestDispatcher(testScheduler)),
                 client = client,
-                idlingResource = EmptyIdlingResource(),
             )
 
         private fun addDeviceEndpointMockHttpClient(
@@ -256,11 +254,6 @@ class RemoteLoggedDataSourceTest {
             )
 
         private fun defaultHttpClient(mockEngine: MockEngine): HttpClient =
-            defaultHttpClient(
-                engine = mockEngine,
-                protocol = null,
-                host = null,
-                port = null
-            )
+            defaultHttpClient(mockEngine = mockEngine)
     }
 }

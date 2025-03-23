@@ -11,7 +11,9 @@ import io.ktor.http.*
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 import theoneclick.client.core.entrypoint.AppEntrypoint
-import theoneclick.client.core.testing.fakes.FakeAppDependencies
+import theoneclick.client.core.platform.AndroidAppDependencies
+import theoneclick.client.core.platform.AppDependencies
+import theoneclick.client.core.testing.idlingResources.TestIdlingResource
 import theoneclick.client.core.testing.matchers.screens.AppMatcher
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.responses.UserLoggedResponse
@@ -20,9 +22,18 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 
 abstract class AppIntegrationTest {
-    private val fakeAppDependencies = fakeAppDependencies()
+    private val idlingResource = TestIdlingResource()
+    private val appDependencies: AppDependencies = AndroidAppDependencies(
+        httpClientEngine = MockEngine { request ->
+            when (request.url.fullPath) {
+                ClientEndpoint.IS_USER_LOGGED.route -> handleIsUserLogged(isUserLogged)
+                else -> respondError(HttpStatusCode.NotFound)
+            }
+        },
+        idlingResource = idlingResource,
+    )
     private val appEntrypoint = AppEntrypoint()
-    private val modules = appEntrypoint.buildAppModules(fakeAppDependencies)
+    private val modules = appEntrypoint.buildAppModules(appDependencies)
 
     private var isUserLogged: Boolean = false
 
@@ -45,33 +56,19 @@ abstract class AppIntegrationTest {
         this.isUserLogged = isUserLogged
 
         runComposeUiTest {
-            registerIdlingResource(fakeAppDependencies.idlingResource)
+            registerIdlingResource(idlingResource)
 
             setupBlock()
 
             setContent {
-                with(appEntrypoint) {
-                    App(
-                        navHostController = rememberNavController(),
-                    )
-                }
+                appEntrypoint.App(navHostController = rememberNavController())
             }
 
             AppMatcher(this).block(mainClock)
 
-            unregisterIdlingResource(fakeAppDependencies.idlingResource)
+            unregisterIdlingResource(idlingResource)
         }
     }
-
-    private fun fakeAppDependencies(): FakeAppDependencies =
-        FakeAppDependencies(
-            mockEngine = MockEngine { request ->
-                when (request.url.fullPath) {
-                    ClientEndpoint.IS_USER_LOGGED.route -> handleIsUserLogged(isUserLogged)
-                    else -> respondError(HttpStatusCode.NotFound)
-                }
-            },
-        )
 
     private fun MockRequestHandleScope.handleIsUserLogged(isUserLogged: Boolean): HttpResponseData =
         if (isUserLogged) {

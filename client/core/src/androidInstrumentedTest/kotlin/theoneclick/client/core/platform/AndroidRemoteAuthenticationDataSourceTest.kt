@@ -1,16 +1,20 @@
-package theoneclick.client.core.dataSources
+package theoneclick.client.core.platform
 
 import app.cash.turbine.test
-import io.ktor.client.*
-import io.ktor.client.engine.mock.*
-import io.ktor.http.*
+import io.ktor.client.HttpClient
+import io.ktor.client.engine.HttpClientEngine
+import io.ktor.client.engine.mock.respondError
+import io.ktor.client.engine.mock.respondOk
+import io.ktor.http.HttpStatusCode
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
+import org.junit.Test
+import theoneclick.client.core.dataSources.EmptyTokenDataSource
 import theoneclick.client.core.idlingResources.EmptyIdlingResource
 import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.client.core.models.results.UserLoggedResult
-import theoneclick.client.core.platform.RemoteAuthenticationManager
+import theoneclick.client.core.navigation.RealNavigationController
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.requests.RequestLoginRequest
 import theoneclick.shared.core.models.responses.UserLoggedResponse
@@ -18,18 +22,17 @@ import theoneclick.shared.testing.dispatchers.FakeDispatchersProvider
 import theoneclick.shared.testing.extensions.mockEngine
 import theoneclick.shared.testing.extensions.respondJson
 import theoneclick.shared.testing.extensions.toRequestBodyObject
-import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class RemoteAuthenticationDataSourceTest {
+class AndroidRemoteAuthenticationDataSourceTest {
 
     @Test
     fun `GIVEN user logged WHEN isUserLogged called THEN returns logged`() {
         runTest {
-            val remoteAuthenticationDataSource =
-                remoteAuthenticationDataSource(client = userLoggedEndpointMockHttpClient(UserLoggedResponse.Logged))
+            val authenticationDataSource =
+                authenticationDataSource(client = userLoggedEndpointMockHttpClient(UserLoggedResponse.Logged))
 
-            remoteAuthenticationDataSource.isUserLogged().test {
+            authenticationDataSource.isUserLogged().test {
                 assertEquals(UserLoggedResult.Logged, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
@@ -39,10 +42,10 @@ class RemoteAuthenticationDataSourceTest {
     @Test
     fun `GIVEN user not logged WHEN isUserLogged called THEN returns not logged`() {
         runTest {
-            val remoteAuthenticationDataSource =
-                remoteAuthenticationDataSource(client = userLoggedEndpointMockHttpClient(UserLoggedResponse.NotLogged))
+            val authenticationDataSource =
+                this.authenticationDataSource(client = userLoggedEndpointMockHttpClient(UserLoggedResponse.NotLogged))
 
-            remoteAuthenticationDataSource.isUserLogged().test {
+            authenticationDataSource.isUserLogged().test {
                 assertEquals(UserLoggedResult.NotLogged, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
@@ -52,16 +55,16 @@ class RemoteAuthenticationDataSourceTest {
     @Test
     fun `GIVEN server error WHEN isUserLogged called THEN returns unknown error`() {
         runTest {
-            val remoteAuthenticationDataSource = remoteAuthenticationDataSource(
-                client = defaultHttpClient(
+            val authenticationDataSource = authenticationDataSource(
+                client = requestLoginEndpointMockHttpClient(
                     mockEngine(
                         pathToFake = ClientEndpoint.IS_USER_LOGGED.route,
-                        onPathFound = { respondError(HttpStatusCode.BadRequest) },
+                        onPathFound = { respondError(HttpStatusCode.Companion.BadRequest) },
                     )
                 )
             )
 
-            remoteAuthenticationDataSource.isUserLogged().test {
+            authenticationDataSource.isUserLogged().test {
                 assertEquals(UserLoggedResult.UnknownError, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
@@ -69,13 +72,13 @@ class RemoteAuthenticationDataSourceTest {
     }
 
     @Test
-    fun `GIVEN valid data with local redirect WHEN requestLogin THEN returns validLocalRedirect`() {
+    fun `GIVEN valid data with local redirect WHEN login THEN returns validLocalRedirect`() {
         runTest {
-            val remoteAuthenticationDataSource = remoteAuthenticationDataSource(
+            val authenticationDataSource = authenticationDataSource(
                 client = requestLoginEndpointMockHttpClient()
             )
 
-            remoteAuthenticationDataSource.requestLogin(username = USERNAME, password = PASSWORD).test {
+            authenticationDataSource.login(username = USERNAME, password = PASSWORD).test {
                 assertEquals(RequestLoginResult.ValidLogin, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
@@ -83,33 +86,33 @@ class RemoteAuthenticationDataSourceTest {
     }
 
     @Test
-    fun `GIVEN invalid data WHEN requestLogin THEN returns unknown error`() {
+    fun `GIVEN invalid data WHEN login THEN returns unknown error`() {
         runTest {
-            val remoteAuthenticationDataSource = remoteAuthenticationDataSource(
+            val authenticationDataSource = authenticationDataSource(
                 client = requestLoginEndpointMockHttpClient()
             )
 
-            remoteAuthenticationDataSource.requestLogin(username = "", password = "").test {
-                assertEquals(RequestLoginResult.UnknownError, awaitItem())
+            authenticationDataSource.login(username = "", password = "").test {
+                assertEquals(RequestLoginResult.Failure, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
         }
     }
 
     @Test
-    fun `GIVEN error WHEN requestLogin THEN returns unknown error`() {
+    fun `GIVEN error WHEN login THEN returns unknown error`() {
         runTest {
-            val remoteAuthenticationDataSource = remoteAuthenticationDataSource(
-                client = defaultHttpClient(
+            val authenticationDataSource = authenticationDataSource(
+                client = requestLoginEndpointMockHttpClient(
                     mockEngine(
                         pathToFake = ClientEndpoint.REQUEST_LOGIN.route,
-                        onPathFound = { respondError(HttpStatusCode.InternalServerError) },
+                        onPathFound = { respondError(HttpStatusCode.Companion.InternalServerError) },
                     )
                 )
             )
 
-            remoteAuthenticationDataSource.requestLogin(username = USERNAME, password = PASSWORD).test {
-                assertEquals(RequestLoginResult.UnknownError, awaitItem())
+            authenticationDataSource.login(username = USERNAME, password = PASSWORD).test {
+                assertEquals(RequestLoginResult.Failure, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
         }
@@ -119,15 +122,15 @@ class RemoteAuthenticationDataSourceTest {
         const val USERNAME = "Username1"
         const val PASSWORD = "Password1"
 
-        private fun TestScope.remoteAuthenticationDataSource(client: HttpClient): RemoteAuthenticationManager =
-            RemoteAuthenticationManager(
-                dispatchersProvider = FakeDispatchersProvider(StandardTestDispatcher(testScheduler)),
+        private fun TestScope.authenticationDataSource(client: HttpClient): AuthenticationDataSource =
+            AndroidRemoteAuthenticationDataSource(
                 client = client,
-                idlingResource = EmptyIdlingResource(),
+                dispatchersProvider = FakeDispatchersProvider(StandardTestDispatcher(testScheduler)),
+                tokenDataSource = EmptyTokenDataSource(),
             )
 
         private fun userLoggedEndpointMockHttpClient(result: UserLoggedResponse): HttpClient =
-            defaultHttpClient(
+            requestLoginEndpointMockHttpClient(
                 mockEngine(
                     pathToFake = ClientEndpoint.IS_USER_LOGGED.route,
                     onPathFound = {
@@ -137,23 +140,28 @@ class RemoteAuthenticationDataSourceTest {
             )
 
         private fun requestLoginEndpointMockHttpClient(): HttpClient =
-            defaultHttpClient(
+            requestLoginEndpointMockHttpClient(
                 mockEngine(
                     pathToFake = ClientEndpoint.REQUEST_LOGIN.route,
                     onPathFound = { request ->
                         val requestLoginRequest = request.toRequestBodyObject<RequestLoginRequest>()
 
                         when {
-                            requestLoginRequest == null -> respondError(HttpStatusCode.BadRequest)
-                            requestLoginRequest.username != USERNAME -> respondError(HttpStatusCode.BadRequest)
-                            requestLoginRequest.password != PASSWORD -> respondError(HttpStatusCode.BadRequest)
+                            requestLoginRequest == null -> respondError(HttpStatusCode.Companion.BadRequest)
+                            requestLoginRequest.username != USERNAME -> respondError(HttpStatusCode.Companion.BadRequest)
+                            requestLoginRequest.password != PASSWORD -> respondError(HttpStatusCode.Companion.BadRequest)
                             else -> respondOk()
                         }
                     },
                 )
             )
 
-        private fun defaultHttpClient(mockEngine: MockEngine): HttpClient =
-            defaultHttpClient(engine = mockEngine, protocol = null, host = null, port = null)
+        private fun requestLoginEndpointMockHttpClient(engine: HttpClientEngine): HttpClient =
+            androidHttpClient(
+                httpClientEngine = engine,
+                tokenDataSource = EmptyTokenDataSource(),
+                idlingResource = EmptyIdlingResource(),
+                navigationController = RealNavigationController(),
+            )
     }
 }

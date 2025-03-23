@@ -13,6 +13,8 @@ import org.koin.core.context.unloadKoinModules
 import org.koin.core.module.Module
 import theoneclick.client.core.entrypoint.HomeEntrypoint
 import theoneclick.client.core.entrypoint.buildCoreModule
+import theoneclick.client.core.platform.AndroidAppDependencies
+import theoneclick.client.core.testing.idlingResources.TestIdlingResource
 import theoneclick.client.core.testing.matchers.screens.homeScreen.HomeScreenMatcher
 import theoneclick.client.core.ui.previews.providers.screens.homeScreen.DevicesListScreenPreviewModels
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
@@ -22,7 +24,16 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 
 abstract class HomeIntegrationTest {
-    private val fakeHomeDependencies = fakeHomeDependencies()
+    private val idlingResource = TestIdlingResource()
+    private val appDependencies = AndroidAppDependencies(
+        httpClientEngine = MockEngine { request ->
+            when (request.url.fullPath) {
+                ClientEndpoint.DEVICES.route -> handleDevices(isUserLogged)
+                else -> respondError(HttpStatusCode.NotFound)
+            }
+        },
+        idlingResource = idlingResource,
+    )
     private val homeEntrypoint = HomeEntrypoint()
     private val modules: List<Module> = buildModules()
 
@@ -39,7 +50,7 @@ abstract class HomeIntegrationTest {
     }
 
     private fun buildModules(): List<Module> {
-        val coreModule = buildCoreModule(fakeHomeDependencies)
+        val coreModule = buildCoreModule(appDependencies)
         val loggedModule = homeEntrypoint.buildLoggedModule(coreModule)
         return listOf(coreModule, loggedModule)
     }
@@ -53,7 +64,7 @@ abstract class HomeIntegrationTest {
         this.isUserLogged = isUserLogged
 
         runComposeUiTest {
-            registerIdlingResource(fakeHomeDependencies.idlingResource)
+            registerIdlingResource(idlingResource)
 
             setupBlock()
 
@@ -67,19 +78,9 @@ abstract class HomeIntegrationTest {
 
             HomeScreenMatcher(this).block(mainClock)
 
-            unregisterIdlingResource(fakeHomeDependencies.idlingResource)
+            unregisterIdlingResource(idlingResource)
         }
     }
-
-    private fun fakeHomeDependencies(): FakeHomeDependencies =
-        FakeHomeDependencies(
-            mockEngine = MockEngine { request ->
-                when (request.url.fullPath) {
-                    ClientEndpoint.DEVICES.route -> handleDevices(isUserLogged)
-                    else -> respondError(HttpStatusCode.NotFound)
-                }
-            },
-        )
 
     private fun MockRequestHandleScope.handleDevices(isUserLogged: Boolean): HttpResponseData =
         if (isUserLogged) {

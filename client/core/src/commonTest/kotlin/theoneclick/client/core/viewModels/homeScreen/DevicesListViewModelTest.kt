@@ -3,14 +3,14 @@ package theoneclick.client.core.viewModels.homeScreen
 import kotlinx.collections.immutable.persistentListOf
 import kotlinx.coroutines.flow.flowOf
 import theoneclick.client.core.extensions.popUpToInclusive
+import theoneclick.client.core.models.results.DevicesResult
+import theoneclick.client.core.models.results.UpdateDeviceResult
 import theoneclick.client.core.navigation.NavigationController.NavigationEvent
 import theoneclick.client.core.testing.fakes.FakeLoggedDataSource
 import theoneclick.client.core.testing.fakes.FakeNavigationController
 import theoneclick.client.core.ui.events.homeScreen.DevicesListEvent
 import theoneclick.client.core.ui.previews.providers.screens.homeScreen.DevicesListScreenPreviewModels
 import theoneclick.client.core.ui.states.homeScreen.DevicesListState
-import theoneclick.client.core.models.results.DevicesResult
-import theoneclick.client.core.models.results.UpdateDeviceResult
 import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.testing.dispatchers.CoroutinesTest
 import theoneclick.shared.testing.extensions.assertContains
@@ -68,7 +68,7 @@ class DevicesListViewModelTest : CoroutinesTest() {
     @Test
     fun `GIVEN user not logged WHEN init THEN returns user not logged error`() {
         dataSource.devicesResultFlow = flowOf(
-            DevicesResult.Failure.NotLogged,
+            DevicesResult.Failure,
         )
 
         val devicesListViewModel = devicesListViewModel()
@@ -93,7 +93,7 @@ class DevicesListViewModelTest : CoroutinesTest() {
     @Test
     fun `GIVEN unknown error WHEN init THEN returns unknown error`() {
         dataSource.devicesResultFlow = flowOf(
-            DevicesResult.Failure.UnknownError,
+            DevicesResult.Failure,
         )
 
         val devicesListViewModel = devicesListViewModel()
@@ -111,7 +111,7 @@ class DevicesListViewModelTest : CoroutinesTest() {
     @Test
     fun `GIVEN unknown error WHEN error shown THEN resets error`() {
         dataSource.devicesResultFlow = flowOf(
-            DevicesResult.Failure.UnknownError,
+            DevicesResult.Failure,
         )
 
         val devicesListViewModel = devicesListViewModel()
@@ -178,7 +178,7 @@ class DevicesListViewModelTest : CoroutinesTest() {
             DevicesResult.Success(devices = persistentListOf(DevicesListScreenPreviewModels.closedBlind))
         )
         dataSource.updateDeviceResultFlow = flowOf(
-            UpdateDeviceResult.Failure.NotLogged,
+            UpdateDeviceResult.Failure,
         )
         val updatedDevice = DevicesListScreenPreviewModels.closedBlind.copy(
             isOpened = true,
@@ -216,7 +216,7 @@ class DevicesListViewModelTest : CoroutinesTest() {
             DevicesResult.Success(devices = persistentListOf(DevicesListScreenPreviewModels.closedBlind))
         )
         dataSource.updateDeviceResultFlow = flowOf(
-            UpdateDeviceResult.Failure.UnknownError,
+            UpdateDeviceResult.Failure,
         )
         val updatedDevice = DevicesListScreenPreviewModels.closedBlind.copy(
             isOpened = true,
@@ -243,7 +243,6 @@ class DevicesListViewModelTest : CoroutinesTest() {
 
     private fun devicesListViewModel(): DevicesListViewModel =
         DevicesListViewModel(
-            navigationController = fakeNavigationController,
             loggedDataSource = dataSource,
         )
 }

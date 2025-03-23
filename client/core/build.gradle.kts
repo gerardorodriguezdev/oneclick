@@ -94,12 +94,19 @@ kotlin {
             dependencies {
                 implementation(libs.android.test.junit)
                 implementation(libs.android.test.navigation)
+                implementation(libs.kmp.test.turbine)
             }
 
             project.dependencies {
                 debugImplementation(libs.android.test.leak.canary)
                 debugImplementation(compose.uiTooling)
                 debugImplementation(libs.android.test.manifest)
+            }
+        }
+
+        wasmJsTest {
+            dependencies {
+                implementation(libs.kmp.test.turbine)
             }
         }
     }

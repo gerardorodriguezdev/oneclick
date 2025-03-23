@@ -1,32 +1,30 @@
 package theoneclick.client.core.platform
 
 import io.ktor.client.*
+import io.ktor.client.engine.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import theoneclick.client.core.plugins.LogoutManager
-import theoneclick.client.core.plugins.TokenManager
-import theoneclick.client.core.dataSources.TokenDataSource
 import theoneclick.client.core.buildkonfig.BuildKonfig
+import theoneclick.client.core.dataSources.TokenDataSource
 import theoneclick.client.core.extensions.popUpToInclusive
 import theoneclick.client.core.idlingResources.IdlingResource
 import theoneclick.client.core.idlingResources.IdlingResourcesManager
 import theoneclick.client.core.mappers.urlProtocol
 import theoneclick.client.core.navigation.NavigationController
+import theoneclick.client.core.plugins.LogoutManager
+import theoneclick.client.core.plugins.TokenManager
 import theoneclick.shared.core.models.agents.Agent
 import theoneclick.shared.core.models.routes.AppRoute
-import theoneclick.shared.timeProvider.TimeProvider
 
 fun androidHttpClient(
-    timeProvider: TimeProvider,
+    httpClientEngine: HttpClientEngine,
     tokenDataSource: TokenDataSource,
     idlingResource: IdlingResource,
     navigationController: NavigationController,
 ): HttpClient {
-    val engine = androidHttpClientEngine(timeProvider = timeProvider)
-
-    return HttpClient(engine) {
+    return HttpClient(httpClientEngine) {
         install(ContentNegotiation) {
             json()
         }
