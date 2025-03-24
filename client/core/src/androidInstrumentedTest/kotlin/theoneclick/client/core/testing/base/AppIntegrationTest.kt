@@ -12,10 +12,10 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
+import theoneclick.client.core.dataSources.AndroidInMemoryTokenDataSource
 import theoneclick.client.core.entrypoint.AppEntrypoint
 import theoneclick.client.core.platform.AndroidAppDependencies
 import theoneclick.client.core.platform.AppDependencies
-import theoneclick.client.core.testing.dataSources.FakeTokenDataSource
 import theoneclick.client.core.testing.matchers.screens.AppMatcher
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.responses.UserLoggedResponse
@@ -24,10 +24,9 @@ import theoneclick.shared.testing.extensions.respondJson
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 
-//TODO: Maybe testContainer test?
 abstract class AppIntegrationTest {
     private val dispatchersProvider = FakeDispatchersProvider(Dispatchers.Main)
-    private val tokenDataSource = FakeTokenDataSource()
+    private val tokenDataSource = AndroidInMemoryTokenDataSource()
     private val appDependencies: AppDependencies = AndroidAppDependencies(
         httpClientEngine = MockEngine { request ->
             when (request.url.fullPath) {

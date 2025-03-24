@@ -2,7 +2,7 @@ package theoneclick.client.core.plugins
 
 import io.ktor.client.plugins.api.*
 import io.ktor.http.*
-import theoneclick.client.core.dataSources.EmptyTokenDataSource
+import theoneclick.client.core.dataSources.AndroidInMemoryTokenDataSource
 import theoneclick.client.core.dataSources.TokenDataSource
 
 val TokenManager = createClientPlugin("TokenManager", ::TokenManagerConfiguration) {
@@ -17,5 +17,5 @@ val TokenManager = createClientPlugin("TokenManager", ::TokenManagerConfiguratio
 }
 
 class TokenManagerConfiguration(
-    var tokenDataSource: TokenDataSource = EmptyTokenDataSource(),
+    var tokenDataSource: TokenDataSource = AndroidInMemoryTokenDataSource(),
 )

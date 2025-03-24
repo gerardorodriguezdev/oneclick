@@ -8,10 +8,17 @@ interface TokenDataSource {
     suspend fun clear()
 }
 
-class EmptyTokenDataSource : TokenDataSource {
-    override suspend fun token(): String? = null
-    override suspend fun set(token: String) {}
-    override suspend fun clear() {}
+class AndroidInMemoryTokenDataSource : TokenDataSource {
+    private var token: String? = null
+
+    override suspend fun token(): String? = token
+    override suspend fun set(token: String) {
+        this.token = token
+    }
+
+    override suspend fun clear() {
+        token = null
+    }
 }
 
 //TODO: Finish

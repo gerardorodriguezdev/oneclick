@@ -3,10 +3,10 @@ package theoneclick.client.core.entrypoint
 import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.assertCountEquals
 import org.junit.Test
-import theoneclick.client.core.testing.base.HomeIntegrationTest
+import theoneclick.client.core.testing.base.AppIntegrationTest
 
 @OptIn(ExperimentalTestApi::class)
-class HomeEntrypointTest : HomeIntegrationTest() {
+class HomeEntrypointTest : AppIntegrationTest() {
 
     @Test
     fun GIVEN_userNotLogged_WHEN_navigatingToDevicesList_THEN_returns() {
@@ -14,28 +14,28 @@ class HomeEntrypointTest : HomeIntegrationTest() {
             isUserLogged = false,
             setupBlock = { mainClock.autoAdvance = false },
         ) {
-            assertIsScreenDisplayed()
+            homeScreenMatcher.assertIsScreenDisplayed()
 
-            devicesListScreenMatcher.devices.assertCountEquals(0)
+            homeScreenMatcher.devicesListScreenMatcher.devices.assertCountEquals(0)
         }
     }
 
     @Test
     fun GIVEN_userLogged_WHEN_navigatingToDevicesList_THEN_showsDevicesListScreen() {
         testApplication(isUserLogged = true) {
-            assertIsScreenDisplayed()
+            homeScreenMatcher.assertIsScreenDisplayed()
 
-            devicesListScreenMatcher.assertScreenIsDisplayed()
+            homeScreenMatcher.devicesListScreenMatcher.assertScreenIsDisplayed()
         }
     }
 
     @Test
     fun GIVEN_userLogged_WHEN_navigatingToAddDevice_THEN_showsAddDeviceScreen() {
         testApplication(isUserLogged = true) {
-            navigateToAddDeviceScreen()
+            homeScreenMatcher.navigateToAddDeviceScreen()
 
-            devicesListScreenMatcher.assertScreenIsNotDisplayed()
-            addDeviceScreenMatcher.assertScreenIsDisplayed()
+            homeScreenMatcher.devicesListScreenMatcher.assertScreenIsNotDisplayed()
+            homeScreenMatcher.addDeviceScreenMatcher.assertScreenIsDisplayed()
         }
     }
 }

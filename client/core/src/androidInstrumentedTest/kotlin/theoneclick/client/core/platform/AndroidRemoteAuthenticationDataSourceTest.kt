@@ -2,17 +2,16 @@ package theoneclick.client.core.platform
 
 import app.cash.turbine.test
 import io.ktor.client.*
-import io.ktor.client.engine.*
 import io.ktor.client.engine.mock.*
 import io.ktor.http.*
 import kotlinx.coroutines.test.StandardTestDispatcher
 import kotlinx.coroutines.test.TestScope
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
-import theoneclick.client.core.dataSources.EmptyTokenDataSource
+import theoneclick.client.core.dataSources.AndroidInMemoryTokenDataSource
 import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.client.core.models.results.UserLoggedResult
-import theoneclick.client.core.navigation.RealNavigationController
+import theoneclick.client.core.testing.fakeHttpClient
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.requests.RequestLoginRequest
 import theoneclick.shared.core.models.responses.UserLoggedResponse
@@ -55,7 +54,7 @@ class AndroidRemoteAuthenticationDataSourceTest {
     fun `GIVEN server error WHEN isUserLogged called THEN returns unknown error`() {
         runTest {
             val authenticationDataSource = authenticationDataSource(
-                httpClient = requestLoginEndpointMockHttpClient(
+                httpClient = fakeHttpClient(
                     mockEngine(
                         pathToFake = ClientEndpoint.IS_USER_LOGGED.route,
                         onPathFound = { respondError(HttpStatusCode.Companion.BadRequest) },
@@ -74,7 +73,7 @@ class AndroidRemoteAuthenticationDataSourceTest {
     fun `GIVEN valid data with local redirect WHEN login THEN returns validLocalRedirect`() {
         runTest {
             val authenticationDataSource = authenticationDataSource(
-                httpClient = requestLoginEndpointMockHttpClient()
+                httpClient = mockHttpClient()
             )
 
             authenticationDataSource.login(username = USERNAME, password = PASSWORD).test {
@@ -88,7 +87,7 @@ class AndroidRemoteAuthenticationDataSourceTest {
     fun `GIVEN invalid data WHEN login THEN returns unknown error`() {
         runTest {
             val authenticationDataSource = authenticationDataSource(
-                httpClient = requestLoginEndpointMockHttpClient()
+                httpClient = mockHttpClient()
             )
 
             authenticationDataSource.login(username = "", password = "").test {
@@ -102,7 +101,7 @@ class AndroidRemoteAuthenticationDataSourceTest {
     fun `GIVEN error WHEN login THEN returns unknown error`() {
         runTest {
             val authenticationDataSource = authenticationDataSource(
-                httpClient = requestLoginEndpointMockHttpClient(
+                httpClient = fakeHttpClient(
                     mockEngine(
                         pathToFake = ClientEndpoint.REQUEST_LOGIN.route,
                         onPathFound = { respondError(HttpStatusCode.Companion.InternalServerError) },
@@ -125,11 +124,11 @@ class AndroidRemoteAuthenticationDataSourceTest {
             AndroidRemoteAuthenticationDataSource(
                 httpClient = httpClient,
                 dispatchersProvider = FakeDispatchersProvider(StandardTestDispatcher(testScheduler)),
-                tokenDataSource = EmptyTokenDataSource(),
+                tokenDataSource = AndroidInMemoryTokenDataSource(),
             )
 
         private fun userLoggedEndpointMockHttpClient(result: UserLoggedResponse): HttpClient =
-            requestLoginEndpointMockHttpClient(
+            fakeHttpClient(
                 mockEngine(
                     pathToFake = ClientEndpoint.IS_USER_LOGGED.route,
                     onPathFound = {
@@ -138,8 +137,8 @@ class AndroidRemoteAuthenticationDataSourceTest {
                 )
             )
 
-        private fun requestLoginEndpointMockHttpClient(): HttpClient =
-            requestLoginEndpointMockHttpClient(
+        private fun mockHttpClient(): HttpClient =
+            fakeHttpClient(
                 mockEngine(
                     pathToFake = ClientEndpoint.REQUEST_LOGIN.route,
                     onPathFound = { request ->
@@ -153,13 +152,6 @@ class AndroidRemoteAuthenticationDataSourceTest {
                         }
                     },
                 )
-            )
-
-        private fun requestLoginEndpointMockHttpClient(httpClientEngine: HttpClientEngine): HttpClient =
-            androidHttpClient(
-                httpClientEngine = httpClientEngine,
-                tokenDataSource = EmptyTokenDataSource(),
-                navigationController = RealNavigationController(),
             )
     }
 }
