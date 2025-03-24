@@ -9,7 +9,7 @@ import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.client.core.models.results.UserLoggedResult
 import theoneclick.client.core.navigation.RealNavigationController
 import theoneclick.client.core.testing.TestData
-import theoneclick.client.core.testing.fakes.fakeAndroidHttpClient
+import theoneclick.client.core.testing.fakes.fakeHttpClientEngine
 import theoneclick.shared.testing.dispatchers.FakeDispatchersProvider
 import kotlin.test.assertEquals
 
@@ -17,9 +17,16 @@ class AndroidRemoteAuthenticationDataSourceTest {
     private val navigationController = RealNavigationController()
     private val tokenDataSource = AndroidInMemoryTokenDataSource()
     private var isUserLogged = false
+    private var isError = false
+    private val httpClientEngine = fakeHttpClientEngine(
+        isUserLogged = { isUserLogged },
+        isError = { isError },
+    )
+
     private val authenticationDataSource = AndroidRemoteAuthenticationDataSource(
-        httpClient = fakeAndroidHttpClient(
-            isUserLogged = { isUserLogged },
+        httpClient = androidHttpClient(
+            httpClientEngine = httpClientEngine,
+            tokenDataSource = tokenDataSource,
             navigationController = navigationController
         ),
         dispatchersProvider = FakeDispatchersProvider(Dispatchers.Main),
@@ -30,7 +37,6 @@ class AndroidRemoteAuthenticationDataSourceTest {
     fun `GIVEN user without token WHEN isUserLogged called THEN returns not logged`() {
         runTest {
             isUserLogged = true
-            tokenDataSource.clear()
 
             authenticationDataSource.isUserLogged().test {
                 assertEquals(UserLoggedResult.NotLogged, awaitItem())
@@ -56,6 +62,7 @@ class AndroidRemoteAuthenticationDataSourceTest {
     fun `GIVEN user not logged WHEN isUserLogged called THEN returns not logged`() {
         runTest {
             isUserLogged = false
+            tokenDataSource.set(TestData.TOKEN)
 
             authenticationDataSource.isUserLogged().test {
                 assertEquals(UserLoggedResult.NotLogged, awaitItem())
@@ -68,6 +75,8 @@ class AndroidRemoteAuthenticationDataSourceTest {
     fun `GIVEN server error WHEN isUserLogged called THEN returns unknown error`() {
         runTest {
             isUserLogged = true
+            tokenDataSource.set(TestData.TOKEN)
+            isError = true
 
             authenticationDataSource.isUserLogged().test {
                 assertEquals(UserLoggedResult.UnknownError, awaitItem())
@@ -95,6 +104,20 @@ class AndroidRemoteAuthenticationDataSourceTest {
                 assertEquals(RequestLoginResult.Failure, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
+        }
+    }
+
+    @Test
+    fun `GIVEN server error WHEN login THEN returns failure`() {
+        runTest {
+            isError = true
+
+            authenticationDataSource.login(username = TestData.USERNAME, password = TestData.PASSWORD).test {
+                assertEquals(RequestLoginResult.Failure, awaitItem())
+                cancelAndIgnoreRemainingEvents()
+            }
+
+            assertEquals(expected = null, actual = tokenDataSource.token())
         }
     }
 }

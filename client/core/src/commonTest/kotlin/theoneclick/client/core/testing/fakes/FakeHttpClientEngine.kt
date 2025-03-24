@@ -19,9 +19,16 @@ import theoneclick.shared.core.models.responses.UserLoggedResponse
 fun fakeHttpClientEngine(
     isUserLogged: () -> Boolean = { false },
     devices: () -> List<Device> = { emptyList() },
+    isError: () -> Boolean = { false },
 ): HttpClientEngine =
     MockEngine { request ->
-        val context = Context(scope = this, request = request, isUserLogged = isUserLogged, devices = devices)
+        val context = Context(
+            scope = this,
+            request = request,
+            isUserLogged = isUserLogged,
+            devices = devices,
+            isError = isError,
+        )
 
         when (request.url.fullPath) {
             ClientEndpoint.IS_USER_LOGGED.route -> context.handleIsUserLogged()
@@ -36,21 +43,23 @@ fun fakeHttpClientEngine(
 private class Context(
     val scope: MockRequestHandleScope,
     val request: HttpRequestData,
-    val isUserLogged: () -> Boolean = { false },
-    val devices: () -> List<Device> = { emptyList() },
+    val isUserLogged: () -> Boolean,
+    val devices: () -> List<Device>,
+    val isError: () -> Boolean,
 )
 
 private fun Context.handleIsUserLogged(): HttpResponseData =
-    if (isUserLogged()) {
-        scope.respondJson<UserLoggedResponse>(UserLoggedResponse.Logged)
-    } else {
-        scope.respondJson<UserLoggedResponse>(UserLoggedResponse.NotLogged)
+    when {
+        isError() -> throw Exception("Error")
+        !isUserLogged() -> scope.respondJson<UserLoggedResponse>(UserLoggedResponse.NotLogged)
+        else -> scope.respondJson<UserLoggedResponse>(UserLoggedResponse.Logged)
     }
 
 private fun Context.handleRequestLogin(): HttpResponseData {
     val requestLoginRequest = request.toRequestBodyObject<RequestLoginRequest>()
 
     return when {
+        isError() -> throw Exception("Error")
         requestLoginRequest == null -> scope.respondError(HttpStatusCode.BadRequest)
         requestLoginRequest.username != TestData.USERNAME -> scope.respondError(HttpStatusCode.BadRequest)
         requestLoginRequest.password != TestData.PASSWORD -> scope.respondError(HttpStatusCode.BadRequest)
@@ -59,16 +68,17 @@ private fun Context.handleRequestLogin(): HttpResponseData {
 }
 
 private fun Context.handleDevices(): HttpResponseData =
-    if (isUserLogged()) {
-        scope.respondJson(DevicesResponse(devices()))
-    } else {
-        scope.respondError(HttpStatusCode.Unauthorized)
+    when {
+        isError() -> throw Exception("Error")
+        !isUserLogged() -> scope.respondError(HttpStatusCode.Unauthorized)
+        else -> scope.respondJson(DevicesResponse(devices()))
     }
 
 private fun Context.handleAddDevice(): HttpResponseData {
     val addDeviceRequest = request.toRequestBodyObject<AddDeviceRequest>()
 
     return when {
+        isError() -> throw Exception("Error")
         !isUserLogged() -> scope.respondError(HttpStatusCode.Unauthorized)
         addDeviceRequest == null -> scope.respondError(HttpStatusCode.BadRequest)
         addDeviceRequest.deviceName != TestData.DEVICE_NAME -> scope.respondError(HttpStatusCode.BadRequest)
@@ -81,6 +91,7 @@ private fun Context.handleUpdateDevice(): HttpResponseData {
     val updateDeviceRequest = request.toRequestBodyObject<UpdateDeviceRequest>()
 
     return when {
+        isError() -> throw Exception("Error")
         !isUserLogged() -> scope.respondError(HttpStatusCode.Unauthorized)
         updateDeviceRequest == null -> scope.respondError(HttpStatusCode.BadRequest)
         updateDeviceRequest.updatedDevice != TestData.device -> scope.respondError(HttpStatusCode.BadRequest)
