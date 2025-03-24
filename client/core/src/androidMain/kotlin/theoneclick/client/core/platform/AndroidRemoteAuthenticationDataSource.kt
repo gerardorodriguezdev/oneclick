@@ -3,6 +3,7 @@ package theoneclick.client.core.platform
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
+import io.ktor.http.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
@@ -30,8 +31,15 @@ class AndroidRemoteAuthenticationDataSource(
                 return@flow
             }
 
-            val response: UserLoggedResponse = httpClient.get(ClientEndpoint.IS_USER_LOGGED.route).body()
-            emit(response.toUserLoggedResult())
+            val response = httpClient.get(ClientEndpoint.IS_USER_LOGGED.route)
+            when (response.status) {
+                HttpStatusCode.OK -> {
+                    val isUserLoggedResponse: UserLoggedResponse = response.body()
+                    emit(isUserLoggedResponse.toUserLoggedResult())
+                }
+
+                else -> emit(UserLoggedResult.UnknownError)
+            }
         }
             .catch { emit(UserLoggedResult.UnknownError) }
             .flowOn(dispatchersProvider.io())
@@ -47,18 +55,24 @@ class AndroidRemoteAuthenticationDataSource(
         password: String
     ): Flow<RequestLoginResult> =
         flow<RequestLoginResult> {
-            val response: RequestLoginResponse = httpClient.post(ClientEndpoint.REQUEST_LOGIN.route) {
+            val response = httpClient.post(ClientEndpoint.REQUEST_LOGIN.route) {
                 setBody(
                     RequestLoginRequest(
                         username = username,
                         password = password,
                     )
                 )
-            }.body()
+            }
 
-            tokenDataSource.set(response.token)
+            when (response.status) {
+                HttpStatusCode.OK -> {
+                    val requestLoginResponse: RequestLoginResponse = response.body()
+                    tokenDataSource.set(requestLoginResponse.token)
+                    emit(RequestLoginResult.ValidLogin)
+                }
 
-            emit(RequestLoginResult.ValidLogin)
+                else -> emit(RequestLoginResult.Failure)
+            }
         }
             .catch { emit(RequestLoginResult.Failure) }
             .flowOn(dispatchersProvider.io())

@@ -1,7 +1,6 @@
 package theoneclick.client.core.entrypoint
 
 import androidx.compose.ui.test.ExperimentalTestApi
-import androidx.compose.ui.test.assertCountEquals
 import org.junit.Test
 import theoneclick.client.core.testing.base.AppIntegrationTest
 
@@ -10,20 +9,17 @@ class HomeEntrypointTest : AppIntegrationTest() {
 
     @Test
     fun GIVEN_userNotLogged_WHEN_navigatingToDevicesList_THEN_returns() {
-        testApplication(
-            isUserLogged = false,
-            setupBlock = { mainClock.autoAdvance = false },
-        ) {
-            homeScreenMatcher.assertIsScreenDisplayed()
+        testApplication(isUserLogged = false) {
+            homeScreenMatcher.assertScreenIsNotDisplayed()
 
-            homeScreenMatcher.devicesListScreenMatcher.devices.assertCountEquals(0)
+            loginScreenMatcher.assertIsScreenDisplayed()
         }
     }
 
     @Test
     fun GIVEN_userLogged_WHEN_navigatingToDevicesList_THEN_showsDevicesListScreen() {
         testApplication(isUserLogged = true) {
-            homeScreenMatcher.assertIsScreenDisplayed()
+            homeScreenMatcher.assertScreenIsDisplayed()
 
             homeScreenMatcher.devicesListScreenMatcher.assertScreenIsDisplayed()
         }

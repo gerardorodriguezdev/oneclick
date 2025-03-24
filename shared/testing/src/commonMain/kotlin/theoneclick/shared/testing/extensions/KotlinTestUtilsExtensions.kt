@@ -2,7 +2,6 @@ package theoneclick.shared.testing.extensions
 
 import theoneclick.shared.testing.models.TestScenario
 import kotlin.test.assertContains
-import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -34,10 +33,6 @@ fun <Input : Any?> runOnlyParameterizedTest(
 
 fun <T> List<T>.assertContains(value: T) {
     assertContains(this, value)
-}
-
-fun <T> List<T>.assertContentsEquals(value: List<T>) {
-    assertContentEquals(this, value)
 }
 
 fun <T> List<T>.assertIsEmpty() {

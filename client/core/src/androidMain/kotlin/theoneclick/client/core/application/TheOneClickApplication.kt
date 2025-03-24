@@ -9,6 +9,7 @@ import theoneclick.client.core.buildkonfig.BuildKonfig
 import theoneclick.client.core.dataSources.AndroidLocalTokenDataSource
 import theoneclick.client.core.entrypoint.AppEntrypoint
 import theoneclick.client.core.mappers.urlProtocol
+import theoneclick.client.core.navigation.RealNavigationController
 import theoneclick.client.core.platform.AndroidAppDependencies
 import theoneclick.client.core.platform.androidHttpClientEngine
 import theoneclick.shared.dispatchers.platform.dispatchersProvider
@@ -26,6 +27,7 @@ class TheOneClickApplication : Application() {
             httpClientEngine = androidHttpClientEngine(timeProvider = SystemTimeProvider()),
             tokenDataSource = AndroidLocalTokenDataSource(),
             dispatchersProvider = dispatchersProvider(),
+            navigationController = RealNavigationController()
         )
         appEntrypoint.startKoin(appDependencies = appDependencies)
     }

@@ -8,6 +8,7 @@ import org.koin.test.verify.verifyAll
 import theoneclick.client.core.dataSources.AndroidLocalTokenDataSource
 import theoneclick.client.core.entrypoint.AppEntrypoint
 import theoneclick.client.core.navigation.NavigationController
+import theoneclick.client.core.navigation.RealNavigationController
 import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.dispatchers.platform.dispatchersProvider
 import theoneclick.shared.timeProvider.SystemTimeProvider
@@ -25,6 +26,7 @@ class AndroidModulesTest {
                 ),
                 tokenDataSource = AndroidLocalTokenDataSource(),
                 dispatchersProvider = dispatchersProvider(),
+                navigationController = RealNavigationController(),
             )
         )
 

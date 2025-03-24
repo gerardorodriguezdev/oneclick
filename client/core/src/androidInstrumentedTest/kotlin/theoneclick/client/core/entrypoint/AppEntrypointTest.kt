@@ -27,7 +27,7 @@ class AppEntrypointTest : AppIntegrationTest() {
     @Test
     fun GIVEN_userLogged_WHEN_startApplication_THEN_showsHomeScreen() {
         testApplication(isUserLogged = true) {
-            homeScreenMatcher.assertIsScreenDisplayed()
+            homeScreenMatcher.assertScreenIsDisplayed()
         }
     }
 }

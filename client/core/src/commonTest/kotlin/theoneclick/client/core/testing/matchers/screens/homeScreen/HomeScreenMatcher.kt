@@ -16,12 +16,12 @@ class HomeScreenMatcher(composeUiTest: ComposeUiTest) {
         addDeviceNavigationItem.performClick()
     }
 
-    fun assertIsScreenDisplayed() {
+    fun assertScreenIsDisplayed() {
         devicesListNavigationItem.assertIsDisplayed()
         addDeviceNavigationItem.assertIsEnabled()
     }
 
-    fun assertIsNotDisplayed() {
+    fun assertScreenIsNotDisplayed() {
         devicesListNavigationItem.assertDoesNotExist()
         addDeviceNavigationItem.assertDoesNotExist()
     }

@@ -5,42 +5,42 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.MainTestClock
 import androidx.compose.ui.test.runComposeUiTest
 import androidx.navigation.compose.rememberNavController
-import io.ktor.client.engine.mock.*
-import io.ktor.client.request.*
-import io.ktor.http.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.unloadKoinModules
 import theoneclick.client.core.dataSources.AndroidInMemoryTokenDataSource
 import theoneclick.client.core.entrypoint.AppEntrypoint
+import theoneclick.client.core.navigation.RealNavigationController
 import theoneclick.client.core.platform.AndroidAppDependencies
-import theoneclick.client.core.platform.AppDependencies
+import theoneclick.client.core.testing.TestData
+import theoneclick.client.core.testing.fakes.fakeHttpClientEngine
 import theoneclick.client.core.testing.matchers.screens.AppMatcher
-import theoneclick.shared.core.models.endpoints.ClientEndpoint
-import theoneclick.shared.core.models.responses.UserLoggedResponse
+import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.testing.dispatchers.FakeDispatchersProvider
-import theoneclick.shared.testing.extensions.respondJson
 import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 
 abstract class AppIntegrationTest {
+    private val appEntrypoint = AppEntrypoint()
+
     private val dispatchersProvider = FakeDispatchersProvider(Dispatchers.Main)
     private val tokenDataSource = AndroidInMemoryTokenDataSource()
-    private val appDependencies: AppDependencies = AndroidAppDependencies(
-        httpClientEngine = MockEngine { request ->
-            when (request.url.fullPath) {
-                ClientEndpoint.IS_USER_LOGGED.route -> handleIsUserLogged(isUserLogged)
-                else -> respondError(HttpStatusCode.NotFound)
-            }
-        },
+    private val navigationController = RealNavigationController()
+    private var isUserLogged: Boolean = false
+    private var devices: List<Device> = emptyList()
+    private val httpClientEngine = fakeHttpClientEngine(
+        isUserLogged = { isUserLogged },
+        devices = { devices },
+    )
+
+    private val appDependencies = AndroidAppDependencies(
+        httpClientEngine = httpClientEngine,
         tokenDataSource = tokenDataSource,
         dispatchersProvider = dispatchersProvider,
+        navigationController = navigationController,
     )
-    private val appEntrypoint = AppEntrypoint()
     private val modules = appEntrypoint.buildAppModules(appDependencies)
-
-    private var isUserLogged: Boolean = false
 
     @BeforeTest
     fun setupKoin() {
@@ -54,15 +54,17 @@ abstract class AppIntegrationTest {
 
     @OptIn(ExperimentalTestApi::class)
     fun testApplication(
-        isUserLogged: Boolean,
+        isUserLogged: Boolean = false,
+        devices: List<Device> = emptyList(),
         setupBlock: ComposeUiTest.() -> Unit = {},
         block: AppMatcher.(mainClock: MainTestClock) -> Unit,
     ) {
         this.isUserLogged = isUserLogged
+        this.devices = devices
 
         if (isUserLogged) {
             runBlocking {
-                tokenDataSource.set("token")
+                tokenDataSource.set(TestData.TOKEN)
             }
         }
 
@@ -76,11 +78,4 @@ abstract class AppIntegrationTest {
             AppMatcher(this).block(mainClock)
         }
     }
-
-    private fun MockRequestHandleScope.handleIsUserLogged(isUserLogged: Boolean): HttpResponseData =
-        if (isUserLogged) {
-            respondJson<UserLoggedResponse>(UserLoggedResponse.Logged)
-        } else {
-            respondJson<UserLoggedResponse>(UserLoggedResponse.NotLogged)
-        }
 }
