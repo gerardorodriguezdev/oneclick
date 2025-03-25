@@ -1,7 +1,7 @@
 package theoneclick.client.core.platform
 
 import io.ktor.client.*
-import io.ktor.client.engine.js.*
+import io.ktor.client.engine.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.http.*
@@ -12,10 +12,11 @@ import theoneclick.client.core.plugins.LogoutManager
 import theoneclick.shared.core.models.agents.Agent
 import theoneclick.shared.core.models.routes.AppRoute
 
-fun wasmHttpClient(navigationController: NavigationController): HttpClient {
-    val engine = Js.create()
-
-    return HttpClient(engine) {
+fun wasmHttpClient(
+    httpClientEngine: HttpClientEngine,
+    navigationController: NavigationController
+): HttpClient {
+    return HttpClient(httpClientEngine) {
         install(ContentNegotiation) {
             json()
         }
