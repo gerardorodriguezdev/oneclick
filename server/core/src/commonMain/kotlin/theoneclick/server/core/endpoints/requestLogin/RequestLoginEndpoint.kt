@@ -85,7 +85,6 @@ private fun ValidRequestLogin.userData(
         }
     }
 
-//TODO: Test this 2 cases
 private suspend fun RoutingContext.handleSuccess(userSession: UserSession) {
     when (call.request.agent) {
         Agent.MOBILE -> {
