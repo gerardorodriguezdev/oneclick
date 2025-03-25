@@ -7,8 +7,8 @@ import theoneclick.client.core.navigation.NavigationController
 import theoneclick.client.core.navigation.RealNavigationController
 import theoneclick.client.core.platform.AndroidAppDependencies
 import theoneclick.client.core.platform.AppDependencies
+import theoneclick.client.core.testing.fakes.HttpClientEngineController
 import theoneclick.client.core.testing.fakes.fakeHttpClientEngine
-import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.testing.dispatchers.FakeDispatchersProvider
 
 abstract class AndroidAppIntegrationTest : AppIntegrationTest() {
@@ -16,15 +16,10 @@ abstract class AndroidAppIntegrationTest : AppIntegrationTest() {
 
     protected val tokenDataSource: TokenDataSource = AndroidInMemoryTokenDataSource()
     protected val navigationController: NavigationController = RealNavigationController()
-    protected var isUserLogged: Boolean = false
-    protected var isError: Boolean = false
-    protected var devices: List<Device> = emptyList()
+    protected var httpClientEngineController: HttpClientEngineController = HttpClientEngineController()
 
-    private val httpClientEngine = fakeHttpClientEngine(
-        isUserLogged = { isUserLogged },
-        devices = { devices },
-        isError = { isError },
-    )
+    private val httpClientEngine = fakeHttpClientEngine(httpClientEngineController)
+
     override val appDependencies: AppDependencies = AndroidAppDependencies(
         httpClientEngine = httpClientEngine,
         tokenDataSource = tokenDataSource,

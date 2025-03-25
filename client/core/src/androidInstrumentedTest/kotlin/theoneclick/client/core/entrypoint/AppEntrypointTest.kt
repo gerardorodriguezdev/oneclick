@@ -11,7 +11,7 @@ class AppEntrypointTest : AndroidAppIntegrationTest() {
 
     @Test
     fun GIVEN_userNotLogged_WHEN_startApplication_THEN_showsLoadingScreen() {
-        isUserLogged = false
+        httpClientEngineController.isUserLogged = { false }
 
         testApplication(setupBlock = { mainClock.autoAdvance = false }) {
             loadingScreenMatcher.assertIsScreenDisplayed()
@@ -20,7 +20,7 @@ class AppEntrypointTest : AndroidAppIntegrationTest() {
 
     @Test
     fun GIVEN_userNotLogged_WHEN_startApplication_THEN_showsLoginScreen() {
-        isUserLogged = false
+        httpClientEngineController.isUserLogged = { false }
 
         testApplication {
             loginScreenMatcher.assertIsScreenDisplayed()
@@ -29,7 +29,7 @@ class AppEntrypointTest : AndroidAppIntegrationTest() {
 
     @Test
     fun GIVEN_userLogged_WHEN_startApplication_THEN_showsHomeScreen() {
-        isUserLogged = true
+        httpClientEngineController.isUserLogged = { true }
         runBlocking { tokenDataSource.set(TestData.TOKEN) }
 
         testApplication {

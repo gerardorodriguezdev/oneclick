@@ -12,7 +12,7 @@ class HomeEntrypointTest : AndroidAppIntegrationTest() {
 
     @Test
     fun GIVEN_userNotLogged_WHEN_navigatingToDevicesList_THEN_returns() {
-        isUserLogged = false
+        httpClientEngineController.isUserLogged = { false }
 
         testApplication {
             homeScreenMatcher.assertScreenIsNotDisplayed()
@@ -25,7 +25,7 @@ class HomeEntrypointTest : AndroidAppIntegrationTest() {
 
     @Test
     fun GIVEN_userLogged_WHEN_navigatingToDevicesList_THEN_showsDevicesListScreen() {
-        isUserLogged = true
+        httpClientEngineController.isUserLogged = { true }
         runBlocking { tokenDataSource.set(TestData.TOKEN) }
 
         testApplication {
@@ -37,7 +37,7 @@ class HomeEntrypointTest : AndroidAppIntegrationTest() {
 
     @Test
     fun GIVEN_userLogged_WHEN_navigatingToAddDevice_THEN_showsAddDeviceScreen() {
-        isUserLogged = true
+        httpClientEngineController.isUserLogged = { true }
         runBlocking { tokenDataSource.set(TestData.TOKEN) }
 
         testApplication {

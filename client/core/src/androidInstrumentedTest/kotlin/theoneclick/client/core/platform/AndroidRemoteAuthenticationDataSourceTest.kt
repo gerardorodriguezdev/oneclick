@@ -9,6 +9,7 @@ import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.client.core.models.results.UserLoggedResult
 import theoneclick.client.core.navigation.RealNavigationController
 import theoneclick.client.core.testing.TestData
+import theoneclick.client.core.testing.fakes.HttpClientEngineController
 import theoneclick.client.core.testing.fakes.fakeHttpClientEngine
 import theoneclick.shared.testing.dispatchers.FakeDispatchersProvider
 import kotlin.test.assertEquals
@@ -16,12 +17,8 @@ import kotlin.test.assertEquals
 class AndroidRemoteAuthenticationDataSourceTest {
     private val navigationController = RealNavigationController()
     private val tokenDataSource = AndroidInMemoryTokenDataSource()
-    private var isUserLogged = false
-    private var isError = false
-    private val httpClientEngine = fakeHttpClientEngine(
-        isUserLogged = { isUserLogged },
-        isError = { isError },
-    )
+    private val httpClientEngineController = HttpClientEngineController()
+    private val httpClientEngine = fakeHttpClientEngine(httpClientEngineController)
 
     private val authenticationDataSource = AndroidRemoteAuthenticationDataSource(
         httpClient = androidHttpClient(
@@ -36,7 +33,7 @@ class AndroidRemoteAuthenticationDataSourceTest {
     @Test
     fun `GIVEN user without token WHEN isUserLogged called THEN returns not logged`() {
         runTest {
-            isUserLogged = true
+            httpClientEngineController.isUserLogged = { true }
 
             authenticationDataSource.isUserLogged().test {
                 assertEquals(UserLoggedResult.NotLogged, awaitItem())
@@ -48,7 +45,7 @@ class AndroidRemoteAuthenticationDataSourceTest {
     @Test
     fun `GIVEN user logged WHEN isUserLogged called THEN returns logged`() {
         runTest {
-            isUserLogged = true
+            httpClientEngineController.isUserLogged = { true }
             tokenDataSource.set(TestData.TOKEN)
 
             authenticationDataSource.isUserLogged().test {
@@ -61,7 +58,7 @@ class AndroidRemoteAuthenticationDataSourceTest {
     @Test
     fun `GIVEN user not logged WHEN isUserLogged called THEN returns not logged`() {
         runTest {
-            isUserLogged = false
+            httpClientEngineController.isUserLogged = { false }
             tokenDataSource.set(TestData.TOKEN)
 
             authenticationDataSource.isUserLogged().test {
@@ -74,9 +71,9 @@ class AndroidRemoteAuthenticationDataSourceTest {
     @Test
     fun `GIVEN server error WHEN isUserLogged called THEN returns unknown error`() {
         runTest {
-            isUserLogged = true
+            httpClientEngineController.isUserLogged = { true }
+            httpClientEngineController.isError = { true }
             tokenDataSource.set(TestData.TOKEN)
-            isError = true
 
             authenticationDataSource.isUserLogged().test {
                 assertEquals(UserLoggedResult.UnknownError, awaitItem())
@@ -110,7 +107,7 @@ class AndroidRemoteAuthenticationDataSourceTest {
     @Test
     fun `GIVEN server error WHEN login THEN returns failure`() {
         runTest {
-            isError = true
+            httpClientEngineController.isError = { true }
 
             authenticationDataSource.login(username = TestData.USERNAME, password = TestData.PASSWORD).test {
                 assertEquals(RequestLoginResult.Failure, awaitItem())

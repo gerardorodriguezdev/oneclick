@@ -16,18 +16,14 @@ import theoneclick.shared.core.models.responses.DevicesResponse
 import theoneclick.shared.core.models.responses.RequestLoginResponse
 import theoneclick.shared.core.models.responses.UserLoggedResponse
 
-fun fakeHttpClientEngine(
-    isUserLogged: () -> Boolean = { false },
-    devices: () -> List<Device> = { emptyList() },
-    isError: () -> Boolean = { false },
-): HttpClientEngine =
+fun fakeHttpClientEngine(httpClientEngineController: HttpClientEngineController): HttpClientEngine =
     MockEngine { request ->
         val context = Context(
             scope = this,
             request = request,
-            isUserLogged = isUserLogged,
-            devices = devices,
-            isError = isError,
+            isUserLogged = httpClientEngineController.isUserLogged,
+            devices = httpClientEngineController.devices,
+            isError = httpClientEngineController.isError,
         )
 
         when (request.url.fullPath) {
@@ -98,3 +94,9 @@ private fun Context.handleUpdateDevice(): HttpResponseData {
         else -> scope.respondOk()
     }
 }
+
+class HttpClientEngineController(
+    var isUserLogged: () -> Boolean = { false },
+    var devices: () -> List<Device> = { emptyList() },
+    var isError: () -> Boolean = { false },
+)
