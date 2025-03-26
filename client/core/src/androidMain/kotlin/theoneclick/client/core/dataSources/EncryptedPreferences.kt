@@ -24,6 +24,7 @@ interface EncryptedPreferences {
 }
 
 //TODO: Test
+//TODO: Remove charsets?
 class AndroidEncryptedPreferences(
     context: Context,
     dispatchersProvider: DispatchersProvider,

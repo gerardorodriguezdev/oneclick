@@ -28,5 +28,5 @@ fun Routing.isUserLoggedEndpoint() {
 private fun RoutingContext.userSession(): UserSession? =
     when (call.request.agent) {
         Agent.MOBILE -> call.principal<UserSession>()
-        Agent.BROWSER -> call.sessions.get<UserSession>()
+        Agent.BROWSER -> call.sessions.get<UserSession>() //TODO: Is this ok or should be principal?
     }
