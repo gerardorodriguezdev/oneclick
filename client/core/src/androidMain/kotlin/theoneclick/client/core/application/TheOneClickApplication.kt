@@ -6,12 +6,14 @@ import android.os.StrictMode.ThreadPolicy
 import android.os.StrictMode.VmPolicy
 import io.ktor.http.*
 import theoneclick.client.core.buildkonfig.BuildKonfig
+import theoneclick.client.core.dataSources.AndroidEncryptedPreferences
 import theoneclick.client.core.dataSources.AndroidLocalTokenDataSource
 import theoneclick.client.core.entrypoint.AppEntrypoint
 import theoneclick.client.core.mappers.urlProtocol
 import theoneclick.client.core.navigation.RealNavigationController
 import theoneclick.client.core.platform.AndroidAppDependencies
 import theoneclick.client.core.platform.androidHttpClientEngine
+import theoneclick.client.core.security.AndroidEncryptor
 import theoneclick.shared.dispatchers.platform.dispatchersProvider
 import theoneclick.shared.timeProvider.SystemTimeProvider
 
@@ -23,9 +25,15 @@ class TheOneClickApplication : Application() {
         setupStrictVmPolicy()
         super.onCreate()
 
+        val dispatchersProvider = dispatchersProvider()
+        val encryptedPreferences = AndroidEncryptedPreferences(
+            context = this,
+            dispatchersProvider = dispatchersProvider,
+            encryptor = AndroidEncryptor(),
+        )
         val appDependencies = AndroidAppDependencies(
             httpClientEngine = androidHttpClientEngine(timeProvider = SystemTimeProvider()),
-            tokenDataSource = AndroidLocalTokenDataSource(),
+            tokenDataSource = AndroidLocalTokenDataSource(encryptedPreferences),
             dispatchersProvider = dispatchersProvider(),
             navigationController = RealNavigationController()
         )

@@ -4,6 +4,7 @@ import io.ktor.client.*
 import io.ktor.client.engine.*
 import io.ktor.client.plugins.*
 import io.ktor.client.plugins.contentnegotiation.*
+import io.ktor.client.plugins.logging.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import theoneclick.client.core.buildkonfig.BuildKonfig
@@ -15,6 +16,7 @@ import theoneclick.client.core.plugins.LogoutManager
 import theoneclick.client.core.plugins.TokenManager
 import theoneclick.shared.core.models.agents.Agent
 import theoneclick.shared.core.models.routes.AppRoute
+import theoneclick.shared.core.platform.localLogger
 
 fun androidHttpClient(
     httpClientEngine: HttpClientEngine,
@@ -60,6 +62,17 @@ fun androidHttpClient(
                         popUpTo = popUpToInclusive(startRoute = AppRoute.Init)
                     )
                 )
+            }
+        }
+
+        if (BuildKonfig.IS_DEBUG) {
+            install(Logging) {
+                logger = object : Logger {
+                    override fun log(message: String) {
+                        localLogger.i(message)
+                    }
+                }
+                level = LogLevel.ALL
             }
         }
     }

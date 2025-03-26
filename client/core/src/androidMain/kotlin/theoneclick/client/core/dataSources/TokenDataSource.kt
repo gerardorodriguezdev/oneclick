@@ -1,6 +1,6 @@
 package theoneclick.client.core.dataSources
 
-import kotlinx.coroutines.delay
+import kotlinx.serialization.builtins.serializer
 
 interface TokenDataSource {
     suspend fun token(): String?
@@ -21,13 +21,21 @@ class AndroidInMemoryTokenDataSource : TokenDataSource {
     }
 }
 
-class AndroidLocalTokenDataSource : TokenDataSource {
-    override suspend fun token(): String? {
-        delay(5000)
-        return null
+class AndroidLocalTokenDataSource(
+    private val encryptedPreferences: EncryptedPreferences,
+) : TokenDataSource {
+    override suspend fun token(): String? =
+        encryptedPreferences.preference<String>(TOKEN_KEY, String.serializer())
+
+    override suspend fun clear() {
+        encryptedPreferences.clearPreference(TOKEN_KEY)
     }
 
-    override suspend fun clear() {}
+    override suspend fun set(token: String) {
+        encryptedPreferences.putPreference(TOKEN_KEY, token, String.serializer())
+    }
 
-    override suspend fun set(token: String) {}
+    private companion object {
+        const val TOKEN_KEY = "token"
+    }
 }

@@ -6,10 +6,10 @@ import theoneclick.client.core.dataSources.AndroidInMemoryTokenDataSource
 import theoneclick.client.core.dataSources.TokenDataSource
 
 val TokenManager = createClientPlugin("TokenManager", ::TokenManagerConfiguration) {
-    val tokenProvider = pluginConfig.tokenDataSource
+    val tokenDataSource = pluginConfig.tokenDataSource
 
     onRequest { request, _ ->
-        val token = tokenProvider.token()
+        val token = tokenDataSource.token()
         token?.let {
             request.headers.append(HttpHeaders.Authorization, "Bearer $token")
         }

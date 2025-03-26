@@ -55,6 +55,7 @@ kotlin {
                 implementation(libs.kmp.ktor.serialization.kotlinx.json)
                 implementation(libs.kmp.ktor.client.core)
                 implementation(libs.kmp.ktor.client.content.negotiation)
+                implementation(libs.kmp.ktor.client.logging)
                 implementation(libs.kmp.koin.core)
                 implementation(libs.kmp.koin.compose)
                 implementation(libs.kmp.koin.core.viewmodel)
@@ -85,6 +86,7 @@ kotlin {
         androidMain {
             dependencies {
                 implementation(libs.android.activity)
+                implementation(libs.android.datastore)
                 implementation(compose.preview)
                 implementation(libs.jvm.ktor.client.okhttp)
             }
