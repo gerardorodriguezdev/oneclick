@@ -37,13 +37,14 @@ fun UserSettingsScreen(
         ),
         onSnackbarShow = { onEvent(UserSettingsEvent.ErrorShown) },
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
+        Box(modifier = Modifier.fillMaxSize()) {
             Card(modifier = Modifier.align(Alignment.Center)) {
                 Column(
                     verticalArrangement = Arrangement.spacedBy(16.dp),
-                    modifier = Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .width(IntrinsicSize.Max),
                 ) {
                     Title()
 
@@ -54,6 +55,7 @@ fun UserSettingsScreen(
                         },
                         isLoading = state.isLoading,
                         isEnabled = state.isButtonEnabled,
+                        modifier = Modifier.widthIn(min = 200.dp),
                     )
                 }
             }

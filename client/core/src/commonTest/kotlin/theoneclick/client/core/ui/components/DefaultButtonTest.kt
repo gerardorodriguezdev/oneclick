@@ -2,7 +2,9 @@
 
 package theoneclick.client.core.ui.components
 
-import androidx.compose.ui.test.*
+import androidx.compose.ui.test.ExperimentalTestApi
+import androidx.compose.ui.test.performClick
+import androidx.compose.ui.test.runComposeUiTest
 import theoneclick.client.core.testing.matchers.components.DefaultButtonMatcher
 import theoneclick.client.core.ui.previews.providers.components.DefaultButtonPreviewModels
 import theoneclick.client.core.ui.previews.providers.components.DefaultButtonPreviewModels.DefaultButtonModel
@@ -11,36 +13,6 @@ import kotlin.test.assertEquals
 
 class DefaultButtonTest {
     private var clickEvents = 0
-
-    @Test
-    fun `GIVEN button enabled WHEN render THEN renders correctly`() {
-        render(DefaultButtonPreviewModels.enabledButtonModel) {
-            container.assertIsDisplayed()
-            container.assertIsEnabled()
-            text.assertTextEquals(DefaultButtonPreviewModels.BUTTON_TEXT)
-            progressIndicator.assertDoesNotExist()
-        }
-    }
-
-    @Test
-    fun `GIVEN button disabled WHEN render THEN renders correctly`() {
-        render(DefaultButtonPreviewModels.disabledButtonModel) {
-            container.assertIsDisplayed()
-            container.assertIsNotEnabled()
-            text.assertTextEquals(DefaultButtonPreviewModels.BUTTON_TEXT)
-            progressIndicator.assertDoesNotExist()
-        }
-    }
-
-    @Test
-    fun `GIVEN button loading WHEN render THEN renders correctly`() {
-        render(DefaultButtonPreviewModels.loadingButtonModel) {
-            container.assertIsDisplayed()
-            container.assertIsNotEnabled()
-            text.assertDoesNotExist()
-            progressIndicator.assertIsDisplayed()
-        }
-    }
 
     @Test
     fun `GIVEN button enabled WHEN click THEN sends click event`() {

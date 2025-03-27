@@ -11,6 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
@@ -140,6 +141,7 @@ private fun NavigationLabel(homeRoute: HomeRoute) {
     Text(
         text = homeRoute.toLabel(),
         fontSize = MaterialTheme.typography.labelSmall.fontSize,
+        textAlign = TextAlign.Center,
     )
 }
 

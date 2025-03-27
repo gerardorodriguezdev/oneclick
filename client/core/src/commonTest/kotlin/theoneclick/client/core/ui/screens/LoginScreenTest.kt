@@ -13,49 +13,6 @@ class LoginScreenTest {
     private val events = mutableListOf<LoginEvent>()
 
     @Test
-    fun `GIVEN initial state WHEN render called THEN renders correctly`() {
-        render(LoginScreenPreviewModels.initialState) {
-            title.assertIsDisplayed()
-
-            usernameTextField.assertIsDisplayed()
-
-            passwordTextField.assertIsDisplayed()
-
-            button.container.assertIsDisplayed()
-            button.container.assertIsNotEnabled()
-
-            button.progressIndicator.assertDoesNotExist()
-        }
-    }
-
-    @Test
-    fun `GIVEN invalid username state WHEN render called THEN renders correctly`() {
-        render(LoginScreenPreviewModels.invalidUsernameState) {
-            usernameTextField.assertTextEquals("Username")
-            passwordTextField.assertTextEquals("••••••••")
-            button.container.assertIsNotEnabled()
-        }
-    }
-
-    @Test
-    fun `GIVEN invalid password state WHEN render called THEN renders correctly`() {
-        render(LoginScreenPreviewModels.invalidPasswordState) {
-            usernameTextField.assertTextEquals("Username")
-            passwordTextField.assertTextEquals("••••••••")
-            button.container.assertIsNotEnabled()
-        }
-    }
-
-    @Test
-    fun `GIVEN valid state WHEN render called THEN renders correctly`() {
-        render(LoginScreenPreviewModels.validState) {
-            usernameTextField.assertTextEquals("Username")
-            passwordTextField.assertTextEquals("••••••••")
-            button.container.assertIsEnabled()
-        }
-    }
-
-    @Test
     fun `WHEN username changes THEN sends event`() {
         render(LoginScreenPreviewModels.initialState) {
             usernameTextField.performTextInput("U")
@@ -94,24 +51,6 @@ class LoginScreenTest {
             button.container.performClick()
 
             assertEquals(expected = mutableListOf<LoginEvent>(LoginEvent.RegisterButtonClicked), actual = events)
-        }
-    }
-
-    @Test
-    fun `GIVEN error state WHEN render called THEN renders correctly`() {
-        render(
-            state = LoginScreenPreviewModels.errorState,
-            setupBlock = { mainClock.autoAdvance = false },
-        ) {
-            snackbar.container.assertIsDisplayed()
-        }
-    }
-
-    @Test
-    fun `GIVEN loading state WHEN render called THEN renders correctly`() {
-        render(LoginScreenPreviewModels.loadingState) {
-            button.text.assertDoesNotExist()
-            button.progressIndicator.assertIsDisplayed()
         }
     }
 

@@ -64,8 +64,10 @@ private fun Content(
     PullToRefreshBox(
         isRefreshing = state.isLoading,
         onRefresh = { onEvent(DevicesListEvent.Refresh) },
-        contentAlignment = Alignment.Center,
-        modifier = Modifier.testTag(LIST_CONTAINER)
+        contentAlignment = Alignment.TopCenter,
+        modifier = Modifier
+            .fillMaxSize()
+            .testTag(LIST_CONTAINER)
     ) {
         LazyVerticalGrid(
             columns = GridCells.Adaptive(minSize = deviceCardMinWidth),
