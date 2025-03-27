@@ -3,12 +3,13 @@ package theoneclick.client.core.navigation
 import app.cash.turbine.turbineScope
 import kotlinx.coroutines.test.runTest
 import theoneclick.shared.core.models.routes.AppRoute
+import theoneclick.shared.core.platform.appLogger
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class RealNavigationControllerTest {
 
-    private val navigationController = RealNavigationController()
+    private val navigationController = RealNavigationController(appLogger())
 
     @Test
     fun `GIVEN no events WHEN sendNavigationEvent THEN sends navigation event`() =

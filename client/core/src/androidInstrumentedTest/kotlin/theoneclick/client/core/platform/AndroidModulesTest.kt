@@ -48,7 +48,7 @@ class AndroidModulesTest {
                 ),
                 tokenDataSource = AndroidLocalTokenDataSource(encryptedPreferences),
                 dispatchersProvider = dispatchersProvider(),
-                navigationController = RealNavigationController(),
+                navigationController = RealNavigationController(appLogger),
             )
         )
 

@@ -13,6 +13,7 @@ class WasmAppDependencies(
     override val navigationController: NavigationController,
 ) : AppDependencies {
     override val httpClient: HttpClient = wasmHttpClient(
+        appLogger = appLogger,
         httpClientEngine = httpClientEngine,
         navigationController = navigationController
     )

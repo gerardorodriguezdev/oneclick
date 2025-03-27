@@ -21,7 +21,7 @@ fun main() {
             httpClientEngine = Js.create(),
             appLogger = appLogger,
             dispatchersProvider = dispatchersProvider(),
-            navigationController = RealNavigationController()
+            navigationController = RealNavigationController(appLogger)
         )
     )
 

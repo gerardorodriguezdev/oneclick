@@ -17,7 +17,7 @@ import kotlin.test.assertEquals
 
 class AndroidRemoteAuthenticationDataSourceTest {
     private val appLogger = appLogger()
-    private val navigationController = RealNavigationController()
+    private val navigationController = RealNavigationController(appLogger)
     private val tokenDataSource = AndroidInMemoryTokenDataSource()
     private val httpClientEngineController = HttpClientEngineController()
     private val httpClientEngine = fakeHttpClientEngine(httpClientEngineController)

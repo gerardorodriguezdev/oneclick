@@ -9,17 +9,19 @@ import theoneclick.client.core.navigation.RealNavigationController
 import theoneclick.client.core.testing.TestData
 import theoneclick.client.core.testing.fakes.HttpClientEngineController
 import theoneclick.client.core.testing.fakes.fakeHttpClientEngine
+import theoneclick.shared.core.platform.appLogger
 import theoneclick.shared.testing.dispatchers.FakeDispatchersProvider
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class WasmRemoteAuthenticationDataSourceTest {
-    private val navigationController = RealNavigationController()
+    private val navigationController = RealNavigationController(appLogger())
     private val httpClientEngineController = HttpClientEngineController()
     private val httpClientEngine = fakeHttpClientEngine(httpClientEngineController)
 
     private val authenticationDataSource = WasmRemoteAuthenticationDataSource(
         httpClient = wasmHttpClient(
+            appLogger = appLogger(),
             httpClientEngine = httpClientEngine,
             navigationController = navigationController
         ),

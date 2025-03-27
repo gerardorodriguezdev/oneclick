@@ -17,7 +17,7 @@ abstract class AndroidAppIntegrationTest : AppIntegrationTest() {
     private val dispatchersProvider = FakeDispatchersProvider(Dispatchers.Main)
 
     protected val tokenDataSource: TokenDataSource = AndroidInMemoryTokenDataSource()
-    protected val navigationController: NavigationController = RealNavigationController()
+    protected val navigationController: NavigationController = RealNavigationController(appLogger)
     protected var httpClientEngineController: HttpClientEngineController = HttpClientEngineController()
 
     private val httpClientEngine = fakeHttpClientEngine(httpClientEngineController)

@@ -54,6 +54,8 @@ fun androidHttpClient(
 
         install(LogoutManager) {
             onLogout = {
+                appLogger.i("Logging user out")
+
                 tokenDataSource.clear()
 
                 navigationController.sendNavigationEvent(

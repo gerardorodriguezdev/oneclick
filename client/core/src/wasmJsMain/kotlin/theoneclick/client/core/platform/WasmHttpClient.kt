@@ -11,8 +11,10 @@ import theoneclick.client.core.navigation.NavigationController
 import theoneclick.client.core.plugins.LogoutManager
 import theoneclick.shared.core.models.agents.Agent
 import theoneclick.shared.core.models.routes.AppRoute
+import theoneclick.shared.core.platform.AppLogger
 
 fun wasmHttpClient(
+    appLogger: AppLogger,
     httpClientEngine: HttpClientEngine,
     navigationController: NavigationController
 ): HttpClient {
@@ -29,6 +31,8 @@ fun wasmHttpClient(
 
         install(LogoutManager) {
             onLogout = {
+                appLogger.i("Logging user out")
+
                 navigationController.sendNavigationEvent(
                     NavigationController.NavigationEvent.Navigate(
                         destinationRoute = AppRoute.Login,

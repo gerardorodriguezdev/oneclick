@@ -43,7 +43,7 @@ class TheOneClickApplication : Application() {
             httpClientEngine = androidHttpClientEngine(timeProvider = SystemTimeProvider()),
             tokenDataSource = AndroidLocalTokenDataSource(encryptedPreferences),
             dispatchersProvider = dispatchersProvider(),
-            navigationController = RealNavigationController()
+            navigationController = RealNavigationController(appLogger)
         )
         appEntrypoint.startKoin(appDependencies = appDependencies)
     }
