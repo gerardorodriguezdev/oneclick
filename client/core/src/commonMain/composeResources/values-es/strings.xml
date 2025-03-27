@@ -7,6 +7,7 @@
     <string name="homeScreen_snackbar_unknownError">Error desconocido</string>
     <string name="homeScreen_navigationBar_devicesList">Dispositivos</string>
     <string name="homeScreen_navigationBar_addDevice">Agregar dispositivo</string>
+    <string name="homeScreen_navigationBar_userSettings">Configuraciones de usuario</string>
     <string name="devicesList_snackbar_unknownError">Error desconocido</string>
     <string name="addDevice_title_addDevice">Agregar dispositivo</string>
     <string name="addDevice_deviceNamePlaceholder_deviceName">Nombre del dispositivo</string>
@@ -19,5 +20,8 @@
     <string name="devicesList_deviceCardOpenedLabel_opened">Abierto</string>
     <string name="devicesList_deviceCardClosedLabel_closed">Cerrado</string>
     <string name="devicesList_deviceCardRotationLabel_rotation">Rotación</string>
+    <string name="userSettings_title_userSettings">Configuración de cuenta</string>
+    <string name="userSettings_snackbar_unknownError">Error desconocido</string>
+    <string name="userSettings_snackbar_logout">Salir</string>
     <string name="general_deviceType_blind">Cortina</string>
 </resources>

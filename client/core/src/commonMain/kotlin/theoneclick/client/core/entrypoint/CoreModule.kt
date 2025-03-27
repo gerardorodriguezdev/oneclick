@@ -11,4 +11,5 @@ fun buildCoreModule(coreDependencies: AppDependencies): Module =
         single { coreDependencies.httpClient }
         single { coreDependencies.authenticationDataSource }
         single { coreDependencies.appLogger }
+        single { coreDependencies.loggedDataSourceProvider }
     }

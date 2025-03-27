@@ -9,7 +9,7 @@ import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
 class AndroidAppDependencies(
     httpClientEngine: HttpClientEngine,
-    tokenDataSource: TokenDataSource,
+    private val tokenDataSource: TokenDataSource,
     override val appLogger: AppLogger,
     override val dispatchersProvider: DispatchersProvider,
     override val navigationController: NavigationController,
@@ -22,4 +22,7 @@ class AndroidAppDependencies(
     )
     override val authenticationDataSource: AuthenticationDataSource =
         AndroidRemoteAuthenticationDataSource(httpClient, dispatchersProvider, tokenDataSource, appLogger)
+
+    override val loggedDataSourceProvider: () -> LoggedDataSource =
+        { AndroidRemoteLoggedDataSource(httpClient, dispatchersProvider, tokenDataSource, appLogger) }
 }

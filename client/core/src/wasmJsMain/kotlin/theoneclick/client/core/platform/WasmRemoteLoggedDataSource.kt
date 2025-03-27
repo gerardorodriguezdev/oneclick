@@ -1,4 +1,4 @@
-package theoneclick.client.core.dataSources
+package theoneclick.client.core.platform
 
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -10,6 +10,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import theoneclick.client.core.models.results.AddDeviceResult
 import theoneclick.client.core.models.results.DevicesResult
+import theoneclick.client.core.models.results.LogoutResult
 import theoneclick.client.core.models.results.UpdateDeviceResult
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.entities.Device
@@ -20,19 +21,7 @@ import theoneclick.shared.core.models.responses.DevicesResponse
 import theoneclick.shared.core.platform.AppLogger
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
-interface LoggedDataSource {
-    fun addDevice(
-        deviceName: String,
-        room: String,
-        type: DeviceType,
-    ): Flow<AddDeviceResult>
-
-    fun updateDevice(updatedDevice: Device): Flow<UpdateDeviceResult>
-
-    fun devices(): Flow<DevicesResult>
-}
-
-class RemoteLoggedDataSource(
+class WasmRemoteLoggedDataSource(
     private val httpClient: HttpClient,
     private val dispatchersProvider: DispatchersProvider,
     private val appLogger: AppLogger,
@@ -85,6 +74,9 @@ class RemoteLoggedDataSource(
             }
             .flowOn(dispatchersProvider.io())
 
+    private fun DevicesResponse.toDevicesResult(): DevicesResult =
+        DevicesResult.Success(devices = devices)
+
     override fun updateDevice(updatedDevice: Device): Flow<UpdateDeviceResult> =
         flow {
             val response = httpClient.post(ClientEndpoint.UPDATE_DEVICE.route) {
@@ -102,6 +94,19 @@ class RemoteLoggedDataSource(
             }
             .flowOn(dispatchersProvider.io())
 
-    private fun DevicesResponse.toDevicesResult(): DevicesResult =
-        DevicesResult.Success(devices = devices)
+    override fun logout(): Flow<LogoutResult> =
+        flow {
+            val response = httpClient.get(ClientEndpoint.LOGOUT.route)
+
+            when (response.status) {
+                HttpStatusCode.OK -> emit(LogoutResult.Success)
+                else -> emit(LogoutResult.Failure)
+            }
+        }
+            .catch { exception ->
+                appLogger.e("Exception catched '${exception.stackTraceToString()}' while logging out")
+
+                emit(LogoutResult.Failure)
+            }
+            .flowOn(dispatchersProvider.io())
 }

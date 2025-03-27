@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.ManageAccounts
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
@@ -17,13 +18,13 @@ import org.jetbrains.compose.resources.stringResource
 import theoneclick.client.core.generated.resources.Res
 import theoneclick.client.core.generated.resources.homeScreen_navigationBar_addDevice
 import theoneclick.client.core.generated.resources.homeScreen_navigationBar_devicesList
+import theoneclick.client.core.generated.resources.homeScreen_navigationBar_userSettings
 import theoneclick.client.core.ui.previews.dev.MockContent
 import theoneclick.client.core.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.core.ui.previews.providers.base.PreviewModel
 import theoneclick.client.core.ui.screenProperties.LocalScreenProperties
 import theoneclick.shared.core.models.routes.HomeRoute
-import theoneclick.shared.core.models.routes.HomeRoute.AddDevice
-import theoneclick.shared.core.models.routes.HomeRoute.DevicesList
+import theoneclick.shared.core.models.routes.HomeRoute.*
 
 @Composable
 fun HomeScreenScaffold(
@@ -31,7 +32,7 @@ fun HomeScreenScaffold(
     onHomeRouteClick: (homeRoute: HomeRoute) -> Unit,
     content: @Composable () -> Unit,
 ) {
-    val homeRoutes = remember { persistentListOf(DevicesList, AddDevice) }
+    val homeRoutes = remember { persistentListOf(DevicesList, AddDevice, UserSettings) }
     val screenProperties = LocalScreenProperties.current
     val isCompact = screenProperties.isCompact
     Scaffold(
@@ -125,6 +126,7 @@ private fun NavigationIcon(homeRoute: HomeRoute) {
     val imageVector = when (homeRoute) {
         is DevicesList -> Icons.AutoMirrored.Filled.List
         is AddDevice -> Icons.Filled.Add
+        is UserSettings -> Icons.Filled.ManageAccounts
     }
 
     Icon(
@@ -146,10 +148,10 @@ private fun HomeRoute.toLabel(): String =
     when (this) {
         is DevicesList -> stringResource(Res.string.homeScreen_navigationBar_devicesList)
         is AddDevice -> stringResource(Res.string.homeScreen_navigationBar_addDevice)
+        is UserSettings -> stringResource(Res.string.homeScreen_navigationBar_userSettings)
     }
 
 object HomeScreenScaffoldTestTags {
-
     fun navigationItemTestTag(homeRoute: HomeRoute): String =
         "HomeScreenScaffold.NavigationItem.${homeRoute.toTestTag()}"
 
@@ -157,6 +159,7 @@ object HomeScreenScaffoldTestTags {
         when (this) {
             AddDevice -> "AddDevice"
             DevicesList -> "DevicesList"
+            UserSettings -> "UserSettings"
         }
 }
 

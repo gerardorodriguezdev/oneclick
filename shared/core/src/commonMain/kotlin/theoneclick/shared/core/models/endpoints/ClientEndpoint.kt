@@ -8,4 +8,5 @@ enum class ClientEndpoint(override val route: String) : Endpoint {
     ADD_DEVICE("/api/add-device"),
     DEVICES("/api/devices"),
     UPDATE_DEVICE("/api/update-device"),
+    LOGOUT("/api/logout"),
 }

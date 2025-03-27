@@ -15,4 +15,9 @@ sealed interface HomeRoute : Route {
     data object AddDevice : HomeRoute {
         override val path: String = "/home/add-device"
     }
+
+    @Serializable
+    data object UserSettings : HomeRoute {
+        override val path: String = "/home/user-settings"
+    }
 }

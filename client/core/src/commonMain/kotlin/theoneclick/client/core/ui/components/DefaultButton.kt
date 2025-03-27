@@ -23,8 +23,8 @@ import theoneclick.client.core.ui.previews.providers.components.DefaultButtonPre
 fun DefaultButton(
     text: String,
     onClick: () -> Unit,
-    isEnabled: Boolean,
-    isLoading: Boolean,
+    isEnabled: Boolean = true,
+    isLoading: Boolean = false,
     modifier: Modifier = Modifier,
 ) {
     Button(

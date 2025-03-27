@@ -9,6 +9,7 @@ import theoneclick.client.core.navigation.NavigationController
 import theoneclick.client.core.navigation.NavigationController.NavigationEvent.Navigate
 import theoneclick.client.core.platform.AuthenticationDataSource
 import theoneclick.client.core.models.results.UserLoggedResult
+import theoneclick.client.core.navigation.logout
 import theoneclick.shared.core.models.routes.AppRoute
 
 class InitViewModel(
@@ -49,13 +50,7 @@ class InitViewModel(
     }
 
     private suspend fun handleUserNotLogged() {
-        navigationController.sendNavigationEvent(
-            Navigate(
-                destinationRoute = AppRoute.Login,
-                launchSingleTop = true,
-                popUpTo = popUpToInclusive(startRoute = AppRoute.Init)
-            )
-        )
+        navigationController.logout()
     }
 
     override fun onCleared() {

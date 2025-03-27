@@ -7,6 +7,7 @@
     <string name="homeScreen_snackbar_unknownError">Unknown error</string>
     <string name="homeScreen_navigationBar_devicesList">Devices</string>
     <string name="homeScreen_navigationBar_addDevice">Add device</string>
+    <string name="homeScreen_navigationBar_userSettings">User settings</string>
     <string name="devicesList_snackbar_unknownError">Unknown error</string>
     <string name="addDevice_title_addDevice">Add device</string>
     <string name="addDevice_deviceNamePlaceholder_deviceName">Device name</string>
@@ -19,5 +20,8 @@
     <string name="devicesList_deviceCardOpenedLabel_opened">Opened</string>
     <string name="devicesList_deviceCardClosedLabel_closed">Closed</string>
     <string name="devicesList_deviceCardRotationLabel_rotation">Rotation</string>
+    <string name="userSettings_title_userSettings">User settings</string>
+    <string name="userSettings_snackbar_unknownError">Unknown error</string>
+    <string name="userSettings_snackbar_logout">Logout</string>
     <string name="general_deviceType_blind">Blind</string>
 </resources>

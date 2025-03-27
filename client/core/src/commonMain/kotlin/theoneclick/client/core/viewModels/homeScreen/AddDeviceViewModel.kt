@@ -8,7 +8,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import theoneclick.client.core.dataSources.LoggedDataSource
+import theoneclick.client.core.platform.LoggedDataSource
 import theoneclick.client.core.models.results.AddDeviceResult
 import theoneclick.client.core.ui.events.homeScreen.AddDeviceEvent
 import theoneclick.client.core.ui.states.homeScreen.AddDeviceState

@@ -9,13 +9,12 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import theoneclick.client.core.buildkonfig.BuildKonfig
 import theoneclick.client.core.dataSources.TokenDataSource
-import theoneclick.client.core.extensions.popUpToInclusive
 import theoneclick.client.core.mappers.urlProtocol
 import theoneclick.client.core.navigation.NavigationController
+import theoneclick.client.core.navigation.logout
 import theoneclick.client.core.plugins.LogoutManager
 import theoneclick.client.core.plugins.TokenManager
 import theoneclick.shared.core.models.agents.Agent
-import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.core.platform.AppLogger
 
 fun androidHttpClient(
@@ -58,13 +57,7 @@ fun androidHttpClient(
 
                 tokenDataSource.clear()
 
-                navigationController.sendNavigationEvent(
-                    NavigationController.NavigationEvent.Navigate(
-                        destinationRoute = AppRoute.Login,
-                        launchSingleTop = true,
-                        popUpTo = popUpToInclusive(startRoute = AppRoute.Init)
-                    )
-                )
+                navigationController.logout()
             }
         }
 

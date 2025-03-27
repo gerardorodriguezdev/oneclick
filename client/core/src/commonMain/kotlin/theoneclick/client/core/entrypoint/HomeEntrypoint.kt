@@ -13,21 +13,20 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.module.Module
-import org.koin.core.module.dsl.scopedOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.bind
 import org.koin.dsl.module
-import theoneclick.client.core.dataSources.LoggedDataSource
-import theoneclick.client.core.dataSources.RemoteLoggedDataSource
+import theoneclick.client.core.platform.LoggedDataSource
 import theoneclick.client.core.ui.screens.homeScreen.AddDeviceScreen
 import theoneclick.client.core.ui.screens.homeScreen.DevicesListScreen
 import theoneclick.client.core.ui.screens.homeScreen.HomeScreenScaffold
+import theoneclick.client.core.ui.screens.homeScreen.UserSettingsScreen
 import theoneclick.client.core.viewModels.homeScreen.AddDeviceViewModel
 import theoneclick.client.core.viewModels.homeScreen.DevicesListViewModel
 import theoneclick.client.core.viewModels.homeScreen.HomeViewModel
+import theoneclick.client.core.viewModels.homeScreen.UserSettingsViewModel
 import theoneclick.shared.core.models.routes.HomeRoute
-import theoneclick.shared.core.models.routes.HomeRoute.AddDevice
-import theoneclick.shared.core.models.routes.HomeRoute.DevicesList
+import theoneclick.shared.core.models.routes.HomeRoute.*
 
 class HomeEntrypoint {
 
@@ -37,7 +36,10 @@ class HomeEntrypoint {
             includes(coreModule)
 
             scope<HomeViewModel> {
-                scopedOf(::RemoteLoggedDataSource) bind LoggedDataSource::class
+                scoped {
+                    val loggedDataSourceProvider: () -> LoggedDataSource = get()
+                    loggedDataSourceProvider()
+                } bind LoggedDataSource::class
             }
 
             viewModel {
@@ -55,6 +57,14 @@ class HomeEntrypoint {
                 val homeViewModel: HomeViewModel = get()
                 AddDeviceViewModel(
                     loggedDataSource = homeViewModel.scope.get(),
+                )
+            }
+
+            viewModel {
+                val homeViewModel: HomeViewModel = get()
+                UserSettingsViewModel(
+                    loggedDataSource = homeViewModel.scope.get(),
+                    navigationController = get(),
                 )
             }
         }
@@ -90,6 +100,15 @@ class HomeEntrypoint {
                             onEvent = addDeviceViewModel::onEvent,
                         )
                     }
+
+                    composable<UserSettings> {
+                        val userSettingsViewModel: UserSettingsViewModel = koinViewModel()
+
+                        UserSettingsScreen(
+                            state = userSettingsViewModel.state.value,
+                            onEvent = userSettingsViewModel::onEvent,
+                        )
+                    }
                 }
             }
         )
@@ -113,6 +132,7 @@ class HomeEntrypoint {
             this == null -> DevicesList
             hasRoute<DevicesList>() -> DevicesList
             hasRoute<AddDevice>() -> AddDevice
+            hasRoute<UserSettings>() -> UserSettings
             else -> DevicesList
         }
 }

@@ -6,6 +6,7 @@ import theoneclick.server.core.endpoints.addDevice.addDeviceEndpoint
 import theoneclick.server.core.endpoints.devices.devicesEndpoint
 import theoneclick.server.core.endpoints.healthzEndpoint
 import theoneclick.server.core.endpoints.isUserLoggedEndpoint
+import theoneclick.server.core.endpoints.logoutEndpoint
 import theoneclick.server.core.endpoints.qaapi
 import theoneclick.server.core.endpoints.requestLogin.requestLoginEndpoint
 import theoneclick.server.core.endpoints.updateDeviceEndpoint.updateDeviceEndpoint
@@ -22,6 +23,7 @@ fun Application.configureRouting() {
         addDeviceEndpoint()
         devicesEndpoint()
         updateDeviceEndpoint()
+        logoutEndpoint()
 
         if (environment.enableQAAPI) {
             qaapi()
