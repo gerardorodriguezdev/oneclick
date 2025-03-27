@@ -18,5 +18,5 @@ class WasmAppDependencies(
         navigationController = navigationController
     )
     override val authenticationDataSource: AuthenticationDataSource =
-        WasmRemoteAuthenticationDataSource(httpClient, dispatchersProvider)
+        WasmRemoteAuthenticationDataSource(httpClient, dispatchersProvider, appLogger)
 }

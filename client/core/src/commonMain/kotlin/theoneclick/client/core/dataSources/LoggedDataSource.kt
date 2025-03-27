@@ -17,6 +17,7 @@ import theoneclick.shared.core.models.entities.DeviceType
 import theoneclick.shared.core.models.requests.AddDeviceRequest
 import theoneclick.shared.core.models.requests.UpdateDeviceRequest
 import theoneclick.shared.core.models.responses.DevicesResponse
+import theoneclick.shared.core.platform.AppLogger
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
 interface LoggedDataSource {
@@ -34,6 +35,7 @@ interface LoggedDataSource {
 class RemoteLoggedDataSource(
     private val httpClient: HttpClient,
     private val dispatchersProvider: DispatchersProvider,
+    private val appLogger: AppLogger,
 ) : LoggedDataSource {
 
     override fun addDevice(
@@ -57,7 +59,11 @@ class RemoteLoggedDataSource(
                 else -> emit(AddDeviceResult.Failure)
             }
         }
-            .catch { emit(AddDeviceResult.Failure) }
+            .catch { exception ->
+                appLogger.e("Exception catched '${exception.stackTraceToString()}' while adding device '$deviceName'")
+
+                emit(AddDeviceResult.Failure)
+            }
             .flowOn(dispatchersProvider.io())
 
     override fun devices(): Flow<DevicesResult> =
@@ -73,7 +79,10 @@ class RemoteLoggedDataSource(
                 else -> emit(DevicesResult.Failure)
             }
         }
-            .catch { emit(DevicesResult.Failure) }
+            .catch { exception ->
+                appLogger.e("Exception catched '${exception.stackTraceToString()}' while getting devices ")
+                emit(DevicesResult.Failure)
+            }
             .flowOn(dispatchersProvider.io())
 
     override fun updateDevice(updatedDevice: Device): Flow<UpdateDeviceResult> =
@@ -87,7 +96,10 @@ class RemoteLoggedDataSource(
                 else -> emit(UpdateDeviceResult.Failure)
             }
         }
-            .catch { emit(UpdateDeviceResult.Failure) }
+            .catch { exception ->
+                appLogger.e("Exception catched '${exception.stackTraceToString()}' while updating device '$updatedDevice'")
+                emit(UpdateDeviceResult.Failure)
+            }
             .flowOn(dispatchersProvider.io())
 
     private fun DevicesResponse.toDevicesResult(): DevicesResult =

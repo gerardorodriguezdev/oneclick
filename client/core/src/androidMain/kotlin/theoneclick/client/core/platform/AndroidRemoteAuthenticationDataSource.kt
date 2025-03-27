@@ -15,12 +15,14 @@ import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.requests.RequestLoginRequest
 import theoneclick.shared.core.models.responses.RequestLoginResponse
 import theoneclick.shared.core.models.responses.UserLoggedResponse
+import theoneclick.shared.core.platform.AppLogger
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
 class AndroidRemoteAuthenticationDataSource(
     private val httpClient: HttpClient,
     private val dispatchersProvider: DispatchersProvider,
     private val tokenDataSource: TokenDataSource,
+    private val appLogger: AppLogger,
 ) : AuthenticationDataSource {
 
     override fun isUserLogged(): Flow<UserLoggedResult> =
@@ -41,7 +43,10 @@ class AndroidRemoteAuthenticationDataSource(
                 else -> emit(UserLoggedResult.UnknownError)
             }
         }
-            .catch { emit(UserLoggedResult.UnknownError) }
+            .catch { exception ->
+                appLogger.e("Exception catched '${exception.stackTraceToString()}' while checking if user is logged")
+                emit(UserLoggedResult.UnknownError)
+            }
             .flowOn(dispatchersProvider.io())
 
     private fun UserLoggedResponse.toUserLoggedResult(): UserLoggedResult =
@@ -74,6 +79,9 @@ class AndroidRemoteAuthenticationDataSource(
                 else -> emit(RequestLoginResult.Failure)
             }
         }
-            .catch { emit(RequestLoginResult.Failure) }
+            .catch { exception ->
+                appLogger.e("Exception catched '${exception.stackTraceToString()}' while requesting logging user '$username'")
+                emit(RequestLoginResult.Failure)
+            }
             .flowOn(dispatchersProvider.io())
 }

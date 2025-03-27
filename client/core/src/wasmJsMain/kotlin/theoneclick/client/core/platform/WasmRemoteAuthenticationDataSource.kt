@@ -13,11 +13,13 @@ import theoneclick.client.core.models.results.UserLoggedResult
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.requests.RequestLoginRequest
 import theoneclick.shared.core.models.responses.UserLoggedResponse
+import theoneclick.shared.core.platform.AppLogger
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
 class WasmRemoteAuthenticationDataSource(
     private val httpClient: HttpClient,
     private val dispatchersProvider: DispatchersProvider,
+    private val appLogger: AppLogger,
 ) : AuthenticationDataSource {
 
     override fun isUserLogged(): Flow<UserLoggedResult> =
@@ -25,7 +27,10 @@ class WasmRemoteAuthenticationDataSource(
             val response: UserLoggedResponse = httpClient.get(ClientEndpoint.IS_USER_LOGGED.route).body()
             emit(response.toUserLoggedResult())
         }
-            .catch { emit(UserLoggedResult.UnknownError) }
+            .catch { exception ->
+                appLogger.e("Exception catched '${exception.stackTraceToString()}' while checking if user is logged")
+                emit(UserLoggedResult.UnknownError)
+            }
             .flowOn(dispatchersProvider.io())
 
     private fun UserLoggedResponse.toUserLoggedResult(): UserLoggedResult =
@@ -53,6 +58,9 @@ class WasmRemoteAuthenticationDataSource(
                 else -> emit(RequestLoginResult.Failure)
             }
         }
-            .catch { emit(RequestLoginResult.Failure) }
+            .catch { exception ->
+                appLogger.e("Exception catched '${exception.stackTraceToString()}' while requesting login '$username'")
+                emit(RequestLoginResult.Failure)
+            }
             .flowOn(dispatchersProvider.io())
 }

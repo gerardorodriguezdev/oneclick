@@ -15,17 +15,19 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 
 class WasmRemoteAuthenticationDataSourceTest {
+    private val appLogger = appLogger()
     private val navigationController = RealNavigationController(appLogger())
     private val httpClientEngineController = HttpClientEngineController()
     private val httpClientEngine = fakeHttpClientEngine(httpClientEngineController)
 
     private val authenticationDataSource = WasmRemoteAuthenticationDataSource(
         httpClient = wasmHttpClient(
-            appLogger = appLogger(),
+            appLogger = appLogger,
             httpClientEngine = httpClientEngine,
             navigationController = navigationController
         ),
         dispatchersProvider = FakeDispatchersProvider(Dispatchers.Unconfined),
+        appLogger = appLogger,
     )
 
     @Test

@@ -38,7 +38,7 @@ class RealNavigationController(
     override val navigationEvents: SharedFlow<NavigationEvent> = _navigationEvents
 
     override suspend fun sendNavigationEvent(navigationEvent: NavigationEvent) {
-        appLogger.i("Emitting navigation event $navigationEvent")
+        appLogger.i("Emitting navigation event '$navigationEvent'")
         _navigationEvents.emit(navigationEvent)
     }
 }

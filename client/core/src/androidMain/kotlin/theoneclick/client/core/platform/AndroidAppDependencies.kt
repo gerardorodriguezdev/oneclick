@@ -21,5 +21,5 @@ class AndroidAppDependencies(
         navigationController = navigationController,
     )
     override val authenticationDataSource: AuthenticationDataSource =
-        AndroidRemoteAuthenticationDataSource(httpClient, dispatchersProvider, tokenDataSource)
+        AndroidRemoteAuthenticationDataSource(httpClient, dispatchersProvider, tokenDataSource, appLogger)
 }

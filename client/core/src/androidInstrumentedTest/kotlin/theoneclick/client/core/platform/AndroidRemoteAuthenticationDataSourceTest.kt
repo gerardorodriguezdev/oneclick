@@ -31,6 +31,7 @@ class AndroidRemoteAuthenticationDataSourceTest {
         ),
         dispatchersProvider = FakeDispatchersProvider(Dispatchers.Main),
         tokenDataSource = tokenDataSource,
+        appLogger = appLogger,
     )
 
     @Test
