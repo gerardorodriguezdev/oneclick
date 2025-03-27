@@ -8,7 +8,6 @@ import theoneclick.server.core.extensions.defaultAuthentication
 import theoneclick.server.core.plugins.koin.inject
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
 
-//TODO: Test
 fun Routing.logoutEndpoint() {
     val userDataSource: UserDataSource by inject()
 
