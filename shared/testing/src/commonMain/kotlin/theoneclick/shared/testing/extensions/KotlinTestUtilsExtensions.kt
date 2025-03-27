@@ -1,6 +1,8 @@
 package theoneclick.shared.testing.extensions
 
+import theoneclick.shared.testing.extensions.KotlinTestUtilsExtensionsConstants.ABECEDARY
 import theoneclick.shared.testing.models.TestScenario
+import kotlin.random.Random
 import kotlin.test.assertContains
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -11,6 +13,12 @@ fun generateLongString(length: Int): String =
             append('a')
         }
     }
+
+fun generateRandomString(length: Int): String {
+    val abecedaryLength = ABECEDARY.length
+    val range = (1..length)
+    return range.map { ABECEDARY[Random.nextInt(abecedaryLength)] }.joinToString("")
+}
 
 fun <Input : Any?, Expected : Any?> parameterizedTest(
     vararg testScenario: TestScenario<Input, Expected>,
@@ -37,4 +45,8 @@ fun <T> List<T>.assertContains(value: T) {
 
 fun <T> List<T>.assertIsEmpty() {
     assertTrue(message = "List was not empty") { isEmpty() }
+}
+
+private object KotlinTestUtilsExtensionsConstants {
+    const val ABECEDARY = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 }

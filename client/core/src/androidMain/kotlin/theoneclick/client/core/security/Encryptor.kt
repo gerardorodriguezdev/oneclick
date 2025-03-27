@@ -16,7 +16,6 @@ interface Encryptor {
     fun decrypt(bytes: ByteArray): Result<ByteArray?>
 }
 
-//TODO: Test
 class AndroidEncryptor(private val appLogger: AppLogger) : Encryptor {
     private val keyStore = KeyStore.getInstance(KEY_STORE_TYPE)
 

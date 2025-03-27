@@ -8,6 +8,7 @@ import io.ktor.http.*
 import theoneclick.client.core.buildkonfig.BuildKonfig
 import theoneclick.client.core.dataSources.AndroidEncryptedPreferences
 import theoneclick.client.core.dataSources.AndroidLocalTokenDataSource
+import theoneclick.client.core.dataSources.EncryptedPreferences
 import theoneclick.client.core.entrypoint.AppEntrypoint
 import theoneclick.client.core.mappers.urlProtocol
 import theoneclick.client.core.navigation.RealNavigationController
@@ -30,8 +31,10 @@ class TheOneClickApplication : Application() {
         val appLogger = if (BuildKonfig.IS_DEBUG) appLogger() else EmptyAppLogger()
         val dispatchersProvider = dispatchersProvider()
         val encryptedPreferences = AndroidEncryptedPreferences(
+            preferencesFileProvider = {
+                filesDir.resolve(EncryptedPreferences.preferencesFileName("settings"))
+            },
             appLogger = appLogger,
-            context = this,
             dispatchersProvider = dispatchersProvider,
             encryptor = AndroidEncryptor(appLogger),
         )

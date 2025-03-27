@@ -1,13 +1,7 @@
 package theoneclick.client.core.dataSources
 
-import android.content.Context
-import androidx.datastore.core.DataStore
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.emptyPreferences
-import androidx.datastore.preferences.core.stringPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
+import androidx.datastore.preferences.core.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.first
@@ -17,26 +11,29 @@ import kotlinx.serialization.json.Json
 import theoneclick.client.core.security.Encryptor
 import theoneclick.shared.core.platform.AppLogger
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
+import java.io.File
 
 interface EncryptedPreferences {
     suspend fun <T> preference(key: String, serializer: KSerializer<T>): T?
     suspend fun <T> putPreference(key: String, value: T, serializer: KSerializer<T>): Boolean
     suspend fun clearPreference(key: String): Boolean
+
+    companion object {
+        fun preferencesFileName(fileName: String): String = "$fileName.preferences_pb"
+    }
 }
 
-//TODO: Test
 class AndroidEncryptedPreferences(
-    context: Context,
+    preferencesFileProvider: () -> File,
     dispatchersProvider: DispatchersProvider,
     private val encryptor: Encryptor,
     private val appLogger: AppLogger,
 ) : EncryptedPreferences {
-    private val Context.datastore: DataStore<Preferences> by preferencesDataStore(
-        name = PREFERENCES_NAME,
+    private val dataStore = PreferenceDataStoreFactory.create(
+        produceFile = preferencesFileProvider,
         corruptionHandler = ReplaceFileCorruptionHandler<Preferences> { emptyPreferences() },
         scope = CoroutineScope(dispatchersProvider.io()),
     )
-    private val dataStore = context.datastore
 
     override suspend fun <T> preference(key: String, serializer: KSerializer<T>): T? {
         appLogger.i("Getting preference key '$key'")
@@ -109,7 +106,4 @@ class AndroidEncryptedPreferences(
             false
         }
 
-    private companion object {
-        const val PREFERENCES_NAME = "settings"
-    }
 }
