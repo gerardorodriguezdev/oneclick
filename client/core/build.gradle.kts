@@ -125,7 +125,7 @@ buildkonfig {
     }
 
     targetConfigs {
-        create("wasm") {
+        create("wasmJs") {
             buildConfigField(FieldSpec.Type.STRING, name = "PROTOCOL", value = null, nullable = true)
             buildConfigField(FieldSpec.Type.STRING, name = "HOST", value = null, nullable = true)
             buildConfigField(FieldSpec.Type.INT, name = "PORT", value = null, nullable = true)

@@ -28,8 +28,8 @@ class FileSystemUserDataSource(
         val encryptedUserDataBytes = fileSystem.readBytes(userDataPath)
         if (encryptedUserDataBytes.isEmpty()) return null
 
-        val userData = securityUtils.decrypt(input = encryptedUserDataBytes)
-        return Json.decodeFromString<UserData>(userData)
+        val userDataString = securityUtils.decrypt(input = encryptedUserDataBytes)
+        return Json.decodeFromString<UserData>(userDataString)
     }
 
     override fun saveUserData(userData: UserData) {
