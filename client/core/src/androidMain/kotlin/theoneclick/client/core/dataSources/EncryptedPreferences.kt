@@ -15,6 +15,7 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import theoneclick.client.core.security.Encryptor
+import theoneclick.shared.core.platform.AppLogger
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
 interface EncryptedPreferences {
@@ -24,11 +25,11 @@ interface EncryptedPreferences {
 }
 
 //TODO: Test
-//TODO: Remove charsets?
 class AndroidEncryptedPreferences(
     context: Context,
     dispatchersProvider: DispatchersProvider,
     private val encryptor: Encryptor,
+    private val appLogger: AppLogger,
 ) : EncryptedPreferences {
     private val Context.datastore: DataStore<Preferences> by preferencesDataStore(
         name = PREFERENCES_NAME,
@@ -38,17 +39,30 @@ class AndroidEncryptedPreferences(
     private val dataStore = context.datastore
 
     override suspend fun <T> preference(key: String, serializer: KSerializer<T>): T? {
+        appLogger.i("Getting preference key '$key'")
+
         val value = dataStore
             .data
             .map { preferences ->
                 val key = stringPreferencesKey(key)
-                val value = preferences[key] ?: return@map null
+                val value = preferences[key]
+
+                if (value == null) {
+                    appLogger.i("Value for preference key '$key' is null")
+                    return@map null
+                }
+
                 val valueByteArray = value.toByteArray(Charsets.UTF_8)
-                val decryptedValue = encryptor.decrypt(valueByteArray)
+                val decryptedValue = encryptor.decrypt(valueByteArray).getOrThrow()
                 val decryptedValueString = decryptedValue?.toString(Charsets.UTF_8) ?: return@map null
-                Json.decodeFromString(serializer, decryptedValueString)
+                val decodedValue = Json.decodeFromString(serializer, decryptedValueString)
+
+                appLogger.i("Returning value '$decodedValue' for key '$key'")
+                decodedValue
             }
-            .catch { cause ->
+            .catch { error ->
+                appLogger.i("Exception '${error.stackTraceToString()}' when getting preference key '$key'")
+
                 clearPreference(key)
                 emit(null)
             }
@@ -57,25 +71,32 @@ class AndroidEncryptedPreferences(
         return value
     }
 
-    override suspend fun <T> putPreference(key: String, value: T, serializer: KSerializer<T>): Boolean =
-        try {
+    override suspend fun <T> putPreference(key: String, value: T, serializer: KSerializer<T>): Boolean {
+        return try {
+            appLogger.i("Putting preference key '$key' of value '$value'")
+
             dataStore
                 .edit { preferences ->
                     val valueString = Json.encodeToString(serializer, value)
                     val valueByteArray = valueString.toByteArray(Charsets.UTF_8)
-                    val encryptedValue = encryptor.encrypt(valueByteArray)
+                    val encryptedValue = encryptor.encrypt(valueByteArray).getOrThrow()
                     val key = stringPreferencesKey(key)
                     preferences[key] = encryptedValue.toString(Charsets.UTF_8)
                 }
 
             true
-        } catch (_: Throwable) {
+        } catch (error: Throwable) {
+            appLogger.i("Exception '${error.stackTraceToString()}' when putting preference key '$key'")
+
             clearPreference(key)
             false
         }
+    }
 
     override suspend fun clearPreference(key: String): Boolean =
         try {
+            appLogger.i("Clearing preference key '$key'")
+
             dataStore
                 .edit { mutablePreference ->
                     val key = stringPreferencesKey(key)
@@ -83,7 +104,8 @@ class AndroidEncryptedPreferences(
                 }
 
             true
-        } catch (_: Throwable) {
+        } catch (error: Throwable) {
+            appLogger.i("Exception '${error.stackTraceToString()}' when clearing key '$key'")
             false
         }
 

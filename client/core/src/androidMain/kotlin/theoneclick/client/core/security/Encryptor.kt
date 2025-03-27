@@ -2,6 +2,7 @@ package theoneclick.client.core.security
 
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
+import theoneclick.shared.core.platform.AppLogger
 import java.security.KeyStore
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
@@ -11,13 +12,12 @@ import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 interface Encryptor {
-    fun encrypt(bytes: ByteArray): ByteArray
-    fun decrypt(bytes: ByteArray): ByteArray?
+    fun encrypt(bytes: ByteArray): Result<ByteArray>
+    fun decrypt(bytes: ByteArray): Result<ByteArray?>
 }
 
 //TODO: Test
-//TODO: Safe exceptions?
-class AndroidEncryptor : Encryptor {
+class AndroidEncryptor(private val appLogger: AppLogger) : Encryptor {
     private val keyStore = KeyStore.getInstance(KEY_STORE_TYPE)
 
     init {
@@ -25,25 +25,27 @@ class AndroidEncryptor : Encryptor {
     }
 
     @OptIn(ExperimentalEncodingApi::class)
-    override fun encrypt(bytes: ByteArray): ByteArray {
-        val secretKey = getKey()
-        val cipher = Cipher.getInstance(TRANSFORMATION)
-        cipher.init(Cipher.ENCRYPT_MODE, secretKey)
-        val iv = cipher.iv
-        val encrypted = cipher.doFinal(bytes)
-        return Base64.encode(iv + encrypted).toByteArray()
-    }
+    override fun encrypt(bytes: ByteArray): Result<ByteArray> =
+        runCatching {
+            val secretKey = getKey()
+            val cipher = Cipher.getInstance(TRANSFORMATION)
+            cipher.init(Cipher.ENCRYPT_MODE, secretKey)
+            val iv = cipher.iv
+            val encrypted = cipher.doFinal(bytes)
+            Base64.encode(iv + encrypted).toByteArray()
+        }
 
     @OptIn(ExperimentalEncodingApi::class)
-    override fun decrypt(bytes: ByteArray): ByteArray? {
-        val decodedBytes = Base64.decode(bytes)
-        val iv = decodedBytes.copyOfRange(0, IV_SIZE)
-        val data = decodedBytes.copyOfRange(IV_SIZE, decodedBytes.size)
-        val secretKey = getKey()
-        val cipher = Cipher.getInstance(TRANSFORMATION)
-        cipher.init(Cipher.DECRYPT_MODE, secretKey, IvParameterSpec(iv))
-        return cipher.doFinal(data)
-    }
+    override fun decrypt(bytes: ByteArray): Result<ByteArray?> =
+        runCatching {
+            val decodedBytes = Base64.decode(bytes)
+            val iv = decodedBytes.copyOfRange(0, IV_SIZE)
+            val data = decodedBytes.copyOfRange(IV_SIZE, decodedBytes.size)
+            val secretKey = getKey()
+            val cipher = Cipher.getInstance(TRANSFORMATION)
+            cipher.init(Cipher.DECRYPT_MODE, secretKey, IvParameterSpec(iv))
+            cipher.doFinal(data)
+        }
 
     private fun getKey(): SecretKey {
         val existingKey = keyStore.getEntry(KEY_STORE_ALIAS, null)
@@ -56,6 +58,8 @@ class AndroidEncryptor : Encryptor {
     }
 
     private fun generateKey(): SecretKey {
+        appLogger.i("Generating secret key")
+
         val keyGenerator = KeyGenerator.getInstance(ALGORITHM, KEY_STORE_TYPE)
         keyGenerator.init(
             KeyGenParameterSpec

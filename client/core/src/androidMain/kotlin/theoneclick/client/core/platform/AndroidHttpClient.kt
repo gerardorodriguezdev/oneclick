@@ -16,9 +16,10 @@ import theoneclick.client.core.plugins.LogoutManager
 import theoneclick.client.core.plugins.TokenManager
 import theoneclick.shared.core.models.agents.Agent
 import theoneclick.shared.core.models.routes.AppRoute
-import theoneclick.shared.core.platform.localLogger
+import theoneclick.shared.core.platform.AppLogger
 
 fun androidHttpClient(
+    appLogger: AppLogger,
     httpClientEngine: HttpClientEngine,
     tokenDataSource: TokenDataSource,
     navigationController: NavigationController,
@@ -65,14 +66,15 @@ fun androidHttpClient(
             }
         }
 
-        if (BuildKonfig.IS_DEBUG) {
-            install(Logging) {
-                logger = object : Logger {
-                    override fun log(message: String) {
-                        localLogger.i(message)
-                    }
-                }
-                level = LogLevel.ALL
-            }
+        install(Logging) {
+            logger = appLogger.toLogger()
+            level = LogLevel.ALL
+        }
+    }
+
+private fun AppLogger.toLogger(): Logger =
+    object : Logger {
+        override fun log(message: String) {
+            i(message)
         }
     }

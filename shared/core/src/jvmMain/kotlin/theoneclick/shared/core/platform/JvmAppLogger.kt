@@ -1,7 +1,7 @@
 package theoneclick.shared.core.platform
 
-class WasmLocalLogger : LocalLogger {
+class JvmAppLogger : AppLogger {
     override fun i(message: String) = println(message)
 }
 
-actual val localLogger: LocalLogger = WasmLocalLogger()
+actual fun appLogger(): AppLogger = JvmAppLogger()

@@ -4,7 +4,6 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
-import io.ktor.server.sessions.*
 import theoneclick.server.core.models.UserSession
 import theoneclick.server.core.plugins.authentication.AuthenticationConstants.SESSION_AUTHENTICATION
 import theoneclick.server.core.plugins.authentication.AuthenticationConstants.TOKEN_AUTHENTICATION
@@ -27,7 +26,6 @@ private fun AuthenticationConfig.registerSessionAuthentication(paramsValidator: 
         }
 
         challenge {
-            call.sessions.clear(SESSION_AUTHENTICATION)
             call.respond(HttpStatusCode.Unauthorized)
         }
     }

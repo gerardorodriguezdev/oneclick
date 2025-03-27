@@ -14,6 +14,8 @@ import theoneclick.client.core.navigation.RealNavigationController
 import theoneclick.client.core.platform.AndroidAppDependencies
 import theoneclick.client.core.platform.androidHttpClientEngine
 import theoneclick.client.core.security.AndroidEncryptor
+import theoneclick.shared.core.platform.EmptyAppLogger
+import theoneclick.shared.core.platform.appLogger
 import theoneclick.shared.dispatchers.platform.dispatchersProvider
 import theoneclick.shared.timeProvider.SystemTimeProvider
 
@@ -25,13 +27,16 @@ class TheOneClickApplication : Application() {
         setupStrictVmPolicy()
         super.onCreate()
 
+        val appLogger = if (BuildKonfig.IS_DEBUG) appLogger() else EmptyAppLogger()
         val dispatchersProvider = dispatchersProvider()
         val encryptedPreferences = AndroidEncryptedPreferences(
+            appLogger = appLogger,
             context = this,
             dispatchersProvider = dispatchersProvider,
-            encryptor = AndroidEncryptor(),
+            encryptor = AndroidEncryptor(appLogger),
         )
         val appDependencies = AndroidAppDependencies(
+            appLogger = appLogger,
             httpClientEngine = androidHttpClientEngine(timeProvider = SystemTimeProvider()),
             tokenDataSource = AndroidLocalTokenDataSource(encryptedPreferences),
             dispatchersProvider = dispatchersProvider(),
