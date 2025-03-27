@@ -2,15 +2,14 @@ package theoneclick.client.core.viewModels.homeScreen
 
 import androidx.lifecycle.ViewModel
 import org.koin.core.component.KoinScopeComponent
+import org.koin.core.component.createScope
 import org.koin.core.scope.Scope
-import theoneclick.client.core.extensions.typed
 
-class HomeViewModel(scopeId: String) : ViewModel(), KoinScopeComponent {
+class HomeViewModel : ViewModel(), KoinScopeComponent {
 
-    override val scope: Scope = getKoin().createScope(
-        scopeId = scopeId,
-        qualifier = typed(HomeViewModel::class),
-    )
+    override val scope: Scope by lazy {
+        createScope(source = this)
+    }
 
     override fun onCleared() {
         super.onCleared()

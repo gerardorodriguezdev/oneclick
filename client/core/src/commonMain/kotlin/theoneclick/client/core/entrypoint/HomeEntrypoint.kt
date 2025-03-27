@@ -36,25 +36,25 @@ class HomeEntrypoint {
         module {
             includes(coreModule)
 
-            val loggedScopeIdGenerator = StaticLoggedScopeIdGenerator()
-
             scope<HomeViewModel> {
                 scopedOf(::RemoteLoggedDataSource) bind LoggedDataSource::class
             }
 
             viewModel {
-                HomeViewModel(scopeId = loggedScopeIdGenerator.scopeId())
+                HomeViewModel()
             }
 
             viewModel {
+                val homeViewModel: HomeViewModel = get()
                 DevicesListViewModel(
-                    loggedDataSource = getScope(loggedScopeIdGenerator.scopeId()).get(),
+                    loggedDataSource = homeViewModel.scope.get(),
                 )
             }
 
             viewModel {
+                val homeViewModel: HomeViewModel = get()
                 AddDeviceViewModel(
-                    loggedDataSource = getScope(loggedScopeIdGenerator.scopeId()).get(),
+                    loggedDataSource = homeViewModel.scope.get(),
                 )
             }
         }
