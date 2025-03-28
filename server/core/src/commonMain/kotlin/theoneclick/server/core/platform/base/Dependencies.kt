@@ -30,7 +30,6 @@ fun buildModule(dependencies: Dependencies): Module =
         single<Environment> { dependencies.environment }
         single<FileSystem> { dependencies.fileSystem }
         single<PathProvider> { dependencies.pathProvider }
-        //TODO: Replace logger?
         single<Logger> { KtorSimpleLogger("theoneclick.defaultlogger") }
         singleOf(::FileSystemUserDataSource) bind UserDataSource::class
         singleOf(::ParamsValidator)
