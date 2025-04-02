@@ -5,6 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
 import org.junit.Test
 import theoneclick.client.core.dataSources.AndroidInMemoryTokenDataSource
+import theoneclick.client.core.models.results.LogoutResult
 import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.client.core.models.results.UserLoggedResult
 import theoneclick.client.core.navigation.RealNavigationController
@@ -119,6 +120,47 @@ class AndroidRemoteAuthenticationDataSourceTest {
             }
 
             assertEquals(expected = null, actual = tokenDataSource.token())
+        }
+    }
+
+    @Test
+    fun `GIVEN valid user logged WHEN logout THEN returns logout`() {
+        runTest {
+            httpClientEngineController.isUserLogged = { true }
+            tokenDataSource.set(TestData.TOKEN)
+
+            authenticationDataSource.logout().test {
+                assertEquals(LogoutResult.Success, awaitItem())
+                cancelAndIgnoreRemainingEvents()
+            }
+
+            assertEquals(expected = null, actual = tokenDataSource.token())
+        }
+    }
+
+    @Test
+    fun `GIVEN invalid user logged WHEN logout THEN returns failure`() {
+        runTest {
+            httpClientEngineController.isUserLogged = { false }
+
+            authenticationDataSource.logout().test {
+                assertEquals(LogoutResult.Failure, awaitItem())
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+    }
+
+    @Test
+    fun `GIVEN server error WHEN logout THEN returns failure`() {
+        runTest {
+            httpClientEngineController.isUserLogged = { true }
+            httpClientEngineController.isError = { true }
+            tokenDataSource.set(TestData.TOKEN)
+
+            authenticationDataSource.logout().test {
+                assertEquals(LogoutResult.Failure, awaitItem())
+                cancelAndIgnoreRemainingEvents()
+            }
         }
     }
 }

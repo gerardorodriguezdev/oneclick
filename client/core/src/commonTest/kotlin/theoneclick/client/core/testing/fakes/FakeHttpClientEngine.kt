@@ -32,6 +32,7 @@ fun fakeHttpClientEngine(httpClientEngineController: HttpClientEngineController)
             ClientEndpoint.DEVICES.route -> context.handleDevices()
             ClientEndpoint.UPDATE_DEVICE.route -> context.handleUpdateDevice()
             ClientEndpoint.ADD_DEVICE.route -> context.handleAddDevice()
+            ClientEndpoint.LOGOUT.route -> context.handleLogout()
             else -> respondError(HttpStatusCode.NotFound)
         }
     }
@@ -94,6 +95,13 @@ private fun Context.handleUpdateDevice(): HttpResponseData {
         else -> scope.respondOk()
     }
 }
+
+private fun Context.handleLogout(): HttpResponseData =
+    when {
+        isError() -> throw Exception("Error")
+        !isUserLogged() -> scope.respondError(HttpStatusCode.Unauthorized)
+        else -> scope.respondOk()
+    }
 
 class HttpClientEngineController(
     var isUserLogged: () -> Boolean = { false },

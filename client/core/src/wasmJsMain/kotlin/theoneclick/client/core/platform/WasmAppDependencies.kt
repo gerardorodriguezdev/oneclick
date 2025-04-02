@@ -19,7 +19,4 @@ class WasmAppDependencies(
     )
     override val authenticationDataSource: AuthenticationDataSource =
         WasmRemoteAuthenticationDataSource(httpClient, dispatchersProvider, appLogger)
-
-    override val loggedDataSourceProvider: () -> LoggedDataSource =
-        { WasmRemoteLoggedDataSource(httpClient, dispatchersProvider, appLogger) }
 }

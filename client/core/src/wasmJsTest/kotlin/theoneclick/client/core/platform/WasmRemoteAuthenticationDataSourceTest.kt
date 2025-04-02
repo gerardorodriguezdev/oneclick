@@ -3,6 +3,7 @@ package theoneclick.client.core.platform
 import app.cash.turbine.test
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.test.runTest
+import theoneclick.client.core.models.results.LogoutResult
 import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.client.core.models.results.UserLoggedResult
 import theoneclick.client.core.navigation.RealNavigationController
@@ -94,6 +95,43 @@ class WasmRemoteAuthenticationDataSourceTest {
 
             authenticationDataSource.login(username = TestData.USERNAME, password = TestData.PASSWORD).test {
                 assertEquals(RequestLoginResult.Failure, awaitItem())
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+    }
+
+    @Test
+    fun `GIVEN valid user logged WHEN logout THEN returns logout`() {
+        runTest {
+            httpClientEngineController.isUserLogged = { true }
+
+            authenticationDataSource.logout().test {
+                assertEquals(LogoutResult.Success, awaitItem())
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+    }
+
+    @Test
+    fun `GIVEN invalid user logged WHEN logout THEN returns failure`() {
+        runTest {
+            httpClientEngineController.isUserLogged = { false }
+
+            authenticationDataSource.logout().test {
+                assertEquals(LogoutResult.Failure, awaitItem())
+                cancelAndIgnoreRemainingEvents()
+            }
+        }
+    }
+
+    @Test
+    fun `GIVEN server error WHEN logout THEN returns failure`() {
+        runTest {
+            httpClientEngineController.isUserLogged = { true }
+            httpClientEngineController.isError = { true }
+
+            authenticationDataSource.logout().test {
+                assertEquals(LogoutResult.Failure, awaitItem())
                 cancelAndIgnoreRemainingEvents()
             }
         }

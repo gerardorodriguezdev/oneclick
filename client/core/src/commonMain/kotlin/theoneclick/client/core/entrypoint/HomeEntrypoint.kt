@@ -17,6 +17,7 @@ import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import theoneclick.client.core.platform.LoggedDataSource
+import theoneclick.client.core.platform.RemoteLoggedDataSource
 import theoneclick.client.core.ui.screens.homeScreen.AddDeviceScreen
 import theoneclick.client.core.ui.screens.homeScreen.DevicesListScreen
 import theoneclick.client.core.ui.screens.homeScreen.HomeScreenScaffold
@@ -37,8 +38,11 @@ class HomeEntrypoint {
 
             scope<HomeViewModel> {
                 scoped {
-                    val loggedDataSourceProvider: () -> LoggedDataSource = get()
-                    loggedDataSourceProvider()
+                    RemoteLoggedDataSource(
+                        httpClient = get(),
+                        dispatchersProvider = get(),
+                        appLogger = get(),
+                    )
                 } bind LoggedDataSource::class
             }
 
@@ -61,9 +65,8 @@ class HomeEntrypoint {
             }
 
             viewModel {
-                val homeViewModel: HomeViewModel = get()
                 UserSettingsViewModel(
-                    loggedDataSource = homeViewModel.scope.get(),
+                    authenticationDataSource = get(),
                     navigationController = get(),
                 )
             }

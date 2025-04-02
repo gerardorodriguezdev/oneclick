@@ -22,7 +22,4 @@ class AndroidAppDependencies(
     )
     override val authenticationDataSource: AuthenticationDataSource =
         AndroidRemoteAuthenticationDataSource(httpClient, dispatchersProvider, tokenDataSource, appLogger)
-
-    override val loggedDataSourceProvider: () -> LoggedDataSource =
-        { AndroidRemoteLoggedDataSource(httpClient, dispatchersProvider, tokenDataSource, appLogger) }
 }

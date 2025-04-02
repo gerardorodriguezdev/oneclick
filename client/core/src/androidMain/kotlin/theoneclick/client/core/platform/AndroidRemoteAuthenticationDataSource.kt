@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import theoneclick.client.core.dataSources.TokenDataSource
+import theoneclick.client.core.models.results.LogoutResult
 import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.client.core.models.results.UserLoggedResult
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
@@ -82,6 +83,26 @@ class AndroidRemoteAuthenticationDataSource(
             .catch { exception ->
                 appLogger.e("Exception catched '${exception.stackTraceToString()}' while requesting logging user '$username'")
                 emit(RequestLoginResult.Failure)
+            }
+            .flowOn(dispatchersProvider.io())
+
+    override fun logout(): Flow<LogoutResult> =
+        flow {
+            val response = httpClient.get(ClientEndpoint.LOGOUT.route)
+
+            when (response.status) {
+                HttpStatusCode.OK -> {
+                    tokenDataSource.clear()
+                    emit(LogoutResult.Success)
+                }
+
+                else -> emit(LogoutResult.Failure)
+            }
+        }
+            .catch { exception ->
+                appLogger.e("Exception catched '${exception.stackTraceToString()}' while logging out")
+
+                emit(LogoutResult.Failure)
             }
             .flowOn(dispatchersProvider.io())
 }

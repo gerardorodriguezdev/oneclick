@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import theoneclick.client.core.models.results.LogoutResult
 import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.client.core.models.results.UserLoggedResult
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
@@ -61,6 +62,22 @@ class WasmRemoteAuthenticationDataSource(
             .catch { exception ->
                 appLogger.e("Exception catched '${exception.stackTraceToString()}' while requesting login '$username'")
                 emit(RequestLoginResult.Failure)
+            }
+            .flowOn(dispatchersProvider.io())
+
+    override fun logout(): Flow<LogoutResult> =
+        flow {
+            val response = httpClient.get(ClientEndpoint.LOGOUT.route)
+
+            when (response.status) {
+                HttpStatusCode.OK -> emit(LogoutResult.Success)
+                else -> emit(LogoutResult.Failure)
+            }
+        }
+            .catch { exception ->
+                appLogger.e("Exception catched '${exception.stackTraceToString()}' while logging out")
+
+                emit(LogoutResult.Failure)
             }
             .flowOn(dispatchersProvider.io())
 }
