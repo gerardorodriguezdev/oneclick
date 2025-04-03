@@ -16,6 +16,7 @@ import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.DeviceType
 import theoneclick.shared.core.models.requests.AddDeviceRequest
 import theoneclick.shared.core.models.requests.UpdateDeviceRequest
+import theoneclick.shared.core.models.responses.AddDeviceResponse
 import theoneclick.shared.core.models.responses.DevicesResponse
 import theoneclick.shared.core.platform.AppLogger
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
@@ -55,7 +56,11 @@ class RemoteLoggedDataSource(
             }
 
             when (response.status) {
-                HttpStatusCode.OK -> emit(AddDeviceResult.Success)
+                HttpStatusCode.OK -> {
+                    val responseBody = response.body<AddDeviceResponse>()
+                    emit(AddDeviceResult.Success(responseBody.device))
+                }
+
                 else -> emit(AddDeviceResult.Failure)
             }
         }

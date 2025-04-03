@@ -4,8 +4,8 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import theoneclick.server.core.dataSources.UserDataSource
-import theoneclick.server.core.extensions.post
 import theoneclick.server.core.extensions.defaultAuthentication
+import theoneclick.server.core.extensions.post
 import theoneclick.server.core.platform.UuidProvider
 import theoneclick.server.core.plugins.koin.inject
 import theoneclick.server.core.validators.ParamsValidator
@@ -15,6 +15,7 @@ import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.DeviceType
 import theoneclick.shared.core.models.entities.Uuid
+import theoneclick.shared.core.models.responses.AddDeviceResponse
 
 fun Routing.addDeviceEndpoint() {
     val paramsValidator: ParamsValidator by inject()
@@ -56,7 +57,7 @@ private suspend fun RoutingContext.handleValidDevice(
         currentUserData.copy(devices = currentUserData.devices + newDevice)
     )
 
-    call.respond(HttpStatusCode.OK)
+    call.respond(AddDeviceResponse(newDevice))
 }
 
 private fun device(uuid: Uuid, deviceName: String, room: String, type: DeviceType): Device =

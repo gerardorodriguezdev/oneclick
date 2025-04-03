@@ -8,14 +8,14 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import theoneclick.client.core.dataSources.LoggedDataSource
 import theoneclick.client.core.models.results.AddDeviceResult
+import theoneclick.client.core.repositories.DevicesRepository
 import theoneclick.client.core.ui.events.homeScreen.AddDeviceEvent
 import theoneclick.client.core.ui.states.homeScreen.AddDeviceState
 import theoneclick.shared.core.validators.deviceNameValidator
 import theoneclick.shared.core.validators.roomNameValidator
 
-class AddDeviceViewModel(private val loggedDataSource: LoggedDataSource) : ViewModel() {
+class AddDeviceViewModel(private val devicesRepository: DevicesRepository) : ViewModel() {
     private val _state = mutableStateOf(AddDeviceState())
     val state: State<AddDeviceState> = _state
 
@@ -68,7 +68,7 @@ class AddDeviceViewModel(private val loggedDataSource: LoggedDataSource) : ViewM
         requestAddDeviceJob = viewModelScope.launch {
             val currentState = _state.value
 
-            loggedDataSource
+            devicesRepository
                 .addDevice(
                     deviceName = currentState.deviceName,
                     room = currentState.roomName,

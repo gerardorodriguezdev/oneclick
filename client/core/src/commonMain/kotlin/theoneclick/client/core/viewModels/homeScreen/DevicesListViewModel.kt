@@ -9,15 +9,16 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import theoneclick.client.core.dataSources.LoggedDataSource
 import theoneclick.client.core.extensions.updateDevice
 import theoneclick.client.core.models.results.DevicesResult
 import theoneclick.client.core.models.results.UpdateDeviceResult
+import theoneclick.client.core.repositories.DevicesRepository
 import theoneclick.client.core.ui.events.homeScreen.DevicesListEvent
 import theoneclick.client.core.ui.states.homeScreen.DevicesListState
 
+//TODO: Listen to repo to changes devices
 class DevicesListViewModel(
-    private val loggedDataSource: LoggedDataSource,
+    private val devicesRepository: DevicesRepository,
 ) : ViewModel() {
 
     private val _state = mutableStateOf(DevicesListState())
@@ -43,7 +44,7 @@ class DevicesListViewModel(
         requestDevicesJob?.cancel()
 
         requestDevicesJob = viewModelScope.launch {
-            loggedDataSource
+            devicesRepository
                 .devices()
                 .onStart {
                     _state.value = _state.value.copy(isLoading = true)
@@ -77,7 +78,7 @@ class DevicesListViewModel(
         updateDeviceJob?.cancel()
 
         updateDeviceJob = viewModelScope.launch {
-            loggedDataSource
+            devicesRepository
                 .updateDevice(updatedDevice)
                 .onStart {
                     // Optimistic approach

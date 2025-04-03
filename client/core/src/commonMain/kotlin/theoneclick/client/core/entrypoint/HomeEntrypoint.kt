@@ -18,6 +18,8 @@ import org.koin.dsl.bind
 import org.koin.dsl.module
 import theoneclick.client.core.dataSources.LoggedDataSource
 import theoneclick.client.core.dataSources.RemoteLoggedDataSource
+import theoneclick.client.core.repositories.DevicesRepository
+import theoneclick.client.core.repositories.InMemoryDevicesRepository
 import theoneclick.client.core.ui.screens.homeScreen.AddDeviceScreen
 import theoneclick.client.core.ui.screens.homeScreen.DevicesListScreen
 import theoneclick.client.core.ui.screens.homeScreen.HomeScreenScaffold
@@ -44,6 +46,12 @@ class HomeEntrypoint {
                         appLogger = get(),
                     )
                 } bind LoggedDataSource::class
+
+                scoped {
+                    InMemoryDevicesRepository(
+                        loggedDataSource = get(),
+                    )
+                } bind DevicesRepository::class
             }
 
             viewModel {
@@ -53,14 +61,14 @@ class HomeEntrypoint {
             viewModel {
                 val homeViewModel: HomeViewModel = get()
                 DevicesListViewModel(
-                    loggedDataSource = homeViewModel.scope.get(),
+                    devicesRepository = homeViewModel.scope.get(),
                 )
             }
 
             viewModel {
                 val homeViewModel: HomeViewModel = get()
                 AddDeviceViewModel(
-                    loggedDataSource = homeViewModel.scope.get(),
+                    devicesRepository = homeViewModel.scope.get(),
                 )
             }
 
