@@ -35,7 +35,7 @@ fun UserSettingsScreen(
             isErrorType = state.showError,
             showSnackbar = state.showError || state.showSuccess,
         ),
-        onSnackbarShow = { onEvent(UserSettingsEvent.ErrorShown) },
+        onSnackbarShown = { onEvent(UserSettingsEvent.ErrorShown) },
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Card(modifier = Modifier.align(Alignment.Center)) {

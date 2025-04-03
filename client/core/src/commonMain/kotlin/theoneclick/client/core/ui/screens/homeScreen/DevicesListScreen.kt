@@ -46,7 +46,7 @@ fun DevicesListScreen(
             isErrorType = true,
             showSnackbar = state.showError,
         ),
-        onSnackbarShow = { onEvent(DevicesListEvent.ErrorShown) }
+        onSnackbarShown = { onEvent(DevicesListEvent.ErrorShown) }
     ) {
         Content(
             state = state,

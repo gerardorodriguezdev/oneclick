@@ -38,7 +38,7 @@ fun AddDeviceScreen(
             isErrorType = state.showError,
             showSnackbar = state.showError || state.showSuccess,
         ),
-        onSnackbarShow = { onEvent(AddDeviceEvent.ErrorShown) },
+        onSnackbarShown = { onEvent(AddDeviceEvent.ErrorShown) },
     ) {
         Box(
             modifier = Modifier.fillMaxSize()

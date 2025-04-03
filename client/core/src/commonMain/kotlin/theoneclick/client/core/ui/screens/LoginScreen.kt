@@ -40,7 +40,7 @@ fun LoginScreen(
             isErrorType = true,
             showSnackbar = state.showError,
         ),
-        onSnackbarShow = { onEvent(LoginEvent.ErrorShown) },
+        onSnackbarShown = { onEvent(LoginEvent.ErrorShown) },
     ) { paddingValues ->
         Box(
             modifier = Modifier
