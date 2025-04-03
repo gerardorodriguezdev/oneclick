@@ -9,14 +9,12 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import theoneclick.client.core.extensions.updateDevice
 import theoneclick.client.core.models.results.DevicesResult
 import theoneclick.client.core.models.results.UpdateDeviceResult
 import theoneclick.client.core.repositories.DevicesRepository
 import theoneclick.client.core.ui.events.homeScreen.DevicesListEvent
 import theoneclick.client.core.ui.states.homeScreen.DevicesListState
 
-//TODO: Listen to repo to changes devices
 class DevicesListViewModel(
     private val devicesRepository: DevicesRepository,
 ) : ViewModel() {
@@ -29,23 +27,31 @@ class DevicesListViewModel(
     private var updateDeviceJob: Job? = null
 
     init {
-        requestDevices()
+        viewModelScope.launch {
+            devicesRepository.devices.collect { devices ->
+                _state.value = _state.value.copy(
+                    devices = devices.toImmutableList(),
+                )
+            }
+        }
+
+        refreshDevices()
     }
 
     fun onEvent(event: DevicesListEvent) {
         when (event) {
-            is DevicesListEvent.Refresh -> requestDevices()
+            is DevicesListEvent.Refresh -> refreshDevices()
             is DevicesListEvent.ErrorShown -> event.handleErrorShown()
             is DevicesListEvent.UpdateDevice -> event.handleUpdateDevice()
         }
     }
 
-    private fun requestDevices() {
+    private fun refreshDevices() {
         requestDevicesJob?.cancel()
 
         requestDevicesJob = viewModelScope.launch {
             devicesRepository
-                .devices()
+                .refreshDevices()
                 .onStart {
                     _state.value = _state.value.copy(isLoading = true)
                 }
@@ -54,12 +60,7 @@ class DevicesListViewModel(
                 }
                 .collect { devicesResult ->
                     when (devicesResult) {
-                        is DevicesResult.Success -> {
-                            _state.value = _state.value.copy(
-                                devices = devicesResult.devices.toImmutableList(),
-                            )
-                        }
-
+                        is DevicesResult.Success -> Unit // Observed at the start
                         is DevicesResult.Failure -> handleUnknownError()
                     }
                 }
@@ -80,15 +81,9 @@ class DevicesListViewModel(
         updateDeviceJob = viewModelScope.launch {
             devicesRepository
                 .updateDevice(updatedDevice)
-                .onStart {
-                    // Optimistic approach
-                    _state.value = _state.value.copy(
-                        devices = _state.value.devices.updateDevice(updatedDevice),
-                    )
-                }
                 .collect { updatedDeviceResult ->
                     when (updatedDeviceResult) {
-                        is UpdateDeviceResult.Success -> Unit
+                        is UpdateDeviceResult.Success -> Unit // Observed at the start
                         is UpdateDeviceResult.Failure -> handleUnknownError()
                     }
                 }
