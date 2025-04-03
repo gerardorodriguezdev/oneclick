@@ -94,7 +94,6 @@ class DevicesListViewModel(
         super.onCleared()
 
         requestDevicesJob?.cancel()
-
         updateDeviceJob?.cancel()
     }
 }

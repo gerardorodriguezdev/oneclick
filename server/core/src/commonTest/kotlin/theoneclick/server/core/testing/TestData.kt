@@ -1,6 +1,5 @@
 package theoneclick.server.core.testing
 
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import theoneclick.server.core.models.EncryptedToken
 import theoneclick.server.core.models.HashedPassword

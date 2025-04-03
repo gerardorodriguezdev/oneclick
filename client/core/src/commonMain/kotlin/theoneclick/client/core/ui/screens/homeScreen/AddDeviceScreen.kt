@@ -40,9 +40,7 @@ fun AddDeviceScreen(
         ),
         onSnackbarShown = { onEvent(AddDeviceEvent.ErrorShown) },
     ) {
-        Box(
-            modifier = Modifier.fillMaxSize()
-        ) {
+        Box(modifier = Modifier.fillMaxSize()) {
             Card(modifier = Modifier.align(Alignment.Center)) {
                 FormContent(
                     deviceName = state.deviceName,
