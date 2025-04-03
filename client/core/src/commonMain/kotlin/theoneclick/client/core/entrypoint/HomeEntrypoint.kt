@@ -2,6 +2,7 @@ package theoneclick.client.core.entrypoint
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination
@@ -13,6 +14,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.module.Module
+import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.bind
 import org.koin.dsl.module
@@ -26,7 +28,6 @@ import theoneclick.client.core.ui.screens.homeScreen.HomeScreenScaffold
 import theoneclick.client.core.ui.screens.homeScreen.UserSettingsScreen
 import theoneclick.client.core.viewModels.homeScreen.AddDeviceViewModel
 import theoneclick.client.core.viewModels.homeScreen.DevicesListViewModel
-import theoneclick.client.core.viewModels.homeScreen.HomeViewModel
 import theoneclick.client.core.viewModels.homeScreen.UserSettingsViewModel
 import theoneclick.shared.core.models.routes.HomeRoute
 import theoneclick.shared.core.models.routes.HomeRoute.*
@@ -38,37 +39,19 @@ class HomeEntrypoint {
         module {
             includes(coreModule)
 
-            scope<HomeViewModel> {
-                scoped {
-                    RemoteLoggedDataSource(
-                        httpClient = get(),
-                        dispatchersProvider = get(),
-                        appLogger = get(),
-                    )
-                } bind LoggedDataSource::class
+            singleOf(::RemoteLoggedDataSource) bind LoggedDataSource::class
 
-                scoped {
-                    InMemoryDevicesRepository(
-                        loggedDataSource = get(),
-                    )
-                } bind DevicesRepository::class
-            }
+            singleOf(::InMemoryDevicesRepository) bind DevicesRepository::class
 
             viewModel {
-                HomeViewModel()
-            }
-
-            viewModel {
-                val homeViewModel: HomeViewModel = get()
                 DevicesListViewModel(
-                    devicesRepository = homeViewModel.scope.get(),
+                    devicesRepository = get(),
                 )
             }
 
             viewModel {
-                val homeViewModel: HomeViewModel = get()
                 AddDeviceViewModel(
-                    devicesRepository = homeViewModel.scope.get(),
+                    devicesRepository = get(),
                 )
             }
 
@@ -85,7 +68,6 @@ class HomeEntrypoint {
         val navBackStackEntry by navHostController.currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
         val selectedHomeRoute = currentDestination.toHomeRoute()
-        val homeViewModel: HomeViewModel = koinViewModel()
 
         HomeScreenScaffold(
             selectedHomeRoute = selectedHomeRoute,
@@ -98,8 +80,9 @@ class HomeEntrypoint {
                 ) {
                     composable<DevicesList> {
                         val devicesListViewModel: DevicesListViewModel = koinViewModel()
+                        val state by devicesListViewModel.state.collectAsState()
                         DevicesListScreen(
-                            state = devicesListViewModel.state.value,
+                            state = state,
                             onEvent = devicesListViewModel::onEvent,
                         )
                     }
