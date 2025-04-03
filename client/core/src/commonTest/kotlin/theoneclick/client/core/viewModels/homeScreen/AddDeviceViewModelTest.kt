@@ -2,7 +2,8 @@ package theoneclick.client.core.viewModels.homeScreen
 
 import kotlinx.coroutines.flow.flowOf
 import theoneclick.client.core.models.results.AddDeviceResult
-import theoneclick.client.core.testing.fakes.FakeLoggedDataSource
+import theoneclick.client.core.testing.TestData
+import theoneclick.client.core.testing.fakes.FakeDevicesRepository
 import theoneclick.client.core.ui.events.homeScreen.AddDeviceEvent.*
 import theoneclick.client.core.ui.states.homeScreen.AddDeviceState
 import theoneclick.shared.core.models.entities.DeviceType
@@ -12,9 +13,9 @@ import kotlin.test.assertEquals
 
 class AddDeviceViewModelTest : CoroutinesTest() {
 
-    private val dataSource = FakeLoggedDataSource()
+    private val devicesRepository = FakeDevicesRepository()
     private val viewModel =
-        AddDeviceViewModel(loggedDataSource = dataSource)
+        AddDeviceViewModel(devicesRepository = devicesRepository)
 
     @Test
     fun `GIVEN initial state THEN returns initial state`() {
@@ -90,7 +91,7 @@ class AddDeviceViewModelTest : CoroutinesTest() {
 
     @Test
     fun `GIVEN valid request with success WHEN add device button clicked event THEN returns updated state`() {
-        dataSource.addDeviceResultFlow = flowOf(AddDeviceResult.Success)
+        devicesRepository.addDeviceResultFlow = flowOf(AddDeviceResult.Success(TestData.device))
         viewModel.onEvent(DeviceNameChanged("DeviceName"))
         viewModel.onEvent(RoomNameChanged("RoomName"))
 
@@ -112,7 +113,7 @@ class AddDeviceViewModelTest : CoroutinesTest() {
 
     @Test
     fun `GIVEN failure WHEN add device button clicked event THEN returns failure`() {
-        dataSource.addDeviceResultFlow = flowOf(AddDeviceResult.Failure)
+        devicesRepository.addDeviceResultFlow = flowOf(AddDeviceResult.Failure)
         viewModel.onEvent(DeviceNameChanged("DeviceName"))
         viewModel.onEvent(RoomNameChanged("RoomName"))
 
@@ -135,7 +136,7 @@ class AddDeviceViewModelTest : CoroutinesTest() {
 
     @Test
     fun `WHEN error shown event THEN returns updated state`() {
-        dataSource.addDeviceResultFlow = flowOf(AddDeviceResult.Failure)
+        devicesRepository.addDeviceResultFlow = flowOf(AddDeviceResult.Failure)
         viewModel.onEvent(DeviceNameChanged("DeviceName"))
         viewModel.onEvent(RoomNameChanged("RoomName"))
         viewModel.onEvent(AddDeviceButtonClicked)
@@ -157,7 +158,7 @@ class AddDeviceViewModelTest : CoroutinesTest() {
 
     @Test
     fun `WHEN success shown event THEN returns updated state`() {
-        dataSource.addDeviceResultFlow = flowOf(AddDeviceResult.Success)
+        devicesRepository.addDeviceResultFlow = flowOf(AddDeviceResult.Success(TestData.device))
         viewModel.onEvent(DeviceNameChanged("DeviceName"))
         viewModel.onEvent(RoomNameChanged("RoomName"))
         viewModel.onEvent(AddDeviceButtonClicked)
