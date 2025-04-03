@@ -38,6 +38,7 @@ class HomeEntrypoint {
         module {
             includes(coreModule)
 
+            //TODO: Fix scopes
             singleOf(::RemoteLoggedDataSource) bind LoggedDataSource::class
 
             singleOf(::InMemoryDevicesRepository) bind DevicesRepository::class
