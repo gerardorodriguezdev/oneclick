@@ -16,8 +16,8 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.viewModel
 import org.koin.dsl.bind
 import org.koin.dsl.module
-import theoneclick.client.core.platform.LoggedDataSource
-import theoneclick.client.core.platform.RemoteLoggedDataSource
+import theoneclick.client.core.dataSources.LoggedDataSource
+import theoneclick.client.core.dataSources.RemoteLoggedDataSource
 import theoneclick.client.core.ui.screens.homeScreen.AddDeviceScreen
 import theoneclick.client.core.ui.screens.homeScreen.DevicesListScreen
 import theoneclick.client.core.ui.screens.homeScreen.HomeScreenScaffold

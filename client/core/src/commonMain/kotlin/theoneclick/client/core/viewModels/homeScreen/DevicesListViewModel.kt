@@ -9,7 +9,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import theoneclick.client.core.platform.LoggedDataSource
+import theoneclick.client.core.dataSources.LoggedDataSource
 import theoneclick.client.core.extensions.updateDevice
 import theoneclick.client.core.models.results.DevicesResult
 import theoneclick.client.core.models.results.UpdateDeviceResult

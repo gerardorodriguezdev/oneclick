@@ -1,4 +1,4 @@
-package theoneclick.client.core.platform
+package theoneclick.client.core.dataSources
 
 import io.ktor.client.*
 import io.ktor.client.call.*
