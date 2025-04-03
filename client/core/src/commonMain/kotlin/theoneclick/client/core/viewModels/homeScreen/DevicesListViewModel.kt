@@ -1,11 +1,11 @@
 package theoneclick.client.core.viewModels.homeScreen
 
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
@@ -19,8 +19,8 @@ class DevicesListViewModel(
     private val devicesRepository: DevicesRepository,
 ) : ViewModel() {
 
-    private val _state = MutableStateFlow(DevicesListState())
-    val state: StateFlow<DevicesListState> = _state
+    private val _state = mutableStateOf(DevicesListState())
+    val state: State<DevicesListState> = _state
 
     private var requestDevicesJob: Job? = null
 

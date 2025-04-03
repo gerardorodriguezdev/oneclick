@@ -1,9 +1,6 @@
 package theoneclick.client.core.repositories
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
-import kotlinx.coroutines.flow.SharedFlow
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.*
 import theoneclick.client.core.dataSources.LoggedDataSource
 import theoneclick.client.core.models.results.AddDeviceResult
 import theoneclick.client.core.models.results.DevicesResult
@@ -28,8 +25,8 @@ interface DevicesRepository {
 class InMemoryDevicesRepository(
     private val loggedDataSource: LoggedDataSource,
 ) : DevicesRepository {
-    private val _devices = MutableSharedFlow<List<Device>>(1)
-    override val devices: SharedFlow<List<Device>> = _devices
+    private val _devices = MutableStateFlow<List<Device>>(emptyList())
+    override val devices: StateFlow<List<Device>> = _devices
 
     override fun addDevice(
         deviceName: String,
@@ -44,8 +41,7 @@ class InMemoryDevicesRepository(
             )
             .onEach { result ->
                 if (result is AddDeviceResult.Success) {
-                    val currentDevices = _devices.replayCache.firstOrNull() ?: emptyList()
-                    val newDevices = currentDevices + result.device
+                    val newDevices = _devices.value + result.device
                     _devices.emit(newDevices)
                 }
             }
@@ -55,8 +51,7 @@ class InMemoryDevicesRepository(
             .updateDevice(updatedDevice)
             .onEach { result ->
                 if (result is UpdateDeviceResult.Success) {
-                    val currentDevices = _devices.replayCache.firstOrNull() ?: emptyList()
-                    val newDevices = currentDevices
+                    val newDevices = _devices.value
                         .mapIndexed { _, device ->
                             if (device.id == updatedDevice.id) {
                                 updatedDevice

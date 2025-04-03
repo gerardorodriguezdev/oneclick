@@ -2,7 +2,6 @@ package theoneclick.client.core.entrypoint
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination
@@ -80,9 +79,8 @@ class HomeEntrypoint {
                 ) {
                     composable<DevicesList> {
                         val devicesListViewModel: DevicesListViewModel = koinViewModel()
-                        val state by devicesListViewModel.state.collectAsState()
                         DevicesListScreen(
-                            state = state,
+                            state = devicesListViewModel.state.value,
                             onEvent = devicesListViewModel::onEvent,
                         )
                     }
