@@ -78,7 +78,7 @@ class RemoteLoggedDataSource(
             when (response.status) {
                 HttpStatusCode.OK -> {
                     val responseBody = response.body<DevicesResponse>()
-                    emit(responseBody.toDevicesResult())
+                    emit(DevicesResult.Success(devices = responseBody.devices))
                 }
 
                 else -> emit(DevicesResult.Failure)
@@ -89,9 +89,6 @@ class RemoteLoggedDataSource(
                 emit(DevicesResult.Failure)
             }
             .flowOn(dispatchersProvider.io())
-
-    private fun DevicesResponse.toDevicesResult(): DevicesResult =
-        DevicesResult.Success(devices = devices)
 
     override fun updateDevice(updatedDevice: Device): Flow<UpdateDeviceResult> =
         flow {

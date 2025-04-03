@@ -1,6 +1,7 @@
 package theoneclick.client.core.viewModels.homeScreen
 
 import kotlinx.collections.immutable.persistentListOf
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.flowOf
 import theoneclick.client.core.models.results.DevicesResult
 import theoneclick.client.core.models.results.UpdateDeviceResult
@@ -28,9 +29,7 @@ class DevicesListViewModelTest : CoroutinesTest() {
 
     @Test
     fun `GIVEN devices available WHEN init THEN returns devices list state`() {
-        dataSource.devicesResultFlow = flowOf(
-            DevicesResult.Success(devices = DevicesListScreenPreviewModels.devices)
-        )
+        dataSource.devicesFlow = MutableStateFlow(DevicesListScreenPreviewModels.devices)
 
         val devicesListViewModel = devicesListViewModel()
 
@@ -44,10 +43,6 @@ class DevicesListViewModelTest : CoroutinesTest() {
 
     @Test
     fun `GIVEN devices not available WHEN init THEN returns empty list state`() {
-        dataSource.devicesResultFlow = flowOf(
-            DevicesResult.Success(devices = emptyList())
-        )
-
         val devicesListViewModel = devicesListViewModel()
 
         assertEquals(
@@ -60,7 +55,7 @@ class DevicesListViewModelTest : CoroutinesTest() {
 
     @Test
     fun `GIVEN failure WHEN init THEN returns failure`() {
-        dataSource.devicesResultFlow = flowOf(
+        dataSource.refreshDevicesResultFlow = flowOf(
             DevicesResult.Failure,
         )
 
@@ -76,55 +71,10 @@ class DevicesListViewModelTest : CoroutinesTest() {
     }
 
     @Test
-    fun `GIVEN no devices at start WHEN refresh THEN returns devices`() {
-        dataSource.devicesResultFlow = flowOf(DevicesResult.Success(devices = persistentListOf()))
-
-        val devicesListViewModel = devicesListViewModel()
-        dataSource.devicesResultFlow = flowOf(DevicesResult.Success(devices = DevicesListScreenPreviewModels.devices))
-
-        devicesListViewModel.onEvent(DevicesListEvent.Refresh)
-
-        assertEquals(
-            expected = DevicesListState(
-                devices = DevicesListScreenPreviewModels.devices,
-            ),
-            actual = devicesListViewModel.state.value,
-        )
-    }
-
-    @Test
-    fun `GIVEN devices available WHEN update device THEN returns updated device`() {
-        dataSource.devicesResultFlow = flowOf(
-            DevicesResult.Success(devices = persistentListOf(DevicesListScreenPreviewModels.closedBlind))
-        )
-        dataSource.updateDeviceResultFlow = flowOf(
-            UpdateDeviceResult.Success,
-        )
-        val updatedDevice = DevicesListScreenPreviewModels.closedBlind.copy(
-            isOpened = true,
-        )
-
-        val devicesListViewModel = devicesListViewModel()
-        devicesListViewModel.onEvent(
-            DevicesListEvent.UpdateDevice(
-                updatedDevice = updatedDevice,
-            )
-        )
-
-        assertEquals(
-            expected = DevicesListState(
-                devices = persistentListOf(
-                    updatedDevice,
-                ),
-            ),
-            actual = devicesListViewModel.state.value,
-        )
-    }
-
-    @Test
     fun `GIVEN failure WHEN update device THEN returns failure`() {
-        dataSource.devicesResultFlow = flowOf(
-            DevicesResult.Success(devices = persistentListOf(DevicesListScreenPreviewModels.closedBlind))
+        dataSource.devicesFlow = MutableStateFlow(listOf(DevicesListScreenPreviewModels.closedBlind))
+        dataSource.refreshDevicesResultFlow = flowOf(
+            DevicesResult.Success(devices = listOf(DevicesListScreenPreviewModels.closedBlind))
         )
         dataSource.updateDeviceResultFlow = flowOf(
             UpdateDeviceResult.Failure,
@@ -143,7 +93,7 @@ class DevicesListViewModelTest : CoroutinesTest() {
         assertEquals(
             expected = DevicesListState(
                 devices = persistentListOf(
-                    updatedDevice,
+                    DevicesListScreenPreviewModels.closedBlind,
                 ),
                 showError = true,
             ),

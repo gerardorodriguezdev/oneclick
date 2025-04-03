@@ -35,44 +35,38 @@ class AddDeviceViewModel(private val devicesRepository: DevicesRepository) : Vie
     }
 
     private fun AddDeviceEvent.DeviceNameChanged.handleDeviceNameChanged() {
-        val currentState = _state.value
         val isNewDeviceNameValid = deviceNameValidator.isValid(newDeviceName)
 
-        _state.value = currentState.copy(
+        _state.value = _state.value.copy(
             deviceName = newDeviceName,
             isDeviceNameValid = isNewDeviceNameValid,
-            isAddDeviceButtonEnabled = isNewDeviceNameValid && roomNameValidator.isValid(currentState.roomName),
+            isAddDeviceButtonEnabled = isNewDeviceNameValid && roomNameValidator.isValid(_state.value.roomName),
         )
     }
 
     private fun AddDeviceEvent.RoomNameChanged.handleRoomNameChanged() {
-        val currentState = _state.value
         val isNewRoomNameValid = roomNameValidator.isValid(newRoomName)
 
-        _state.value = currentState.copy(
+        _state.value = _state.value.copy(
             roomName = newRoomName,
             isRoomNameValid = isNewRoomNameValid,
-            isAddDeviceButtonEnabled = isNewRoomNameValid && deviceNameValidator.isValid(currentState.deviceName)
+            isAddDeviceButtonEnabled = isNewRoomNameValid && deviceNameValidator.isValid(_state.value.deviceName)
         )
     }
 
     private fun AddDeviceEvent.DeviceTypeChanged.handleDeviceTypeChanged() {
-        val currentState = _state.value
-
-        _state.value = currentState.copy(deviceType = newDeviceType)
+        _state.value = _state.value.copy(deviceType = newDeviceType)
     }
 
     private fun AddDeviceEvent.AddDeviceButtonClicked.handleAddDeviceButtonClicked() {
         requestAddDeviceJob?.cancel()
 
         requestAddDeviceJob = viewModelScope.launch {
-            val currentState = _state.value
-
             devicesRepository
                 .addDevice(
-                    deviceName = currentState.deviceName,
-                    room = currentState.roomName,
-                    type = currentState.deviceType
+                    deviceName = _state.value.deviceName,
+                    room = _state.value.roomName,
+                    type = _state.value.deviceType
                 )
                 .onStart {
                     _state.value = _state.value.copy(

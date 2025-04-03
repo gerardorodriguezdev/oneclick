@@ -14,7 +14,7 @@ import theoneclick.shared.core.models.entities.DeviceType
 class FakeDevicesRepository(
     var devicesFlow: MutableStateFlow<List<Device>> = MutableStateFlow(emptyList()),
     var addDeviceResultFlow: Flow<AddDeviceResult> = flowOf(),
-    var devicesResultFlow: Flow<DevicesResult> = flowOf(),
+    var refreshDevicesResultFlow: Flow<DevicesResult> = flowOf(),
     var updateDeviceResultFlow: Flow<UpdateDeviceResult> = flowOf(),
 ) : DevicesRepository {
 
@@ -28,7 +28,7 @@ class FakeDevicesRepository(
     ): Flow<AddDeviceResult> =
         addDeviceResultFlow
 
-    override fun refreshDevices(): Flow<DevicesResult> = devicesResultFlow
+    override fun refreshDevices(): Flow<DevicesResult> = refreshDevicesResultFlow
 
     override fun updateDevice(updatedDevice: Device): Flow<UpdateDeviceResult> = updateDeviceResultFlow
 }

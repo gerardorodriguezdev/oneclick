@@ -41,24 +41,22 @@ class LoginViewModel(
     }
 
     private fun LoginEvent.UsernameChanged.handleUsernameChange() {
-        val currentState = _state.value
         val isNewUsernameValid = usernameValidator.isValid(newUsername)
 
-        _state.value = currentState.copy(
+        _state.value = _state.value.copy(
             username = newUsername,
             isUsernameValid = isNewUsernameValid,
-            isRegisterButtonEnabled = isNewUsernameValid && passwordValidator.isValid(currentState.password),
+            isRegisterButtonEnabled = isNewUsernameValid && passwordValidator.isValid(_state.value.password),
         )
     }
 
     private fun LoginEvent.PasswordChanged.handlePasswordChange() {
-        val currentState = _state.value
         val isNewPasswordValid = passwordValidator.isValid(newPassword)
 
-        _state.value = currentState.copy(
+        _state.value = _state.value.copy(
             password = newPassword,
             isPasswordValid = isNewPasswordValid,
-            isRegisterButtonEnabled = isNewPasswordValid && usernameValidator.isValid(currentState.username),
+            isRegisterButtonEnabled = isNewPasswordValid && usernameValidator.isValid(_state.value.username),
         )
     }
 

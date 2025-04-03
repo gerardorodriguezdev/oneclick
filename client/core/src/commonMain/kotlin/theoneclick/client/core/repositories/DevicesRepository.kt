@@ -50,18 +50,16 @@ class InMemoryDevicesRepository(
         loggedDataSource
             .updateDevice(updatedDevice)
             .onEach { result ->
-                if (result is UpdateDeviceResult.Success) {
-                    val newDevices = _devices.value
-                        .mapIndexed { _, device ->
-                            if (device.id == updatedDevice.id) {
-                                updatedDevice
-                            } else {
-                                device
-                            }
+                val newDevices = _devices.value
+                    .mapIndexed { _, device ->
+                        if (device.id == updatedDevice.id) {
+                            updatedDevice
+                        } else {
+                            device
                         }
+                    }
 
-                    _devices.emit(newDevices)
-                }
+                _devices.emit(newDevices)
             }
 
     override fun refreshDevices(): Flow<DevicesResult> =
