@@ -8,11 +8,14 @@ import io.ktor.server.engine.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import theoneclick.server.shared.extensions.agent
+import theoneclick.shared.core.models.agents.Agent
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.Uuid
 import theoneclick.shared.core.models.requests.RequestLoginRequest
 import theoneclick.shared.core.models.responses.DevicesResponse
+import theoneclick.shared.core.models.responses.RequestLoginResponse
 import theoneclick.shared.core.models.responses.UserLoggedResponse
 
 fun server(): EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration> =
@@ -38,7 +41,10 @@ private fun Application.configureRouting() {
         }
 
         post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
-            call.respond(HttpStatusCode.OK)
+            when (call.request.agent) {
+                Agent.MOBILE -> call.respond(RequestLoginResponse("token"))
+                Agent.BROWSER -> call.respond(HttpStatusCode.OK)
+            }
         }
 
         get(ClientEndpoint.DEVICES.route) {

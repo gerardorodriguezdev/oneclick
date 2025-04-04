@@ -17,6 +17,7 @@ kotlin {
                 implementation(libs.kmp.ktor.server.content.negotiation)
                 implementation(libs.kmp.ktor.server.cio)
                 implementation(projects.shared.core)
+                implementation(projects.server.shared)
             }
         }
 

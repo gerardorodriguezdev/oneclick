@@ -1,8 +1,9 @@
 package theoneclick.client.core.di
 
 import org.koin.core.module.Module
-import org.koin.core.module.dsl.singleOf
+import org.koin.core.module.dsl.scopedOf
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import theoneclick.client.core.dataSources.LoggedDataSource
@@ -13,6 +14,7 @@ import theoneclick.client.core.repositories.DevicesRepository
 import theoneclick.client.core.repositories.InMemoryDevicesRepository
 import theoneclick.client.core.viewModels.homeScreen.AddDeviceViewModel
 import theoneclick.client.core.viewModels.homeScreen.DevicesListViewModel
+import theoneclick.client.core.viewModels.homeScreen.HomeViewModel
 import theoneclick.client.core.viewModels.homeScreen.UserSettingsViewModel
 
 class LoggedModule(coreModule: CoreModule) : ModuleProvider {
@@ -20,26 +22,31 @@ class LoggedModule(coreModule: CoreModule) : ModuleProvider {
         module {
             includes(coreModule)
 
-            //TODO: Fix scopes
-            singleOf(::RemoteLoggedDataSource) bind LoggedDataSource::class
+            viewModelOf(::HomeViewModel)
 
-            singleOf(::InMemoryDevicesRepository) bind DevicesRepository::class
+            scope<HomeViewModel> {
+                scopedOf(::RemoteLoggedDataSource) bind LoggedDataSource::class
+                scopedOf(::InMemoryDevicesRepository) bind DevicesRepository::class
+            }
 
             viewModel {
+                val homeViewModel: HomeViewModel = get()
                 DevicesListViewModel(
-                    devicesRepository = get(),
+                    devicesRepository = homeViewModel.scope.get(),
                 )
             }
 
             viewModel {
+                val homeViewModel: HomeViewModel = get()
                 AddDeviceViewModel(
-                    devicesRepository = get(),
+                    devicesRepository = homeViewModel.scope.get(),
                 )
             }
 
             viewModel {
+                val homeViewModel: HomeViewModel = get()
                 UserSettingsViewModel(
-                    authenticationDataSource = get(),
+                    authenticationDataSource = homeViewModel.scope.get(),
                     navigationController = get(),
                 )
             }

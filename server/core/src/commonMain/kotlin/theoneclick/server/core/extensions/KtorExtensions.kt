@@ -47,10 +47,4 @@ inline fun <reified Params : Any, reified ValidationResult : Any> Route.post(
     block(validationResult)
 }
 
-val RoutingRequest.agent: Agent
-    get() {
-        val userAgent = userAgent()
-        return userAgent.toAgent()
-    }
-
 fun urlString(block: URLBuilder.() -> Unit = {}): String = URLBuilder().apply(block).buildString()
