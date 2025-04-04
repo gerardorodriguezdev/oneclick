@@ -13,12 +13,17 @@ import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.context.startKoin
-import theoneclick.client.core.entrypoint.HomeEntrypoint.Companion.createHomeEntrypoint
+import org.koin.core.module.Module
+import theoneclick.client.core.di.AppModule
+import theoneclick.client.core.di.CoreModule
+import theoneclick.client.core.di.LoggedModule
 import theoneclick.client.core.extensions.RegisterNavigationControllerObserver
+import theoneclick.client.core.extensions.modules
 import theoneclick.client.core.platform.AppDependencies
 import theoneclick.client.core.ui.screenProperties.ScreenProperties
 import theoneclick.client.core.ui.screens.LoadingScreen
 import theoneclick.client.core.ui.screens.LoginScreen
+import theoneclick.client.core.ui.screens.homeScreen.HomeScreen
 import theoneclick.client.core.ui.theme.TheOneClickTheme
 import theoneclick.client.core.viewModels.InitViewModel
 import theoneclick.client.core.viewModels.LoginViewModel
@@ -28,14 +33,7 @@ class AppEntrypoint(
     appDependencies: AppDependencies,
     skipStartKoin: Boolean = false,
 ) {
-    private val homeEntrypoint = createHomeEntrypoint()
-    //TODO: Other
-    val koinModules = {
-        val coreModule = buildCoreModule(appDependencies)
-        val appModule = buildAppModule(coreModule)
-        val loggedModule = buildLoggedModule(coreModule)
-        listOf(coreModule, appModule, loggedModule)
-    }.invoke()
+    val koinModules = koinModules(appDependencies)
 
     init {
         if (!skipStartKoin) {
@@ -80,11 +78,18 @@ class AppEntrypoint(
                         }
 
                         composable<Home> {
-                            homeEntrypoint.HomeScreen()
+                            HomeScreen()
                         }
                     }
                 }
             }
         }
+    }
+
+    private fun koinModules(appDependencies: AppDependencies): List<Module> {
+        val coreModule = CoreModule(appDependencies)
+        val appModule = AppModule(coreModule)
+        val loggedModule = LoggedModule(coreModule)
+        return listOf(coreModule, appModule, loggedModule).modules()
     }
 }

@@ -1,4 +1,4 @@
-package theoneclick.client.core.entrypoint
+package theoneclick.client.core.ui.screens.homeScreen
 
 import androidx.compose.ui.test.ExperimentalTestApi
 import kotlinx.coroutines.runBlocking

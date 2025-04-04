@@ -14,17 +14,15 @@ import theoneclick.shared.dispatchers.platform.dispatchersProvider
 
 @OptIn(ExperimentalComposeUiApi::class)
 fun main() {
-    val appEntrypoint = AppEntrypoint()
     val appLogger = if (BuildKonfig.IS_DEBUG) appLogger() else EmptyAppLogger()
-    appEntrypoint.startKoin(
-        appDependencies = WasmAppDependencies(
+    val appEntrypoint = AppEntrypoint(
+        WasmAppDependencies(
             httpClientEngine = Js.create(),
             appLogger = appLogger,
             dispatchersProvider = dispatchersProvider(),
             navigationController = RealNavigationController(appLogger)
         )
     )
-
     ComposeViewport(requireNotNull(document.body)) {
         appEntrypoint.App()
     }
