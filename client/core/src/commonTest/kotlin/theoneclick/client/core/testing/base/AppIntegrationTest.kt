@@ -14,20 +14,19 @@ import kotlin.test.AfterTest
 import kotlin.test.BeforeTest
 
 abstract class AppIntegrationTest {
-    private val appEntrypoint = AppEntrypoint()
     protected abstract val appDependencies: AppDependencies
-    private val modules by lazy {
-        appEntrypoint.buildAppModules(appDependencies)
+    private val appEntrypoint by lazy {
+        AppEntrypoint(appDependencies = appDependencies, skipStartKoin = true)
     }
 
     @BeforeTest
     fun setupKoin() {
-        loadKoinModules(modules)
+        loadKoinModules(appEntrypoint.koinModules)
     }
 
     @AfterTest
     fun teardownKoin() {
-        unloadKoinModules(modules)
+        unloadKoinModules(appEntrypoint.koinModules)
     }
 
     @OptIn(ExperimentalTestApi::class)

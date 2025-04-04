@@ -12,15 +12,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.module.Module
-import org.koin.core.module.dsl.singleOf
-import org.koin.core.module.dsl.viewModel
-import org.koin.dsl.bind
-import org.koin.dsl.module
-import theoneclick.client.core.dataSources.LoggedDataSource
-import theoneclick.client.core.dataSources.RemoteLoggedDataSource
-import theoneclick.client.core.repositories.DevicesRepository
-import theoneclick.client.core.repositories.InMemoryDevicesRepository
 import theoneclick.client.core.ui.screens.homeScreen.AddDeviceScreen
 import theoneclick.client.core.ui.screens.homeScreen.DevicesListScreen
 import theoneclick.client.core.ui.screens.homeScreen.HomeScreenScaffold
@@ -31,37 +22,7 @@ import theoneclick.client.core.viewModels.homeScreen.UserSettingsViewModel
 import theoneclick.shared.core.models.routes.HomeRoute
 import theoneclick.shared.core.models.routes.HomeRoute.*
 
-class HomeEntrypoint {
-
-    // Only visible for testing
-    fun buildLoggedModule(coreModule: Module): Module =
-        module {
-            includes(coreModule)
-
-            //TODO: Fix scopes
-            singleOf(::RemoteLoggedDataSource) bind LoggedDataSource::class
-
-            singleOf(::InMemoryDevicesRepository) bind DevicesRepository::class
-
-            viewModel {
-                DevicesListViewModel(
-                    devicesRepository = get(),
-                )
-            }
-
-            viewModel {
-                AddDeviceViewModel(
-                    devicesRepository = get(),
-                )
-            }
-
-            viewModel {
-                UserSettingsViewModel(
-                    authenticationDataSource = get(),
-                    navigationController = get(),
-                )
-            }
-        }
+class HomeEntrypoint private constructor() {
 
     @Composable
     fun HomeScreen(navHostController: NavHostController = rememberNavController()) {
@@ -128,4 +89,9 @@ class HomeEntrypoint {
             hasRoute<UserSettings>() -> UserSettings
             else -> DevicesList
         }
+
+    //TODO: Other
+    companion object {
+        fun AppEntrypoint.createHomeEntrypoint(): HomeEntrypoint = HomeEntrypoint()
+    }
 }

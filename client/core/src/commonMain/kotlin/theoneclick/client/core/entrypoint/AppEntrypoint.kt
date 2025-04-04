@@ -13,9 +13,7 @@ import org.koin.compose.KoinContext
 import org.koin.compose.koinInject
 import org.koin.compose.viewmodel.koinViewModel
 import org.koin.core.context.startKoin
-import org.koin.core.module.Module
-import org.koin.core.module.dsl.viewModel
-import org.koin.dsl.module
+import theoneclick.client.core.entrypoint.HomeEntrypoint.Companion.createHomeEntrypoint
 import theoneclick.client.core.extensions.RegisterNavigationControllerObserver
 import theoneclick.client.core.platform.AppDependencies
 import theoneclick.client.core.ui.screenProperties.ScreenProperties
@@ -26,14 +24,24 @@ import theoneclick.client.core.viewModels.InitViewModel
 import theoneclick.client.core.viewModels.LoginViewModel
 import theoneclick.shared.core.models.routes.AppRoute.*
 
-class AppEntrypoint {
-    private val homeEntrypoint = HomeEntrypoint()
+class AppEntrypoint(
+    appDependencies: AppDependencies,
+    skipStartKoin: Boolean = false,
+) {
+    private val homeEntrypoint = createHomeEntrypoint()
+    //TODO: Other
+    val koinModules = {
+        val coreModule = buildCoreModule(appDependencies)
+        val appModule = buildAppModule(coreModule)
+        val loggedModule = buildLoggedModule(coreModule)
+        listOf(coreModule, appModule, loggedModule)
+    }.invoke()
 
-    fun startKoin(appDependencies: AppDependencies) {
-        startKoin {
-            modules(
-                buildAppModules(appDependencies)
-            )
+    init {
+        if (!skipStartKoin) {
+            startKoin {
+                modules(koinModules)
+            }
         }
     }
 
@@ -79,34 +87,4 @@ class AppEntrypoint {
             }
         }
     }
-
-    // Only visible for testing
-    fun buildAppModules(appDependencies: AppDependencies): List<Module> {
-        val coreModule = buildCoreModule(appDependencies)
-        val appModule = buildAppModule(coreModule)
-
-        return listOf(
-            coreModule,
-            appModule,
-            homeEntrypoint.buildLoggedModule(coreModule),
-        )
-    }
-
-    private fun buildAppModule(coreModule: Module): Module =
-        module {
-            includes(coreModule)
-
-            viewModel {
-                InitViewModel(
-                    navigationController = get(),
-                    authenticationDataSource = get(),
-                )
-            }
-            viewModel {
-                LoginViewModel(
-                    navigationController = get(),
-                    authenticationDataSource = get()
-                )
-            }
-        }
 }

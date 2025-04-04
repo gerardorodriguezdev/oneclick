@@ -29,7 +29,6 @@ class AndroidModulesTest {
     @OptIn(KoinExperimentalAPI::class)
     @Test
     fun GIVEN_defaultModules_THEN_instancesAreCreatedCorrectly() {
-        val appEntrypoint = AppEntrypoint()
         val appLogger = appLogger()
         val encryptedPreferences = AndroidEncryptedPreferences(
             preferencesFileProvider = {
@@ -40,19 +39,18 @@ class AndroidModulesTest {
             encryptor = AndroidEncryptor(appLogger),
             appLogger = appLogger,
         )
-        val modules = appEntrypoint.buildAppModules(
-            appDependencies = AndroidAppDependencies(
-                appLogger = appLogger,
-                httpClientEngine = androidHttpClientEngine(
-                    timeProvider = SystemTimeProvider(),
-                ),
-                tokenDataSource = AndroidLocalTokenDataSource(encryptedPreferences),
-                dispatchersProvider = dispatchersProvider(),
-                navigationController = RealNavigationController(appLogger),
-            )
+        val appDependencies = AndroidAppDependencies(
+            appLogger = appLogger,
+            httpClientEngine = androidHttpClientEngine(
+                timeProvider = SystemTimeProvider(),
+            ),
+            tokenDataSource = AndroidLocalTokenDataSource(encryptedPreferences),
+            dispatchersProvider = dispatchersProvider(),
+            navigationController = RealNavigationController(appLogger),
         )
+        val appEntrypoint = AppEntrypoint(appDependencies = appDependencies, skipStartKoin = true)
 
-        modules.verifyAll(
+        appEntrypoint.koinModules.verifyAll(
             listOf(
                 HttpClientEngine::class,
                 HttpClientConfig::class,

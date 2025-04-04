@@ -21,7 +21,8 @@ import theoneclick.shared.dispatchers.platform.dispatchersProvider
 import theoneclick.shared.timeProvider.SystemTimeProvider
 
 class TheOneClickApplication : Application() {
-    val appEntrypoint = AppEntrypoint()
+    lateinit var appEntrypoint: AppEntrypoint
+        private set
 
     override fun onCreate() {
         setupStrictThreadPolicy()
@@ -45,7 +46,7 @@ class TheOneClickApplication : Application() {
             dispatchersProvider = dispatchersProvider(),
             navigationController = RealNavigationController(appLogger)
         )
-        appEntrypoint.startKoin(appDependencies = appDependencies)
+        appEntrypoint = AppEntrypoint(appDependencies)
     }
 
     private fun setupStrictThreadPolicy() {
