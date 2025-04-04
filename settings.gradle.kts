@@ -36,8 +36,3 @@ include(
     "shared:dispatchers",
     "shared:timeProvider",
 )
-
-include(
-    "rules:provider",
-    "rules:models",
-)

@@ -66,7 +66,6 @@ kotlin {
                 implementation(projects.shared.core)
                 implementation(projects.shared.dispatchers)
                 implementation(projects.shared.timeProvider)
-                implementation(projects.rules.models)
                 api(libs.kmp.atomicfu)
             }
         }
