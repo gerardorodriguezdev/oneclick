@@ -11,11 +11,11 @@ class WasmAppDependencies(
     override val appLogger: AppLogger,
     override val dispatchersProvider: DispatchersProvider,
     override val navigationController: NavigationController,
+    override val logoutManager: LogoutManager,
 ) : AppDependencies {
     override val httpClient: HttpClient = wasmHttpClient(
-        appLogger = appLogger,
         httpClientEngine = httpClientEngine,
-        navigationController = navigationController
+        logoutManager = logoutManager,
     )
     override val authenticationDataSource: AuthenticationDataSource =
         WasmRemoteAuthenticationDataSource(httpClient, dispatchersProvider, appLogger)

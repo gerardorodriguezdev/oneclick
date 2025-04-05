@@ -45,7 +45,6 @@ class LoggedModule(coreModule: CoreModule) : ModuleProvider {
             viewModel {
                 UserSettingsViewModel(
                     authenticationDataSource = get(),
-                    navigationController = get(),
                 )
             }
         }

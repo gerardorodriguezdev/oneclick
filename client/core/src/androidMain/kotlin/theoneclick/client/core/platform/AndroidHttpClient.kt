@@ -10,10 +10,8 @@ import io.ktor.serialization.kotlinx.json.*
 import theoneclick.client.core.buildkonfig.BuildKonfig
 import theoneclick.client.core.dataSources.TokenDataSource
 import theoneclick.client.core.mappers.urlProtocol
-import theoneclick.client.core.navigation.NavigationController
-import theoneclick.client.core.navigation.logout
-import theoneclick.client.core.plugins.LogoutManager
-import theoneclick.client.core.plugins.TokenManager
+import theoneclick.client.core.plugins.LogoutProxy
+import theoneclick.client.core.plugins.TokenProxy
 import theoneclick.shared.core.models.agents.Agent
 import theoneclick.shared.core.platform.AppLogger
 
@@ -21,7 +19,7 @@ fun androidHttpClient(
     appLogger: AppLogger,
     httpClientEngine: HttpClientEngine,
     tokenDataSource: TokenDataSource,
-    navigationController: NavigationController,
+    logoutManager: LogoutManager,
 ): HttpClient =
     HttpClient(httpClientEngine) {
         install(ContentNegotiation) {
@@ -47,18 +45,12 @@ fun androidHttpClient(
             userAgent(Agent.MOBILE.value)
         }
 
-        install(TokenManager) {
+        install(TokenProxy) {
             this.tokenDataSource = tokenDataSource
         }
 
-        install(LogoutManager) {
-            onLogout = {
-                appLogger.i("Logging user out")
-
-                tokenDataSource.clear()
-
-                navigationController.logout()
-            }
+        install(LogoutProxy) {
+            onLogout = logoutManager::logout
         }
 
         install(Logging) {
@@ -70,6 +62,6 @@ fun androidHttpClient(
 private fun AppLogger.toLogger(): Logger =
     object : Logger {
         override fun log(message: String) {
-            i(message)
+            i("AppNetworking", message)
         }
     }

@@ -22,13 +22,18 @@ class AndroidRemoteAuthenticationDataSourceTest {
     private val tokenDataSource = AndroidInMemoryTokenDataSource()
     private val httpClientEngineController = HttpClientEngineController()
     private val httpClientEngine = fakeHttpClientEngine(httpClientEngineController)
+    private val logoutManager = AndroidLogoutManager(
+        appLogger = appLogger,
+        tokenDataSource = tokenDataSource,
+        navigationController = navigationController,
+    )
 
     private val authenticationDataSource = AndroidRemoteAuthenticationDataSource(
         httpClient = androidHttpClient(
             appLogger = appLogger,
             httpClientEngine = httpClientEngine,
             tokenDataSource = tokenDataSource,
-            navigationController = navigationController
+            logoutManager = logoutManager,
         ),
         dispatchersProvider = FakeDispatchersProvider(Dispatchers.Main),
         tokenDataSource = tokenDataSource,

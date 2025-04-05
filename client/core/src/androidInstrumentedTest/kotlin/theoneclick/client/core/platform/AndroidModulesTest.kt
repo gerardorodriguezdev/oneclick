@@ -39,14 +39,21 @@ class AndroidModulesTest {
             encryptor = AndroidEncryptor(appLogger),
             appLogger = appLogger,
         )
+        val tokenDataSource = AndroidLocalTokenDataSource(encryptedPreferences)
+        val navigationController = RealNavigationController(appLogger)
         val appDependencies = AndroidAppDependencies(
             appLogger = appLogger,
             httpClientEngine = androidHttpClientEngine(
                 timeProvider = SystemTimeProvider(),
             ),
-            tokenDataSource = AndroidLocalTokenDataSource(encryptedPreferences),
+            tokenDataSource = tokenDataSource,
             dispatchersProvider = dispatchersProvider(),
-            navigationController = RealNavigationController(appLogger),
+            navigationController = navigationController,
+            logoutManager = AndroidLogoutManager(
+                appLogger = appLogger,
+                navigationController = navigationController,
+                tokenDataSource = tokenDataSource,
+            ),
         )
         val appEntrypoint = AppEntrypoint(appDependencies = appDependencies, skipStartKoin = true)
 

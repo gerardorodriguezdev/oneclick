@@ -19,13 +19,13 @@ class WasmRemoteAuthenticationDataSourceTest {
     private val appLogger = appLogger()
     private val navigationController = RealNavigationController(appLogger())
     private val httpClientEngineController = HttpClientEngineController()
+    private val logoutManager = WasmLogoutManager(navigationController)
     private val httpClientEngine = fakeHttpClientEngine(httpClientEngineController)
 
     private val authenticationDataSource = WasmRemoteAuthenticationDataSource(
         httpClient = wasmHttpClient(
-            appLogger = appLogger,
             httpClientEngine = httpClientEngine,
-            navigationController = navigationController
+            logoutManager = logoutManager,
         ),
         dispatchersProvider = FakeDispatchersProvider(Dispatchers.Unconfined),
         appLogger = appLogger,

@@ -9,15 +9,12 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import theoneclick.client.core.models.results.LogoutResult
-import theoneclick.client.core.navigation.NavigationController
-import theoneclick.client.core.navigation.logout
 import theoneclick.client.core.platform.AuthenticationDataSource
 import theoneclick.client.core.ui.events.homeScreen.UserSettingsEvent
 import theoneclick.client.core.ui.states.homeScreen.UserSettingsState
 
 class UserSettingsViewModel(
     private val authenticationDataSource: AuthenticationDataSource,
-    private val navigationController: NavigationController,
 ) : ViewModel() {
     private val _state = mutableStateOf(UserSettingsState())
     val state: State<UserSettingsState> = _state
@@ -54,10 +51,8 @@ class UserSettingsViewModel(
                 }
                 .collect { logoutResult ->
                     when (logoutResult) {
-                        is LogoutResult.Success -> {
+                        is LogoutResult.Success ->
                             _state.value = _state.value.copy(showSuccess = true)
-                            navigationController.logout()
-                        }
 
                         is LogoutResult.Failure ->
                             _state.value = _state.value.copy(showError = true)

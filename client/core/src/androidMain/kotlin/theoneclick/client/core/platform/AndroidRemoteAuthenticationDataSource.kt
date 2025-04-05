@@ -91,11 +91,7 @@ class AndroidRemoteAuthenticationDataSource(
             val response = httpClient.get(ClientEndpoint.LOGOUT.route)
 
             when (response.status) {
-                HttpStatusCode.OK -> {
-                    tokenDataSource.clear()
-                    emit(LogoutResult.Success)
-                }
-
+                HttpStatusCode.OK -> emit(LogoutResult.Success)
                 else -> emit(LogoutResult.Failure)
             }
         }

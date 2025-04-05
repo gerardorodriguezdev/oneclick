@@ -13,6 +13,7 @@ import theoneclick.client.core.entrypoint.AppEntrypoint
 import theoneclick.client.core.mappers.urlProtocol
 import theoneclick.client.core.navigation.RealNavigationController
 import theoneclick.client.core.platform.AndroidAppDependencies
+import theoneclick.client.core.platform.AndroidLogoutManager
 import theoneclick.client.core.platform.androidHttpClientEngine
 import theoneclick.client.core.security.AndroidEncryptor
 import theoneclick.shared.core.platform.EmptyAppLogger
@@ -39,12 +40,19 @@ class TheOneClickApplication : Application() {
             dispatchersProvider = dispatchersProvider,
             encryptor = AndroidEncryptor(appLogger),
         )
+        val tokenDataSource = AndroidLocalTokenDataSource(encryptedPreferences)
+        val navigationController = RealNavigationController(appLogger)
         val appDependencies = AndroidAppDependencies(
             appLogger = appLogger,
             httpClientEngine = androidHttpClientEngine(timeProvider = SystemTimeProvider()),
-            tokenDataSource = AndroidLocalTokenDataSource(encryptedPreferences),
+            tokenDataSource = tokenDataSource,
             dispatchersProvider = dispatchersProvider(),
-            navigationController = RealNavigationController(appLogger)
+            navigationController = navigationController,
+            logoutManager = AndroidLogoutManager(
+                appLogger = appLogger,
+                navigationController = navigationController,
+                tokenDataSource = tokenDataSource,
+            )
         )
         appEntrypoint = AppEntrypoint(appDependencies)
     }

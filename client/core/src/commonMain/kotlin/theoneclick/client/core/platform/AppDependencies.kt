@@ -11,4 +11,5 @@ interface AppDependencies {
     val dispatchersProvider: DispatchersProvider
     val httpClient: HttpClient
     val authenticationDataSource: AuthenticationDataSource
+    val logoutManager: LogoutManager
 }
