@@ -74,6 +74,7 @@ private fun Content(
             verticalArrangement = Arrangement.spacedBy(16.dp),
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             contentPadding = PaddingValues(16.dp),
+            modifier = Modifier.fillMaxSize(),
         ) {
             items(
                 items = state.devices,
