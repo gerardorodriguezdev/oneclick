@@ -2,8 +2,8 @@ package theoneclick.client.core.di
 
 import org.koin.core.module.Module
 import org.koin.core.module.dsl.scopedOf
-import org.koin.core.module.dsl.singleOf
 import org.koin.core.module.dsl.viewModel
+import org.koin.core.module.dsl.viewModelOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
 import theoneclick.client.core.dataSources.LoggedDataSource
@@ -21,31 +21,30 @@ class LoggedModule(coreModule: CoreModule) : ModuleProvider {
         module {
             includes(coreModule)
 
-            singleOf(::LoggedScope)
+            viewModelOf(::HomeViewModel)
 
-            scope<LoggedScope> {
+            scope<HomeViewModel> {
                 scopedOf(::RemoteLoggedDataSource) bind LoggedDataSource::class
                 scopedOf(::InMemoryDevicesRepository) bind DevicesRepository::class
             }
 
             viewModel {
-                val loggedScope: LoggedScope = get()
+                val scope = getScope(HomeViewModel.SCOPE_ID)
                 DevicesListViewModel(
-                    devicesRepository = loggedScope.scope.get(),
+                    devicesRepository = scope.get(),
                 )
             }
 
             viewModel {
-                val loggedScope: LoggedScope = get()
+                val scope = getScope(HomeViewModel.SCOPE_ID)
                 AddDeviceViewModel(
-                    devicesRepository = loggedScope.scope.get(),
+                    devicesRepository = scope.get(),
                 )
             }
 
             viewModel {
-                val loggedScope: LoggedScope = get()
                 UserSettingsViewModel(
-                    authenticationDataSource = loggedScope.scope.get(),
+                    authenticationDataSource = get(),
                     navigationController = get(),
                 )
             }

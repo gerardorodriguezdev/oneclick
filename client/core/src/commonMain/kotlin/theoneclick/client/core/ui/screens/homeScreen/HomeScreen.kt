@@ -12,6 +12,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import org.koin.compose.viewmodel.koinViewModel
+import theoneclick.client.core.di.HomeViewModel
 import theoneclick.client.core.viewModels.homeScreen.AddDeviceViewModel
 import theoneclick.client.core.viewModels.homeScreen.DevicesListViewModel
 import theoneclick.client.core.viewModels.homeScreen.UserSettingsViewModel
@@ -23,6 +24,7 @@ fun HomeScreen(navHostController: NavHostController = rememberNavController()) {
     val navBackStackEntry by navHostController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val selectedHomeRoute = currentDestination.toHomeRoute()
+    val homeViewModel: HomeViewModel = koinViewModel()
 
     HomeScreenScaffold(
         selectedHomeRoute = selectedHomeRoute,
