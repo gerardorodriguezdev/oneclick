@@ -7,8 +7,16 @@ class AndroidAppLogger : AppLogger {
         Log.i("AppLogger", message)
     }
 
+    override fun i(tag: String, message: String) {
+        Log.i(tag, message)
+    }
+
     override fun e(message: String) {
         Log.e("AppLogger", message)
+    }
+
+    override fun e(tag: String, message: String) {
+        Log.e(tag, message)
     }
 }
 
