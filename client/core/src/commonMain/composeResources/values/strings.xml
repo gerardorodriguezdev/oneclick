@@ -20,6 +20,7 @@
     <string name="devicesList_deviceCardOpenedLabel_opened">Opened</string>
     <string name="devicesList_deviceCardClosedLabel_closed">Closed</string>
     <string name="devicesList_deviceCardRotationLabel_rotation">Rotation</string>
+    <string name="devicesList_placeholder_noDevicesFound">No devices found</string>
     <string name="userSettings_title_userSettings">User settings</string>
     <string name="userSettings_snackbar_unknownError">Unknown error</string>
     <string name="userSettings_snackbar_logout">Logout</string>

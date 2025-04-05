@@ -4,6 +4,8 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Blinds
 import androidx.compose.material3.*
@@ -13,6 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
@@ -69,25 +72,45 @@ private fun Content(
             .fillMaxSize()
             .testTag(LIST_CONTAINER)
     ) {
-        LazyVerticalGrid(
-            columns = GridCells.Adaptive(minSize = deviceCardMinWidth),
-            verticalArrangement = Arrangement.spacedBy(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
-            contentPadding = PaddingValues(16.dp),
-            modifier = Modifier.fillMaxSize(),
-        ) {
-            items(
-                items = state.devices,
-                key = { device -> device.id.value },
-                contentType = { item -> item },
-            ) { device ->
-                DeviceCard(
-                    device = device,
-                    updateDevice = { updatedDevice -> onEvent(DevicesListEvent.UpdateDevice(updatedDevice)) },
-                    modifier = Modifier.testTag(DEVICE_CONTAINER),
-                )
+        if (state.devices.isEmpty()) {
+            Empty()
+        } else {
+            LazyVerticalGrid(
+                columns = GridCells.Adaptive(minSize = deviceCardMinWidth),
+                verticalArrangement = Arrangement.spacedBy(16.dp),
+                horizontalArrangement = Arrangement.spacedBy(16.dp),
+                contentPadding = PaddingValues(16.dp),
+                modifier = Modifier.fillMaxSize(),
+            ) {
+                items(
+                    items = state.devices,
+                    key = { device -> device.id.value },
+                    contentType = { item -> item },
+                ) { device ->
+                    DeviceCard(
+                        device = device,
+                        updateDevice = { updatedDevice -> onEvent(DevicesListEvent.UpdateDevice(updatedDevice)) },
+                        modifier = Modifier.testTag(DEVICE_CONTAINER),
+                    )
+                }
             }
         }
+    }
+}
+
+@Composable
+private fun Empty() {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .verticalScroll(rememberScrollState()),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = stringResource(Res.string.devicesList_placeholder_noDevicesFound),
+            style = MaterialTheme.typography.titleLarge,
+            textAlign = TextAlign.Center,
+        )
     }
 }
 
@@ -210,7 +233,6 @@ private fun Openable.OpenableDeviceSection(onToggleDevice: (newCheckedState: Boo
 
 @Composable
 private fun Rotateable.RotatableDeviceSection(onRotateDevice: (newRotation: Int) -> Unit) {
-    // Required for throttling
     var currentRotation by remember(rotation) { mutableStateOf(rotation) }
 
     DeviceSection(

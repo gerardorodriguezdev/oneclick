@@ -2,7 +2,6 @@ package theoneclick.client.core.ui.previews.annotations
 
 import androidx.compose.ui.tooling.preview.Preview
 
-// Screens
 @Preview(
     locale = "en",
     fontScale = 2f,
