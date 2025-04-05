@@ -12,6 +12,10 @@ class HomeScreenMatcher(composeUiTest: ComposeUiTest) {
     val devicesListScreenMatcher = DevicesListScreenMatcher(composeUiTest)
     val addDeviceScreenMatcher = AddDeviceScreenMatcher(composeUiTest)
 
+    fun navigateToDevicesListScreen() {
+        devicesListNavigationItem.performClick()
+    }
+
     fun navigateToAddDeviceScreen() {
         addDeviceNavigationItem.performClick()
     }

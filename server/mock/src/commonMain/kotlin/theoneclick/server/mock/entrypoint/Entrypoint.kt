@@ -35,17 +35,17 @@ private fun Application.configureContentNegotiation() {
     }
 }
 
-private val devices = mutableListOf<Device>(
-    Device.Blind(
-        id = Uuid("1"),
-        deviceName = "Device1",
-        room = "Room1",
-        isOpened = false,
-        rotation = 0,
-    )
-)
-
 private fun Application.configureRouting() {
+    val devices = mutableListOf<Device>(
+        Device.Blind(
+            id = Uuid("1"),
+            deviceName = "Device1",
+            room = "Room1",
+            isOpened = false,
+            rotation = 0,
+        )
+    )
+
     routing {
         get(ClientEndpoint.IS_USER_LOGGED.route) {
             call.respond<UserLoggedResponse>(UserLoggedResponse.Logged)
@@ -79,9 +79,7 @@ private fun Application.configureRouting() {
                 rotation = 0,
             )
             devices.add(newDevice)
-            call.respond(
-                AddDeviceResponse(newDevice)
-            )
+            call.respond(AddDeviceResponse(newDevice))
         }
 
         get(ClientEndpoint.LOGOUT.route) {

@@ -6,7 +6,6 @@ import androidx.compose.ui.test.ExperimentalTestApi
 import androidx.compose.ui.test.SemanticsNodeInteraction
 import androidx.compose.ui.test.onNodeWithTag
 import theoneclick.client.core.testing.matchers.components.DefaultButtonMatcher
-import theoneclick.client.core.testing.matchers.components.DefaultSnackbarMatcher
 import theoneclick.client.core.testing.matchers.hasRole
 import theoneclick.client.core.ui.screens.homeScreen.AddDeviceScreenTestTags
 import theoneclick.client.core.ui.screens.homeScreen.AddDeviceScreenTestTags.dropDownItemTestTag
@@ -24,8 +23,6 @@ class AddDeviceScreenMatcher(composeUiTest: ComposeUiTest) {
     val deviceTypeMenu = DeviceTypeMenuMatcher(composeUiTest)
 
     val button = DefaultButtonMatcher(composeUiTest)
-
-    val snackbar = DefaultSnackbarMatcher(composeUiTest)
 
     fun assertScreenIsDisplayed() {
         title.assertExists()

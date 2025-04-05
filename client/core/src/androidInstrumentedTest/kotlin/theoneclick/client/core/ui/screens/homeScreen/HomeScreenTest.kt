@@ -8,7 +8,7 @@ import theoneclick.client.core.testing.base.AndroidAppIntegrationTest
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalTestApi::class)
-class HomeEntrypointTest : AndroidAppIntegrationTest() {
+class HomeScreenTest : AndroidAppIntegrationTest() {
 
     @Test
     fun GIVEN_userNotLogged_WHEN_navigatingToDevicesList_THEN_returns() {
