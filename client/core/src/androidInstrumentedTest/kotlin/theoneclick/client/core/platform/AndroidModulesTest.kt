@@ -55,7 +55,7 @@ class AndroidModulesTest {
                 tokenDataSource = tokenDataSource,
             ),
         )
-        val appEntrypoint = AppEntrypoint(appDependencies = appDependencies, skipStartKoin = true)
+        val appEntrypoint = AppEntrypoint(appDependencies = appDependencies, startKoin = false)
 
         appEntrypoint.koinModules.verifyAll(
             listOf(

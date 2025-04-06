@@ -19,9 +19,6 @@ jvmServer {
     }
 }
 
-fun ChamaleonExtension.propertyProvider(name: String): Provider<String> =
-    provider { selectedEnvironment().jvmPlatform.propertyStringValue(name) }
-
 kotlin {
     sourceSets {
         commonMain {
@@ -64,3 +61,6 @@ kotlin {
         }
     }
 }
+
+fun ChamaleonExtension.propertyProvider(name: String): Provider<String> =
+    provider { selectedEnvironment().jvmPlatform.propertyStringValue(name) }

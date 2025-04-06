@@ -31,12 +31,12 @@ import theoneclick.shared.core.models.routes.AppRoute.*
 
 class AppEntrypoint(
     appDependencies: AppDependencies,
-    skipStartKoin: Boolean = false,
+    startKoin: Boolean = true,
 ) {
     val koinModules = koinModules(appDependencies)
 
     init {
-        if (!skipStartKoin) {
+        if (startKoin) {
             startKoin {
                 modules(koinModules)
             }

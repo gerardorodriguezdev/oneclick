@@ -16,7 +16,7 @@ import kotlin.test.BeforeTest
 abstract class AppIntegrationTest {
     protected abstract val appDependencies: AppDependencies
     private val appEntrypoint by lazy {
-        AppEntrypoint(appDependencies = appDependencies, skipStartKoin = true)
+        AppEntrypoint(appDependencies = appDependencies, startKoin = false)
     }
 
     @BeforeTest
