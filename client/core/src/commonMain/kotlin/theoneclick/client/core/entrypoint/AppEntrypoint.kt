@@ -16,7 +16,7 @@ import org.koin.core.context.startKoin
 import org.koin.core.module.Module
 import theoneclick.client.core.di.AppModule
 import theoneclick.client.core.di.CoreModule
-import theoneclick.client.core.di.LoggedModule
+import theoneclick.client.core.di.HomeModule
 import theoneclick.client.core.extensions.RegisterNavigationControllerObserver
 import theoneclick.client.core.extensions.modules
 import theoneclick.client.core.platform.AppDependencies
@@ -89,7 +89,7 @@ class AppEntrypoint(
     private fun koinModules(appDependencies: AppDependencies): List<Module> {
         val coreModule = CoreModule(appDependencies)
         val appModule = AppModule(coreModule)
-        val loggedModule = LoggedModule(coreModule)
-        return listOf(coreModule, appModule, loggedModule).modules()
+        val homeModule = HomeModule(coreModule)
+        return listOf(coreModule, appModule, homeModule).modules()
     }
 }

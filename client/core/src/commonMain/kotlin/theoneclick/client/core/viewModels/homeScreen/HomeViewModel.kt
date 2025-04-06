@@ -1,4 +1,4 @@
-package theoneclick.client.core.di
+package theoneclick.client.core.viewModels.homeScreen
 
 import androidx.lifecycle.ViewModel
 import org.koin.core.component.KoinScopeComponent

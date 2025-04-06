@@ -14,9 +14,10 @@ import theoneclick.client.core.repositories.DevicesRepository
 import theoneclick.client.core.repositories.InMemoryDevicesRepository
 import theoneclick.client.core.viewModels.homeScreen.AddDeviceViewModel
 import theoneclick.client.core.viewModels.homeScreen.DevicesListViewModel
+import theoneclick.client.core.viewModels.homeScreen.HomeViewModel
 import theoneclick.client.core.viewModels.homeScreen.UserSettingsViewModel
 
-class LoggedModule(coreModule: CoreModule) : ModuleProvider {
+class HomeModule(coreModule: CoreModule) : ModuleProvider {
     override val module: Module =
         module {
             includes(coreModule)
