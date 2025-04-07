@@ -25,7 +25,6 @@ class WasmLibraryPlugin : Plugin<Project> {
         extensions.configure(KotlinMultiplatformExtension::class.java) {
             compilerOptions {
                 extraWarnings.set(true)
-                freeCompilerArgs.add("-Xwhen-guards")
             }
 
             wasmJs {
