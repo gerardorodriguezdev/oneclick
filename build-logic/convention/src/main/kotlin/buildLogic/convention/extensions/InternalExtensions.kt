@@ -25,4 +25,3 @@ internal fun Provider<Int>.toJvmTarget(): Provider<JvmTarget> = map { jvmApi -> 
 
 internal fun Provider<Int>.toJavaLanguageVersion(): Provider<JavaLanguageVersion> =
     map { jvmApi -> JavaLanguageVersion.of(jvmApi) }
-

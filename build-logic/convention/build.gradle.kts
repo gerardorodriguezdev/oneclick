@@ -32,9 +32,9 @@ dependencies {
     implementation(libs.gradle.kmp.compose)
     implementation(libs.gradle.android.application)
     implementation(libs.gradle.android.library)
-    implementation(libs.kmp.serialization)
     implementation(libs.gradle.chamaleon)
-    implementation(libs.jvm.chamaleon)
+    implementation(libs.gradle.kmp.serialization)
+    implementation(libs.gradle.jvm.chamaleon)
 
     testImplementation(libs.kmp.test)
 }

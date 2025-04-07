@@ -8,11 +8,11 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
-import theoneclick.client.core.platform.AuthenticationDataSource
 import theoneclick.client.core.extensions.popUpToInclusive
 import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.client.core.navigation.NavigationController
 import theoneclick.client.core.navigation.NavigationController.NavigationEvent.Navigate
+import theoneclick.client.core.platform.AuthenticationDataSource
 import theoneclick.client.core.ui.events.LoginEvent
 import theoneclick.client.core.ui.states.LoginState
 import theoneclick.shared.core.models.routes.AppRoute

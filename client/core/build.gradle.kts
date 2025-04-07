@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.kmp.atomicfu)
     alias(libs.plugins.kmp.build.config)
     alias(libs.plugins.chamaleon)
+    alias(libs.plugins.android.paparazzi)
 }
 
 wasmWebsite {
@@ -88,6 +89,12 @@ kotlin {
                 implementation(libs.android.datastore)
                 implementation(compose.preview)
                 implementation(libs.jvm.ktor.client.okhttp)
+            }
+        }
+
+        androidUnitTest {
+            dependencies {
+                implementation(libs.android.paparazzi)
             }
         }
 

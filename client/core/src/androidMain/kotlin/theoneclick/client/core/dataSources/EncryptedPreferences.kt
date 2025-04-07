@@ -105,5 +105,4 @@ class AndroidEncryptedPreferences(
             appLogger.e("Exception '${error.stackTraceToString()}' when clearing key '$key'")
             false
         }
-
 }

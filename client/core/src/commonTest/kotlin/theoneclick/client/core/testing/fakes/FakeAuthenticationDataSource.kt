@@ -3,9 +3,9 @@ package theoneclick.client.core.testing.fakes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 import theoneclick.client.core.models.results.LogoutResult
-import theoneclick.client.core.platform.AuthenticationDataSource
 import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.client.core.models.results.UserLoggedResult
+import theoneclick.client.core.platform.AuthenticationDataSource
 
 class FakeAuthenticationDataSource(
     var userLoggedResult: Flow<UserLoggedResult> = flowOf(),

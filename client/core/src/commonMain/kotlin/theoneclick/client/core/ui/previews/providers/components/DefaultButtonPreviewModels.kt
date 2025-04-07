@@ -31,7 +31,6 @@ class DefaultButtonPreviewModels : PreviewModelProvider<DefaultButtonModel> {
         val loadingButtonModel = DefaultButtonModel(
             isLoading = true,
         )
-
     }
 
     data class DefaultButtonModel(

@@ -102,7 +102,9 @@ class RemoteLoggedDataSource(
             }
         }
             .catch { exception ->
-                appLogger.e("Exception catched '${exception.stackTraceToString()}' while updating device '$updatedDevice'")
+                appLogger.e(
+                    "Exception catched '${exception.stackTraceToString()}' while updating device '$updatedDevice'"
+                )
                 emit(UpdateDeviceResult.Failure)
             }
             .flowOn(dispatchersProvider.io())

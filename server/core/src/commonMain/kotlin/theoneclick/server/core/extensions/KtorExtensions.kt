@@ -3,8 +3,6 @@ package theoneclick.server.core.extensions
 import io.ktor.http.*
 import io.ktor.server.request.*
 import io.ktor.server.routing.*
-import theoneclick.shared.core.models.agents.Agent
-import theoneclick.shared.core.models.agents.Agent.Companion.toAgent
 import theoneclick.shared.core.models.endpoints.base.Endpoint
 
 fun <Params, ValidationResult> Route.get(

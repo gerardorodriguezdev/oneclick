@@ -81,7 +81,9 @@ class AndroidRemoteAuthenticationDataSource(
             }
         }
             .catch { exception ->
-                appLogger.e("Exception catched '${exception.stackTraceToString()}' while requesting logging user '$username'")
+                appLogger.e(
+                    "Exception catched '${exception.stackTraceToString()}' while requesting logging user '$username'"
+                )
                 emit(RequestLoginResult.Failure)
             }
             .flowOn(dispatchersProvider.io())

@@ -49,9 +49,7 @@ class AndroidAppPlugin : Plugin<Project> {
                     jvmTarget.set(androidAppExtension.jvmTarget.toJvmTarget())
                 }
 
-                instrumentedTestVariant {
-                    sourceSetTree.set(KotlinSourceSetTree.test)
-                }
+                instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
             }
         }
     }

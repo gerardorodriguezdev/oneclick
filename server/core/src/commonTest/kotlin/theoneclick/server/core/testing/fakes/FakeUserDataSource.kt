@@ -1,7 +1,7 @@
 package theoneclick.server.core.testing.fakes
 
-import theoneclick.server.core.models.UserData
 import theoneclick.server.core.dataSources.UserDataSource
+import theoneclick.server.core.models.UserData
 import theoneclick.server.core.testing.TestData
 
 class FakeUserDataSource(
