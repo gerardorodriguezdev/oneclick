@@ -11,6 +11,7 @@ plugins {
     alias(libs.plugins.kmp.atomicfu)
     alias(libs.plugins.kmp.build.config)
     alias(libs.plugins.chamaleon)
+    alias(libs.plugins.android.screenshot)
 }
 
 wasmWebsite {
@@ -102,6 +103,10 @@ kotlin {
                 debugImplementation(libs.android.test.leak.canary)
                 debugImplementation(compose.uiTooling)
                 debugImplementation(libs.android.test.manifest)
+
+                screenshotTestImplementation(compose.ui)
+                screenshotTestImplementation(compose.foundation)
+                screenshotTestImplementation(projects.shared.core)
             }
         }
 

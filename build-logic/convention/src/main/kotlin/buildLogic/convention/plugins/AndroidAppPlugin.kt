@@ -106,6 +106,8 @@ class AndroidAppPlugin : Plugin<Project> {
                     buildFeatures {
                         compose = androidAppExtension.composeEnabled.get()
                     }
+
+                    experimentalProperties["android.experimental.enableScreenshotTest"] = true
                 }
             }
         }
