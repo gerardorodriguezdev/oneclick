@@ -64,7 +64,7 @@ kotlin {
                 implementation(libs.kmp.datetime)
                 implementation(libs.kmp.immutable)
                 implementation(libs.kmp.window.classes)
-                implementation(projects.shared.core)
+                implementation(projects.shared.base)
                 implementation(projects.shared.dispatchers)
                 implementation(projects.shared.timeProvider)
                 api(libs.kmp.atomicfu)
@@ -106,7 +106,7 @@ kotlin {
 
                 screenshotTestImplementation(compose.ui)
                 screenshotTestImplementation(compose.foundation)
-                screenshotTestImplementation(projects.shared.core)
+                screenshotTestImplementation(projects.shared.base)
             }
         }
 

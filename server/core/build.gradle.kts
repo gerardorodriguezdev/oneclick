@@ -34,7 +34,7 @@ kotlin {
                 implementation(libs.kmp.datetime)
                 implementation(libs.kmp.ktor.server.cio)
                 implementation(libs.kmp.koin.core)
-                implementation(projects.shared.core)
+                implementation(projects.shared.base)
                 implementation(projects.shared.timeProvider)
                 implementation(projects.server.shared)
             }
