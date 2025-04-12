@@ -13,6 +13,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -130,7 +131,14 @@ private fun DeviceCard(
                 .fillMaxWidth()
                 .padding(16.dp),
         ) {
-            DeviceIcon(device = device)
+            val icon by remember {
+                derivedStateOf {
+                    when (device) {
+                        is Device.Blind -> Icons.Filled.Blinds
+                    }
+                }
+            }
+            DeviceIcon(icon = icon)
 
             DeviceSection(
                 label = stringResource(Res.string.devicesList_deviceCardDeviceNameLabel_deviceName),
@@ -145,16 +153,16 @@ private fun DeviceCard(
             )
 
             if (device is Openable) {
-                device.OpenableDeviceSection(
+                OpenableDeviceSection(
+                    isOpened = device.isOpened,
                     onToggleDevice = { newCheckedState -> updateDevice(device.toggle(newCheckedState)) }
                 )
             }
 
             if (device is Rotateable) {
-                device.RotatableDeviceSection(
-                    onRotateDevice = { newRotation ->
-                        updateDevice(device.rotate(newRotation))
-                    }
+                RotatableDeviceSection(
+                    rotation = device.rotation,
+                    onRotateDevice = { newRotation -> updateDevice(device.rotate(newRotation)) }
                 )
             }
         }
@@ -162,12 +170,8 @@ private fun DeviceCard(
 }
 
 @Composable
-private fun DeviceIcon(device: Device) {
+private fun DeviceIcon(icon: ImageVector) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-        val icon = when (device) {
-            is Device.Blind -> Icons.Filled.Blinds
-        }
-
         Icon(imageVector = icon, contentDescription = null)
     }
 }
@@ -214,7 +218,7 @@ private fun DeviceSectionBodyText(text: String, modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun Openable.OpenableDeviceSection(onToggleDevice: (newCheckedState: Boolean) -> Unit) {
+private fun OpenableDeviceSection(isOpened: Boolean, onToggleDevice: (newCheckedState: Boolean) -> Unit) {
     DeviceSection(
         label = if (isOpened) {
             stringResource(Res.string.devicesList_deviceCardOpenedLabel_opened)
@@ -232,8 +236,8 @@ private fun Openable.OpenableDeviceSection(onToggleDevice: (newCheckedState: Boo
 }
 
 @Composable
-private fun Rotateable.RotatableDeviceSection(onRotateDevice: (newRotation: Int) -> Unit) {
-    var currentRotation by remember(rotation) { mutableStateOf(rotation) }
+private fun RotatableDeviceSection(rotation: Int, onRotateDevice: (newRotation: Int) -> Unit) {
+    var currentRotation by remember { mutableStateOf(rotation) }
 
     DeviceSection(
         label = stringResource(Res.string.devicesList_deviceCardRotationLabel_rotation),
@@ -255,10 +259,7 @@ private fun Rotateable.RotatableDeviceSection(onRotateDevice: (newRotation: Int)
 }
 
 object DevicesListScreenConstants {
-    val deviceCardMinWidth: Dp
-        @Composable
-        @ReadOnlyComposable
-        get() = 250.dp
+    val deviceCardMinWidth: Dp = 250.dp
 }
 
 object DevicesListScreenTestTags {

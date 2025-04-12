@@ -35,7 +35,9 @@ fun HomeScreenScaffold(
 ) {
     val homeRoutes = remember { persistentListOf(DevicesList, AddDevice, UserSettings) }
     val screenProperties = LocalScreenProperties.current
-    val isCompact = screenProperties.isCompact
+    val isCompact = remember(screenProperties) {
+        screenProperties.isCompact
+    }
     Scaffold(
         content = { paddingValues ->
             Row(
