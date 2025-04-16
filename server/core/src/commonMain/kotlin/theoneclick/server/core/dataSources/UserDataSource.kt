@@ -1,21 +1,17 @@
 package theoneclick.server.core.dataSources
 
 import kotlinx.serialization.json.Json
-import theoneclick.server.core.dataSources.UserDataSource.Companion.FILE_NAME
 import theoneclick.server.core.models.User
 import theoneclick.server.core.models.Username
 import theoneclick.server.core.platform.FileSystem
 import theoneclick.server.core.platform.PathProvider
 import theoneclick.server.core.platform.SecurityUtils
+import theoneclick.shared.core.models.entities.Uuid
 
 interface UserDataSource {
     fun user(sessionToken: String): User?
     fun user(username: Username): User?
     fun saveUser(user: User)
-
-    companion object {
-        const val FILE_NAME = "UserData.txt"
-    }
 }
 
 class FileSystemUserDataSource(
@@ -24,28 +20,33 @@ class FileSystemUserDataSource(
     private val fileSystem: FileSystem,
 ) : UserDataSource {
 
-    override fun user(sessionToken: String): User? {
-        val userDataPath = pathProvider.path(FILE_NAME)
-        val encryptedUserDataBytes = fileSystem.readBytes(userDataPath)
-        if (encryptedUserDataBytes.isEmpty()) return null
+    override fun user(sessionToken: String): User? = findUser { user -> user.sessionToken?.value == sessionToken }
 
-        val userDataString = securityUtils.decrypt(input = encryptedUserDataBytes)
-        return Json.decodeFromString<User>(userDataString)
-    }
-
-    override fun user(username: Username): User? {
-        val userDataPath = pathProvider.path(FILE_NAME)
-        val encryptedUserDataBytes = fileSystem.readBytes(userDataPath)
-        if (encryptedUserDataBytes.isEmpty()) return null
-
-        val userDataString = securityUtils.decrypt(input = encryptedUserDataBytes)
-        return Json.decodeFromString<User>(userDataString)
-    }
+    override fun user(username: Username): User? = findUser { user -> user.username == username }
 
     override fun saveUser(user: User) {
-        val userDataPath = pathProvider.path(FILE_NAME)
-        val userDataString = Json.encodeToString(user)
-        val encryptedUserDataBytes = securityUtils.encrypt(input = userDataString)
-        fileSystem.writeBytes(userDataPath, encryptedUserDataBytes)
+        val userFilePath = pathProvider.path(userFileName(user.id))
+        val userString = Json.encodeToString(user)
+        val encryptedUserBytes = securityUtils.encrypt(input = userString)
+        fileSystem.writeBytes(userFilePath, encryptedUserBytes)
+    }
+
+    private fun findUser(predicate: (user: User) -> Boolean): User? {
+        val paths = pathProvider.paths(filter = { fileName -> fileName.endsWith(SUFFIX) })
+        paths.forEach { path ->
+            val encryptedUserBytes = fileSystem.readBytes(path)
+            if (encryptedUserBytes.isEmpty()) return@forEach
+
+            val userString = securityUtils.decrypt(input = encryptedUserBytes)
+            val user = Json.decodeFromString<User>(userString)
+            if (predicate(user)) return user
+        }
+
+        return null
+    }
+
+    companion object {
+        const val SUFFIX = "user.txt"
+        fun userFileName(id: Uuid): String = "${id.value}.$SUFFIX"
     }
 }

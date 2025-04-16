@@ -3,6 +3,7 @@ package theoneclick.server.core.validators
 import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.endpoints.requestLogin.RequestLoginParams
 import theoneclick.server.core.models.User
+import theoneclick.server.core.models.Username
 import theoneclick.server.core.platform.SecurityUtils
 import theoneclick.server.core.validators.ParamsValidator.RequestLoginValidationResult.InvalidRequestLoginParams
 import theoneclick.server.core.validators.ParamsValidator.RequestLoginValidationResult.ValidRequestLogin
@@ -38,7 +39,7 @@ class ParamsValidator(
         username: String,
         password: String,
     ): RequestLoginValidationResult {
-        val user = userDataSource.user(username)
+        val user = userDataSource.user(Username(username))
 
         return when {
             user == null -> ValidRequestLogin.RegistrableUser(

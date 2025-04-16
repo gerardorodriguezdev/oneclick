@@ -54,7 +54,7 @@ private suspend fun RoutingContext.handleSuccess(
     userDataSource: UserDataSource,
     uuidProvider: UuidProvider,
 ) {
-    val user = validRequestLogin.userData(uuidProvider, securityUtils)
+    val user = validRequestLogin.user(uuidProvider, securityUtils)
 
     val sessionToken = securityUtils.encryptedToken()
     userDataSource.saveUser(
@@ -65,7 +65,7 @@ private suspend fun RoutingContext.handleSuccess(
     handleSuccess(userSession)
 }
 
-private fun ValidRequestLogin.userData(
+private fun ValidRequestLogin.user(
     uuidProvider: UuidProvider,
     securityUtils: SecurityUtils
 ): User =

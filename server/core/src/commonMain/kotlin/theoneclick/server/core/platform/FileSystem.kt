@@ -11,6 +11,7 @@ interface FileSystem {
     fun exists(path: Path): Boolean
     fun absolutePath(directory: Path, fileName: String): Path
     fun isFile(path: Path): Boolean
+    fun paths(directory: Path, filter: (fileName: String) -> Boolean): List<Path>
 
     fun createNewDirectory(path: Path): Boolean
     fun createNewFile(path: Path): Boolean

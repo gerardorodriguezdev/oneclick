@@ -21,6 +21,11 @@ class JvmFileSystem : FileSystem {
 
     override fun isFile(path: Path): Boolean = path.toFile().isFile
 
+    override fun paths(directory: Path, filter: (String) -> Boolean): List<Path> =
+        File(directory.value)
+            .listFiles { file -> filter(file.name) }
+            .map { file -> Path(file.absolutePath) }
+
     override fun createNewDirectory(path: Path): Boolean = path.toFile().mkdirs()
 
     override fun createNewFile(path: Path): Boolean = path.toFile().createNewFile()

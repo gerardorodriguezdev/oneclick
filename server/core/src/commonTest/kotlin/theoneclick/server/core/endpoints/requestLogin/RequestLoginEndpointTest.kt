@@ -65,7 +65,7 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
     @Test
     fun `GIVEN username is invalid WHEN request login THEN returns bad request`() {
         testApplication {
-            val response = httpClient.requestLogin(username = "InvalidUsername", user = savedUser)
+            val response = httpClient.requestLogin(username = "InvalidUsername/", user = savedUser)
 
             assertEquals(expected = HttpStatusCode.BadRequest, actual = response.status)
         }
