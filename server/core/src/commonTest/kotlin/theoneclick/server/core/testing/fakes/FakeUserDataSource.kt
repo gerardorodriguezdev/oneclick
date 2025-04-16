@@ -1,22 +1,22 @@
 package theoneclick.server.core.testing.fakes
 
 import theoneclick.server.core.dataSources.UserDataSource
-import theoneclick.server.core.models.UserData
+import theoneclick.server.core.models.User
 import theoneclick.server.core.testing.TestData
 
 class FakeUserDataSource(
-    var fakeUserData: UserData? = TestData.userData,
+    var fakeUser: User? = TestData.user,
     var removeUserDataEvents: Int = 0,
 ) : UserDataSource {
-    val saveUserDataEvents = mutableListOf<UserData>()
+    val saveUserEvents = mutableListOf<User>()
 
-    override fun userData(): UserData? = fakeUserData
+    override fun user(): User? = fakeUser
 
-    override fun saveUserData(userData: UserData) {
-        saveUserDataEvents.add(userData)
+    override fun saveUser(user: User) {
+        saveUserEvents.add(user)
     }
 
-    override fun removeUserData() {
+    override fun removeUser() {
         removeUserDataEvents += 1
     }
 }

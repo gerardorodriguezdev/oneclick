@@ -45,10 +45,10 @@ class UpdateDeviceEndpointTest : IntegrationTest(), KoinTest {
 
             assertEquals(expected = HttpStatusCode.OK, actual = response.status)
             assertEquals(
-                expected = TestData.userData.copy(
+                expected = TestData.user.copy(
                     devices = listOf(updatedDevice),
                 ),
-                actual = repository.userData()
+                actual = repository.user()
             )
         }
     }

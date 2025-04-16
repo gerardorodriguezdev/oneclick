@@ -41,7 +41,7 @@ class AddDeviceEndpointTest : IntegrationTest(), KoinTest {
 
             assertEquals(expected = HttpStatusCode.OK, actual = response.status)
             assertEquals(
-                expected = TestData.userData.copy(
+                expected = TestData.user.copy(
                     devices = listOf(
                         Device.Blind(
                             id = Uuid(TestData.UUID),
@@ -52,7 +52,7 @@ class AddDeviceEndpointTest : IntegrationTest(), KoinTest {
                         )
                     )
                 ),
-                actual = repository.userData()
+                actual = repository.user()
             )
         }
     }

@@ -37,12 +37,12 @@ private suspend fun RoutingContext.handleValidDevice(
     validDevice: ValidDevice,
     userDataSource: UserDataSource,
 ) {
-    val currentUserData = validDevice.userData
+    val currentUser = validDevice.user
     val updatedDevice = validDevice.updatedDevice
 
-    userDataSource.saveUserData(
-        currentUserData.copy(
-            devices = currentUserData.devices.mapIndexed { _, device ->
+    userDataSource.saveUser(
+        currentUser.copy(
+            devices = currentUser.devices.mapIndexed { _, device ->
                 if (device.id == updatedDevice.id) {
                     updatedDevice
                 } else {

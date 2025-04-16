@@ -7,7 +7,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.extensions.post
-import theoneclick.server.core.models.UserData
+import theoneclick.server.core.models.User
 import theoneclick.server.core.models.UserSession
 import theoneclick.server.core.platform.SecurityUtils
 import theoneclick.server.core.platform.UuidProvider
@@ -59,11 +59,11 @@ private suspend fun RoutingContext.handleSuccess(
     userDataSource: UserDataSource,
     uuidProvider: UuidProvider,
 ) {
-    val userData = validRequestLogin.userData(uuidProvider, securityUtils)
+    val user = validRequestLogin.userData(uuidProvider, securityUtils)
 
     val sessionToken = securityUtils.encryptedToken()
-    userDataSource.saveUserData(
-        userData.copy(sessionToken = sessionToken)
+    userDataSource.saveUser(
+        user.copy(sessionToken = sessionToken)
     )
 
     val userSession = UserSession(sessionToken = sessionToken.value)
@@ -73,12 +73,12 @@ private suspend fun RoutingContext.handleSuccess(
 private fun ValidRequestLogin.userData(
     uuidProvider: UuidProvider,
     securityUtils: SecurityUtils
-): UserData =
+): User =
     when (this) {
-        is ValidRequestLogin.ValidUser -> userData
+        is ValidRequestLogin.ValidUser -> user
         is ValidRequestLogin.RegistrableUser -> {
-            UserData(
-                userId = uuidProvider.uuid(),
+            User(
+                id = uuidProvider.uuid(),
                 username = username,
                 hashedPassword = securityUtils.hashPassword(password),
             )

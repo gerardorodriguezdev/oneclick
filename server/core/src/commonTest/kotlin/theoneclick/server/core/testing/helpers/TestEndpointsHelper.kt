@@ -5,7 +5,7 @@ import io.ktor.client.request.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
 import theoneclick.server.core.extensions.urlString
-import theoneclick.server.core.models.UserData
+import theoneclick.server.core.models.User
 import theoneclick.server.core.models.UserSession
 import theoneclick.server.core.models.endpoints.ServerEndpoint
 import theoneclick.server.core.testing.TestData
@@ -25,10 +25,10 @@ object TestEndpointsHelper {
     suspend fun HttpClient.requestLogin(
         username: String = TestData.USERNAME,
         password: String = TestData.RAW_PASSWORD,
-        userData: UserData? = null,
+        user: User? = null,
     ): HttpResponse {
-        userData?.let {
-            addUserData(userData)
+        user?.let {
+            addUser(user)
         }
 
         return post(
@@ -57,8 +57,8 @@ object TestEndpointsHelper {
     ): HttpResponse {
         userSession?.let {
             addUserSession(userSession)
-            addUserData(
-                TestData.userData.copy(devices = emptyList())
+            addUser(
+                TestData.user.copy(devices = emptyList())
             )
         }
 
@@ -88,8 +88,8 @@ object TestEndpointsHelper {
     ): HttpResponse {
         userSession?.let {
             addUserSession(userSession)
-            addUserData(
-                TestData.userData.copy(devices = devices)
+            addUser(
+                TestData.user.copy(devices = devices)
             )
         }
 
@@ -113,8 +113,8 @@ object TestEndpointsHelper {
     ): HttpResponse {
         userSession?.let {
             addUserSession(userSession)
-            addUserData(
-                TestData.userData.copy(devices = devices)
+            addUser(
+                TestData.user.copy(devices = devices)
             )
         }
 
@@ -139,8 +139,8 @@ object TestEndpointsHelper {
     ): HttpResponse {
         userSession?.let {
             addUserSession(userSession)
-            addUserData(
-                TestData.userData.copy(devices = listOf())
+            addUser(
+                TestData.user.copy(devices = listOf())
             )
         }
 
@@ -160,9 +160,9 @@ object TestEndpointsHelper {
             setBody(userSession)
         }
 
-    private suspend fun HttpClient.addUserData(userData: UserData): HttpResponse =
+    private suspend fun HttpClient.addUser(user: User): HttpResponse =
         post(ServerEndpoint.ADD_USER_DATA.route) {
             contentType(ContentType.Application.Json)
-            setBody(userData)
+            setBody(user)
         }
 }

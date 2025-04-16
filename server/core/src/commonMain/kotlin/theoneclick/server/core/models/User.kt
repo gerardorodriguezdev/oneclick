@@ -5,8 +5,8 @@ import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.Uuid
 
 @Serializable
-data class UserData(
-    val userId: Uuid,
+data class User(
+    val id: Uuid,
     val username: String,
     val hashedPassword: HashedPassword,
     val sessionToken: EncryptedToken? = null,

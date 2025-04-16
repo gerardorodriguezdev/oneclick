@@ -45,7 +45,7 @@ private suspend fun RoutingContext.handleValidDevice(
     userDataSource: UserDataSource,
     uuidProvider: UuidProvider,
 ) {
-    val currentUserData = validDevice.userData
+    val currentUser = validDevice.user
     val newDevice = device(
         uuid = uuidProvider.uuid(),
         deviceName = validDevice.deviceName,
@@ -53,8 +53,8 @@ private suspend fun RoutingContext.handleValidDevice(
         type = validDevice.deviceType,
     )
 
-    userDataSource.saveUserData(
-        currentUserData.copy(devices = currentUserData.devices + newDevice)
+    userDataSource.saveUser(
+        currentUser.copy(devices = currentUser.devices + newDevice)
     )
 
     call.respond(AddDeviceResponse(newDevice))

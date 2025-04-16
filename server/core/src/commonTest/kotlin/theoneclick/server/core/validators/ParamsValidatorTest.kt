@@ -1,7 +1,7 @@
 package theoneclick.server.core.validators
 
 import theoneclick.server.core.endpoints.requestLogin.RequestLoginParams
-import theoneclick.server.core.models.UserData
+import theoneclick.server.core.models.User
 import theoneclick.server.core.models.UserSession
 import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
@@ -70,7 +70,7 @@ class ParamsValidatorTest : IntegrationTest() {
             // Valid
             testScenario(
                 input = RequestLoginParamsScenario(
-                    userData = null,
+                    user = null,
                 ),
                 expected = ValidRequestLogin.RegistrableUser(
                     username = TestData.USERNAME,
@@ -82,13 +82,13 @@ class ParamsValidatorTest : IntegrationTest() {
                     isPasswordValid = true,
                 ),
                 expected = ValidRequestLogin.ValidUser(
-                    userData = TestData.userData,
+                    user = TestData.user,
                 ),
             ),
 
             block = { index, input ->
                 val paramsValidator = paramsValidator(
-                    userData = input.userData,
+                    user = input.user,
                     isPasswordValid = input.isPasswordValid,
                 )
                 paramsValidator.isRequestLoginParamsValid(input.requestLoginParams)
@@ -102,13 +102,13 @@ class ParamsValidatorTest : IntegrationTest() {
             // Invalid
             testScenario(
                 input = UserSessionValidScenario(
-                    userData = null,
+                    user = null,
                 ),
                 expected = false,
             ),
             testScenario(
                 input = UserSessionValidScenario(
-                    userData = TestData.userData.copy(
+                    user = TestData.user.copy(
                         sessionToken = null,
                     ),
                 ),
@@ -137,7 +137,7 @@ class ParamsValidatorTest : IntegrationTest() {
             block = { index, input ->
                 val paramsValidator = paramsValidator(
                     currentTimeInMillis = input.currentTimeInMillis,
-                    userData = input.userData,
+                    user = input.user,
                 )
                 paramsValidator.isUserSessionValid(input.userSession)
             }
@@ -177,7 +177,7 @@ class ParamsValidatorTest : IntegrationTest() {
 
             // Invalid user data
             testScenario(
-                input = AddDeviceValidScenario(userData = null),
+                input = AddDeviceValidScenario(user = null),
                 expected = AddDeviceRequestValidationResult.InvalidDevice,
             ),
             testScenario(
@@ -188,12 +188,12 @@ class ParamsValidatorTest : IntegrationTest() {
             // Valid
             testScenario(
                 input = AddDeviceValidScenario(
-                    userData = TestData.userData.copy(
+                    user = TestData.user.copy(
                         devices = emptyList()
                     )
                 ),
                 expected = AddDeviceRequestValidationResult.ValidDevice(
-                    userData = TestData.userData.copy(
+                    user = TestData.user.copy(
                         devices = emptyList()
                     ),
                     deviceName = TestData.DEVICE_NAME,
@@ -202,7 +202,7 @@ class ParamsValidatorTest : IntegrationTest() {
                 ),
             ),
             block = { index, input ->
-                val paramsValidator = paramsValidator(userData = input.userData)
+                val paramsValidator = paramsValidator(user = input.user)
                 paramsValidator.isAddDeviceRequestValid(input.addDeviceRequest)
             }
         )
@@ -294,16 +294,16 @@ class ParamsValidatorTest : IntegrationTest() {
 
             // Invalid user data
             testScenario(
-                input = UpdateDeviceValidScenario(userData = null),
+                input = UpdateDeviceValidScenario(user = null),
                 expected = UpdateDeviceValidationResult.InvalidDevice,
             ),
             testScenario(
-                input = UpdateDeviceValidScenario(userData = TestData.userData.copy(devices = emptyList())),
+                input = UpdateDeviceValidScenario(user = TestData.user.copy(devices = emptyList())),
                 expected = UpdateDeviceValidationResult.InvalidDevice,
             ),
             testScenario(
                 input = UpdateDeviceValidScenario(
-                    userData = TestData.userData.copy(
+                    user = TestData.user.copy(
                         devices = listOf(
                             TestData.blind.copy(
                                 id = Uuid(
@@ -324,13 +324,13 @@ class ParamsValidatorTest : IntegrationTest() {
                 input = UpdateDeviceValidScenario(),
                 expected = UpdateDeviceValidationResult.ValidDevice(
                     updatedDevice = TestData.blind.copy(isOpened = true),
-                    userData = TestData.userData.copy(
+                    user = TestData.user.copy(
                         devices = listOf(TestData.blind.copy(isOpened = true))
                     ),
                 ),
             ),
             block = { index, input ->
-                val paramsValidator = paramsValidator(userData = input.userData)
+                val paramsValidator = paramsValidator(user = input.user)
                 paramsValidator.isUpdateDeviceRequestValid(input.updateDevideRequest)
             }
         )
@@ -339,7 +339,7 @@ class ParamsValidatorTest : IntegrationTest() {
     companion object {
         private fun paramsValidator(
             currentTimeInMillis: Long = TestData.CURRENT_TIME_IN_MILLIS,
-            userData: UserData? = TestData.userData,
+            user: User? = TestData.user,
             isPasswordValid: Boolean = false,
         ): ParamsValidator =
             ParamsValidator(
@@ -347,14 +347,14 @@ class ParamsValidatorTest : IntegrationTest() {
                 securityUtils = FakeSecurityUtils(
                     verifyPasswordResult = isPasswordValid,
                 ),
-                userDataSource = FakeUserDataSource(userData),
+                userDataSource = FakeUserDataSource(user),
             )
 
         data class RequestLoginParamsScenario(
             private val username: String = TestData.USERNAME,
             private val password: String = TestData.RAW_PASSWORD,
 
-            val userData: UserData? = TestData.userData,
+            val user: User? = TestData.user,
             val isPasswordValid: Boolean = false,
         ) {
             val requestLoginParams = RequestLoginParams(
@@ -367,7 +367,7 @@ class ParamsValidatorTest : IntegrationTest() {
             private val userSessionToken: String = TestData.ENCRYPTED_TOKEN_VALUE,
 
             val currentTimeInMillis: Long = TestData.CURRENT_TIME_IN_MILLIS,
-            val userData: UserData? = TestData.userData,
+            val user: User? = TestData.user,
         ) {
             val userSession = UserSession(userSessionToken)
         }
@@ -377,7 +377,7 @@ class ParamsValidatorTest : IntegrationTest() {
             private val room: String = TestData.ROOM,
             private val type: DeviceType = DeviceType.BLIND,
 
-            val userData: UserData? = TestData.userData,
+            val user: User? = TestData.user,
         ) {
             val addDeviceRequest = AddDeviceRequest(
                 deviceName = deviceName,
@@ -389,7 +389,7 @@ class ParamsValidatorTest : IntegrationTest() {
         data class UpdateDeviceValidScenario(
             private val updatedDevice: Device = TestData.blind.copy(isOpened = true),
 
-            val userData: UserData? = TestData.userData.copy(
+            val user: User? = TestData.user.copy(
                 devices = listOf(updatedDevice),
             ),
         ) {

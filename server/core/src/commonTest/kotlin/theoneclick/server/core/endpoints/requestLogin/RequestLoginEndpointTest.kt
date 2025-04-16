@@ -5,7 +5,7 @@ import org.koin.test.KoinTest
 import org.koin.test.inject
 import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.models.HashedPassword
-import theoneclick.server.core.models.UserData
+import theoneclick.server.core.models.User
 import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.helpers.TestEndpointsHelper.requestLogin
@@ -16,17 +16,17 @@ import kotlin.test.assertEquals
 
 class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
 
-    // UserDataEmpty
+    // UserEmpty
     @Test
     fun `GIVEN scenario WHEN request login THEN returns bad request`() {
         runOnlyParameterizedTest(
             // Invalid username
-            UserDataEmptyTestsScenario(username = ""),
-            UserDataEmptyTestsScenario(username = "user/"),
+            UserEmptyTestsScenario(username = ""),
+            UserEmptyTestsScenario(username = "user/"),
 
             // Invalid password
-            UserDataEmptyTestsScenario(password = ""),
-            UserDataEmptyTestsScenario(password = "Stuff/"),
+            UserEmptyTestsScenario(password = ""),
+            UserEmptyTestsScenario(password = "Stuff/"),
 
             block = { index, input ->
                 testApplication {
@@ -46,7 +46,7 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
     }
 
     @Test
-    fun `GIVEN loginData without userDataEmpty WHEN requestLogin THEN returns valid session`() {
+    fun `GIVEN loginData without userEmpty WHEN requestLogin THEN returns valid session`() {
         val repository: UserDataSource by inject()
 
         testApplication {
@@ -57,15 +57,15 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
             val userSessionCookie = response.userSessionCookie
             assertEquals(TestData.ENCRYPTED_USER_SESSION_DATA_STRING, userSessionCookie)
 
-            assertEquals(expected = expectedUserData, actual = repository.userData())
+            assertEquals(expected = expectedUser, actual = repository.user())
         }
     }
 
-    // UserDataSaved
+    // UserSaved
     @Test
     fun `GIVEN username is invalid WHEN request login THEN returns bad request`() {
         testApplication {
-            val response = httpClient.requestLogin(username = "InvalidUsername", userData = savedUserData)
+            val response = httpClient.requestLogin(username = "InvalidUsername", user = savedUser)
 
             assertEquals(expected = HttpStatusCode.BadRequest, actual = response.status)
         }
@@ -74,39 +74,39 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
     @Test
     fun `GIVEN password is invalid WHEN request login THEN returns bad request`() {
         testApplication {
-            val response = httpClient.requestLogin(password = "InvalidPassword", userData = savedUserData)
+            val response = httpClient.requestLogin(password = "InvalidPassword", user = savedUser)
 
             assertEquals(expected = HttpStatusCode.BadRequest, actual = response.status)
         }
     }
 
     @Test
-    fun `GIVEN loginData without userDataSaved WHEN requestLogin THEN returns valid session`() {
+    fun `GIVEN loginData without userSaved WHEN requestLogin THEN returns valid session`() {
         val repository: UserDataSource by inject()
 
         testApplication {
-            val response = httpClient.requestLogin(userData = savedUserData)
+            val response = httpClient.requestLogin(user = savedUser)
 
             assertEquals(HttpStatusCode.OK, response.status)
 
             val userSessionCookie = response.userSessionCookie
             assertEquals(expected = TestData.ENCRYPTED_USER_SESSION_DATA_STRING, actual = userSessionCookie)
-            assertEquals(expected = expectedUserData, actual = repository.userData())
+            assertEquals(expected = expectedUser, actual = repository.user())
         }
     }
 
     private companion object {
-        val expectedUserData = TestData.userData.copy(
+        val expectedUser = TestData.user.copy(
             devices = emptyList(),
         )
 
-        val savedUserData = UserData(
-            userId = Uuid(TestData.UUID),
+        val savedUser = User(
+            id = Uuid(TestData.UUID),
             username = TestData.USERNAME,
             hashedPassword = HashedPassword(TestData.HASHED_PASSWORD),
         )
 
-        data class UserDataEmptyTestsScenario(
+        data class UserEmptyTestsScenario(
             val username: String = TestData.USERNAME,
             val password: String = TestData.RAW_PASSWORD,
         )

@@ -2,7 +2,7 @@ package theoneclick.server.core.validators
 
 import theoneclick.server.core.dataSources.UserDataSource
 import theoneclick.server.core.endpoints.requestLogin.RequestLoginParams
-import theoneclick.server.core.models.UserData
+import theoneclick.server.core.models.User
 import theoneclick.server.core.models.UserSession
 import theoneclick.server.core.platform.SecurityUtils
 import theoneclick.server.core.validators.ParamsValidator.RequestLoginValidationResult.InvalidRequestLoginParams
@@ -39,36 +39,36 @@ class ParamsValidator(
         username: String,
         password: String,
     ): RequestLoginValidationResult {
-        val userData = userDataSource.userData()
+        val user = userDataSource.user()
 
         return when {
-            userData == null -> ValidRequestLogin.RegistrableUser(
+            user == null -> ValidRequestLogin.RegistrableUser(
                 username = username,
                 password = password,
             )
 
-            userData.username != username -> InvalidRequestLoginParams
+            user.username != username -> InvalidRequestLoginParams
 
             !securityUtils.verifyPassword(
                 password = password,
-                hashedPassword = userData.hashedPassword,
+                hashedPassword = user.hashedPassword,
             ) -> InvalidRequestLoginParams
 
-            else -> ValidRequestLogin.ValidUser(userData)
+            else -> ValidRequestLogin.ValidUser(user)
         }
     }
 
     fun isUserSessionValid(userSession: UserSession): Boolean {
-        val userData = userDataSource.userData()
+        val user = userDataSource.user()
 
         return when {
-            userData == null -> false
-            userData.sessionToken == null -> false
+            user == null -> false
+            user.sessionToken == null -> false
 
-            timeProvider.currentTimeMillis() > userData.sessionToken.creationTimeInMillis +
+            timeProvider.currentTimeMillis() > user.sessionToken.creationTimeInMillis +
                 USER_SESSION_TOKEN_EXPIRATION_IN_MILLIS -> false
 
-            userData.sessionToken.value != userSession.sessionToken -> false
+            user.sessionToken.value != userSession.sessionToken -> false
             else -> true
         }
     }
@@ -84,13 +84,13 @@ class ParamsValidator(
     }
 
     private fun AddDeviceRequest.handleUserDataValidationForAddDeviceRequest(): AddDeviceRequestValidationResult {
-        val userData = userDataSource.userData()
+        val user = userDataSource.user()
 
         return when {
-            userData == null -> AddDeviceRequestValidationResult.InvalidDevice
-            userData.hasDevice(deviceName) -> AddDeviceRequestValidationResult.InvalidDevice
+            user == null -> AddDeviceRequestValidationResult.InvalidDevice
+            user.hasDevice(deviceName) -> AddDeviceRequestValidationResult.InvalidDevice
             else -> AddDeviceRequestValidationResult.ValidDevice(
-                userData = userData,
+                user = user,
                 deviceName = deviceName,
                 room = room,
                 deviceType = type,
@@ -120,13 +120,13 @@ class ParamsValidator(
     private fun Device.Blind.isDeviceValid(): Boolean = Device.Blind.blindRange.isOnRange(rotation)
 
     private fun Device.handleDeviceUpdate(): UpdateDeviceValidationResult {
-        val userData = userDataSource.userData()
+        val user = userDataSource.user()
 
         return when {
-            userData == null -> UpdateDeviceValidationResult.InvalidDevice
-            !userData.canUpdateDevice(this) -> UpdateDeviceValidationResult.InvalidDevice
+            user == null -> UpdateDeviceValidationResult.InvalidDevice
+            !user.canUpdateDevice(this) -> UpdateDeviceValidationResult.InvalidDevice
             else -> UpdateDeviceValidationResult.ValidDevice(
-                userData = userData,
+                user = user,
                 updatedDevice = this,
             )
         }
@@ -134,7 +134,7 @@ class ParamsValidator(
 
     sealed interface RequestLoginValidationResult {
         sealed interface ValidRequestLogin : RequestLoginValidationResult {
-            data class ValidUser(val userData: UserData) : ValidRequestLogin
+            data class ValidUser(val user: User) : ValidRequestLogin
 
             data class RegistrableUser(
                 val username: String,
@@ -147,7 +147,7 @@ class ParamsValidator(
 
     sealed interface AddDeviceRequestValidationResult {
         data class ValidDevice(
-            val userData: UserData,
+            val user: User,
             val deviceName: String,
             val room: String,
             val deviceType: DeviceType,
@@ -158,7 +158,7 @@ class ParamsValidator(
 
     sealed interface UpdateDeviceValidationResult {
         data class ValidDevice(
-            val userData: UserData,
+            val user: User,
             val updatedDevice: Device,
         ) : UpdateDeviceValidationResult
 

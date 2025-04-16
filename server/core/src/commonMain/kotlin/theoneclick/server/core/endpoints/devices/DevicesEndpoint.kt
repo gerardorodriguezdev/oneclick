@@ -13,8 +13,8 @@ fun Routing.devicesEndpoint() {
 
     defaultAuthentication {
         get(path = ClientEndpoint.DEVICES.route) {
-            val userData = userDataSource.userData()
-            val devices = userData?.devices?.toList() ?: emptyList()
+            val user = userDataSource.user()
+            val devices = user?.devices?.toList() ?: emptyList()
             call.respond(
                 DevicesResponse(
                     devices = devices,

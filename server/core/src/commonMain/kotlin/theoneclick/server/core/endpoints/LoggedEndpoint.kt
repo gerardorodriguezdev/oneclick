@@ -13,10 +13,10 @@ fun Routing.logoutEndpoint() {
 
     defaultAuthentication {
         get(ClientEndpoint.LOGOUT.route) {
-            val currentUserData = userDataSource.userData()
-            val newUserData = currentUserData?.copy(sessionToken = null)
-            newUserData?.let {
-                userDataSource.saveUserData(newUserData)
+            val currentUser = userDataSource.user()
+            val newUser = currentUser?.copy(sessionToken = null)
+            newUser?.let {
+                userDataSource.saveUser(newUser)
             }
             call.respond(HttpStatusCode.OK)
         }

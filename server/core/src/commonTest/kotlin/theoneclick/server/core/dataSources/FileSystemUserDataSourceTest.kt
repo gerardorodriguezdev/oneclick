@@ -14,41 +14,41 @@ class FileSystemUserDataSourceTest : IntegrationTest() {
         FileSystemUserDataSource(pathProvider, FakeSecurityUtils(), fileSystem)
 
     @Test
-    fun `GIVEN userData is not available WHEN userData requested THEN null is returned`() {
-        val actualUserData = userDataRepository.userData()
+    fun `GIVEN user is not available WHEN user requested THEN null is returned`() {
+        val actualUser = userDataRepository.user()
 
-        assertNull(actualUserData)
+        assertNull(actualUser)
     }
 
     @Test
-    fun `GIVEN userData available WHEN userData requested THEN userData is returned`() {
+    fun `GIVEN user available WHEN user requested THEN user is returned`() {
         fileSystem.writeBytes(
             pathProvider.path(UserDataSource.FILE_NAME),
-            TestData.userDataByteArray
+            TestData.userByteArray
         )
 
-        val actualUserData = userDataRepository.userData()
+        val actualUser = userDataRepository.user()
 
-        assertEquals(expected = TestData.userData, actual = actualUserData)
+        assertEquals(expected = TestData.user, actual = actualUser)
     }
 
     @Test
-    fun `GIVEN validUserData WHEN saveUserData THEN userData is saved`() {
-        userDataRepository.saveUserData(TestData.userData)
+    fun `GIVEN validUser WHEN saveUser THEN user is saved`() {
+        userDataRepository.saveUser(TestData.user)
 
-        val userDataOnFile = fileSystem.readText(pathProvider.path(UserDataSource.FILE_NAME))
-        assertEquals(expected = TestData.userDataString, actual = userDataOnFile)
+        val userOnFile = fileSystem.readText(pathProvider.path(UserDataSource.FILE_NAME))
+        assertEquals(expected = TestData.userString, actual = userOnFile)
     }
 
     @Test
-    fun `GIVEN userData is saved WHEN removeUserData THEN userData is deleted`() {
-        userDataRepository.saveUserData(TestData.userData)
+    fun `GIVEN user is saved WHEN removeUser THEN user is deleted`() {
+        userDataRepository.saveUser(TestData.user)
 
-        userDataRepository.removeUserData()
+        userDataRepository.removeUser()
 
         pathProvider.path(UserDataSource.FILE_NAME)
 
-        val userDataOnFile = fileSystem.readText(pathProvider.path(UserDataSource.FILE_NAME))
-        assertEquals(expected = "", actual = userDataOnFile)
+        val userOnFile = fileSystem.readText(pathProvider.path(UserDataSource.FILE_NAME))
+        assertEquals(expected = "", actual = userOnFile)
     }
 }
