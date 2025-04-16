@@ -8,17 +8,17 @@ import theoneclick.server.core.platform.PathProvider
 import theoneclick.server.core.platform.SecurityUtils
 import theoneclick.shared.core.models.entities.Uuid
 
-interface UserDataSource {
+interface UsersDataSource {
     fun user(sessionToken: String): User?
     fun user(username: Username): User?
     fun saveUser(user: User)
 }
 
-class FileSystemUserDataSource(
+class FileSystemUsersDataSource(
     private val pathProvider: PathProvider,
     private val securityUtils: SecurityUtils,
     private val fileSystem: FileSystem,
-) : UserDataSource {
+) : UsersDataSource {
 
     override fun user(sessionToken: String): User? = findUser { user -> user.sessionToken?.value == sessionToken }
 

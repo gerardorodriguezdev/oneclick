@@ -4,7 +4,7 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import theoneclick.server.core.dataSources.UserDataSource
+import theoneclick.server.core.dataSources.UsersDataSource
 import theoneclick.server.core.models.User
 import theoneclick.server.core.models.UserSession
 import theoneclick.server.core.models.Username
@@ -21,7 +21,7 @@ import theoneclick.shared.core.models.requests.RequestLoginRequest
 import theoneclick.shared.core.models.responses.RequestLoginResponse
 
 fun Routing.requestLoginEndpoint() {
-    val userDataSource: UserDataSource by inject()
+    val usersDataSource: UsersDataSource by inject()
     val securityUtils: SecurityUtils by inject()
     val paramsValidator: ParamsValidator by inject()
     val uuidProvider: UuidProvider by inject()
@@ -38,7 +38,7 @@ fun Routing.requestLoginEndpoint() {
                 handleSuccess(
                     validRequestLogin = requestLoginValidationResult,
                     securityUtils = securityUtils,
-                    userDataSource = userDataSource,
+                    usersDataSource = usersDataSource,
                     uuidProvider = uuidProvider,
                 )
             }
@@ -51,13 +51,13 @@ fun Routing.requestLoginEndpoint() {
 private suspend fun RoutingContext.handleSuccess(
     validRequestLogin: ValidRequestLogin,
     securityUtils: SecurityUtils,
-    userDataSource: UserDataSource,
+    usersDataSource: UsersDataSource,
     uuidProvider: UuidProvider,
 ) {
     val user = validRequestLogin.user(uuidProvider, securityUtils)
 
     val sessionToken = securityUtils.encryptedToken()
-    userDataSource.saveUser(
+    usersDataSource.saveUser(
         user.copy(sessionToken = sessionToken)
     )
 

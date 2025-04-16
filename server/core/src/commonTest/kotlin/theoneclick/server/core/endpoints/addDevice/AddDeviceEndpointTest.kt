@@ -3,7 +3,7 @@ package theoneclick.server.core.endpoints.addDevice
 import io.ktor.http.*
 import org.koin.test.KoinTest
 import org.koin.test.inject
-import theoneclick.server.core.dataSources.UserDataSource
+import theoneclick.server.core.dataSources.UsersDataSource
 import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.helpers.TestEndpointsHelper.requestAddDevice
@@ -34,7 +34,7 @@ class AddDeviceEndpointTest : IntegrationTest(), KoinTest {
 
     @Test
     fun `GIVEN valid request WHEN addDevice requested THEN returns ok`() {
-        val repository: UserDataSource by inject()
+        val repository: UsersDataSource by inject()
 
         testApplication {
             val response = httpClient.requestAddDevice()

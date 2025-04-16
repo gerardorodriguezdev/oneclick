@@ -6,7 +6,7 @@ import theoneclick.server.core.models.UserSession
 import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.fakes.FakeSecurityUtils
-import theoneclick.server.core.testing.fakes.FakeUserDataSource
+import theoneclick.server.core.testing.fakes.FakeUsersDataSource
 import theoneclick.server.core.validators.ParamsValidator.AddDeviceRequestValidationResult
 import theoneclick.server.core.validators.ParamsValidator.RequestLoginValidationResult.InvalidRequestLoginParams
 import theoneclick.server.core.validators.ParamsValidator.RequestLoginValidationResult.ValidRequestLogin
@@ -353,7 +353,7 @@ class ParamsValidatorTest : IntegrationTest() {
                 securityUtils = FakeSecurityUtils(
                     verifyPasswordResult = isPasswordValid,
                 ),
-                userDataSource = FakeUserDataSource(user),
+                usersDataSource = FakeUsersDataSource(user),
             )
 
         data class RequestLoginParamsScenario(

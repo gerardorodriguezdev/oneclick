@@ -1,6 +1,6 @@
 package theoneclick.server.core.validators
 
-import theoneclick.server.core.dataSources.UserDataSource
+import theoneclick.server.core.dataSources.UsersDataSource
 import theoneclick.server.core.endpoints.requestLogin.RequestLoginParams
 import theoneclick.server.core.models.User
 import theoneclick.server.core.models.Username
@@ -18,7 +18,7 @@ import theoneclick.shared.timeProvider.TimeProvider
 class ParamsValidator(
     private val timeProvider: TimeProvider,
     private val securityUtils: SecurityUtils,
-    private val userDataSource: UserDataSource,
+    private val usersDataSource: UsersDataSource,
 ) {
 
     fun isRequestLoginParamsValid(requestLoginParams: RequestLoginParams): RequestLoginValidationResult {
@@ -39,7 +39,7 @@ class ParamsValidator(
         username: String,
         password: String,
     ): RequestLoginValidationResult {
-        val user = userDataSource.user(Username(username))
+        val user = usersDataSource.user(Username(username))
 
         return when {
             user == null -> ValidRequestLogin.RegistrableUser(
@@ -59,7 +59,7 @@ class ParamsValidator(
     }
 
     fun isUserSessionValid(sessionToken: String): Boolean {
-        val user = userDataSource.user(sessionToken)
+        val user = usersDataSource.user(sessionToken)
 
         return when {
             user == null -> false
@@ -88,7 +88,7 @@ class ParamsValidator(
     }
 
     private fun AddDeviceRequest.handleUserDataValidationForAddDeviceRequest(sessionToken: String): AddDeviceRequestValidationResult {
-        val user = userDataSource.user(sessionToken)
+        val user = usersDataSource.user(sessionToken)
 
         return when {
             user == null -> AddDeviceRequestValidationResult.InvalidDevice
@@ -128,7 +128,7 @@ class ParamsValidator(
     private fun Device.Blind.isDeviceValid(): Boolean = Device.Blind.blindRange.isOnRange(rotation)
 
     private fun Device.handleDeviceUpdate(sessionToken: String): UpdateDeviceValidationResult {
-        val user = userDataSource.user(sessionToken)
+        val user = usersDataSource.user(sessionToken)
 
         return when {
             user == null -> UpdateDeviceValidationResult.InvalidDevice

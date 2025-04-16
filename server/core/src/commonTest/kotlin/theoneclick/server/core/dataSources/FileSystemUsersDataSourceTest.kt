@@ -8,10 +8,10 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertNull
 
-class FileSystemUserDataSourceTest : IntegrationTest() {
+class FileSystemUsersDataSourceTest : IntegrationTest() {
     private val pathProvider = PathProvider(tempDirectory, fileSystem)
     private val securityUtils = FakeSecurityUtils()
-    private val userDataRepository = FileSystemUserDataSource(pathProvider, securityUtils, fileSystem)
+    private val userDataRepository = FileSystemUsersDataSource(pathProvider, securityUtils, fileSystem)
 
     @Test
     fun `GIVEN user is not available WHEN user requested THEN null is returned`() {
@@ -23,7 +23,7 @@ class FileSystemUserDataSourceTest : IntegrationTest() {
     @Test
     fun `GIVEN user available WHEN user requested THEN user is returned`() {
         fileSystem.writeBytes(
-            pathProvider.path(FileSystemUserDataSource.userFileName(TestData.userId)),
+            pathProvider.path(FileSystemUsersDataSource.userFileName(TestData.userId)),
             TestData.userByteArray
         )
 
@@ -36,7 +36,7 @@ class FileSystemUserDataSourceTest : IntegrationTest() {
     fun `GIVEN validUser WHEN saveUser THEN user is saved`() {
         userDataRepository.saveUser(TestData.user)
 
-        val userOnFile = fileSystem.readText(pathProvider.path(FileSystemUserDataSource.userFileName(TestData.userId)))
+        val userOnFile = fileSystem.readText(pathProvider.path(FileSystemUsersDataSource.userFileName(TestData.userId)))
         assertEquals(expected = TestData.userString, actual = userOnFile)
     }
 }

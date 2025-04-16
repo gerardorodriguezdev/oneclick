@@ -3,7 +3,7 @@ package theoneclick.server.core.endpoints.requestLogin
 import io.ktor.http.*
 import org.koin.test.KoinTest
 import org.koin.test.inject
-import theoneclick.server.core.dataSources.UserDataSource
+import theoneclick.server.core.dataSources.UsersDataSource
 import theoneclick.server.core.models.HashedPassword
 import theoneclick.server.core.models.User
 import theoneclick.server.core.testing.TestData
@@ -47,7 +47,7 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
 
     @Test
     fun `GIVEN loginData without userEmpty WHEN requestLogin THEN returns valid session`() {
-        val repository: UserDataSource by inject()
+        val repository: UsersDataSource by inject()
 
         testApplication {
             val response = httpClient.requestLogin()
@@ -82,7 +82,7 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
 
     @Test
     fun `GIVEN loginData without userSaved WHEN requestLogin THEN returns valid session`() {
-        val repository: UserDataSource by inject()
+        val repository: UsersDataSource by inject()
 
         testApplication {
             val response = httpClient.requestLogin(user = savedUser)

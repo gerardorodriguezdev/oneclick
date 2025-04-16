@@ -5,8 +5,8 @@ import org.koin.core.module.Module
 import org.koin.core.module.dsl.singleOf
 import org.koin.dsl.bind
 import org.koin.dsl.module
-import theoneclick.server.core.dataSources.FileSystemUserDataSource
-import theoneclick.server.core.dataSources.UserDataSource
+import theoneclick.server.core.dataSources.FileSystemUsersDataSource
+import theoneclick.server.core.dataSources.UsersDataSource
 import theoneclick.server.core.platform.*
 import theoneclick.server.core.validators.ParamsValidator
 import theoneclick.shared.timeProvider.TimeProvider
@@ -31,6 +31,6 @@ fun buildModule(dependencies: Dependencies): Module =
         single<FileSystem> { dependencies.fileSystem }
         single<PathProvider> { dependencies.pathProvider }
         single<Logger> { KtorSimpleLogger("theoneclick.defaultlogger") }
-        singleOf(::FileSystemUserDataSource) bind UserDataSource::class
+        singleOf(::FileSystemUsersDataSource) bind UsersDataSource::class
         singleOf(::ParamsValidator)
     }

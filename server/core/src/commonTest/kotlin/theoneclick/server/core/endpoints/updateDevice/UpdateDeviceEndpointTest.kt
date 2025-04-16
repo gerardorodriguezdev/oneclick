@@ -3,7 +3,7 @@ package theoneclick.server.core.endpoints.updateDevice
 import io.ktor.http.*
 import org.koin.test.KoinTest
 import org.koin.test.inject
-import theoneclick.server.core.dataSources.UserDataSource
+import theoneclick.server.core.dataSources.UsersDataSource
 import theoneclick.server.core.testing.TestData
 import theoneclick.server.core.testing.base.IntegrationTest
 import theoneclick.server.core.testing.helpers.TestEndpointsHelper.requestUpdateDevice
@@ -35,7 +35,7 @@ class UpdateDeviceEndpointTest : IntegrationTest(), KoinTest {
 
     @Test
     fun `GIVEN valid request WHEN updateDevice requested THEN returns ok`() {
-        val repository: UserDataSource by inject()
+        val repository: UsersDataSource by inject()
         val updatedDevice = TestData.blind.copy(isOpened = true)
 
         testApplication {

@@ -4,7 +4,7 @@ import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import theoneclick.server.core.dataSources.UserDataSource
+import theoneclick.server.core.dataSources.UsersDataSource
 import theoneclick.server.core.extensions.defaultAuthentication
 import theoneclick.server.core.models.UserSession
 import theoneclick.server.core.platform.UuidProvider
@@ -21,7 +21,7 @@ import theoneclick.shared.core.models.responses.AddDeviceResponse
 
 fun Routing.addDeviceEndpoint() {
     val paramsValidator: ParamsValidator by inject()
-    val userDataSource: UserDataSource by inject()
+    val usersDataSource: UsersDataSource by inject()
     val uuidProvider: UuidProvider by inject()
 
     defaultAuthentication {
@@ -34,7 +34,7 @@ fun Routing.addDeviceEndpoint() {
             when (addDeviceValidationResult) {
                 is ValidDevice -> handleValidDevice(
                     validDevice = addDeviceValidationResult,
-                    userDataSource = userDataSource,
+                    usersDataSource = usersDataSource,
                     uuidProvider = uuidProvider,
                 )
 
@@ -46,7 +46,7 @@ fun Routing.addDeviceEndpoint() {
 
 private suspend fun RoutingContext.handleValidDevice(
     validDevice: ValidDevice,
-    userDataSource: UserDataSource,
+    usersDataSource: UsersDataSource,
     uuidProvider: UuidProvider,
 ) {
     val currentUser = validDevice.user
@@ -57,7 +57,7 @@ private suspend fun RoutingContext.handleValidDevice(
         type = validDevice.deviceType,
     )
 
-    userDataSource.saveUser(
+    usersDataSource.saveUser(
         currentUser.copy(devices = currentUser.devices + newDevice)
     )
 
