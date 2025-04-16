@@ -7,7 +7,7 @@ import theoneclick.shared.core.models.entities.Uuid
 @Serializable
 data class User(
     val id: Uuid,
-    val username: String,
+    val username: Username,
     val hashedPassword: HashedPassword,
     val sessionToken: EncryptedToken? = null,
 

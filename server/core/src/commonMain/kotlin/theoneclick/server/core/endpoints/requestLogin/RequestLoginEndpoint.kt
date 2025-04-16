@@ -1,14 +1,13 @@
 package theoneclick.server.core.endpoints.requestLogin
 
 import io.ktor.http.*
-import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import theoneclick.server.core.dataSources.UserDataSource
-import theoneclick.server.core.extensions.post
 import theoneclick.server.core.models.User
 import theoneclick.server.core.models.UserSession
+import theoneclick.server.core.models.Username
 import theoneclick.server.core.platform.SecurityUtils
 import theoneclick.server.core.platform.UuidProvider
 import theoneclick.server.core.plugins.koin.inject
@@ -27,17 +26,13 @@ fun Routing.requestLoginEndpoint() {
     val paramsValidator: ParamsValidator by inject()
     val uuidProvider: UuidProvider by inject()
 
-    post(
-        endpoint = ClientEndpoint.REQUEST_LOGIN,
-        paramsParsing = {
-            val requestLoginRequest: RequestLoginRequest = call.receive()
-            RequestLoginParams(
-                username = requestLoginRequest.username,
-                password = requestLoginRequest.password,
-            )
-        },
-        paramsValidation = { requestLoginParams -> paramsValidator.isRequestLoginParamsValid(requestLoginParams) }
-    ) { requestLoginValidationResult ->
+    post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
+        val requestLoginParams = RequestLoginParams(
+            username = requestLoginRequest.username,
+            password = requestLoginRequest.password,
+        )
+        val requestLoginValidationResult = paramsValidator.isRequestLoginParamsValid(requestLoginParams)
+
         when (requestLoginValidationResult) {
             is ValidRequestLogin -> {
                 handleSuccess(
@@ -79,7 +74,7 @@ private fun ValidRequestLogin.userData(
         is ValidRequestLogin.RegistrableUser -> {
             User(
                 id = uuidProvider.uuid(),
-                username = username,
+                username = Username(username),
                 hashedPassword = securityUtils.hashPassword(password),
             )
         }
@@ -88,7 +83,7 @@ private fun ValidRequestLogin.userData(
 private suspend fun RoutingContext.handleSuccess(userSession: UserSession) {
     when (call.request.agent) {
         Agent.MOBILE -> {
-            call.respond(RequestLoginResponse(userSession.sessionToken))
+            call.respond(RequestLoginResponse(token = userSession.sessionToken))
         }
 
         Agent.BROWSER -> {

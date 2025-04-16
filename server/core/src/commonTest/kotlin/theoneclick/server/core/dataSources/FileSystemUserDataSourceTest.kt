@@ -15,7 +15,7 @@ class FileSystemUserDataSourceTest : IntegrationTest() {
 
     @Test
     fun `GIVEN user is not available WHEN user requested THEN null is returned`() {
-        val actualUser = userDataRepository.user()
+        val actualUser = userDataRepository.user(TestData.username)
 
         assertNull(actualUser)
     }
@@ -27,7 +27,7 @@ class FileSystemUserDataSourceTest : IntegrationTest() {
             TestData.userByteArray
         )
 
-        val actualUser = userDataRepository.user()
+        val actualUser = userDataRepository.user(TestData.username)
 
         assertEquals(expected = TestData.user, actual = actualUser)
     }
@@ -38,17 +38,5 @@ class FileSystemUserDataSourceTest : IntegrationTest() {
 
         val userOnFile = fileSystem.readText(pathProvider.path(UserDataSource.FILE_NAME))
         assertEquals(expected = TestData.userString, actual = userOnFile)
-    }
-
-    @Test
-    fun `GIVEN user is saved WHEN removeUser THEN user is deleted`() {
-        userDataRepository.saveUser(TestData.user)
-
-        userDataRepository.removeUser()
-
-        pathProvider.path(UserDataSource.FILE_NAME)
-
-        val userOnFile = fileSystem.readText(pathProvider.path(UserDataSource.FILE_NAME))
-        assertEquals(expected = "", actual = userOnFile)
     }
 }

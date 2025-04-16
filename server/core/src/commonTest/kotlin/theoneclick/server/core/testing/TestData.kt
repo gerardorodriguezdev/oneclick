@@ -1,10 +1,7 @@
 package theoneclick.server.core.testing
 
 import kotlinx.serialization.json.Json
-import theoneclick.server.core.models.EncryptedToken
-import theoneclick.server.core.models.HashedPassword
-import theoneclick.server.core.models.User
-import theoneclick.server.core.models.UserSession
+import theoneclick.server.core.models.*
 import theoneclick.server.core.platform.Environment
 import theoneclick.shared.core.models.entities.Device.Blind
 import theoneclick.shared.core.models.entities.Uuid
@@ -21,6 +18,7 @@ object TestData {
     // Devices
     const val DEVICE_NAME = "Blind1"
     const val ROOM = "Bedroom"
+    val deviceId = Uuid(UUID)
 
     // User
     const val USERNAME = "Username"
@@ -31,6 +29,8 @@ object TestData {
     const val SECURE_RANDOM_SEED = 1L
     const val ENCRYPTED_TOKEN_VALUE =
         "c9Uau9icuBlvDvtokvlNaMMQBXUiGxSN5oDSfERIfy5aGFKNOyYlGkM2dwkHiBExZSyi2fpP6kHh3Z9+9nzVE+58aMCLWi7FoZa+g1h80/Q="
+    val username = Username(USERNAME)
+    val userId = Uuid(UUID)
 
     val validUserSession = UserSession(
         sessionToken = ENCRYPTED_TOKEN_VALUE
@@ -42,7 +42,7 @@ object TestData {
     )
 
     val blind = Blind(
-        id = Uuid(UUID),
+        id = deviceId,
         deviceName = DEVICE_NAME,
         room = ROOM,
         isOpened = false,
@@ -51,8 +51,8 @@ object TestData {
     val devices = listOf(blind)
 
     val user = User(
-        id = Uuid(UUID),
-        username = USERNAME,
+        id = userId,
+        username = username,
         hashedPassword = HashedPassword(HASHED_PASSWORD),
         sessionToken = encryptedToken,
         devices = devices,

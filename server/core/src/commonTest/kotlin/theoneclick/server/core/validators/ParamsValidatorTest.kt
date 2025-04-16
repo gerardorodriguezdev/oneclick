@@ -117,7 +117,7 @@ class ParamsValidatorTest : IntegrationTest() {
             testScenario(
                 input = UserSessionValidScenario(
                     currentTimeInMillis =
-                    TestData.CURRENT_TIME_IN_MILLIS + ParamsValidator.USER_SESSION_TOKEN_EXPIRATION_IN_MILLIS + 1
+                        TestData.CURRENT_TIME_IN_MILLIS + ParamsValidator.USER_SESSION_TOKEN_EXPIRATION_IN_MILLIS + 1
                 ),
                 expected = false,
             ),
@@ -139,7 +139,7 @@ class ParamsValidatorTest : IntegrationTest() {
                     currentTimeInMillis = input.currentTimeInMillis,
                     user = input.user,
                 )
-                paramsValidator.isUserSessionValid(input.userSession)
+                paramsValidator.isUserSessionValid(input.userSession.sessionToken)
             }
         )
     }
@@ -203,7 +203,10 @@ class ParamsValidatorTest : IntegrationTest() {
             ),
             block = { index, input ->
                 val paramsValidator = paramsValidator(user = input.user)
-                paramsValidator.isAddDeviceRequestValid(input.addDeviceRequest)
+                paramsValidator.isAddDeviceRequestValid(
+                    sessionToken = input.user?.sessionToken?.value,
+                    addDeviceRequest = input.addDeviceRequest,
+                )
             }
         )
     }
@@ -331,7 +334,10 @@ class ParamsValidatorTest : IntegrationTest() {
             ),
             block = { index, input ->
                 val paramsValidator = paramsValidator(user = input.user)
-                paramsValidator.isUpdateDeviceRequestValid(input.updateDevideRequest)
+                paramsValidator.isUpdateDeviceRequestValid(
+                    sessionToken = input.user?.sessionToken?.value,
+                    updateDeviceRequest = input.updateDevideRequest
+                )
             }
         )
     }

@@ -57,7 +57,7 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
             val userSessionCookie = response.userSessionCookie
             assertEquals(TestData.ENCRYPTED_USER_SESSION_DATA_STRING, userSessionCookie)
 
-            assertEquals(expected = expectedUser, actual = repository.user())
+            assertEquals(expected = expectedUser, actual = repository.user(TestData.username))
         }
     }
 
@@ -91,7 +91,7 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
 
             val userSessionCookie = response.userSessionCookie
             assertEquals(expected = TestData.ENCRYPTED_USER_SESSION_DATA_STRING, actual = userSessionCookie)
-            assertEquals(expected = expectedUser, actual = repository.user())
+            assertEquals(expected = expectedUser, actual = repository.user(TestData.username))
         }
     }
 
@@ -102,7 +102,7 @@ class RequestLoginEndpointTest : IntegrationTest(), KoinTest {
 
         val savedUser = User(
             id = Uuid(TestData.UUID),
-            username = TestData.USERNAME,
+            username = TestData.username,
             hashedPassword = HashedPassword(TestData.HASHED_PASSWORD),
         )
 

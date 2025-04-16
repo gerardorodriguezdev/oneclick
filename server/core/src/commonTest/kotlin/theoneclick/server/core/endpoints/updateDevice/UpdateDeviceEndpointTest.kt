@@ -48,7 +48,7 @@ class UpdateDeviceEndpointTest : IntegrationTest(), KoinTest {
                 expected = TestData.user.copy(
                     devices = listOf(updatedDevice),
                 ),
-                actual = repository.user()
+                actual = repository.user(TestData.username)
             )
         }
     }

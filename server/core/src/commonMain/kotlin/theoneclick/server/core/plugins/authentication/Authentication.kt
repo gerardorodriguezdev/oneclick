@@ -22,7 +22,7 @@ fun Application.configureAuthentication() {
 private fun AuthenticationConfig.registerSessionAuthentication(paramsValidator: ParamsValidator) {
     session<UserSession>(SESSION_AUTHENTICATION) {
         validate { userSession ->
-            if (paramsValidator.isUserSessionValid(userSession)) userSession else null
+            if (paramsValidator.isUserSessionValid(userSession.sessionToken)) userSession else null
         }
 
         challenge {
@@ -36,8 +36,7 @@ private fun AuthenticationConfig.registerTokenAuthentication(paramsValidator: Pa
         realm = "Access to the '/' path"
 
         authenticate { tokenCredential ->
-            val userSession = UserSession(tokenCredential.token)
-            if (paramsValidator.isUserSessionValid(userSession)) userSession else null
+            if (paramsValidator.isUserSessionValid(tokenCredential.token)) UserSession(tokenCredential.token) else null
         }
     }
 }

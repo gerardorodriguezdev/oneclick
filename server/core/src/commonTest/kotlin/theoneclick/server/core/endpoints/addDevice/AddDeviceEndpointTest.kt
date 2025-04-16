@@ -52,7 +52,7 @@ class AddDeviceEndpointTest : IntegrationTest(), KoinTest {
                         )
                     )
                 ),
-                actual = repository.user()
+                actual = repository.user(TestData.username)
             )
         }
     }
