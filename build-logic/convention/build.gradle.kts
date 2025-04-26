@@ -28,6 +28,7 @@ kotlin {
 
 dependencies {
     implementation(libs.gradle.kmp.api)
+    implementation(libs.gradle.jvm.kotlin.api)
     implementation(libs.gradle.kmp.ktor)
     implementation(libs.gradle.kmp.compose)
     implementation(libs.gradle.android.application)

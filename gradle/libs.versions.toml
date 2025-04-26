@@ -40,6 +40,7 @@ android-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", versi
 detekt-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "detekt-compose" }
 detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
 gradle-kmp-api = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kmp-kotlin-api" }
+gradle-jvm-kotlin-api = { module = "org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin", version.ref = "kmp-kotlin-api" }
 gradle-kmp-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "kmp-compose" }
 gradle-kmp-ktor = { module = "io.ktor.plugin:plugin", version.ref = "kmp-ktor" }
 gradle-android-application = { module = "com.android.application:com.android.application.gradle.plugin", version.ref = "android-gradle-plugin" }

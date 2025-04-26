@@ -1,7 +1,6 @@
 package buildLogic.convention.plugins
 
 import buildLogic.convention.extensions.plugins.JvmServerExtension
-import buildLogic.convention.extensions.toJavaLanguageVersion
 import buildLogic.convention.extensions.toJavaVersion
 import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.ChamaleonGradlePlugin
 import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.extensions.ChamaleonExtension
@@ -14,8 +13,7 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.named
-import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
-import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
+import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 
 class JvmServerPlugin : Plugin<Project> {
 
@@ -24,7 +22,6 @@ class JvmServerPlugin : Plugin<Project> {
             applyPlugins()
             val chamaleonExtension = extensions.findByType(ChamaleonExtension::class.java)
             val jvmServerExtension = createJvmServerExtension()
-            configureKotlinMultiplatformExtension(jvmServerExtension)
             configureJavaApplicationExtension(chamaleonExtension, jvmServerExtension)
             configureKtorExtension(chamaleonExtension, jvmServerExtension)
             registerTasks(chamaleonExtension)
@@ -33,8 +30,8 @@ class JvmServerPlugin : Plugin<Project> {
 
     private fun Project.applyPlugins() {
         pluginManager.apply {
-            apply(KotlinMultiplatformPluginWrapper::class.java)
             apply(KtorGradlePlugin::class.java)
+            apply(KotlinPluginWrapper::class.java)
             apply(ChamaleonGradlePlugin::class.java)
         }
     }
@@ -42,20 +39,6 @@ class JvmServerPlugin : Plugin<Project> {
     private fun Project.createJvmServerExtension(): JvmServerExtension {
         val extension = extensions.create(JVM_SERVER_EXTENSION_NAME, JvmServerExtension::class.java)
         return extension
-    }
-
-    private fun Project.configureKotlinMultiplatformExtension(jvmServerExtension: JvmServerExtension) {
-        extensions.configure(KotlinMultiplatformExtension::class.java) {
-            compilerOptions {
-                extraWarnings.set(true)
-            }
-
-            jvmToolchain {
-                languageVersion.set(jvmServerExtension.jvmTarget.toJavaLanguageVersion())
-            }
-
-            jvm { withJava() }
-        }
     }
 
     private fun Project.configureJavaApplicationExtension(
@@ -140,7 +123,7 @@ class JvmServerPlugin : Plugin<Project> {
         const val BUILD_DOCKER_IMAGE_TASK_NAME = "buildImage"
         const val TESTS_TASK_NAME = "test"
         const val RUN_TASK_NAME = "run"
-        const val JVM_JAR_TASK_NAME = "jvmJar"
+        const val JVM_JAR_TASK_NAME = "jar"
 
         const val JVM_SERVER_EXTENSION_NAME = "jvmServer"
     }

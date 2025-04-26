@@ -21,6 +21,7 @@ dependencyResolutionManagement {
 
 include(
     "server:core",
+    "server:app",
     "server:mock",
     "server:shared",
 )
