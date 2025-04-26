@@ -1,5 +1,6 @@
 package theoneclick.shared.core.models.routes
 
+import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import theoneclick.shared.core.models.routes.base.Route
 
@@ -7,17 +8,14 @@ import theoneclick.shared.core.models.routes.base.Route
 sealed interface HomeRoute : Route {
 
     @Serializable
-    data object DevicesList : HomeRoute {
-        override val path: String = "/home/devices-list"
-    }
+    @SerialName("home--devices-list")
+    data object DevicesList : HomeRoute
 
     @Serializable
-    data object AddDevice : HomeRoute {
-        override val path: String = "/home/add-device"
-    }
+    @SerialName("home--add-device")
+    data object AddDevice : HomeRoute
 
     @Serializable
-    data object UserSettings : HomeRoute {
-        override val path: String = "/home/user-settings"
-    }
+    @SerialName("home--user-settings")
+    data object UserSettings : HomeRoute
 }
