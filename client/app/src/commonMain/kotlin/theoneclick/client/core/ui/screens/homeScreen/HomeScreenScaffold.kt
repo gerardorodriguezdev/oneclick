@@ -16,10 +16,10 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
-import theoneclick.client.core.generated.resources.Res
-import theoneclick.client.core.generated.resources.homeScreen_navigationBar_addDevice
-import theoneclick.client.core.generated.resources.homeScreen_navigationBar_devicesList
-import theoneclick.client.core.generated.resources.homeScreen_navigationBar_userSettings
+import theoneclick.client.app.generated.resources.Res
+import theoneclick.client.app.generated.resources.homeScreen_navigationBar_addDevice
+import theoneclick.client.app.generated.resources.homeScreen_navigationBar_devicesList
+import theoneclick.client.app.generated.resources.homeScreen_navigationBar_userSettings
 import theoneclick.client.core.ui.previews.dev.MockContent
 import theoneclick.client.core.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.core.ui.previews.providers.base.PreviewModel

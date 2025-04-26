@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="client:core:buildWasm" type="GradleRunConfiguration" factoryName="Gradle" folderName="Client">
+  <configuration default="false" name="client:app:buildWasm" type="GradleRunConfiguration" factoryName="Gradle" folderName="Client">
     <ExternalSystemSettings>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -10,7 +10,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value=":client:core:wasmJsBrowserDistribution" />
+          <option value=":client:app:wasmJsBrowserDistribution" />
         </list>
       </option>
       <option name="vmOptions" />

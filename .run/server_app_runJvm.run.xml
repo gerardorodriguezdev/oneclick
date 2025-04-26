@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="client:core:buildAndroid" type="GradleRunConfiguration" factoryName="Gradle" folderName="Client">
+  <configuration default="false" name="server:app:runJvm" type="GradleRunConfiguration" factoryName="Gradle" folderName="Server">
     <ExternalSystemSettings>
       <option name="executionName" />
       <option name="externalProjectPath" value="$PROJECT_DIR$" />
@@ -10,7 +10,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value=":client:core:assembleRelease" />
+          <option value=":server:app:run" />
         </list>
       </option>
       <option name="vmOptions" />

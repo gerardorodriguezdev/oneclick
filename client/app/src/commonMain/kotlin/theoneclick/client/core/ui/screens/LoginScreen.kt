@@ -15,7 +15,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.stringResource
-import theoneclick.client.core.generated.resources.*
+import theoneclick.client.app.generated.resources.*
 import theoneclick.client.core.ui.components.DefaultButton
 import theoneclick.client.core.ui.components.DefaultScaffold
 import theoneclick.client.core.ui.components.SnackbarState

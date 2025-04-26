@@ -11,10 +11,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.stringResource
-import theoneclick.client.core.generated.resources.Res
-import theoneclick.client.core.generated.resources.userSettings_snackbar_logout
-import theoneclick.client.core.generated.resources.userSettings_snackbar_unknownError
-import theoneclick.client.core.generated.resources.userSettings_title_userSettings
+import theoneclick.client.app.generated.resources.Res
+import theoneclick.client.app.generated.resources.userSettings_snackbar_logout
+import theoneclick.client.app.generated.resources.userSettings_snackbar_unknownError
+import theoneclick.client.app.generated.resources.userSettings_title_userSettings
 import theoneclick.client.core.ui.components.DefaultButton
 import theoneclick.client.core.ui.components.DefaultScaffold
 import theoneclick.client.core.ui.components.SnackbarState

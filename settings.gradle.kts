@@ -27,7 +27,7 @@ include(
 )
 
 include(
-    "client:core",
+    "client:app",
     "client:shared",
 )
 

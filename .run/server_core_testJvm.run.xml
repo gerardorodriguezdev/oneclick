@@ -10,7 +10,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value=":server:core:test" />
+          <option value=":server:core:jvmTest" />
         </list>
       </option>
       <option name="vmOptions" />
