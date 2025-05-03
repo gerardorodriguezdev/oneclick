@@ -30,7 +30,6 @@ import theoneclick.shared.core.models.routes.HomeRoute.*
 fun AppScreen(
     state: AppScreenState,
     onNavigationBarClicked: (navigationBarRoute: HomeRoute) -> Unit,
-    modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
     Scaffold(
@@ -56,7 +55,9 @@ fun AppScreen(
                 )
             }
         },
-        modifier = modifier,
+        modifier = Modifier
+            .fillMaxSize()
+            .imePadding(),
     )
 }
 

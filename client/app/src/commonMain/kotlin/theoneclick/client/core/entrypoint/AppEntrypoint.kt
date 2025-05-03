@@ -1,11 +1,8 @@
 package theoneclick.client.core.entrypoint
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.ui.Modifier
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
@@ -74,9 +71,6 @@ class AppEntrypoint(
                         onNavigationBarClicked = { navigationBarRoute ->
                             navHostController.handleNavigationBarClick(navigationBarRoute)
                         },
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .imePadding(),
                     ) {
                         NavHost(
                             navController = navHostController,
@@ -113,9 +107,8 @@ class AppEntrypoint(
         return listOf(coreModule, appModule, homeModule).modules()
     }
 
-    private fun NavDestination?.toHomeRoute(): HomeRoute? =
+    private fun NavDestination.toHomeRoute(): HomeRoute? =
         when {
-            this == null -> null
             hasRoute<DevicesList>() -> DevicesList
             hasRoute<AddDevice>() -> AddDevice
             hasRoute<UserSettings>() -> UserSettings
@@ -126,7 +119,7 @@ class AppEntrypoint(
     private fun NavHostController.navigationBar(): AppScreenState.NavigationBar? {
         val navBackStackEntry by currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
-        val selectedNavigationBarRoute = currentDestination.toHomeRoute()
+        val selectedNavigationBarRoute = currentDestination?.toHomeRoute()
 
         return if (selectedNavigationBarRoute != null) {
             val isCompact = LocalScreenProperties.current.isCompact
