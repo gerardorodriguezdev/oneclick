@@ -1,4 +1,4 @@
-package theoneclick.client.core.ui.screens.homeScreen
+package theoneclick.client.core.entrypoint
 
 import androidx.compose.ui.test.ExperimentalTestApi
 import kotlinx.coroutines.runBlocking
@@ -8,7 +8,7 @@ import theoneclick.client.core.testing.base.AndroidAppIntegrationTest
 import kotlin.test.assertEquals
 
 @OptIn(ExperimentalTestApi::class)
-class HomeScreenTest : AndroidAppIntegrationTest() {
+class HomeEntrypointTest : AndroidAppIntegrationTest() {
 
     @Test
     fun GIVEN_userNotLogged_WHEN_navigatingToDevicesList_THEN_returns() {

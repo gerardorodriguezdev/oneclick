@@ -161,7 +161,7 @@ private object AppScreenConstants {
 
 object AppScreenTestTags {
     fun navigationItemTestTag(navigationBarRoute: HomeRoute): String =
-        "AppScaffold.NavigationItem.${navigationBarRoute.toTestTag()}"
+        "AppScreen.NavigationItem.${navigationBarRoute.toTestTag()}"
 
     private fun HomeRoute.toTestTag(): String =
         when (this) {
