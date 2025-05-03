@@ -1,4 +1,4 @@
-package theoneclick.client.core.ui.screens.homeScreen
+package theoneclick.client.core.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -7,37 +7,29 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ManageAccounts
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 import theoneclick.client.app.generated.resources.Res
 import theoneclick.client.app.generated.resources.homeScreen_navigationBar_addDevice
 import theoneclick.client.app.generated.resources.homeScreen_navigationBar_devicesList
 import theoneclick.client.app.generated.resources.homeScreen_navigationBar_userSettings
-import theoneclick.client.core.ui.previews.dev.MockContent
-import theoneclick.client.core.ui.previews.dev.ScreenPreviewComposable
-import theoneclick.client.core.ui.previews.providers.base.PreviewModel
-import theoneclick.client.core.ui.screenProperties.LocalScreenProperties
+import theoneclick.client.core.ui.screens.AppScreenConstants.navigationBarRoutes
 import theoneclick.shared.core.models.routes.HomeRoute
 import theoneclick.shared.core.models.routes.HomeRoute.*
 
 @Composable
-fun HomeScreenScaffold(
-    selectedHomeRoute: HomeRoute,
-    onHomeRouteClick: (homeRoute: HomeRoute) -> Unit,
+fun AppScreen(
+    state: AppScreenState,
+    onNavigationBarClicked: (navigationBarRoute: HomeRoute) -> Unit,
+    modifier: Modifier = Modifier,
     content: @Composable () -> Unit,
 ) {
-    val homeRoutes = remember { persistentListOf(DevicesList, AddDevice, UserSettings) }
-    val screenProperties = LocalScreenProperties.current
-    val isCompact = remember(screenProperties) {
-        screenProperties.isCompact
-    }
     Scaffold(
         content = { paddingValues ->
             Row(
@@ -45,11 +37,9 @@ fun HomeScreenScaffold(
                     .fillMaxSize()
                     .padding(paddingValues)
             ) {
-                if (!isCompact) {
-                    StartNavigationBar(
-                        selectedHomeRoute = selectedHomeRoute,
-                        homeRoutes = homeRoutes,
-                        onHomeRouteClick = onHomeRouteClick
+                if (state.navigationBar is AppScreenState.NavigationBar.Start) {
+                    state.navigationBar.StartNavigationBar(
+                        onNavigationBarClicked = onNavigationBarClicked,
                     )
                 }
 
@@ -57,23 +47,19 @@ fun HomeScreenScaffold(
             }
         },
         bottomBar = {
-            if (isCompact) {
-                BottomNavigation(
-                    selectedHomeRoute = selectedHomeRoute,
-                    homeRoutes = homeRoutes,
-                    onHomeRouteClick = onHomeRouteClick
+            if (state.navigationBar is AppScreenState.NavigationBar.Bottom) {
+                state.navigationBar.BottomNavigationBar(
+                    onNavigationBarClicked = onNavigationBarClicked,
                 )
             }
         },
-        modifier = Modifier.fillMaxSize()
+        modifier = modifier,
     )
 }
 
 @Composable
-private fun StartNavigationBar(
-    selectedHomeRoute: HomeRoute,
-    homeRoutes: ImmutableList<HomeRoute>,
-    onHomeRouteClick: (homeRoute: HomeRoute) -> Unit,
+private fun AppScreenState.NavigationBar.Start.StartNavigationBar(
+    onNavigationBarClicked: (navigationBarRoute: HomeRoute) -> Unit,
 ) {
     NavigationRail(
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -86,13 +72,15 @@ private fun StartNavigationBar(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
-            homeRoutes.forEach { homeRoute ->
+            navigationBarRoutes.forEach { navigationBarRoute ->
                 NavigationRailItem(
-                    selected = homeRoute == selectedHomeRoute,
-                    onClick = { onHomeRouteClick(homeRoute) },
-                    icon = { NavigationIcon(homeRoute) },
-                    label = { NavigationLabel(homeRoute) },
-                    modifier = Modifier.testTag(HomeScreenScaffoldTestTags.navigationItemTestTag(homeRoute)),
+                    selected = navigationBarRoute == selectedRoute,
+                    onClick = { onNavigationBarClicked(navigationBarRoute) },
+                    icon = { NavigationIcon(navigationBarRoute) },
+                    label = { NavigationLabel(navigationBarRoute) },
+                    modifier = Modifier.testTag(
+                        AppScreenTestTags.navigationItemTestTag(navigationBarRoute)
+                    ),
                 )
             }
         }
@@ -100,10 +88,8 @@ private fun StartNavigationBar(
 }
 
 @Composable
-private fun BottomNavigation(
-    selectedHomeRoute: HomeRoute,
-    homeRoutes: ImmutableList<HomeRoute>,
-    onHomeRouteClick: (homeRoute: HomeRoute) -> Unit,
+private fun AppScreenState.NavigationBar.Bottom.BottomNavigationBar(
+    onNavigationBarClicked: (navigationBarRoute: HomeRoute) -> Unit,
 ) {
     NavigationBar {
         Row(
@@ -111,13 +97,15 @@ private fun BottomNavigation(
                 .fillMaxWidth()
                 .padding(top = 8.dp),
         ) {
-            homeRoutes.forEach { homeRoute ->
+            navigationBarRoutes.forEach { navigationBarRoute ->
                 NavigationBarItem(
-                    selected = homeRoute == selectedHomeRoute,
-                    onClick = { onHomeRouteClick(homeRoute) },
-                    icon = { NavigationIcon(homeRoute) },
-                    label = { NavigationLabel(homeRoute) },
-                    modifier = Modifier.testTag(HomeScreenScaffoldTestTags.navigationItemTestTag(homeRoute)),
+                    selected = navigationBarRoute == selectedRoute,
+                    onClick = { onNavigationBarClicked(navigationBarRoute) },
+                    icon = { NavigationIcon(navigationBarRoute) },
+                    label = { NavigationLabel(navigationBarRoute) },
+                    modifier = Modifier.testTag(
+                        AppScreenTestTags.navigationItemTestTag(navigationBarRoute)
+                    ),
                 )
             }
         }
@@ -125,8 +113,8 @@ private fun BottomNavigation(
 }
 
 @Composable
-private fun NavigationIcon(homeRoute: HomeRoute) {
-    val imageVector = when (homeRoute) {
+private fun NavigationIcon(navigationBarRoute: HomeRoute) {
+    val imageVector = when (navigationBarRoute) {
         is DevicesList -> Icons.AutoMirrored.Filled.List
         is AddDevice -> Icons.Filled.Add
         is UserSettings -> Icons.Filled.ManageAccounts
@@ -134,14 +122,14 @@ private fun NavigationIcon(homeRoute: HomeRoute) {
 
     Icon(
         imageVector = imageVector,
-        contentDescription = homeRoute.toLabel(),
+        contentDescription = navigationBarRoute.toLabel(),
     )
 }
 
 @Composable
-private fun NavigationLabel(homeRoute: HomeRoute) {
+private fun NavigationLabel(navigationBarRoute: HomeRoute) {
     Text(
-        text = homeRoute.toLabel(),
+        text = navigationBarRoute.toLabel(),
         fontSize = MaterialTheme.typography.labelSmall.fontSize,
         textAlign = TextAlign.Center,
     )
@@ -155,9 +143,22 @@ private fun HomeRoute.toLabel(): String =
         is UserSettings -> stringResource(Res.string.homeScreen_navigationBar_userSettings)
     }
 
-object HomeScreenScaffoldTestTags {
-    fun navigationItemTestTag(homeRoute: HomeRoute): String =
-        "HomeScreenScaffold.NavigationItem.${homeRoute.toTestTag()}"
+data class AppScreenState(val navigationBar: NavigationBar?) {
+    sealed interface NavigationBar {
+        val selectedRoute: HomeRoute
+
+        data class Start(override val selectedRoute: HomeRoute) : NavigationBar
+        data class Bottom(override val selectedRoute: HomeRoute) : NavigationBar
+    }
+}
+
+private object AppScreenConstants {
+    val navigationBarRoutes: PersistentList<HomeRoute> = persistentListOf(DevicesList, AddDevice, UserSettings)
+}
+
+object AppScreenTestTags {
+    fun navigationItemTestTag(navigationBarRoute: HomeRoute): String =
+        "AppScaffold.NavigationItem.${navigationBarRoute.toTestTag()}"
 
     private fun HomeRoute.toTestTag(): String =
         when (this) {
@@ -165,15 +166,4 @@ object HomeScreenScaffoldTestTags {
             DevicesList -> "DevicesList"
             UserSettings -> "UserSettings"
         }
-}
-
-@Composable
-fun HomeScreenScaffoldPreview(previewModel: PreviewModel<HomeRoute>) {
-    ScreenPreviewComposable(previewModel) {
-        HomeScreenScaffold(
-            selectedHomeRoute = previewModel.model,
-            onHomeRouteClick = {},
-            content = { MockContent(modifier = Modifier.fillMaxSize()) },
-        )
-    }
 }
