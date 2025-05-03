@@ -19,6 +19,9 @@ import theoneclick.client.app.generated.resources.Res
 import theoneclick.client.app.generated.resources.homeScreen_navigationBar_addDevice
 import theoneclick.client.app.generated.resources.homeScreen_navigationBar_devicesList
 import theoneclick.client.app.generated.resources.homeScreen_navigationBar_userSettings
+import theoneclick.client.core.ui.previews.dev.MockContent
+import theoneclick.client.core.ui.previews.dev.ScreenPreviewComposable
+import theoneclick.client.core.ui.previews.providers.base.PreviewModel
 import theoneclick.client.core.ui.screens.AppScreenConstants.navigationBarRoutes
 import theoneclick.shared.core.models.routes.HomeRoute
 import theoneclick.shared.core.models.routes.HomeRoute.*
@@ -166,4 +169,20 @@ object AppScreenTestTags {
             DevicesList -> "DevicesList"
             UserSettings -> "UserSettings"
         }
+}
+
+@Composable
+fun AppScreenPreview(
+    previewModel: PreviewModel<AppScreenState>,
+    onNavigationBarClicked: (navigationBarRoute: HomeRoute) -> Unit = {}
+) {
+    ScreenPreviewComposable(previewModel) {
+        AppScreen(
+            state = previewModel.model,
+            onNavigationBarClicked = onNavigationBarClicked,
+            content = {
+                MockContent(modifier = Modifier.fillMaxSize())
+            }
+        )
+    }
 }
