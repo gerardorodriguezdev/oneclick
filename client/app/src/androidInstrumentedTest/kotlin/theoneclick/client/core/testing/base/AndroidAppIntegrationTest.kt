@@ -4,7 +4,7 @@ import kotlinx.coroutines.Dispatchers
 import theoneclick.client.core.dataSources.AndroidInMemoryTokenDataSource
 import theoneclick.client.core.dataSources.TokenDataSource
 import theoneclick.client.core.navigation.NavigationController
-import theoneclick.client.core.navigation.RealNavigationController
+import theoneclick.client.core.navigation.DefaultNavigationController
 import theoneclick.client.core.platform.AndroidAppDependencies
 import theoneclick.client.core.platform.AndroidLogoutManager
 import theoneclick.client.core.platform.AppDependencies
@@ -18,7 +18,7 @@ abstract class AndroidAppIntegrationTest : AppIntegrationTest() {
     private val dispatchersProvider = FakeDispatchersProvider(Dispatchers.Main)
 
     protected val tokenDataSource: TokenDataSource = AndroidInMemoryTokenDataSource()
-    protected val navigationController: NavigationController = RealNavigationController(appLogger)
+    protected val navigationController: NavigationController = DefaultNavigationController(appLogger)
     protected var httpClientEngineController: HttpClientEngineController = HttpClientEngineController()
 
     private val httpClientEngine = fakeHttpClientEngine(httpClientEngineController)

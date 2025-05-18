@@ -7,9 +7,9 @@ import theoneclick.shared.core.platform.appLogger
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
-class RealNavigationControllerTest {
+class DefaultNavigationControllerTest {
 
-    private val navigationController = RealNavigationController(appLogger())
+    private val navigationController = DefaultNavigationController(appLogger())
 
     @Test
     fun `GIVEN no events WHEN sendNavigationEvent THEN sends navigation event`() =

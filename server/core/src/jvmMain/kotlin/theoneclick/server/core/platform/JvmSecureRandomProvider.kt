@@ -6,6 +6,6 @@ interface JvmSecureRandomProvider {
     fun secureRandom(): SecureRandom
 }
 
-class RealJvmSecureRandomProvider : JvmSecureRandomProvider {
+class DefaultJvmSecureRandomProvider : JvmSecureRandomProvider {
     override fun secureRandom(): SecureRandom = SecureRandom()
 }

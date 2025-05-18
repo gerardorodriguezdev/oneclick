@@ -11,7 +11,7 @@ import theoneclick.client.core.dataSources.AndroidEncryptedPreferences
 import theoneclick.client.core.dataSources.AndroidLocalTokenDataSource
 import theoneclick.client.core.dataSources.EncryptedPreferences
 import theoneclick.client.core.entrypoint.AppEntrypoint
-import theoneclick.client.core.navigation.RealNavigationController
+import theoneclick.client.core.navigation.DefaultNavigationController
 import theoneclick.client.core.security.AndroidEncryptor
 import theoneclick.shared.core.platform.appLogger
 import theoneclick.shared.dispatchers.platform.dispatchersProvider
@@ -40,7 +40,7 @@ class AndroidModulesTest {
             appLogger = appLogger,
         )
         val tokenDataSource = AndroidLocalTokenDataSource(encryptedPreferences)
-        val navigationController = RealNavigationController(appLogger)
+        val navigationController = DefaultNavigationController(appLogger)
         val appDependencies = AndroidAppDependencies(
             appLogger = appLogger,
             httpClientEngine = androidHttpClientEngine(

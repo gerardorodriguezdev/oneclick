@@ -11,7 +11,7 @@ import kotlinx.browser.document
 import kotlinx.browser.window
 import theoneclick.client.core.buildkonfig.BuildKonfig
 import theoneclick.client.core.entrypoint.AppEntrypoint
-import theoneclick.client.core.navigation.RealNavigationController
+import theoneclick.client.core.navigation.DefaultNavigationController
 import theoneclick.client.core.platform.WasmAppDependencies
 import theoneclick.client.core.platform.WasmLogoutManager
 import theoneclick.shared.core.platform.EmptyAppLogger
@@ -21,7 +21,7 @@ import theoneclick.shared.dispatchers.platform.dispatchersProvider
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalBrowserHistoryApi::class)
 fun main() {
     val appLogger = if (BuildKonfig.IS_DEBUG) appLogger() else EmptyAppLogger()
-    val navigationController = RealNavigationController(appLogger)
+    val navigationController = DefaultNavigationController(appLogger)
     val appEntrypoint = AppEntrypoint(
         WasmAppDependencies(
             httpClientEngine = Js.create(),

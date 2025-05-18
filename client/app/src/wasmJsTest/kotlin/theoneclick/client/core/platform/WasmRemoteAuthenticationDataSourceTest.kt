@@ -6,7 +6,7 @@ import kotlinx.coroutines.test.runTest
 import theoneclick.client.core.models.results.LogoutResult
 import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.client.core.models.results.UserLoggedResult
-import theoneclick.client.core.navigation.RealNavigationController
+import theoneclick.client.core.navigation.DefaultNavigationController
 import theoneclick.client.core.testing.TestData
 import theoneclick.client.core.testing.fakes.HttpClientEngineController
 import theoneclick.client.core.testing.fakes.fakeHttpClientEngine
@@ -17,7 +17,7 @@ import kotlin.test.assertEquals
 
 class WasmRemoteAuthenticationDataSourceTest {
     private val appLogger = appLogger()
-    private val navigationController = RealNavigationController(appLogger())
+    private val navigationController = DefaultNavigationController(appLogger())
     private val httpClientEngineController = HttpClientEngineController()
     private val logoutManager = WasmLogoutManager(navigationController)
     private val httpClientEngine = fakeHttpClientEngine(httpClientEngineController)

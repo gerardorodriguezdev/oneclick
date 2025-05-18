@@ -9,10 +9,10 @@ class JvmDependencies(
     override val environment: Environment,
     val directory: Path,
 ) : Dependencies {
-    private val jvmSecureRandomProvider = RealJvmSecureRandomProvider()
+    private val jvmSecureRandomProvider = DefaultJvmSecureRandomProvider()
 
     override val timeProvider: TimeProvider = SystemTimeProvider()
-    override val uuidProvider: UuidProvider = RealUuidProvider()
+    override val uuidProvider: UuidProvider = DefaultUuidProvider()
     override val ivGenerator: IvGenerator = JvmIvGenerator(jvmSecureRandomProvider)
     override val securityUtils: SecurityUtils = JvmSecurityUtils(
         secretEncryptionKey = environment.secretEncryptionKey,

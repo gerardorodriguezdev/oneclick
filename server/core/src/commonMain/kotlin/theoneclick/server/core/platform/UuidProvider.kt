@@ -8,7 +8,7 @@ interface UuidProvider {
     fun uuid(): Uuid
 }
 
-class RealUuidProvider : UuidProvider {
+class DefaultUuidProvider : UuidProvider {
     @OptIn(ExperimentalUuidApi::class)
     override fun uuid(): Uuid =
         Uuid(value = KmpUuid.random().toString())

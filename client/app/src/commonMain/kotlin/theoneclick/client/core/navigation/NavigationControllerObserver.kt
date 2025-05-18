@@ -24,7 +24,7 @@ interface NavigationControllerObserver {
     fun onNavigationEvent(navigationEvent: NavigationEvent)
 }
 
-class RealNavigationControllerObserver(
+class DefaultNavigationControllerObserver(
     override val navigationController: NavigationController,
     override val navHostController: NavHostController,
 ) : NavigationControllerObserver {
@@ -53,5 +53,5 @@ fun rememberNavigationObserver(
     navHostController: NavHostController,
 ): NavigationControllerObserver =
     remember {
-        RealNavigationControllerObserver(navigationController, navHostController)
+        DefaultNavigationControllerObserver(navigationController, navHostController)
     }

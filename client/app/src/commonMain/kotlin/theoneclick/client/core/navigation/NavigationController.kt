@@ -30,7 +30,7 @@ interface NavigationController {
     }
 }
 
-class RealNavigationController(
+class DefaultNavigationController(
     private val appLogger: AppLogger,
 ) : NavigationController {
 

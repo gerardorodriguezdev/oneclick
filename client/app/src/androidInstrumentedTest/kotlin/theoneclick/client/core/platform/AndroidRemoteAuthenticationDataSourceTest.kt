@@ -8,7 +8,7 @@ import theoneclick.client.core.dataSources.AndroidInMemoryTokenDataSource
 import theoneclick.client.core.models.results.LogoutResult
 import theoneclick.client.core.models.results.RequestLoginResult
 import theoneclick.client.core.models.results.UserLoggedResult
-import theoneclick.client.core.navigation.RealNavigationController
+import theoneclick.client.core.navigation.DefaultNavigationController
 import theoneclick.client.core.testing.TestData
 import theoneclick.client.core.testing.fakes.HttpClientEngineController
 import theoneclick.client.core.testing.fakes.fakeHttpClientEngine
@@ -18,7 +18,7 @@ import kotlin.test.assertEquals
 
 class AndroidRemoteAuthenticationDataSourceTest {
     private val appLogger = appLogger()
-    private val navigationController = RealNavigationController(appLogger)
+    private val navigationController = DefaultNavigationController(appLogger)
     private val tokenDataSource = AndroidInMemoryTokenDataSource()
     private val httpClientEngineController = HttpClientEngineController()
     private val httpClientEngine = fakeHttpClientEngine(httpClientEngineController)
