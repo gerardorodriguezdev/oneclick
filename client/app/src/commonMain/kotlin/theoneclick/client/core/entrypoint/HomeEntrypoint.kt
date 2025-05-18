@@ -12,10 +12,10 @@ import theoneclick.client.core.ui.screens.homeScreen.UserSettingsScreen
 import theoneclick.client.core.viewModels.homeScreen.AddDeviceViewModel
 import theoneclick.client.core.viewModels.homeScreen.DevicesListViewModel
 import theoneclick.client.core.viewModels.homeScreen.UserSettingsViewModel
-import theoneclick.shared.core.models.routes.HomeRoute
+import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.*
 
-fun NavGraphBuilder.homeRoutes(navHostController: NavHostController) {
-    composable<HomeRoute.DevicesList> {
+fun NavGraphBuilder.home(navHostController: NavHostController) {
+    composable<DevicesList> {
         val scope = navHostController.getOrCreateScope(HOME_SCOPE)
         val devicesListViewModel: DevicesListViewModel =
             koinViewModel(scope = scope)
@@ -25,7 +25,7 @@ fun NavGraphBuilder.homeRoutes(navHostController: NavHostController) {
         )
     }
 
-    composable<HomeRoute.AddDevice> {
+    composable<AddDevice> {
         val scope = navHostController.getOrCreateScope(HOME_SCOPE)
         val addDeviceViewModel: AddDeviceViewModel = koinViewModel(scope = scope)
         AddDeviceScreen(
@@ -34,7 +34,7 @@ fun NavGraphBuilder.homeRoutes(navHostController: NavHostController) {
         )
     }
 
-    composable<HomeRoute.UserSettings> {
+    composable<UserSettings> {
         val scope = navHostController.getOrCreateScope(HOME_SCOPE)
         val userSettingsViewModel: UserSettingsViewModel =
             koinViewModel(scope = scope)

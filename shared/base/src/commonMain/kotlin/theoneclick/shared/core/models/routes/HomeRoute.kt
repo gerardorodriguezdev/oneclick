@@ -4,18 +4,20 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import theoneclick.shared.core.models.routes.base.Route
 
-@Serializable
 sealed interface HomeRoute : Route {
-
     @Serializable
-    @SerialName("home--devices-list")
-    data object DevicesList : HomeRoute
+    sealed interface NavigationBarRoute : HomeRoute {
 
-    @Serializable
-    @SerialName("home--add-device")
-    data object AddDevice : HomeRoute
+        @Serializable
+        @SerialName("home--devices-list")
+        data object DevicesList : NavigationBarRoute
 
-    @Serializable
-    @SerialName("home--user-settings")
-    data object UserSettings : HomeRoute
+        @Serializable
+        @SerialName("home--add-device")
+        data object AddDevice : NavigationBarRoute
+
+        @Serializable
+        @SerialName("home--user-settings")
+        data object UserSettings : NavigationBarRoute
+    }
 }

@@ -2,7 +2,7 @@ package theoneclick.client.core.ui.previews.providers.screens
 
 import theoneclick.client.core.ui.previews.providers.base.*
 import theoneclick.client.core.ui.screens.AppScreenState
-import theoneclick.shared.core.models.routes.HomeRoute
+import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute
 
 class AppScreenPreviewModels : PreviewModelProvider<AppScreenState> {
 
@@ -21,11 +21,11 @@ class AppScreenPreviewModels : PreviewModelProvider<AppScreenState> {
 
     companion object {
         private val bottomNavigationBar = AppScreenState.NavigationBar.Bottom(
-            selectedRoute = HomeRoute.DevicesList,
+            selectedRoute = NavigationBarRoute.DevicesList,
         )
 
         private val startNavigationBar = AppScreenState.NavigationBar.Start(
-            selectedRoute = HomeRoute.DevicesList,
+            selectedRoute = NavigationBarRoute.DevicesList,
         )
 
         val noNavigationBar = appState()

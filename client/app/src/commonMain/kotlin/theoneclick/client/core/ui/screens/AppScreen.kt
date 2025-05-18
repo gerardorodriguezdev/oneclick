@@ -23,13 +23,13 @@ import theoneclick.client.core.ui.previews.dev.MockContent
 import theoneclick.client.core.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.core.ui.previews.providers.base.PreviewModel
 import theoneclick.client.core.ui.screens.AppScreenConstants.navigationBarRoutes
-import theoneclick.shared.core.models.routes.HomeRoute
-import theoneclick.shared.core.models.routes.HomeRoute.*
+import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute
+import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.*
 
 @Composable
 fun AppScreen(
     state: AppScreenState,
-    onNavigationBarClicked: (navigationBarRoute: HomeRoute) -> Unit,
+    onNavigationBarClicked: (navigationBarRoute: NavigationBarRoute) -> Unit,
     content: @Composable () -> Unit,
 ) {
     Scaffold(
@@ -63,7 +63,7 @@ fun AppScreen(
 
 @Composable
 private fun AppScreenState.NavigationBar.Start.StartNavigationBar(
-    onNavigationBarClicked: (navigationBarRoute: HomeRoute) -> Unit,
+    onNavigationBarClicked: (navigationBarRoute: NavigationBarRoute) -> Unit,
 ) {
     NavigationRail(
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -93,7 +93,7 @@ private fun AppScreenState.NavigationBar.Start.StartNavigationBar(
 
 @Composable
 private fun AppScreenState.NavigationBar.Bottom.BottomNavigationBar(
-    onNavigationBarClicked: (navigationBarRoute: HomeRoute) -> Unit,
+    onNavigationBarClicked: (navigationBarRoute: NavigationBarRoute) -> Unit,
 ) {
     NavigationBar {
         Row(
@@ -117,7 +117,7 @@ private fun AppScreenState.NavigationBar.Bottom.BottomNavigationBar(
 }
 
 @Composable
-private fun NavigationIcon(navigationBarRoute: HomeRoute) {
+private fun NavigationIcon(navigationBarRoute: NavigationBarRoute) {
     val imageVector = when (navigationBarRoute) {
         is DevicesList -> Icons.AutoMirrored.Filled.List
         is AddDevice -> Icons.Filled.Add
@@ -131,7 +131,7 @@ private fun NavigationIcon(navigationBarRoute: HomeRoute) {
 }
 
 @Composable
-private fun NavigationLabel(navigationBarRoute: HomeRoute) {
+private fun NavigationLabel(navigationBarRoute: NavigationBarRoute) {
     Text(
         text = navigationBarRoute.toLabel(),
         fontSize = MaterialTheme.typography.labelSmall.fontSize,
@@ -140,7 +140,7 @@ private fun NavigationLabel(navigationBarRoute: HomeRoute) {
 }
 
 @Composable
-private fun HomeRoute.toLabel(): String =
+private fun NavigationBarRoute.toLabel(): String =
     when (this) {
         is DevicesList -> stringResource(Res.string.homeScreen_navigationBar_devicesList)
         is AddDevice -> stringResource(Res.string.homeScreen_navigationBar_addDevice)
@@ -149,22 +149,25 @@ private fun HomeRoute.toLabel(): String =
 
 data class AppScreenState(val navigationBar: NavigationBar?) {
     sealed interface NavigationBar {
-        val selectedRoute: HomeRoute
+        val selectedRoute: NavigationBarRoute
 
-        data class Start(override val selectedRoute: HomeRoute) : NavigationBar
-        data class Bottom(override val selectedRoute: HomeRoute) : NavigationBar
+        data class Start(override val selectedRoute: NavigationBarRoute) : NavigationBar
+        data class Bottom(override val selectedRoute: NavigationBarRoute) : NavigationBar
     }
 }
 
 private object AppScreenConstants {
-    val navigationBarRoutes: PersistentList<HomeRoute> = persistentListOf(DevicesList, AddDevice, UserSettings)
+    val navigationBarRoutes: PersistentList<NavigationBarRoute> = persistentListOf(
+        DevicesList,
+        AddDevice, UserSettings
+    )
 }
 
 object AppScreenTestTags {
-    fun navigationItemTestTag(navigationBarRoute: HomeRoute): String =
+    fun navigationItemTestTag(navigationBarRoute: NavigationBarRoute): String =
         "AppScreen.NavigationItem.${navigationBarRoute.toTestTag()}"
 
-    private fun HomeRoute.toTestTag(): String =
+    private fun NavigationBarRoute.toTestTag(): String =
         when (this) {
             AddDevice -> "AddDevice"
             DevicesList -> "DevicesList"
@@ -175,7 +178,7 @@ object AppScreenTestTags {
 @Composable
 fun AppScreenPreview(
     previewModel: PreviewModel<AppScreenState>,
-    onNavigationBarClicked: (navigationBarRoute: HomeRoute) -> Unit = {}
+    onNavigationBarClicked: (navigationBarRoute: NavigationBarRoute) -> Unit = {}
 ) {
     ScreenPreviewComposable(previewModel) {
         AppScreen(

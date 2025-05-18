@@ -33,8 +33,8 @@ import theoneclick.client.core.ui.theme.TheOneClickTheme
 import theoneclick.client.core.viewModels.InitViewModel
 import theoneclick.client.core.viewModels.LoginViewModel
 import theoneclick.shared.core.models.routes.AppRoute.*
-import theoneclick.shared.core.models.routes.HomeRoute
-import theoneclick.shared.core.models.routes.HomeRoute.*
+import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute
+import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.*
 
 class AppEntrypoint(
     appDependencies: AppDependencies,
@@ -91,7 +91,7 @@ class AppEntrypoint(
                             }
 
                             navigation<Home>(startDestination = DevicesList) {
-                                homeRoutes(navHostController)
+                                home(navHostController)
                             }
                         }
                     }
@@ -107,7 +107,7 @@ class AppEntrypoint(
         return listOf(coreModule, appModule, homeModule).modules()
     }
 
-    private fun NavDestination.toHomeRoute(): HomeRoute? =
+    private fun NavDestination.toNavigationBarRoute(): NavigationBarRoute? =
         when {
             hasRoute<DevicesList>() -> DevicesList
             hasRoute<AddDevice>() -> AddDevice
@@ -119,7 +119,7 @@ class AppEntrypoint(
     private fun NavHostController.navigationBar(): AppScreenState.NavigationBar? {
         val navBackStackEntry by currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
-        val selectedNavigationBarRoute = currentDestination?.toHomeRoute()
+        val selectedNavigationBarRoute = currentDestination?.toNavigationBarRoute()
 
         return if (selectedNavigationBarRoute != null) {
             val isCompact = LocalScreenProperties.current.isCompact
@@ -131,7 +131,7 @@ class AppEntrypoint(
         } else null
     }
 
-    private fun NavHostController.handleNavigationBarClick(navigationBarRoute: HomeRoute) {
+    private fun NavHostController.handleNavigationBarClick(navigationBarRoute: NavigationBarRoute) {
         navigate(navigationBarRoute) {
             launchSingleTop = true
             restoreState = true
