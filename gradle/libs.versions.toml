@@ -3,31 +3,29 @@ android-activity = "1.10.1"
 android-gradle-plugin = "8.7.3"
 android-api = "35"
 android-datastore = "1.1.4"
-android-screenshot = "0.0.1-alpha09"
-android-test-junit = "1.8.0"
+android-test-junit = "1.8.1"
 android-test-leak-canary = "2.14"
-android-test-navigation = "2.8.9"
+android-test-navigation = "2.9.0"
 detekt-api = "1.23.8"
 detekt-compose = "0.4.22"
 detekt-formatting = "1.23.8"
 jvm-api = "17"
 jvm-bcrypt = "0.10.2"
 jvm-logback = "1.5.16"
-jvm-test-rebugger = "1.0.0-rc03"
-kmp-kotlin-api = "2.1.20"
+kmp-kotlin-api = "2.1.21"
 kmp-atomicfu = "0.27.0"
-kmp-compose = "1.8.0-rc01"
-kmp-coroutines = "1.10.1"
+kmp-compose = "1.8.0"
+kmp-coroutines = "1.10.2"
 kmp-koin = "4.0.4"
 kmp-date-time = "0.6.1"
-kmp-ktor = "3.1.1"
-kmp-navigation = "2.9.0-alpha15"
+kmp-ktor = "3.1.2"
+kmp-navigation = "2.9.0-beta01"
 kmp-viewModel = "2.8.3"
 kmp-test-turbine = "1.1.0"
 kmp-buildconfig = "0.16.0"
 kmp-immutable = "0.3.8"
 kmp-window-classes = "0.5.0"
-kmp-serialization = "1.8.0"
+kmp-serialization = "1.8.1"
 chamaleon = "1.0.11"
 
 [libraries]
@@ -88,7 +86,6 @@ kmp-test-turbine = { module = "app.cash.turbine:turbine", version.ref = "kmp-tes
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
-android-screenshot = { id = "com.android.compose.screenshot", version.ref = "android-screenshot" }
 detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt-api" }
 chamaleon = { id = "io.github.gerardorodriguezdev.chamaleon", version.ref = "chamaleon" }
 kmp-atomicfu = { id = "org.jetbrains.kotlinx.atomicfu", version.ref = "kmp-atomicfu" }

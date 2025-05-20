@@ -8,7 +8,6 @@ import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.gradle.AppPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.kotlin.dsl.get
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
@@ -61,13 +60,6 @@ class AndroidAppPlugin : Plugin<Project> {
                     namespace = androidAppExtension.namespace.get()
                     compileSdk = androidAppExtension.compileSdkVersion.get()
 
-                    val mainSourceSet = sourceSets["main"]
-                    with(mainSourceSet) {
-                        manifest.srcFile("src/androidMain/AndroidManifest.xml")
-                        res.srcDirs("src/androidMain/res")
-                        resources.srcDirs("src/commonMain/resources")
-                    }
-
                     defaultConfig {
                         applicationId = androidAppExtension.applicationId.get()
                         minSdk = androidAppExtension.minSdkVersion.get()
@@ -106,8 +98,6 @@ class AndroidAppPlugin : Plugin<Project> {
                     buildFeatures {
                         compose = androidAppExtension.composeEnabled.get()
                     }
-
-                    experimentalProperties["android.experimental.enableScreenshotTest"] = true
                 }
             }
         }
