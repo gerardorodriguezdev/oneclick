@@ -1,12 +1,12 @@
 package theoneclick.client.app.ui.previews.providers.screens
 
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 import theoneclick.client.app.ui.previews.providers.base.PreviewModel
-import theoneclick.client.app.ui.previews.providers.base.PreviewModelProvider
 import theoneclick.client.app.ui.previews.providers.base.darkThemeCompactPreviewModel
 import theoneclick.client.app.ui.previews.providers.base.lightThemeCompactPreviewModel
 import theoneclick.client.app.ui.states.LoginState
 
-class LoginScreenPreviewModels : PreviewModelProvider<LoginState> {
+class LoginStateProvider : PreviewParameterProvider<PreviewModel<LoginState>> {
 
     override val values: Sequence<PreviewModel<LoginState>> =
         sequenceOf(
@@ -27,7 +27,7 @@ class LoginScreenPreviewModels : PreviewModelProvider<LoginState> {
             darkThemeCompactPreviewModel(description = "Valid", validState),
         )
 
-    companion object {
+    companion object Companion {
         const val USERNAME = "Username"
         const val PASSWORD = "Password"
 

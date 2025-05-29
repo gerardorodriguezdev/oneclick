@@ -10,7 +10,7 @@ import androidx.compose.ui.platform.testTag
 import theoneclick.client.app.ui.components.DefaultSnackbarTestTags.SNACKBAR_TEST_TAG
 import theoneclick.client.app.ui.previews.dev.ComponentPreviewComposable
 import theoneclick.client.app.ui.previews.providers.base.PreviewModel
-import theoneclick.client.app.ui.previews.providers.components.DefaultSnackbarPreviewModels.DefaultSnackbarModel
+import theoneclick.client.app.ui.previews.providers.components.DefaultSnackbarModelProvider.DefaultSnackbarModel
 
 @Composable
 fun DefaultSnackbar(snackbarData: SnackbarData, isError: Boolean = false) {

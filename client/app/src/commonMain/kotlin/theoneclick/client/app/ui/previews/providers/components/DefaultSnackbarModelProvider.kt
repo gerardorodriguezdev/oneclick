@@ -3,13 +3,13 @@ package theoneclick.client.app.ui.previews.providers.components
 import androidx.compose.material3.SnackbarData
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarVisuals
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 import theoneclick.client.app.ui.previews.providers.base.PreviewModel
-import theoneclick.client.app.ui.previews.providers.base.PreviewModelProvider
 import theoneclick.client.app.ui.previews.providers.base.darkThemeCompactPreviewModel
 import theoneclick.client.app.ui.previews.providers.base.lightThemeCompactPreviewModel
-import theoneclick.client.app.ui.previews.providers.components.DefaultSnackbarPreviewModels.DefaultSnackbarModel
+import theoneclick.client.app.ui.previews.providers.components.DefaultSnackbarModelProvider.DefaultSnackbarModel
 
-class DefaultSnackbarPreviewModels : PreviewModelProvider<DefaultSnackbarModel> {
+class DefaultSnackbarModelProvider : PreviewParameterProvider<PreviewModel<DefaultSnackbarModel>> {
 
     override val values: Sequence<PreviewModel<DefaultSnackbarModel>> =
         sequenceOf(
@@ -20,7 +20,7 @@ class DefaultSnackbarPreviewModels : PreviewModelProvider<DefaultSnackbarModel> 
             darkThemeCompactPreviewModel(description = "Success", model = successDefaultSnackbarModel),
         )
 
-    companion object {
+    companion object Companion {
         val mockSnackbarData = object : SnackbarData {
             override val visuals: SnackbarVisuals = object : SnackbarVisuals {
                 override val actionLabel: String? = null
@@ -30,10 +30,12 @@ class DefaultSnackbarPreviewModels : PreviewModelProvider<DefaultSnackbarModel> 
             }
 
             @Suppress("EmptyFunctionBlock")
-            override fun dismiss() {}
+            override fun dismiss() {
+            }
 
             @Suppress("EmptyFunctionBlock")
-            override fun performAction() {}
+            override fun performAction() {
+            }
         }
 
         val errorDefaultSnackbarModel = DefaultSnackbarModel(

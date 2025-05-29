@@ -17,8 +17,7 @@ import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.*
 fun NavGraphBuilder.home(navHostController: NavHostController) {
     composable<DevicesList> {
         val scope = navHostController.getOrCreateScope(HOME_SCOPE)
-        val devicesListViewModel: DevicesListViewModel =
-            koinViewModel(scope = scope)
+        val devicesListViewModel: DevicesListViewModel = koinViewModel(scope = scope)
         DevicesListScreen(
             state = devicesListViewModel.state.value,
             onEvent = devicesListViewModel::onEvent,

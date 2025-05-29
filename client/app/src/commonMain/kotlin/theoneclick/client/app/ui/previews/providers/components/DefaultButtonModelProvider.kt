@@ -1,11 +1,12 @@
 package theoneclick.client.app.ui.previews.providers.components
 
-import theoneclick.client.app.ui.previews.providers.base.PreviewModelProvider
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
+import theoneclick.client.app.ui.previews.providers.base.PreviewModel
 import theoneclick.client.app.ui.previews.providers.base.darkThemeCompactPreviewModel
 import theoneclick.client.app.ui.previews.providers.base.lightThemeCompactPreviewModel
-import theoneclick.client.app.ui.previews.providers.components.DefaultButtonPreviewModels.DefaultButtonModel
+import theoneclick.client.app.ui.previews.providers.components.DefaultButtonModelProvider.DefaultButtonModel
 
-class DefaultButtonPreviewModels : PreviewModelProvider<DefaultButtonModel> {
+class DefaultButtonModelProvider : PreviewParameterProvider<PreviewModel<DefaultButtonModel>> {
 
     override val values = sequenceOf(
         lightThemeCompactPreviewModel(description = "Disabled", model = disabledButtonModel),
@@ -17,7 +18,7 @@ class DefaultButtonPreviewModels : PreviewModelProvider<DefaultButtonModel> {
         darkThemeCompactPreviewModel(description = "Loading", model = loadingButtonModel),
     )
 
-    companion object {
+    companion object Companion {
         const val BUTTON_TEXT = "ButtonText"
 
         val disabledButtonModel = DefaultButtonModel(

@@ -1,11 +1,12 @@
 package theoneclick.client.app.ui.previews.providers.screens.homeScreen
 
-import theoneclick.client.app.ui.previews.providers.base.PreviewModelProvider
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
+import theoneclick.client.app.ui.previews.providers.base.PreviewModel
 import theoneclick.client.app.ui.previews.providers.base.darkThemeCompactPreviewModel
 import theoneclick.client.app.ui.previews.providers.base.lightThemeCompactPreviewModel
 import theoneclick.client.app.ui.states.homeScreen.AddDeviceState
 
-class AddDeviceScreenPreviewModels : PreviewModelProvider<AddDeviceState> {
+class AddDeviceStateProvider : PreviewParameterProvider<PreviewModel<AddDeviceState>> {
     override val values = sequenceOf(
         lightThemeCompactPreviewModel(description = "Init", model = initState),
         lightThemeCompactPreviewModel(description = "InvalidDeviceName", model = invalidDeviceNameState),
@@ -24,7 +25,7 @@ class AddDeviceScreenPreviewModels : PreviewModelProvider<AddDeviceState> {
         darkThemeCompactPreviewModel(description = "Success", model = successState),
     )
 
-    companion object {
+    companion object Companion {
         const val DEVICE_NAME = "DeviceName"
         const val ROOM_NAME = "RoomName"
 

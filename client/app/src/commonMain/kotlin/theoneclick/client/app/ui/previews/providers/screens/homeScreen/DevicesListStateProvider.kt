@@ -1,14 +1,15 @@
 package theoneclick.client.app.ui.previews.providers.screens.homeScreen
 
 import kotlinx.collections.immutable.persistentListOf
-import theoneclick.client.app.ui.previews.providers.base.PreviewModelProvider
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
+import theoneclick.client.app.ui.previews.providers.base.PreviewModel
 import theoneclick.client.app.ui.previews.providers.base.darkThemeCompactPreviewModel
 import theoneclick.client.app.ui.previews.providers.base.lightThemeCompactPreviewModel
 import theoneclick.client.app.ui.states.homeScreen.DevicesListState
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.Uuid
 
-class DevicesListScreenPreviewModels : PreviewModelProvider<DevicesListState> {
+class DevicesListStateProvider : PreviewParameterProvider<PreviewModel<DevicesListState>> {
     override val values = sequenceOf(
         lightThemeCompactPreviewModel(description = "Init", model = initState),
         lightThemeCompactPreviewModel(description = "Loading", model = loadingState),
@@ -21,7 +22,7 @@ class DevicesListScreenPreviewModels : PreviewModelProvider<DevicesListState> {
         darkThemeCompactPreviewModel(description = "Loaded", model = loadedState),
     )
 
-    companion object {
+    companion object Companion {
         const val DEVICE_NAME = "Device name"
         const val ROOM_NAME = "Room name"
 

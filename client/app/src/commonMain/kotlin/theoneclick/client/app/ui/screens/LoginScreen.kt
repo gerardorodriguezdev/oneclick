@@ -15,6 +15,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameter
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
 import theoneclick.client.app.generated.resources.*
 import theoneclick.client.app.ui.components.DefaultButton
 import theoneclick.client.app.ui.components.DefaultScaffold
@@ -22,6 +25,7 @@ import theoneclick.client.app.ui.components.SnackbarState
 import theoneclick.client.app.ui.events.LoginEvent
 import theoneclick.client.app.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.app.ui.previews.providers.base.PreviewModel
+import theoneclick.client.app.ui.previews.providers.screens.LoginStateProvider
 import theoneclick.client.app.ui.screens.LoginScreenTestTags.PASSWORD_PLACEHOLDER_TEST_TAG
 import theoneclick.client.app.ui.screens.LoginScreenTestTags.PASSWORD_TEXT_FIELD_TEST_TAG
 import theoneclick.client.app.ui.screens.LoginScreenTestTags.TITLE_TEST_TAG

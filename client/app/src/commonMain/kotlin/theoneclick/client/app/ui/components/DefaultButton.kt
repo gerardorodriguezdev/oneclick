@@ -17,7 +17,7 @@ import theoneclick.client.app.ui.components.DefaultButtonTestTags.BUTTON_TEST_TA
 import theoneclick.client.app.ui.components.DefaultButtonTestTags.BUTTON_TEXT_TEST_TAG
 import theoneclick.client.app.ui.previews.dev.ComponentPreviewComposable
 import theoneclick.client.app.ui.previews.providers.base.PreviewModel
-import theoneclick.client.app.ui.previews.providers.components.DefaultButtonPreviewModels.DefaultButtonModel
+import theoneclick.client.app.ui.previews.providers.components.DefaultButtonModelProvider.DefaultButtonModel
 
 @Composable
 fun DefaultButton(

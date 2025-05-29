@@ -1,11 +1,12 @@
 package theoneclick.client.app.ui.previews.providers.screens.homeScreen
 
-import theoneclick.client.app.ui.previews.providers.base.PreviewModelProvider
+import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
+import theoneclick.client.app.ui.previews.providers.base.PreviewModel
 import theoneclick.client.app.ui.previews.providers.base.darkThemeCompactPreviewModel
 import theoneclick.client.app.ui.previews.providers.base.lightThemeCompactPreviewModel
 import theoneclick.client.app.ui.states.homeScreen.UserSettingsState
 
-class UserSettingsScreenPreviewModels : PreviewModelProvider<UserSettingsState> {
+class UserSettingsStateProvider : PreviewParameterProvider<PreviewModel<UserSettingsState>> {
     override val values = sequenceOf(
         lightThemeCompactPreviewModel(description = "Init", model = initState),
         lightThemeCompactPreviewModel(description = "DisabledState", model = disabledState),
@@ -20,7 +21,7 @@ class UserSettingsScreenPreviewModels : PreviewModelProvider<UserSettingsState> 
         darkThemeCompactPreviewModel(description = "SuccessState", model = successState),
     )
 
-    companion object {
+    companion object Companion {
         val initState = UserSettingsState()
         val disabledState = UserSettingsState(isButtonEnabled = false)
         val loadingState = UserSettingsState(isLoading = true)

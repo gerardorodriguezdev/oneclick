@@ -20,12 +20,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
+import org.jetbrains.compose.ui.tooling.preview.Preview
 import theoneclick.client.app.generated.resources.*
 import theoneclick.client.app.ui.components.DefaultScaffold
 import theoneclick.client.app.ui.components.SnackbarState
 import theoneclick.client.app.ui.events.homeScreen.DevicesListEvent
 import theoneclick.client.app.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.app.ui.previews.providers.base.PreviewModel
+import theoneclick.client.app.ui.previews.providers.screens.homeScreen.DevicesListStateProvider
 import theoneclick.client.app.ui.screens.homeScreen.DevicesListScreenConstants.deviceCardMinWidth
 import theoneclick.client.app.ui.screens.homeScreen.DevicesListScreenTestTags.DEVICE_CONTAINER
 import theoneclick.client.app.ui.screens.homeScreen.DevicesListScreenTestTags.DEVICE_NAME_TEXT
