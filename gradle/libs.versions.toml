@@ -6,7 +6,7 @@ android-datastore = "1.1.4"
 android-test-junit = "1.8.2"
 android-test-leak-canary = "2.14"
 android-test-navigation = "2.9.0"
-detekt-api = "1.23.8"
+detekt = "1.23.8"
 detekt-compose = "0.4.22"
 detekt-formatting = "1.23.8"
 jvm-api = "21"
@@ -87,7 +87,7 @@ kmp-test-turbine = { module = "app.cash.turbine:turbine", version.ref = "kmp-tes
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt-api" }
+detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
 chamaleon = { id = "io.github.gerardorodriguezdev.chamaleon", version.ref = "chamaleon" }
 kmp-atomicfu = { id = "org.jetbrains.kotlinx.atomicfu", version.ref = "kmp-atomicfu" }
 kmp-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kmp-kotlin-api" }

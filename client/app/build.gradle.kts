@@ -1,5 +1,4 @@
 import com.codingfeline.buildkonfig.compiler.FieldSpec
-import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.extensions.ChamaleonExtension
 import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
@@ -30,9 +29,9 @@ androidApp {
     versionName.set("1.0")
 
     storeFile.set(file("local/keystore.jks"))
-    storePassword.set(chamaleon.androidProviderString("KEYSTORE_PASSWORD"))
-    keyAlias.set(chamaleon.androidProviderString("KEY_ALIAS"))
-    keyPassword.set(chamaleon.androidProviderString("KEY_PASSWORD"))
+    storePassword.set(androidProviderString("KEYSTORE_PASSWORD"))
+    keyAlias.set(androidProviderString("KEY_ALIAS"))
+    keyPassword.set(androidProviderString("KEY_PASSWORD"))
 
     composeEnabled.set(true)
 }
@@ -116,7 +115,7 @@ kotlin {
 }
 
 buildkonfig {
-    packageName = "theoneclick.client.core.buildkonfig"
+    packageName = "theoneclick.client.app.buildkonfig"
 
     defaultConfigs {
         buildConfigField(FieldSpec.Type.STRING, name = "PROTOCOL", value = null, nullable = true)
@@ -141,19 +140,19 @@ buildkonfig {
             buildConfigField(
                 FieldSpec.Type.STRING,
                 name = "PROTOCOL",
-                value = chamaleon.androidProviderString("PROTOCOL").get(),
+                value = androidProviderString("PROTOCOL").get(),
                 nullable = true
             )
             buildConfigField(
                 FieldSpec.Type.STRING,
                 name = "HOST",
-                value = chamaleon.androidProviderString("HOST").get(),
+                value = androidProviderString("HOST").get(),
                 nullable = true
             )
             buildConfigField(
                 FieldSpec.Type.INT,
                 name = "PORT",
-                value = chamaleon.androidProviderString("PORT").get(),
+                value = androidProviderString("PORT").get(),
                 nullable = true
             )
             buildConfigField(
@@ -165,5 +164,5 @@ buildkonfig {
     }
 }
 
-fun ChamaleonExtension.androidProviderString(name: String): Provider<String> =
+fun androidProviderString(name: String): Provider<String> =
     provider { chamaleon.selectedEnvironment().androidPlatform.propertyStringValue(name) }

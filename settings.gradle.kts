@@ -25,10 +25,7 @@ include(
     "server:shared",
 )
 
-include(
-    "client:app",
-    "client:shared",
-)
+include("client:app")
 
 include(
     "shared:base",
