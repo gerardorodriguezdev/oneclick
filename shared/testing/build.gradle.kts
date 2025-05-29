@@ -3,10 +3,6 @@ plugins {
     id("theoneclick.wasm.library")
 }
 
-jvmLibrary {
-    jvmTarget.set(libs.versions.jvm.api.get().toInt())
-}
-
 kotlin {
     sourceSets {
         commonMain {

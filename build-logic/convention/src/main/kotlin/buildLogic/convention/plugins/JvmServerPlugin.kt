@@ -1,6 +1,7 @@
 package buildLogic.convention.plugins
 
 import buildLogic.convention.extensions.plugins.JvmServerExtension
+import buildLogic.convention.extensions.toJavaLanguageVersion
 import buildLogic.convention.extensions.toJavaVersion
 import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.ChamaleonGradlePlugin
 import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.extensions.ChamaleonExtension
@@ -13,6 +14,7 @@ import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.named
+import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 
 class JvmServerPlugin : Plugin<Project> {
@@ -24,6 +26,7 @@ class JvmServerPlugin : Plugin<Project> {
             val jvmServerExtension = createJvmServerExtension()
             configureJavaApplicationExtension(chamaleonExtension, jvmServerExtension)
             configureKtorExtension(chamaleonExtension, jvmServerExtension)
+            configureKotlinExtension(jvmServerExtension)
             registerTasks(chamaleonExtension)
         }
     }
@@ -85,6 +88,18 @@ class JvmServerPlugin : Plugin<Project> {
                         value = value,
                     )
                 )
+            }
+        }
+    }
+
+    private fun Project.configureKotlinExtension(jvmServerExtension: JvmServerExtension) {
+        extensions.configure(KotlinJvmProjectExtension::class.java) {
+            compilerOptions {
+                extraWarnings.set(true)
+            }
+
+            jvmToolchain {
+                languageVersion.set(jvmServerExtension.jvmTarget.toJavaLanguageVersion())
             }
         }
     }

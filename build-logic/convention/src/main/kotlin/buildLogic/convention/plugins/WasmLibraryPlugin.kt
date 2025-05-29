@@ -23,10 +23,6 @@ class WasmLibraryPlugin : Plugin<Project> {
     @OptIn(ExperimentalWasmDsl::class)
     private fun Project.configureKotlinMultiplatformExtension() {
         extensions.configure(KotlinMultiplatformExtension::class.java) {
-            compilerOptions {
-                extraWarnings.set(true)
-            }
-
             wasmJs {
                 browser()
             }

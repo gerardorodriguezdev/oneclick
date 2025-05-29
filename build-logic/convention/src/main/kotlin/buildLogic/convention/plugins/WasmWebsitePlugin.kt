@@ -29,6 +29,7 @@ class WasmWebsitePlugin : Plugin<Project> {
         return extension
     }
 
+    //TODO: Gen file
     @OptIn(ExperimentalWasmDsl::class)
     private fun Project.configureKotlinMultiplatformExtension(wasmWebsiteExtension: WasmWebsiteExtension) {
         val rootDirPath = rootDir.path

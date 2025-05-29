@@ -9,12 +9,7 @@ plugins {
     alias(libs.plugins.kmp.serialization)
 }
 
-jvmLibrary {
-    jvmTarget.set(libs.versions.jvm.api.get().toInt())
-}
-
 androidLibrary {
-    jvmTarget.set(libs.versions.jvm.api.get().toInt())
     namespace.set("theoneclick.shared.core")
     compileSdkVersion.set(libs.versions.android.api.get().toInt())
     minSdkVersion.set(libs.versions.android.api.get().toInt())

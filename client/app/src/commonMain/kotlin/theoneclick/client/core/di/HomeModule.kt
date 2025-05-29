@@ -10,6 +10,7 @@ import theoneclick.client.core.dataSources.LoggedDataSource
 import theoneclick.client.core.dataSources.RemoteLoggedDataSource
 import theoneclick.client.core.di.base.ModuleProvider
 import theoneclick.client.core.extensions.includes
+import theoneclick.client.core.platform.AuthenticationDataSource
 import theoneclick.client.core.repositories.DevicesRepository
 import theoneclick.client.core.repositories.InMemoryDevicesRepository
 import theoneclick.client.core.viewModels.homeScreen.AddDeviceViewModel
@@ -26,15 +27,15 @@ class HomeModule(coreModule: CoreModule) : ModuleProvider {
                 scopedOf(::InMemoryDevicesRepository) bind DevicesRepository::class
 
                 viewModel {
-                    DevicesListViewModel(devicesRepository = get())
+                    DevicesListViewModel(devicesRepository = get<DevicesRepository>())
                 }
 
                 viewModel {
-                    AddDeviceViewModel(devicesRepository = get())
+                    AddDeviceViewModel(devicesRepository = get<DevicesRepository>())
                 }
 
                 viewModel {
-                    UserSettingsViewModel(authenticationDataSource = get())
+                    UserSettingsViewModel(authenticationDataSource = get<AuthenticationDataSource>())
                 }
             }
         }
