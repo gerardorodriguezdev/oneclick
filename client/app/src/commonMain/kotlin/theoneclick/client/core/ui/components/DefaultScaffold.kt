@@ -14,7 +14,7 @@ import theoneclick.client.core.ui.previews.providers.base.PreviewModel
 @Composable
 fun DefaultScaffold(
     snackbarState: SnackbarState,
-    onSnackbarShown: () -> Unit,
+    onSnackbarShow: () -> Unit,
     content: @Composable (paddingValue: PaddingValues) -> Unit,
 ) {
     val snackbarHostState = remember { SnackbarHostState() }
@@ -33,7 +33,7 @@ fun DefaultScaffold(
         content(paddingValues)
     }
 
-    val onSnackbarShown by rememberUpdatedState(onSnackbarShown)
+    val onSnackbarShown by rememberUpdatedState(onSnackbarShow)
     LaunchedEffect(snackbarState.showSnackbar) {
         if (snackbarState.showSnackbar) {
             snackbarHostState.showSnackbar(snackbarState.text)
@@ -53,7 +53,7 @@ fun DefaultScaffoldPreview(previewModel: PreviewModel<SnackbarState>) {
     ScreenPreviewComposable(previewModel) {
         DefaultScaffold(
             snackbarState = previewModel.model,
-            onSnackbarShown = {},
+            onSnackbarShow = {},
             content = {
                 MockContent(modifier = Modifier.fillMaxSize())
             }

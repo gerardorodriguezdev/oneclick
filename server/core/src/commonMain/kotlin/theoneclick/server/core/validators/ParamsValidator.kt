@@ -66,7 +66,7 @@ class ParamsValidator(
             user.sessionToken == null -> false
 
             timeProvider.currentTimeMillis() > user.sessionToken.creationTimeInMillis +
-                    USER_SESSION_TOKEN_EXPIRATION_IN_MILLIS -> false
+                USER_SESSION_TOKEN_EXPIRATION_IN_MILLIS -> false
 
             user.sessionToken.value != sessionToken -> false
             else -> true

@@ -38,7 +38,7 @@ fun AddDeviceScreen(
             isErrorType = state.showError,
             showSnackbar = state.showError || state.showSuccess,
         ),
-        onSnackbarShown = { onEvent(AddDeviceEvent.ErrorShown) },
+        onSnackbarShow = { onEvent(AddDeviceEvent.ErrorShown) },
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             Card(modifier = Modifier.align(Alignment.Center)) {

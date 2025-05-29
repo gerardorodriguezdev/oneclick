@@ -29,7 +29,7 @@ import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.*
 @Composable
 fun AppScreen(
     state: AppScreenState,
-    onNavigationBarClicked: (navigationBarRoute: NavigationBarRoute) -> Unit,
+    onNavigationBarClick: (navigationBarRoute: NavigationBarRoute) -> Unit,
     content: @Composable () -> Unit,
 ) {
     Scaffold(
@@ -41,7 +41,7 @@ fun AppScreen(
             ) {
                 if (state.navigationBar is AppScreenState.NavigationBar.Start) {
                     state.navigationBar.StartNavigationBar(
-                        onNavigationBarClicked = onNavigationBarClicked,
+                        onNavigationBarClick = onNavigationBarClick,
                     )
                 }
 
@@ -51,7 +51,7 @@ fun AppScreen(
         bottomBar = {
             if (state.navigationBar is AppScreenState.NavigationBar.Bottom) {
                 state.navigationBar.BottomNavigationBar(
-                    onNavigationBarClicked = onNavigationBarClicked,
+                    onNavigationBarClick = onNavigationBarClick,
                 )
             }
         },
@@ -63,7 +63,7 @@ fun AppScreen(
 
 @Composable
 private fun AppScreenState.NavigationBar.Start.StartNavigationBar(
-    onNavigationBarClicked: (navigationBarRoute: NavigationBarRoute) -> Unit,
+    onNavigationBarClick: (navigationBarRoute: NavigationBarRoute) -> Unit,
 ) {
     NavigationRail(
         containerColor = MaterialTheme.colorScheme.surfaceContainer,
@@ -79,7 +79,7 @@ private fun AppScreenState.NavigationBar.Start.StartNavigationBar(
             navigationBarRoutes.forEach { navigationBarRoute ->
                 NavigationRailItem(
                     selected = navigationBarRoute == selectedRoute,
-                    onClick = { onNavigationBarClicked(navigationBarRoute) },
+                    onClick = { onNavigationBarClick(navigationBarRoute) },
                     icon = { NavigationIcon(navigationBarRoute) },
                     label = { NavigationLabel(navigationBarRoute) },
                     modifier = Modifier.testTag(
@@ -93,7 +93,7 @@ private fun AppScreenState.NavigationBar.Start.StartNavigationBar(
 
 @Composable
 private fun AppScreenState.NavigationBar.Bottom.BottomNavigationBar(
-    onNavigationBarClicked: (navigationBarRoute: NavigationBarRoute) -> Unit,
+    onNavigationBarClick: (navigationBarRoute: NavigationBarRoute) -> Unit,
 ) {
     NavigationBar {
         Row(
@@ -104,7 +104,7 @@ private fun AppScreenState.NavigationBar.Bottom.BottomNavigationBar(
             navigationBarRoutes.forEach { navigationBarRoute ->
                 NavigationBarItem(
                     selected = navigationBarRoute == selectedRoute,
-                    onClick = { onNavigationBarClicked(navigationBarRoute) },
+                    onClick = { onNavigationBarClick(navigationBarRoute) },
                     icon = { NavigationIcon(navigationBarRoute) },
                     label = { NavigationLabel(navigationBarRoute) },
                     modifier = Modifier.testTag(
@@ -159,7 +159,8 @@ data class AppScreenState(val navigationBar: NavigationBar?) {
 private object AppScreenConstants {
     val navigationBarRoutes: PersistentList<NavigationBarRoute> = persistentListOf(
         DevicesList,
-        AddDevice, UserSettings
+        AddDevice,
+        UserSettings
     )
 }
 
@@ -178,12 +179,12 @@ object AppScreenTestTags {
 @Composable
 fun AppScreenPreview(
     previewModel: PreviewModel<AppScreenState>,
-    onNavigationBarClicked: (navigationBarRoute: NavigationBarRoute) -> Unit = {}
+    onNavigationBarClick: (navigationBarRoute: NavigationBarRoute) -> Unit = {}
 ) {
     ScreenPreviewComposable(previewModel) {
         AppScreen(
             state = previewModel.model,
-            onNavigationBarClicked = onNavigationBarClicked,
+            onNavigationBarClick = onNavigationBarClick,
             content = {
                 MockContent(modifier = Modifier.fillMaxSize())
             }

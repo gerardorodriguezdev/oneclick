@@ -68,7 +68,7 @@ class AppEntrypoint(
                         state = AppScreenState(
                             navigationBar = navHostController.navigationBar(),
                         ),
-                        onNavigationBarClicked = { navigationBarRoute ->
+                        onNavigationBarClick = { navigationBarRoute ->
                             navHostController.handleNavigationBarClick(navigationBarRoute)
                         },
                     ) {
@@ -128,7 +128,9 @@ class AppEntrypoint(
             } else {
                 AppScreenState.NavigationBar.Start(selectedNavigationBarRoute)
             }
-        } else null
+        } else {
+            null
+        }
     }
 
     private fun NavHostController.handleNavigationBarClick(navigationBarRoute: NavigationBarRoute) {

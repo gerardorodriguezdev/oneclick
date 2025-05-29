@@ -117,7 +117,7 @@ class ParamsValidatorTest : IntegrationTest() {
             testScenario(
                 input = UserSessionValidScenario(
                     currentTimeInMillis =
-                        TestData.CURRENT_TIME_IN_MILLIS + ParamsValidator.USER_SESSION_TOKEN_EXPIRATION_IN_MILLIS + 1
+                    TestData.CURRENT_TIME_IN_MILLIS + ParamsValidator.USER_SESSION_TOKEN_EXPIRATION_IN_MILLIS + 1
                 ),
                 expected = false,
             ),

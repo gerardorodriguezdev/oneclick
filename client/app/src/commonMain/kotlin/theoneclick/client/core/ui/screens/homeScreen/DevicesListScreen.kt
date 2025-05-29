@@ -50,7 +50,7 @@ fun DevicesListScreen(
             isErrorType = true,
             showSnackbar = state.showError,
         ),
-        onSnackbarShown = { onEvent(DevicesListEvent.ErrorShown) }
+        onSnackbarShow = { onEvent(DevicesListEvent.ErrorShown) }
     ) {
         Content(
             state = state,
@@ -237,7 +237,7 @@ private fun OpenableDeviceSection(isOpened: Boolean, onToggleDevice: (newChecked
 
 @Composable
 private fun RotatableDeviceSection(rotation: Int, onRotateDevice: (newRotation: Int) -> Unit) {
-    var currentRotation by remember { mutableStateOf(rotation) }
+    var currentRotation by remember { mutableIntStateOf(rotation) }
 
     DeviceSection(
         label = stringResource(Res.string.devicesList_deviceCardRotationLabel_rotation),
