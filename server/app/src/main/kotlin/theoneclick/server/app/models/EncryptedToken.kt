@@ -1,0 +1,21 @@
+package theoneclick.server.app.models
+
+import kotlinx.serialization.Serializable
+import theoneclick.server.app.platform.SecurityUtils
+
+@Serializable
+data class EncryptedToken(
+    val value: String,
+    val creationTimeInMillis: Long,
+) {
+    companion object {
+        fun SecurityUtils.create(
+            value: String,
+            creationTimeInMillis: Long,
+        ): EncryptedToken =
+            EncryptedToken(
+                value = value,
+                creationTimeInMillis = creationTimeInMillis,
+            )
+    }
+}
