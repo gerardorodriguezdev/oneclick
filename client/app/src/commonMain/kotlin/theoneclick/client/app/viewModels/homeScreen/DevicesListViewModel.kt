@@ -41,7 +41,7 @@ class DevicesListViewModel(
     fun onEvent(event: DevicesListEvent) {
         when (event) {
             is DevicesListEvent.Refresh -> refreshDevices()
-            is DevicesListEvent.ErrorShown -> event.handleErrorShown()
+            is DevicesListEvent.ErrorShown -> handleErrorShown()
             is DevicesListEvent.UpdateDevice -> event.handleUpdateDevice()
         }
     }
@@ -71,7 +71,7 @@ class DevicesListViewModel(
         _state.value = _state.value.copy(showError = true)
     }
 
-    private fun DevicesListEvent.ErrorShown.handleErrorShown() {
+    private fun handleErrorShown() {
         _state.value = _state.value.copy(showError = false)
     }
 

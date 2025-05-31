@@ -23,13 +23,13 @@ class UserSettingsViewModel(
 
     fun onEvent(event: UserSettingsEvent) {
         when (event) {
-            is UserSettingsEvent.LogoutClicked -> event.handleLogoutClicked()
-            is UserSettingsEvent.SuccessShown -> event.handleSuccessShown()
-            is UserSettingsEvent.ErrorShown -> event.handleErrorShown()
+            is UserSettingsEvent.LogoutClicked -> handleLogoutClicked()
+            is UserSettingsEvent.SuccessShown -> handleSuccessShown()
+            is UserSettingsEvent.ErrorShown -> handleErrorShown()
         }
     }
 
-    private fun UserSettingsEvent.LogoutClicked.handleLogoutClicked() {
+    private fun handleLogoutClicked() {
         logoutJob?.cancel()
 
         logoutJob = viewModelScope.launch {
@@ -61,11 +61,11 @@ class UserSettingsViewModel(
         }
     }
 
-    private fun UserSettingsEvent.SuccessShown.handleSuccessShown() {
+    private fun handleSuccessShown() {
         _state.value = _state.value.copy(showSuccess = false)
     }
 
-    private fun UserSettingsEvent.ErrorShown.handleErrorShown() {
+    private fun handleErrorShown() {
         _state.value = _state.value.copy(showError = false)
     }
 

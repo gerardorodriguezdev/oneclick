@@ -27,10 +27,10 @@ class AddDeviceViewModel(private val devicesRepository: DevicesRepository) : Vie
             is AddDeviceEvent.RoomNameChanged -> event.handleRoomNameChanged()
             is AddDeviceEvent.DeviceTypeChanged -> event.handleDeviceTypeChanged()
 
-            is AddDeviceEvent.AddDeviceButtonClicked -> event.handleAddDeviceButtonClicked()
+            is AddDeviceEvent.AddDeviceButtonClicked -> handleAddDeviceButtonClicked()
 
-            is AddDeviceEvent.SuccessShown -> event.handleSuccessShown()
-            is AddDeviceEvent.ErrorShown -> event.handleErrorShown()
+            is AddDeviceEvent.SuccessShown -> handleSuccessShown()
+            is AddDeviceEvent.ErrorShown -> handleErrorShown()
         }
     }
 
@@ -58,7 +58,7 @@ class AddDeviceViewModel(private val devicesRepository: DevicesRepository) : Vie
         _state.value = _state.value.copy(deviceType = newDeviceType)
     }
 
-    private fun AddDeviceEvent.AddDeviceButtonClicked.handleAddDeviceButtonClicked() {
+    private fun handleAddDeviceButtonClicked() {
         requestAddDeviceJob?.cancel()
 
         requestAddDeviceJob = viewModelScope.launch {
@@ -94,11 +94,11 @@ class AddDeviceViewModel(private val devicesRepository: DevicesRepository) : Vie
         }
     }
 
-    private fun AddDeviceEvent.SuccessShown.handleSuccessShown() {
+    private fun handleSuccessShown() {
         _state.value = _state.value.copy(showSuccess = false)
     }
 
-    private fun AddDeviceEvent.ErrorShown.handleErrorShown() {
+    private fun handleErrorShown() {
         _state.value = _state.value.copy(showError = false)
     }
 

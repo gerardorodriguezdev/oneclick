@@ -34,9 +34,9 @@ class LoginViewModel(
             is LoginEvent.UsernameChanged -> event.handleUsernameChange()
             is LoginEvent.PasswordChanged -> event.handlePasswordChange()
 
-            is LoginEvent.RegisterButtonClicked -> event.handleRegisterButtonClicked()
+            is LoginEvent.RegisterButtonClicked -> handleRegisterButtonClicked()
 
-            is LoginEvent.ErrorShown -> event.handleErrorShown()
+            is LoginEvent.ErrorShown -> handleErrorShown()
         }
     }
 
@@ -60,7 +60,7 @@ class LoginViewModel(
         )
     }
 
-    private fun LoginEvent.RegisterButtonClicked.handleRegisterButtonClicked() {
+    private fun handleRegisterButtonClicked() {
         requestLoginJob?.cancel()
 
         requestLoginJob = viewModelScope.launch {
@@ -85,7 +85,7 @@ class LoginViewModel(
                 .collect { result ->
                     when (result) {
                         is RequestLoginResult.ValidLogin ->
-                            navigationController.sendNavigationEvent(navigationEvent = result.toNavigationEvent())
+                            navigationController.sendNavigationEvent(navigationEvent = toNavigationEvent())
 
                         is RequestLoginResult.Failure ->
                             _state.value = _state.value.copy(showError = true)
@@ -94,14 +94,14 @@ class LoginViewModel(
         }
     }
 
-    private fun RequestLoginResult.ValidLogin.toNavigationEvent(): NavigationController.NavigationEvent =
+    private fun toNavigationEvent(): NavigationController.NavigationEvent =
         Navigate(
             destinationRoute = AppRoute.Home,
             launchSingleTop = true,
             popUpTo = popUpToInclusive(startRoute = AppRoute.Login),
         )
 
-    private fun LoginEvent.ErrorShown.handleErrorShown() {
+    private fun handleErrorShown() {
         _state.value = _state.value.copy(showError = false)
     }
 
