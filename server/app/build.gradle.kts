@@ -1,5 +1,3 @@
-import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.extensions.ChamaleonExtension
-
 plugins {
     id("theoneclick.jvm.server")
     alias(libs.plugins.kmp.serialization)
@@ -12,10 +10,10 @@ jvmServer {
 
     dockerConfiguration {
         imageName.set("theoneclick")
-        imageTag.set(chamaleon.propertyProvider("GITHUB_SHA"))
-        imageRegistryUrl.set(chamaleon.propertyProvider("REGISTRY_LOCATION"))
-        imageRegistryUsername.set(chamaleon.propertyProvider("REGISTRY_USERNAME"))
-        imageRegistryPassword.set(chamaleon.propertyProvider("REGISTRY_PASSWORD"))
+        imageTag.set(propertyProvider("GITHUB_SHA"))
+        imageRegistryUrl.set(propertyProvider("REGISTRY_LOCATION"))
+        imageRegistryUsername.set(propertyProvider("REGISTRY_USERNAME"))
+        imageRegistryPassword.set(propertyProvider("REGISTRY_PASSWORD"))
     }
 }
 
@@ -31,9 +29,10 @@ dependencies {
     implementation(libs.kmp.ktor.server.rate.limit)
     implementation(libs.kmp.ktor.server.call.id)
     implementation(libs.kmp.ktor.server.cio)
+    implementation(libs.kmp.ktor.server.csrf)
+    implementation(libs.kmp.koin.ktor)
     implementation(libs.kmp.datetime)
     implementation(libs.kmp.koin.core)
-    implementation(libs.kmp.koin.ktor)
     implementation(libs.jvm.bcrypt)
     implementation(libs.jvm.logback.classic)
     implementation(libs.jvm.ktor.server.auth)
@@ -50,5 +49,5 @@ dependencies {
     testImplementation(projects.shared.testing)
 }
 
-fun ChamaleonExtension.propertyProvider(name: String): Provider<String> =
-    provider { selectedEnvironment().jvmPlatform.propertyStringValue(name) }
+fun propertyProvider(name: String): Provider<String> =
+    provider { chamaleon.selectedEnvironment().jvmPlatform.propertyStringValue(name) }

@@ -30,4 +30,5 @@ private fun Application.configureModules(dependencies: Dependencies) {
     configureRequestBodyLimit()
     configureRateLimit()
     configureCallId()
+    configureCSFR()
 }

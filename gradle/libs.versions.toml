@@ -83,6 +83,7 @@ kmp-test-ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref =
 kmp-test-koin = { module = "io.insert-koin:koin-test", version.ref = "kmp-koin" }
 kmp-test-ktor-server-host = { module = "io.ktor:ktor-server-test-host", version.ref = "kmp-ktor" }
 kmp-test-turbine = { module = "app.cash.turbine:turbine", version.ref = "kmp-test-turbine" }
+kmp-ktor-server-csrf = { module = "io.ktor:ktor-server-csrf", version.ref = "kmp-ktor" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }

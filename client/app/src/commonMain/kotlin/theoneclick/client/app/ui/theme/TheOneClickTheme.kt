@@ -38,3 +38,7 @@ fun TheOneClickTheme(isDarkTheme: Boolean, content: @Composable () -> Unit) {
 //TODO: Separate home module
 //TODO: Maybe sources abstraction
 //TODO: Common models to safe validated ones? token, deviceName, roomName, rotation range, uuid, username, password
+//TODO: Naming TheOneClick vs OneClick
+//TODO: App icon
+//TODO: Proper error handling
+//TODO: Server update endpoint (addDevice, devices, updateDevice)
