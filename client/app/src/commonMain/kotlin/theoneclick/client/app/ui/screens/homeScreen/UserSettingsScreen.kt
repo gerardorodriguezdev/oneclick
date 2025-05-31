@@ -12,9 +12,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.stringResource
 import theoneclick.client.app.generated.resources.Res
-import theoneclick.client.app.generated.resources.userSettings_snackbar_logout
-import theoneclick.client.app.generated.resources.userSettings_snackbar_unknownError
-import theoneclick.client.app.generated.resources.userSettings_title_userSettings
+import theoneclick.client.app.generated.resources.userSettingsScreen_snackbar_logout
+import theoneclick.client.app.generated.resources.userSettingsScreen_snackbar_unknownError
+import theoneclick.client.app.generated.resources.userSettingsScreen_title_userSettings
 import theoneclick.client.app.ui.components.DefaultButton
 import theoneclick.client.app.ui.components.DefaultScaffold
 import theoneclick.client.app.ui.components.SnackbarState
@@ -49,7 +49,7 @@ fun UserSettingsScreen(
                     Title()
 
                     DefaultButton(
-                        text = stringResource(Res.string.userSettings_snackbar_logout),
+                        text = stringResource(Res.string.userSettingsScreen_snackbar_logout),
                         onClick = {
                             onEvent(UserSettingsEvent.LogoutClicked)
                         },
@@ -66,7 +66,7 @@ fun UserSettingsScreen(
 @Composable
 private fun Title() {
     Text(
-        text = stringResource(Res.string.userSettings_title_userSettings),
+        text = stringResource(Res.string.userSettingsScreen_title_userSettings),
         fontSize = 20.sp,
         textAlign = TextAlign.Center,
         modifier = Modifier
@@ -78,9 +78,9 @@ private fun Title() {
 @Composable
 private fun snackbarText(isErrorType: Boolean) =
     if (isErrorType) {
-        stringResource(Res.string.userSettings_snackbar_unknownError)
+        stringResource(Res.string.userSettingsScreen_snackbar_unknownError)
     } else {
-        stringResource(Res.string.userSettings_snackbar_logout)
+        stringResource(Res.string.userSettingsScreen_snackbar_logout)
     }
 
 object UserSettingsTestTags {

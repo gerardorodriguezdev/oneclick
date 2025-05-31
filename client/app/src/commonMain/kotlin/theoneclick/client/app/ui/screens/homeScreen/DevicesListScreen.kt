@@ -46,7 +46,7 @@ fun DevicesListScreen(
 ) {
     DefaultScaffold(
         snackbarState = SnackbarState(
-            text = stringResource(Res.string.devicesList_snackbar_unknownError),
+            text = stringResource(Res.string.devicesListScreen_snackbar_unknownError),
             isErrorType = true,
             showSnackbar = state.showError,
         ),
@@ -108,7 +108,7 @@ private fun Empty() {
         contentAlignment = Alignment.Center
     ) {
         Text(
-            text = stringResource(Res.string.devicesList_placeholder_noDevicesFound),
+            text = stringResource(Res.string.devicesListScreen_placeholder_noDevicesFound),
             style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
         )
@@ -141,14 +141,14 @@ private fun DeviceCard(
             DeviceIcon(icon = icon)
 
             DeviceSection(
-                label = stringResource(Res.string.devicesList_deviceCardDeviceNameLabel_deviceName),
+                label = stringResource(Res.string.devicesListScreen_deviceCardDeviceNameLabel_deviceName),
                 content = {
                     DeviceSectionBodyText(text = device.deviceName, modifier = Modifier.testTag(DEVICE_NAME_TEXT))
                 }
             )
 
             DeviceSection(
-                label = stringResource(Res.string.devicesList_deviceCardRoomNameLabel_room),
+                label = stringResource(Res.string.devicesListScreen_deviceCardRoomNameLabel_room),
                 content = { DeviceSectionBodyText(text = device.room, modifier = Modifier.testTag(ROOM_NAME_TEXT)) }
             )
 
@@ -221,9 +221,9 @@ private fun DeviceSectionBodyText(text: String, modifier: Modifier = Modifier) {
 private fun OpenableDeviceSection(isOpened: Boolean, onToggleDevice: (newCheckedState: Boolean) -> Unit) {
     DeviceSection(
         label = if (isOpened) {
-            stringResource(Res.string.devicesList_deviceCardOpenedLabel_opened)
+            stringResource(Res.string.devicesListScreen_deviceCardOpenedLabel_opened)
         } else {
-            stringResource(Res.string.devicesList_deviceCardClosedLabel_closed)
+            stringResource(Res.string.devicesListScreen_deviceCardClosedLabel_closed)
         },
         content = {
             Switch(
@@ -240,7 +240,7 @@ private fun RotatableDeviceSection(rotation: Int, onRotateDevice: (newRotation: 
     var currentRotation by remember { mutableIntStateOf(rotation) }
 
     DeviceSection(
-        label = stringResource(Res.string.devicesList_deviceCardRotationLabel_rotation),
+        label = stringResource(Res.string.devicesListScreen_deviceCardRotationLabel_rotation),
         content = {
             Slider(
                 value = currentRotation.toFloat(),

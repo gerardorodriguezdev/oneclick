@@ -63,9 +63,9 @@ fun AddDeviceScreen(
 @Composable
 private fun snackbarText(isErrorType: Boolean) =
     if (isErrorType) {
-        stringResource(Res.string.addDevice_snackbar_unknownError)
+        stringResource(Res.string.addDeviceScreen_snackbar_unknownError)
     } else {
-        stringResource(Res.string.addDevice_snackbar_deviceAdded)
+        stringResource(Res.string.addDeviceScreen_snackbar_deviceAdded)
     }
 
 @Suppress("LongParameterList")
@@ -109,7 +109,7 @@ private fun FormContent(
         )
 
         DefaultButton(
-            text = stringResource(Res.string.addDevice_addDeviceButton_addDevice),
+            text = stringResource(Res.string.addDeviceScreen_addDeviceButton_addDevice),
             onClick = onAddDeviceClick,
             isEnabled = isAddDeviceButtonEnabled,
             isLoading = isLoading,
@@ -163,7 +163,7 @@ private fun DeviceTypeDropdownList(
 @Composable
 private fun Title() {
     Text(
-        text = stringResource(Res.string.addDevice_title_addDevice),
+        text = stringResource(Res.string.addDeviceScreen_title_addDevice),
         fontSize = 20.sp,
         textAlign = TextAlign.Center,
         modifier = Modifier
@@ -181,7 +181,7 @@ private fun DeviceNameTextField(
     OutlinedTextField(
         placeholder = {
             Text(
-                text = stringResource(Res.string.addDevice_deviceNamePlaceholder_deviceName),
+                text = stringResource(Res.string.addDeviceScreen_deviceNamePlaceholder_deviceName),
                 modifier = Modifier.testTag(DEVICE_NAME_PLACEHOLDER_TEST_TAG)
             )
         },
@@ -202,7 +202,7 @@ private fun RoomNameTextField(
     OutlinedTextField(
         placeholder = {
             Text(
-                text = stringResource(Res.string.addDevice_roomNamePlaceholder_roomName),
+                text = stringResource(Res.string.addDeviceScreen_roomNamePlaceholder_roomName),
                 modifier = Modifier.testTag(ROOM_NAME_PLACEHOLDER_TEST_TAG)
             )
         },

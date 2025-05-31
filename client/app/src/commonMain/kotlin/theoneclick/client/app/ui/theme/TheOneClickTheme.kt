@@ -30,7 +30,6 @@ fun TheOneClickTheme(isDarkTheme: Boolean, content: @Composable () -> Unit) {
 //TODO: Report errors from vm bubble to parent
 //TODO: Sep ui state from logic state
 //TODO: Update AddDevice + DevicesList (vm + ui)
-//TODO: Update naming strings
 //TODO: Update public/private methods
 //TODO: Make AppScreen cleaner
 //TODO: UI to other module + Presentation to other module
@@ -42,3 +41,4 @@ fun TheOneClickTheme(isDarkTheme: Boolean, content: @Composable () -> Unit) {
 //TODO: App icon
 //TODO: Proper error handling
 //TODO: Server update endpoint (addDevice, devices, updateDevice)
+//TODO: Update env on app to unify
