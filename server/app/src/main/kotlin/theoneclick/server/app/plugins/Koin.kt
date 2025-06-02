@@ -1,4 +1,4 @@
-package theoneclick.server.core.theoneclick.server.app.plugins
+package theoneclick.server.app.plugins
 
 import io.ktor.server.application.*
 import org.koin.ktor.plugin.Koin

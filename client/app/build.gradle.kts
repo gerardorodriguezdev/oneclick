@@ -48,7 +48,6 @@ kotlin {
                 implementation(compose.foundation)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
-                implementation(compose.preview)
                 implementation(libs.kmp.coroutines)
                 implementation(libs.kmp.ktor.client.auth)
                 implementation(libs.kmp.navigation)

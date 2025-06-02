@@ -7,7 +7,6 @@ import theoneclick.server.app.platform.base.Dependencies
 import theoneclick.server.app.plugins.*
 import theoneclick.server.app.plugins.authentication.configureAuthentication
 import theoneclick.server.app.plugins.callid.configureCallId
-import theoneclick.server.core.theoneclick.server.app.plugins.configureKoin
 
 fun server(dependencies: Dependencies): EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration> =
     embeddedServer(
@@ -30,5 +29,4 @@ private fun Application.configureModules(dependencies: Dependencies) {
     configureRequestBodyLimit()
     configureRateLimit()
     configureCallId()
-    configureCSFR()
 }

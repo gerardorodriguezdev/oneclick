@@ -29,7 +29,6 @@ dependencies {
     implementation(libs.kmp.ktor.server.rate.limit)
     implementation(libs.kmp.ktor.server.call.id)
     implementation(libs.kmp.ktor.server.cio)
-    implementation(libs.kmp.ktor.server.csrf)
     implementation(libs.kmp.koin.ktor)
     implementation(libs.kmp.datetime)
     implementation(libs.kmp.koin.core)

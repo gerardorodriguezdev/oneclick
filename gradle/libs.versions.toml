@@ -12,13 +12,13 @@ detekt-formatting = "1.23.8"
 jvm-api = "21"
 jvm-bcrypt = "0.10.2"
 jvm-logback = "1.5.16"
-kmp-kotlin-api = "2.1.21"
+kmp-kotlin-api = "2.1.20"
 kmp-atomicfu = "0.27.0"
 kmp-compose = "1.8.0"
 kmp-coroutines = "1.10.2"
-kmp-koin = "4.0.4"
+kmp-koin = "4.1.0-RC1"
 kmp-date-time = "0.6.1"
-kmp-ktor = "3.1.2"
+kmp-ktor = "3.1.3"
 kmp-navigation = "2.9.0-beta01"
 kmp-viewModel = "2.8.3"
 kmp-test-turbine = "1.1.0"
@@ -83,7 +83,6 @@ kmp-test-ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref =
 kmp-test-koin = { module = "io.insert-koin:koin-test", version.ref = "kmp-koin" }
 kmp-test-ktor-server-host = { module = "io.ktor:ktor-server-test-host", version.ref = "kmp-ktor" }
 kmp-test-turbine = { module = "app.cash.turbine:turbine", version.ref = "kmp-test-turbine" }
-kmp-ktor-server-csrf = { module = "io.ktor:ktor-server-csrf", version.ref = "kmp-ktor" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
