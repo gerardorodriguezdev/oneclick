@@ -1,6 +1,7 @@
 package theoneclick.client.app.repositories
 
 import kotlinx.coroutines.flow.*
+import me.tatarka.inject.annotations.Inject
 import theoneclick.client.app.dataSources.LoggedDataSource
 import theoneclick.client.app.models.results.AddDeviceResult
 import theoneclick.client.app.models.results.DevicesResult
@@ -22,6 +23,7 @@ interface DevicesRepository {
     fun refreshDevices(): Flow<DevicesResult>
 }
 
+@Inject
 class InMemoryDevicesRepository(
     private val loggedDataSource: LoggedDataSource,
 ) : DevicesRepository {

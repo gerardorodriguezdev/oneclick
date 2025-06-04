@@ -10,6 +10,7 @@ plugins {
     alias(libs.plugins.kmp.serialization)
     alias(libs.plugins.kmp.atomicfu)
     alias(libs.plugins.kmp.build.config)
+    alias(libs.plugins.ksp)
     alias(libs.plugins.chamaleon)
 }
 
@@ -70,18 +71,19 @@ kotlin {
                 implementation(libs.kmp.ktor.client.core)
                 implementation(libs.kmp.ktor.client.content.negotiation)
                 implementation(libs.kmp.ktor.client.logging)
-                implementation(libs.kmp.koin.core)
-                implementation(libs.kmp.koin.compose)
-                implementation(libs.kmp.koin.core.viewmodel)
-                implementation(libs.kmp.koin.compose.viewmodel)
                 implementation(libs.kmp.datetime)
                 implementation(libs.kmp.immutable)
                 implementation(libs.kmp.window.classes)
+                implementation(libs.kmp.kotlin.inject)
                 implementation(projects.shared.base)
                 implementation(projects.shared.dispatchers)
                 implementation(projects.shared.timeProvider)
-                implementation(projects.shared.base)
+
                 api(libs.kmp.atomicfu)
+
+                project.dependencies {
+                    ksp(libs.ksp.kotlin.inject)
+                }
             }
         }
 
@@ -90,7 +92,6 @@ kotlin {
             dependencies {
                 implementation(libs.kmp.test)
                 implementation(compose.uiTest)
-                implementation(libs.kmp.test.koin)
                 implementation(libs.kmp.test.ktor.client.mock)
                 implementation(libs.kmp.test.turbine)
                 implementation(projects.shared.testing)

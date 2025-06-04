@@ -26,6 +26,8 @@ kmp-buildconfig = "0.16.0"
 kmp-immutable = "0.3.8"
 kmp-window-classes = "0.5.0"
 kmp-serialization = "1.8.1"
+kmp-kotlin-inject = "0.8.0"
+ksp = "2.1.20-2.0.1"
 chamaleon = "1.0.15"
 
 [libraries]
@@ -53,10 +55,7 @@ jvm-logback-classic = { module = "ch.qos.logback:logback-classic", version.ref =
 jvm-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kmp-kotlin-api" }
 kmp-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kmp-coroutines" }
 kmp-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kmp-atomicfu" }
-kmp-koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "kmp-koin" }
-kmp-koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "kmp-koin" }
 kmp-koin-core = { module = "io.insert-koin:koin-core", version.ref = "kmp-koin" }
-kmp-koin-core-viewmodel = { module = "io.insert-koin:koin-core-viewmodel", version.ref = "kmp-koin" }
 kmp-koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "kmp-koin" }
 kmp-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kmp-date-time" }
 kmp-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "kmp-navigation" }
@@ -83,6 +82,8 @@ kmp-test-ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref =
 kmp-test-koin = { module = "io.insert-koin:koin-test", version.ref = "kmp-koin" }
 kmp-test-ktor-server-host = { module = "io.ktor:ktor-server-test-host", version.ref = "kmp-ktor" }
 kmp-test-turbine = { module = "app.cash.turbine:turbine", version.ref = "kmp-test-turbine" }
+ksp-kotlin-inject = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kmp-kotlin-inject"}
+kmp-kotlin-inject = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kmp-kotlin-inject"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
@@ -95,3 +96,4 @@ kmp-compose-jetbrains = { id = "org.jetbrains.compose", version.ref = "kmp-compo
 kmp-kotlin = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kmp-kotlin-api" }
 kmp-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kmp-kotlin-api" }
 kmp-build-config = { id = "com.codingfeline.buildkonfig", version.ref = "kmp-buildconfig" }
+ksp = {id = "com.google.devtools.ksp", version.ref = "ksp"}

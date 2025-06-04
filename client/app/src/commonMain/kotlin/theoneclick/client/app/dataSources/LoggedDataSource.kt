@@ -8,6 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
+import me.tatarka.inject.annotations.Inject
 import theoneclick.client.app.models.results.AddDeviceResult
 import theoneclick.client.app.models.results.DevicesResult
 import theoneclick.client.app.models.results.UpdateDeviceResult
@@ -33,6 +34,7 @@ interface LoggedDataSource {
     fun devices(): Flow<DevicesResult>
 }
 
+@Inject
 class RemoteLoggedDataSource(
     private val httpClient: HttpClient,
     private val dispatchersProvider: DispatchersProvider,
