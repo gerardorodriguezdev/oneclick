@@ -10,7 +10,6 @@ import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 class AndroidAppPlugin : Plugin<Project> {
 
@@ -44,10 +43,6 @@ class AndroidAppPlugin : Plugin<Project> {
 
             compilerOptions {
                 extraWarnings.set(true)
-            }
-
-            androidTarget {
-                instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
             }
         }
     }

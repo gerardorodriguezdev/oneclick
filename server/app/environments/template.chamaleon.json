@@ -42,10 +42,6 @@
     {
       "name": "DISABLE_RATE_LIMIT",
       "propertyType": "Boolean"
-    },
-    {
-      "name": "IS_DEBUG",
-      "propertyType": "Boolean"
     }
   ]
 }

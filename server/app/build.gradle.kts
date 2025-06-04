@@ -10,10 +10,10 @@ jvmServer {
 
     dockerConfiguration {
         imageName.set("theoneclick")
-        imageTag.set(propertyProvider("GITHUB_SHA"))
-        imageRegistryUrl.set(propertyProvider("REGISTRY_LOCATION"))
-        imageRegistryUsername.set(propertyProvider("REGISTRY_USERNAME"))
-        imageRegistryPassword.set(propertyProvider("REGISTRY_PASSWORD"))
+        imageTag.set(stringProvider("GITHUB_SHA"))
+        imageRegistryUrl.set(stringProvider("REGISTRY_LOCATION"))
+        imageRegistryUsername.set(stringProvider("REGISTRY_USERNAME"))
+        imageRegistryPassword.set(stringProvider("REGISTRY_PASSWORD"))
     }
 }
 
@@ -48,5 +48,5 @@ dependencies {
     testImplementation(projects.shared.testing)
 }
 
-fun propertyProvider(name: String): Provider<String> =
+fun stringProvider(name: String): Provider<String> =
     provider { chamaleon.selectedEnvironment().jvmPlatform.propertyStringValue(name) }

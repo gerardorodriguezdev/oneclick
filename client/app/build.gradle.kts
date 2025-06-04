@@ -29,9 +29,9 @@ androidApp {
     versionName.set("1.0")
 
     storeFile.set(file("local/keystore.jks"))
-    storePassword.set(androidProviderString("KEYSTORE_PASSWORD"))
-    keyAlias.set(androidProviderString("KEY_ALIAS"))
-    keyPassword.set(androidProviderString("KEY_PASSWORD"))
+    storePassword.set(androidStringProvider("KEYSTORE_PASSWORD"))
+    keyAlias.set(androidStringProvider("KEY_ALIAS"))
+    keyPassword.set(androidStringProvider("KEY_PASSWORD"))
 
     composeEnabled.set(true)
 }
@@ -139,19 +139,19 @@ buildkonfig {
             buildConfigField(
                 FieldSpec.Type.STRING,
                 name = "PROTOCOL",
-                value = androidProviderString("PROTOCOL").get(),
+                value = androidStringProvider("PROTOCOL").get(),
                 nullable = true
             )
             buildConfigField(
                 FieldSpec.Type.STRING,
                 name = "HOST",
-                value = androidProviderString("HOST").get(),
+                value = androidStringProvider("HOST").get(),
                 nullable = true
             )
             buildConfigField(
                 FieldSpec.Type.INT,
                 name = "PORT",
-                value = androidProviderString("PORT").get(),
+                value = androidStringProvider("PORT").get(),
                 nullable = true
             )
             buildConfigField(
@@ -163,5 +163,5 @@ buildkonfig {
     }
 }
 
-fun androidProviderString(name: String): Provider<String> =
+fun androidStringProvider(name: String): Provider<String> =
     provider { chamaleon.selectedEnvironment().androidPlatform.propertyStringValue(name) }

@@ -24,7 +24,7 @@ class JvmServerPlugin : Plugin<Project> {
             applyPlugins()
             val chamaleonExtension = extensions.findByType(ChamaleonExtension::class.java)
             val jvmServerExtension = createJvmServerExtension()
-            configureJavaApplicationExtension(chamaleonExtension, jvmServerExtension)
+            configureJavaApplicationExtension(jvmServerExtension)
             configureKtorExtension(chamaleonExtension, jvmServerExtension)
             configureKotlinExtension(jvmServerExtension)
             registerTasks(chamaleonExtension)
@@ -44,20 +44,9 @@ class JvmServerPlugin : Plugin<Project> {
         return extension
     }
 
-    private fun Project.configureJavaApplicationExtension(
-        chamaleonExtension: ChamaleonExtension?,
-        jvmServerExtension: JvmServerExtension,
-    ) {
+    private fun Project.configureJavaApplicationExtension(jvmServerExtension: JvmServerExtension) {
         extensions.configure(JavaApplication::class.java) {
             mainClass.set(jvmServerExtension.mainClass)
-
-            val isDebug =
-                chamaleonExtension?.selectedEnvironmentOrNull()?.jvmPlatformOrNull?.propertyBooleanValueOrNull(
-                    "IS_DEBUG"
-                )
-            if (isDebug == true) {
-                applicationDefaultJvmArgs = listOf("-Dio.ktor.development=true")
-            }
         }
     }
 

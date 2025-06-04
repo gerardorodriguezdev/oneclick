@@ -42,6 +42,7 @@ class WasmWebsitePlugin : Plugin<Project> {
             wasmJs {
                 browser {
                     commonWebpackConfig {
+                        this.configDirectory
                         outputFileName = wasmWebsiteExtension.outputFileName.get()
                         devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
                             static = (static ?: mutableListOf()).apply {
