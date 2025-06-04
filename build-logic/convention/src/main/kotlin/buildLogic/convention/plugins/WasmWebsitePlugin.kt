@@ -53,9 +53,9 @@ class WasmWebsitePlugin : Plugin<Project> {
                                 add(projectDirPath)
                             }
 
-                            port = wasmWebsiteExtension.webpackPort.get()
+                            port = wasmWebsiteExtension.webpackConfiguration.port.get()
 
-                            val webpackProxy = wasmWebsiteExtension.webpackProxy.orNull
+                            val webpackProxy = wasmWebsiteExtension.webpackConfiguration.proxy.orNull
                             webpackProxy?.let {
                                 proxy = mutableListOf(
                                     KotlinWebpackConfig.DevServer.Proxy(
@@ -83,7 +83,7 @@ class WasmWebsitePlugin : Plugin<Project> {
             project.layout.buildDirectory.file("$WEBPACK_CONFIG_DIRECTORY_NAME/$WEBPACK_CONFIG_FILE_NAME")
 
         val webpackConfigTask = tasks.register(CREATE_WEBPACK_CONFIG_TASK_NAME, CreateWebpackConfigTask::class.java) {
-            ignoredFiles.set(wasmWebsiteExtension.webpackIgnoredFiles)
+            ignoredFiles.set(wasmWebsiteExtension.webpackConfiguration.ignoredFiles)
             outputFile.set(webpackConfigTaskOutputFile)
         }
 

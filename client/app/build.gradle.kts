@@ -15,16 +15,19 @@ plugins {
 
 wasmWebsite {
     outputFileName.set("theoneclick.js")
-    webpackPort.set(3_000)
-    webpackProxy.set(
-        WasmWebsiteExtension.Proxy(
-            context = mutableListOf("/api"),
-            target = "http://0.0.0.0:8080",
+
+    webpackConfiguration {
+        port.set(3_000)
+        proxy.set(
+            WasmWebsiteExtension.WebpackConfiguration.Proxy(
+                context = mutableListOf("/api"),
+                target = "http://0.0.0.0:8080",
+            )
         )
-    )
-    webpackIgnoredFiles.set(
-        listOf("**/local/**")
-    )
+        ignoredFiles.set(
+            listOf("**/local/**")
+        )
+    }
 }
 
 androidApp {
