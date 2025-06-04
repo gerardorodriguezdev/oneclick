@@ -49,13 +49,18 @@ class WasmWebsitePlugin : Plugin<Project> {
                                 add(rootDirPath)
                                 add(projectDirPath)
                             }
-                            port = 3000
-                            proxy = mutableListOf(
-                                KotlinWebpackConfig.DevServer.Proxy(
-                                    context = mutableListOf("/api"),
-                                    target = "http://0.0.0.0:8080",
+
+                            port = wasmWebsiteExtension.webpackPort.get()
+
+                            val webpackProxy = wasmWebsiteExtension.webpackProxy.orNull
+                            webpackProxy?.let {
+                                proxy = mutableListOf(
+                                    KotlinWebpackConfig.DevServer.Proxy(
+                                        context = webpackProxy.context,
+                                        target = webpackProxy.target,
+                                    )
                                 )
-                            )
+                            }
                         }
                     }
 

@@ -44,6 +44,8 @@ class AndroidAppPlugin : Plugin<Project> {
             compilerOptions {
                 extraWarnings.set(true)
             }
+
+            androidTarget()
         }
     }
 

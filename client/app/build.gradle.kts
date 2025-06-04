@@ -1,3 +1,4 @@
+import buildLogic.convention.extensions.plugins.WasmWebsiteExtension
 import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.jetbrains.compose.ExperimentalComposeLibrary
 
@@ -14,6 +15,13 @@ plugins {
 
 wasmWebsite {
     outputFileName.set("theoneclick.js")
+    webpackPort.set(3_000)
+    webpackProxy.set(
+        WasmWebsiteExtension.Proxy(
+            context = mutableListOf("/api"),
+            target = "http://0.0.0.0:8080",
+        )
+    )
 }
 
 androidApp {
