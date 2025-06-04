@@ -22,6 +22,9 @@ wasmWebsite {
             target = "http://0.0.0.0:8080",
         )
     )
+    webpackIgnoredFiles.set(
+        listOf("**/local/**")
+    )
 }
 
 androidApp {

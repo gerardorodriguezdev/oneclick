@@ -1,6 +1,7 @@
 package buildLogic.convention.plugins
 
 import buildLogic.convention.extensions.plugins.WasmWebsiteExtension
+import buildLogic.convention.tasks.CreateWebpackConfigTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
@@ -15,6 +16,7 @@ class WasmWebsitePlugin : Plugin<Project> {
             applyPlugins()
             val wasmWebsiteExtension = createWasmWebsiteExtension()
             configureKotlinMultiplatformExtension(wasmWebsiteExtension)
+            registerTasks(wasmWebsiteExtension)
         }
     }
 
@@ -33,6 +35,7 @@ class WasmWebsitePlugin : Plugin<Project> {
     private fun Project.configureKotlinMultiplatformExtension(wasmWebsiteExtension: WasmWebsiteExtension) {
         val rootDirPath = rootDir.path
         val projectDirPath = projectDir.path
+        val configDir = project.layout.buildDirectory.dir(WEBPACK_CONFIG_DIRECTORY_NAME).get().asFile
 
         extensions.configure(KotlinMultiplatformExtension::class.java) {
             compilerOptions {
@@ -42,7 +45,7 @@ class WasmWebsitePlugin : Plugin<Project> {
             wasmJs {
                 browser {
                     commonWebpackConfig {
-                        this.configDirectory
+                        configDirectory = configDir
                         outputFileName = wasmWebsiteExtension.outputFileName.get()
                         devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
                             static = (static ?: mutableListOf()).apply {
@@ -75,7 +78,27 @@ class WasmWebsitePlugin : Plugin<Project> {
         }
     }
 
+    private fun Project.registerTasks(wasmWebsiteExtension: WasmWebsiteExtension) {
+        val webpackConfigTaskOutputFile =
+            project.layout.buildDirectory.file("$WEBPACK_CONFIG_DIRECTORY_NAME/$WEBPACK_CONFIG_FILE_NAME")
+
+        val webpackConfigTask = tasks.register(CREATE_WEBPACK_CONFIG_TASK_NAME, CreateWebpackConfigTask::class.java) {
+            ignoredFiles.set(wasmWebsiteExtension.webpackIgnoredFiles)
+            outputFile.set(webpackConfigTaskOutputFile)
+        }
+
+        tasks.named(JS_PACKAGE_JSON_TASK_NAME) {
+            dependsOn(webpackConfigTask)
+        }
+    }
+
     private companion object {
+        const val WEBPACK_CONFIG_DIRECTORY_NAME = "configs"
+        const val WEBPACK_CONFIG_FILE_NAME = "Config.js"
+
+        const val CREATE_WEBPACK_CONFIG_TASK_NAME = "createWebpackConfigFile"
+        const val JS_PACKAGE_JSON_TASK_NAME = "wasmJsPackageJson"
+
         const val WASM_WEBSITE_EXTENSION_NAME = "wasmWebsite"
     }
 }
