@@ -21,16 +21,24 @@ dependencyResolutionManagement {
 }
 
 include(
-    "server:app",
-    "server:mock",
-    "server:shared",
+    "client:app",
+    "client:shared:di",
+    "client:shared:ui",
+    "client:shared:navigation",
+    "client:shared:network",
+    "client:feature:home",
 )
-
-include("client:app")
 
 include(
     "shared:base",
     "shared:testing",
     "shared:dispatchers",
     "shared:timeProvider",
+)
+
+
+include(
+    "server:app",
+    "server:mock",
+    "server:shared",
 )

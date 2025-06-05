@@ -79,6 +79,7 @@ kotlin {
                 implementation(projects.shared.base)
                 implementation(projects.shared.dispatchers)
                 implementation(projects.shared.timeProvider)
+                implementation(projects.client.shared.di)
 
                 api(libs.kmp.atomicfu)
 
