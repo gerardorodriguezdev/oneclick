@@ -3,6 +3,7 @@ package theoneclick.client.app.entrypoint
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
 import androidx.navigation.NavHostController
@@ -11,18 +12,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
-import org.koin.compose.KoinContext
-import org.koin.compose.koinInject
-import org.koin.compose.viewmodel.koinViewModel
-import org.koin.core.annotation.KoinExperimentalAPI
-import org.koin.core.context.startKoin
-import org.koin.core.module.Module
-import theoneclick.client.app.di.AppModule
-import theoneclick.client.app.di.CoreModule
-import theoneclick.client.app.di.HomeModule
+import theoneclick.client.app.di.AppComponent
+import theoneclick.client.app.di.CoreComponent
 import theoneclick.client.app.extensions.RegisterNavigationControllerObserver
-import theoneclick.client.app.extensions.modules
-import theoneclick.client.app.platform.AppDependencies
 import theoneclick.client.app.ui.screenProperties.LocalScreenProperties
 import theoneclick.client.app.ui.screenProperties.ScreenProperties
 import theoneclick.client.app.ui.screens.AppScreen
@@ -37,74 +29,61 @@ import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute
 import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.*
 
 class AppEntrypoint(
-    appDependencies: AppDependencies,
-    startKoin: Boolean = true,
+    private val coreComponent: CoreComponent,
+    private val appComponent: AppComponent,
 ) {
-    val koinModules = koinModules(appDependencies)
 
-    init {
-        if (startKoin) {
-            startKoin {
-                modules(koinModules)
-            }
-        }
-    }
-
-    @OptIn(KoinExperimentalAPI::class)
     @Composable
     fun App(
         isDarkTheme: Boolean = isSystemInDarkTheme(),
         navHostController: NavHostController = rememberNavController(),
     ) {
-        KoinContext {
-            TheOneClickTheme(isDarkTheme = isDarkTheme) {
-                ScreenProperties {
-                    RegisterNavigationControllerObserver(
-                        navigationController = koinInject(),
-                        navHostController = navHostController
-                    )
+        TheOneClickTheme(isDarkTheme = isDarkTheme) {
+            ScreenProperties {
+                RegisterNavigationControllerObserver(
+                    navigationController = coreComponent.navigationController,
+                    navHostController = navHostController
+                )
 
-                    AppScreen(
-                        state = AppScreenState(
-                            navigationBar = navHostController.navigationBar(),
-                        ),
-                        onNavigationBarClick = { navigationBarRoute ->
-                            navHostController.handleNavigationBarClick(navigationBarRoute)
-                        },
+                AppScreen(
+                    state = AppScreenState(
+                        navigationBar = navHostController.navigationBar(),
+                    ),
+                    onNavigationBarClick = { navigationBarRoute ->
+                        navHostController.handleNavigationBarClick(navigationBarRoute)
+                    },
+                ) {
+                    NavHost(
+                        navController = navHostController,
+                        startDestination = Init,
                     ) {
-                        NavHost(
-                            navController = navHostController,
-                            startDestination = Init,
-                        ) {
-                            composable<Init> {
-                                @Suppress("UnusedPrivateProperty")
-                                val initViewModel: InitViewModel = koinViewModel()
-                                LoadingScreen()
-                            }
+                        composable<Init> {
+                            @Suppress("UnusedPrivateProperty")
+                            val initViewModel: InitViewModel = viewModel { appComponent.initViewModelFactory() }
+                            LoadingScreen()
+                        }
 
-                            composable<Login> {
-                                val loginViewModel: LoginViewModel = koinViewModel()
-                                LoginScreen(
-                                    state = loginViewModel.state.value,
-                                    onEvent = loginViewModel::onEvent,
-                                )
-                            }
+                        composable<Login> {
+                            val loginViewModel: LoginViewModel = viewModel { appComponent.loginViewModelFactory() }
+                            LoginScreen(
+                                state = loginViewModel.state.value,
+                                onEvent = loginViewModel::onEvent,
+                            )
+                        }
 
-                            navigation<Home>(startDestination = DevicesList) {
-                                home(navHostController)
+                        navigation<Home>(startDestination = DevicesList) {
+                            val homeEntrypoint = HomeEntrypoint(
+                                navController = navHostController,
+                                coreComponent = coreComponent
+                            )
+                            with(homeEntrypoint) {
+                                home()
                             }
                         }
                     }
                 }
             }
         }
-    }
-
-    private fun koinModules(appDependencies: AppDependencies): List<Module> {
-        val coreModule = CoreModule(appDependencies)
-        val appModule = AppModule(coreModule)
-        val homeModule = HomeModule(coreModule)
-        return listOf(coreModule, appModule, homeModule).modules()
     }
 
     private fun NavDestination.toNavigationBarRoute(): NavigationBarRoute? =

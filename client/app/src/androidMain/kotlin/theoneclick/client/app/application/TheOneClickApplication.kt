@@ -9,6 +9,9 @@ import theoneclick.client.app.buildkonfig.BuildKonfig
 import theoneclick.client.app.dataSources.AndroidEncryptedPreferences
 import theoneclick.client.app.dataSources.AndroidLocalTokenDataSource
 import theoneclick.client.app.dataSources.EncryptedPreferences
+import theoneclick.client.app.di.AppComponent
+import theoneclick.client.app.di.CoreComponent
+import theoneclick.client.app.di.create
 import theoneclick.client.app.entrypoint.AppEntrypoint
 import theoneclick.client.app.mappers.urlProtocol
 import theoneclick.client.app.navigation.DefaultNavigationController
@@ -54,7 +57,9 @@ class TheOneClickApplication : Application() {
                 tokenDataSource = tokenDataSource,
             )
         )
-        appEntrypoint = AppEntrypoint(appDependencies)
+        val coreComponent = CoreComponent::class.create(appDependencies)
+        val appComponent = AppComponent::class.create(coreComponent)
+        appEntrypoint = AppEntrypoint(appComponent = appComponent, coreComponent = coreComponent)
     }
 
     private fun setupStrictThreadPolicy() {

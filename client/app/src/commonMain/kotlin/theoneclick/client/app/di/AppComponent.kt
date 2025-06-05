@@ -1,0 +1,13 @@
+package theoneclick.client.app.di
+
+import me.tatarka.inject.annotations.Component
+import theoneclick.client.app.viewModels.InitViewModel
+import theoneclick.client.app.viewModels.LoginViewModel
+
+@Component
+abstract class AppComponent(
+    @Component val coreComponent: CoreComponent
+) {
+    abstract val initViewModelFactory: () -> InitViewModel
+    abstract val loginViewModelFactory: () -> LoginViewModel
+}

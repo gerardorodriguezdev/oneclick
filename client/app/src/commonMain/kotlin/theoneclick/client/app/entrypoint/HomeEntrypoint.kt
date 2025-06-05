@@ -1,46 +1,73 @@
 package theoneclick.client.app.entrypoint
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
-import org.koin.compose.viewmodel.koinViewModel
-import theoneclick.client.app.di.HomeModule.Companion.HOME_SCOPE
-import theoneclick.client.app.extensions.getOrCreateScope
+import theoneclick.client.app.di.CoreComponent
+import theoneclick.client.app.di.HomeComponent
+import theoneclick.client.app.di.createHomeComponent
 import theoneclick.client.app.ui.screens.homeScreen.AddDeviceScreen
 import theoneclick.client.app.ui.screens.homeScreen.DevicesListScreen
 import theoneclick.client.app.ui.screens.homeScreen.UserSettingsScreen
 import theoneclick.client.app.viewModels.homeScreen.AddDeviceViewModel
 import theoneclick.client.app.viewModels.homeScreen.DevicesListViewModel
 import theoneclick.client.app.viewModels.homeScreen.UserSettingsViewModel
+import theoneclick.shared.core.models.routes.AppRoute.Home
 import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.*
 
-fun NavGraphBuilder.home(navHostController: NavHostController) {
-    composable<DevicesList> {
-        val scope = navHostController.getOrCreateScope(HOME_SCOPE)
-        val devicesListViewModel: DevicesListViewModel = koinViewModel(scope = scope)
-        DevicesListScreen(
-            state = devicesListViewModel.state.value,
-            onEvent = devicesListViewModel::onEvent,
-        )
+class HomeEntrypoint(
+    private val navController: NavController,
+    private val coreComponent: CoreComponent,
+) {
+
+    fun NavGraphBuilder.home() {
+        composable<DevicesList> { navBackstackEntry ->
+            val homeComponent = getOrBuildHomeComponent(navBackstackEntry)
+            val devicesListViewModel: DevicesListViewModel = viewModel { homeComponent.devicesListViewModelFactory() }
+
+            DevicesListScreen(
+                state = devicesListViewModel.state.value,
+                onEvent = devicesListViewModel::onEvent,
+            )
+        }
+
+        composable<AddDevice> { navBackstackEntry ->
+            val homeComponent = getOrBuildHomeComponent(navBackstackEntry)
+            val addDeviceViewModel: AddDeviceViewModel = viewModel { homeComponent.addDeviceViewModelFactory() }
+
+            AddDeviceScreen(
+                state = addDeviceViewModel.state.value,
+                onEvent = addDeviceViewModel::onEvent,
+            )
+        }
+
+        composable<UserSettings> { navBackstackEntry ->
+            val homeComponent = getOrBuildHomeComponent(navBackstackEntry)
+            val userSettingsViewModel: UserSettingsViewModel =
+                viewModel { homeComponent.userSettingsViewModelFactory() }
+
+            UserSettingsScreen(
+                state = userSettingsViewModel.state.value,
+                onEvent = userSettingsViewModel::onEvent,
+            )
+        }
     }
 
-    composable<AddDevice> {
-        val scope = navHostController.getOrCreateScope(HOME_SCOPE)
-        val addDeviceViewModel: AddDeviceViewModel = koinViewModel(scope = scope)
-        AddDeviceScreen(
-            state = addDeviceViewModel.state.value,
-            onEvent = addDeviceViewModel::onEvent,
-        )
+    @Composable
+    private fun getOrBuildHomeComponent(navBackstackEntry: NavBackStackEntry): HomeComponent {
+        val parentEntry = remember(navBackstackEntry) {
+            navController.getBackStackEntry<Home>()
+        }
+        val homeViewModel = viewModel(parentEntry) { HomeViewModel(coreComponent) }
+        return homeViewModel.homeComponent
     }
 
-    composable<UserSettings> {
-        val scope = navHostController.getOrCreateScope(HOME_SCOPE)
-        val userSettingsViewModel: UserSettingsViewModel =
-            koinViewModel(scope = scope)
-
-        UserSettingsScreen(
-            state = userSettingsViewModel.state.value,
-            onEvent = userSettingsViewModel::onEvent,
-        )
+    private class HomeViewModel(coreComponent: CoreComponent) : ViewModel() {
+        val homeComponent: HomeComponent = createHomeComponent(coreComponent)
     }
 }
