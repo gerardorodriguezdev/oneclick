@@ -27,13 +27,14 @@ fun TheOneClickTheme(isDarkTheme: Boolean, content: @Composable () -> Unit) {
     )
 }
 
+//TODO: Expect/actual issue warning
+//TODO: Refactor di
 //TODO: Report errors from vm bubble to parent
 //TODO: Sep ui state from logic state
 //TODO: Update AddDevice + DevicesList (vm + ui)
 //TODO: Update public/private methods
 //TODO: Make AppScreen cleaner
 //TODO: UI to other module + Presentation to other module
-//TODO: Static di
 //TODO: Separate home module
 //TODO: Maybe sources abstraction
 //TODO: Common models to safe validated ones? token, deviceName, roomName, rotation range, uuid, username, password

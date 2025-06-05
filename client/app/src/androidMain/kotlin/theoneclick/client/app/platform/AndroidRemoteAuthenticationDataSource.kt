@@ -60,7 +60,7 @@ class AndroidRemoteAuthenticationDataSource(
         username: String,
         password: String
     ): Flow<RequestLoginResult> =
-        flow<RequestLoginResult> {
+        flow {
             val response = httpClient.post(ClientEndpoint.REQUEST_LOGIN.route) {
                 setBody(
                     RequestLoginRequest(

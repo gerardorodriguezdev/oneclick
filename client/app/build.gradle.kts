@@ -75,6 +75,7 @@ kotlin {
                 implementation(libs.kmp.immutable)
                 implementation(libs.kmp.window.classes)
                 implementation(libs.kmp.kotlin.inject)
+                implementation(libs.kmp.kotlin.inject.kmp)
                 implementation(projects.shared.base)
                 implementation(projects.shared.dispatchers)
                 implementation(projects.shared.timeProvider)
@@ -82,7 +83,9 @@ kotlin {
                 api(libs.kmp.atomicfu)
 
                 project.dependencies {
-                    ksp(libs.ksp.kotlin.inject)
+                    kspCommonMainMetadata(libs.ksp.kotlin.inject)
+                    kspAndroid(libs.ksp.kotlin.inject)
+                    kspWasmJs(libs.ksp.kotlin.inject)
                 }
             }
         }

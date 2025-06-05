@@ -84,6 +84,7 @@ kmp-test-ktor-server-host = { module = "io.ktor:ktor-server-test-host", version.
 kmp-test-turbine = { module = "app.cash.turbine:turbine", version.ref = "kmp-test-turbine" }
 ksp-kotlin-inject = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kmp-kotlin-inject"}
 kmp-kotlin-inject = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kmp-kotlin-inject"}
+kmp-kotlin-inject-kmp = { module = "me.tatarka.inject:kotlin-inject-runtime-kmp", version.ref = "kmp-kotlin-inject"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
