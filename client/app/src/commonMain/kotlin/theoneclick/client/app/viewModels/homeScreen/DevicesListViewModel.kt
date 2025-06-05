@@ -9,12 +9,14 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Inject
 import theoneclick.client.app.models.results.DevicesResult
 import theoneclick.client.app.models.results.UpdateDeviceResult
 import theoneclick.client.app.repositories.DevicesRepository
 import theoneclick.client.app.ui.events.homeScreen.DevicesListEvent
 import theoneclick.client.app.ui.states.homeScreen.DevicesListState
 
+@Inject
 class DevicesListViewModel(
     private val devicesRepository: DevicesRepository,
 ) : ViewModel() {

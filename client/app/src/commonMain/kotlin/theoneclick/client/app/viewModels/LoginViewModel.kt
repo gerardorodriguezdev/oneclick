@@ -8,6 +8,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Inject
 import theoneclick.client.app.extensions.popUpToInclusive
 import theoneclick.client.app.models.results.RequestLoginResult
 import theoneclick.client.app.navigation.NavigationController
@@ -19,6 +20,7 @@ import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.core.validators.passwordValidator
 import theoneclick.shared.core.validators.usernameValidator
 
+@Inject
 class LoginViewModel(
     private val navigationController: NavigationController,
     private val authenticationDataSource: AuthenticationDataSource,

@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Inject
 import theoneclick.client.app.extensions.popUpToInclusive
 import theoneclick.client.app.models.results.UserLoggedResult
 import theoneclick.client.app.navigation.NavigationController
@@ -11,6 +12,7 @@ import theoneclick.client.app.navigation.NavigationController.NavigationEvent.Na
 import theoneclick.client.app.platform.AuthenticationDataSource
 import theoneclick.shared.core.models.routes.AppRoute
 
+@Inject
 class InitViewModel(
     private val navigationController: NavigationController,
     private val authenticationDataSource: AuthenticationDataSource,

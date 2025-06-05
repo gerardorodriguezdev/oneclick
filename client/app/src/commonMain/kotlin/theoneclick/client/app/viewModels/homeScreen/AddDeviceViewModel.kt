@@ -8,6 +8,7 @@ import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
+import me.tatarka.inject.annotations.Inject
 import theoneclick.client.app.models.results.AddDeviceResult
 import theoneclick.client.app.repositories.DevicesRepository
 import theoneclick.client.app.ui.events.homeScreen.AddDeviceEvent
@@ -15,6 +16,7 @@ import theoneclick.client.app.ui.states.homeScreen.AddDeviceState
 import theoneclick.shared.core.validators.deviceNameValidator
 import theoneclick.shared.core.validators.roomNameValidator
 
+@Inject
 class AddDeviceViewModel(private val devicesRepository: DevicesRepository) : ViewModel() {
     private val _state = mutableStateOf(AddDeviceState())
     val state: State<AddDeviceState> = _state
