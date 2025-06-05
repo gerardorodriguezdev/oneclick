@@ -5,11 +5,11 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
-import theoneclick.client.app.extensions.popUpToInclusive
-import theoneclick.client.app.models.results.UserLoggedResult
-import theoneclick.client.app.navigation.NavigationController
-import theoneclick.client.app.navigation.NavigationController.NavigationEvent.Navigate
-import theoneclick.client.app.platform.AuthenticationDataSource
+import theoneclick.client.shared.navigation.NavigationController
+import theoneclick.client.shared.navigation.NavigationController.NavigationEvent.Navigate
+import theoneclick.client.shared.navigation.popUpToInclusive
+import theoneclick.client.shared.network.models.UserLoggedResult
+import theoneclick.client.shared.network.platform.AuthenticationDataSource
 import theoneclick.shared.core.models.routes.AppRoute
 
 @Inject

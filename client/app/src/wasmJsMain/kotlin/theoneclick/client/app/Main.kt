@@ -11,12 +11,11 @@ import kotlinx.browser.document
 import kotlinx.browser.window
 import theoneclick.client.app.buildkonfig.BuildKonfig
 import theoneclick.client.app.di.AppComponent
-import theoneclick.client.app.di.CoreComponent
 import theoneclick.client.app.di.create
+import theoneclick.client.app.di.wasmCoreComponent
 import theoneclick.client.app.entrypoint.AppEntrypoint
-import theoneclick.client.app.navigation.DefaultNavigationController
-import theoneclick.client.app.platform.WasmAppDependencies
-import theoneclick.client.app.platform.WasmLogoutManager
+import theoneclick.client.shared.navigation.DefaultNavigationController
+import theoneclick.client.shared.network.platform.WasmLogoutManager
 import theoneclick.shared.core.platform.EmptyAppLogger
 import theoneclick.shared.core.platform.appLogger
 import theoneclick.shared.dispatchers.platform.dispatchersProvider
@@ -25,14 +24,13 @@ import theoneclick.shared.dispatchers.platform.dispatchersProvider
 fun main() {
     val appLogger = if (BuildKonfig.IS_DEBUG) appLogger() else EmptyAppLogger()
     val navigationController = DefaultNavigationController(appLogger)
-    val appDependencies = WasmAppDependencies(
+    val coreComponent = wasmCoreComponent(
         httpClientEngine = Js.create(),
         appLogger = appLogger,
         dispatchersProvider = dispatchersProvider(),
         navigationController = navigationController,
         logoutManager = WasmLogoutManager(navigationController)
     )
-    val coreComponent = CoreComponent::class.create(appDependencies)
     val appComponent = AppComponent::class.create(coreComponent)
     val appEntrypoint = AppEntrypoint(appComponent = appComponent, coreComponent = coreComponent)
     ComposeViewport(requireNotNull(document.body)) {

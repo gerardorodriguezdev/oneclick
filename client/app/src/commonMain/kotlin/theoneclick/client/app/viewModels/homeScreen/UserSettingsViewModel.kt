@@ -9,10 +9,10 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
-import theoneclick.client.app.models.results.LogoutResult
-import theoneclick.client.app.platform.AuthenticationDataSource
 import theoneclick.client.app.ui.events.homeScreen.UserSettingsEvent
 import theoneclick.client.app.ui.states.homeScreen.UserSettingsState
+import theoneclick.client.shared.network.models.LogoutResult
+import theoneclick.client.shared.network.platform.AuthenticationDataSource
 
 @Inject
 class UserSettingsViewModel(

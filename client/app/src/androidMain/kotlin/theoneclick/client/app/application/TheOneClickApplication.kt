@@ -6,19 +6,18 @@ import android.os.StrictMode.ThreadPolicy
 import android.os.StrictMode.VmPolicy
 import io.ktor.http.*
 import theoneclick.client.app.buildkonfig.BuildKonfig
-import theoneclick.client.app.dataSources.AndroidEncryptedPreferences
-import theoneclick.client.app.dataSources.AndroidLocalTokenDataSource
-import theoneclick.client.app.dataSources.EncryptedPreferences
 import theoneclick.client.app.di.AppComponent
-import theoneclick.client.app.di.CoreComponent
+import theoneclick.client.app.di.androidCoreComponent
 import theoneclick.client.app.di.create
 import theoneclick.client.app.entrypoint.AppEntrypoint
 import theoneclick.client.app.mappers.urlProtocol
-import theoneclick.client.app.navigation.DefaultNavigationController
-import theoneclick.client.app.platform.AndroidAppDependencies
-import theoneclick.client.app.platform.AndroidLogoutManager
-import theoneclick.client.app.platform.androidHttpClientEngine
-import theoneclick.client.app.security.AndroidEncryptor
+import theoneclick.client.shared.navigation.DefaultNavigationController
+import theoneclick.client.shared.network.dataSources.AndroidEncryptedPreferences
+import theoneclick.client.shared.network.dataSources.AndroidLocalTokenDataSource
+import theoneclick.client.shared.network.dataSources.EncryptedPreferences
+import theoneclick.client.shared.network.platform.AndroidLogoutManager
+import theoneclick.client.shared.network.platform.androidHttpClientEngine
+import theoneclick.client.shared.network.security.AndroidEncryptor
 import theoneclick.shared.core.platform.EmptyAppLogger
 import theoneclick.shared.core.platform.appLogger
 import theoneclick.shared.dispatchers.platform.dispatchersProvider
@@ -45,7 +44,10 @@ class TheOneClickApplication : Application() {
         )
         val tokenDataSource = AndroidLocalTokenDataSource(encryptedPreferences)
         val navigationController = DefaultNavigationController(appLogger)
-        val appDependencies = AndroidAppDependencies(
+        val coreComponent = androidCoreComponent(
+            urlProtocol = BuildKonfig.urlProtocol(),
+            host = BuildKonfig.HOST,
+            port = BuildKonfig.PORT,
             appLogger = appLogger,
             httpClientEngine = androidHttpClientEngine(timeProvider = SystemTimeProvider()),
             tokenDataSource = tokenDataSource,
@@ -57,7 +59,6 @@ class TheOneClickApplication : Application() {
                 tokenDataSource = tokenDataSource,
             )
         )
-        val coreComponent = CoreComponent::class.create(appDependencies)
         val appComponent = AppComponent::class.create(coreComponent)
         appEntrypoint = AppEntrypoint(appComponent = appComponent, coreComponent = coreComponent)
     }

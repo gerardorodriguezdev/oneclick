@@ -11,6 +11,7 @@ import theoneclick.client.app.repositories.InMemoryDevicesRepository
 import theoneclick.client.app.viewModels.homeScreen.AddDeviceViewModel
 import theoneclick.client.app.viewModels.homeScreen.DevicesListViewModel
 import theoneclick.client.app.viewModels.homeScreen.UserSettingsViewModel
+import theoneclick.client.shared.di.CoreComponent
 
 @HomeScope
 @Component

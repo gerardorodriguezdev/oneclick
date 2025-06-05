@@ -60,7 +60,6 @@ kotlin {
                 implementation(compose.material3)
                 implementation(compose.materialIconsExtended)
                 implementation(compose.ui)
-                implementation(compose.foundation)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.kmp.coroutines)
@@ -80,6 +79,8 @@ kotlin {
                 implementation(projects.shared.dispatchers)
                 implementation(projects.shared.timeProvider)
                 implementation(projects.client.shared.di)
+                implementation(projects.client.shared.network)
+                implementation(projects.client.shared.navigation)
 
                 api(libs.kmp.atomicfu)
 

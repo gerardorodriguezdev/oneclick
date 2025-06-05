@@ -13,8 +13,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navigation
 import theoneclick.client.app.di.AppComponent
-import theoneclick.client.app.di.CoreComponent
-import theoneclick.client.app.extensions.RegisterNavigationControllerObserver
 import theoneclick.client.app.ui.screenProperties.LocalScreenProperties
 import theoneclick.client.app.ui.screenProperties.ScreenProperties
 import theoneclick.client.app.ui.screens.AppScreen
@@ -24,6 +22,8 @@ import theoneclick.client.app.ui.screens.LoginScreen
 import theoneclick.client.app.ui.theme.TheOneClickTheme
 import theoneclick.client.app.viewModels.InitViewModel
 import theoneclick.client.app.viewModels.LoginViewModel
+import theoneclick.client.shared.di.CoreComponent
+import theoneclick.client.shared.navigation.RegisterNavigationControllerObserver
 import theoneclick.shared.core.models.routes.AppRoute.*
 import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute
 import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.*

@@ -3,6 +3,7 @@ package theoneclick.client.app.di
 import me.tatarka.inject.annotations.Component
 import theoneclick.client.app.viewModels.InitViewModel
 import theoneclick.client.app.viewModels.LoginViewModel
+import theoneclick.client.shared.di.CoreComponent
 
 @Component
 abstract class AppComponent(

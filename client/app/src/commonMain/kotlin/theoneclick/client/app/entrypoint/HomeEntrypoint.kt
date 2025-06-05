@@ -8,7 +8,6 @@ import androidx.navigation.NavBackStackEntry
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
-import theoneclick.client.app.di.CoreComponent
 import theoneclick.client.app.di.HomeComponent
 import theoneclick.client.app.di.createHomeComponent
 import theoneclick.client.app.ui.screens.homeScreen.AddDeviceScreen
@@ -17,6 +16,7 @@ import theoneclick.client.app.ui.screens.homeScreen.UserSettingsScreen
 import theoneclick.client.app.viewModels.homeScreen.AddDeviceViewModel
 import theoneclick.client.app.viewModels.homeScreen.DevicesListViewModel
 import theoneclick.client.app.viewModels.homeScreen.UserSettingsViewModel
+import theoneclick.client.shared.di.CoreComponent
 import theoneclick.shared.core.models.routes.AppRoute.Home
 import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.*
 
