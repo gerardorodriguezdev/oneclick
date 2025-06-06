@@ -32,18 +32,11 @@ class AppScreenStateProvider : PreviewParameterProvider<PreviewModel<AppScreenSt
 
     companion object Companion {
         const val SNACKBAR_TEXT = "SnackBarText"
-        private val hiddenSnackbar = SnackbarState(
-            showSnackbar = false,
-            text = "",
-            isError = false,
-        )
         private val successSnackbar = SnackbarState(
-            showSnackbar = true,
             text = SNACKBAR_TEXT,
             isError = false,
         )
         private val errorSnackbar = SnackbarState(
-            showSnackbar = true,
             text = SNACKBAR_TEXT,
             isError = true,
         )
@@ -69,7 +62,7 @@ class AppScreenStateProvider : PreviewParameterProvider<PreviewModel<AppScreenSt
 
         private fun appState(
             navigationBar: NavigationBar? = null,
-            snackbarState: SnackbarState = hiddenSnackbar,
+            snackbarState: SnackbarState? = null,
         ): AppScreenState =
             AppScreenState(
                 navigationBar = navigationBar,

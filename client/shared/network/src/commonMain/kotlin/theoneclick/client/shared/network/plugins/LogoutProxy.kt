@@ -5,7 +5,7 @@ import io.ktor.client.statement.*
 import io.ktor.http.*
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
 
-val LogoutProxy = createClientPlugin("LogoutProxy", ::LogoutManagerConfiguration) {
+val LogoutProxy = createClientPlugin("LogoutProxy", ::LogoutProxyConfiguration) {
     val onLogout = pluginConfig.onLogout
 
     onResponse { response ->
@@ -21,6 +21,6 @@ val LogoutProxy = createClientPlugin("LogoutProxy", ::LogoutManagerConfiguration
     }
 }
 
-class LogoutManagerConfiguration(
+class LogoutProxyConfiguration(
     var onLogout: suspend () -> Unit = {},
 )

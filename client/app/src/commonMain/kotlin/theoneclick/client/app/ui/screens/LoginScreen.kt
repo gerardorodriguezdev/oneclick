@@ -32,12 +32,8 @@ fun LoginScreen(
     state: LoginState,
     onEvent: (event: LoginEvent) -> Unit,
 ) {
-    Box(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        Card(
-            modifier = Modifier.align(Alignment.Center)
-        ) {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Card(modifier = Modifier.align(Alignment.Center)) {
             FormContent(
                 username = state.username,
                 onUsernameChange = { newUsername -> onEvent(LoginEvent.UsernameChanged(newUsername)) },

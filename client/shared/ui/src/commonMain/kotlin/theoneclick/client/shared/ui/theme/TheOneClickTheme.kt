@@ -27,10 +27,8 @@ fun TheOneClickTheme(isDarkTheme: Boolean, content: @Composable () -> Unit) {
     )
 }
 
-//TODO: Report errors from vm bubble to parent
 //TODO: Sep ui state from logic state
 //TODO: Update AddDevice + DevicesList (vm + ui)
-//TODO: Make AppScreen cleaner
 //TODO: UI to other module + Presentation to other module
 //TODO: Separate home module
 //TODO: Maybe sources abstraction

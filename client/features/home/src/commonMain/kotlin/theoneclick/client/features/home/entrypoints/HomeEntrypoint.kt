@@ -15,14 +15,14 @@ import theoneclick.client.features.home.ui.screens.AddDeviceScreen
 import theoneclick.client.features.home.ui.screens.DevicesListScreen
 import theoneclick.client.features.home.ui.screens.UserSettingsScreen
 import theoneclick.client.shared.di.CoreComponent
-import theoneclick.shared.core.models.routes.AppRoute
-import theoneclick.shared.core.models.routes.HomeRoute
+import theoneclick.shared.core.models.routes.AppRoute.Home
+import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute
 
 class HomeEntrypoint(private val coreComponent: CoreComponent) {
 
     fun NavGraphBuilder.home(navController: NavController) {
-        navigation<AppRoute.Home>(startDestination = HomeRoute.NavigationBarRoute.DevicesList) {
-            composable<HomeRoute.NavigationBarRoute.DevicesList> { navBackstackEntry ->
+        navigation<Home>(startDestination = NavigationBarRoute.DevicesList) {
+            composable<NavigationBarRoute.DevicesList> { navBackstackEntry ->
                 val homeComponent = navController.getOrBuildHomeComponent(navBackstackEntry)
                 val devicesListViewModel = viewModel { homeComponent.devicesListViewModelFactory() }
 
@@ -32,7 +32,7 @@ class HomeEntrypoint(private val coreComponent: CoreComponent) {
                 )
             }
 
-            composable<HomeRoute.NavigationBarRoute.AddDevice> { navBackstackEntry ->
+            composable<NavigationBarRoute.AddDevice> { navBackstackEntry ->
                 val homeComponent = navController.getOrBuildHomeComponent(navBackstackEntry)
                 val addDeviceViewModel = viewModel { homeComponent.addDeviceViewModelFactory() }
 
@@ -42,7 +42,7 @@ class HomeEntrypoint(private val coreComponent: CoreComponent) {
                 )
             }
 
-            composable<HomeRoute.NavigationBarRoute.UserSettings> { navBackstackEntry ->
+            composable<NavigationBarRoute.UserSettings> { navBackstackEntry ->
                 val homeComponent = navController.getOrBuildHomeComponent(navBackstackEntry)
                 val userSettingsViewModel = viewModel { homeComponent.userSettingsViewModelFactory() }
 
@@ -56,7 +56,7 @@ class HomeEntrypoint(private val coreComponent: CoreComponent) {
 
     @Composable
     private fun NavController.getOrBuildHomeComponent(navBackstackEntry: NavBackStackEntry): HomeComponent {
-        val parentEntry = remember(navBackstackEntry) { getBackStackEntry<AppRoute.Home>() }
+        val parentEntry = remember(navBackstackEntry) { getBackStackEntry<Home>() }
         val homeViewModel = viewModel(parentEntry) { HomeViewModel(coreComponent) }
         return homeViewModel.homeComponent
     }

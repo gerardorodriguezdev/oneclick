@@ -96,7 +96,7 @@ internal class AddDeviceViewModel(
                         }
 
                         is AddDeviceResult.Error -> {
-                            notificationsController.showSuccessNotification(
+                            notificationsController.showErrorNotification(
                                 getString(Res.string.addDeviceScreen_snackbar_unknownError)
                             )
                         }

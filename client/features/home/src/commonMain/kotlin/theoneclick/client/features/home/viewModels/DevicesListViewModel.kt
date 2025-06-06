@@ -30,7 +30,6 @@ internal class DevicesListViewModel(
     val state: State<DevicesListState> = _state
 
     private var requestDevicesJob: Job? = null
-
     private var updateDeviceJob: Job? = null
 
     init {

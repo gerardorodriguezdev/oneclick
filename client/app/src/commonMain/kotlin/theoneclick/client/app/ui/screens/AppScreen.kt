@@ -41,12 +41,14 @@ fun AppScreen(
             SnackbarHost(
                 hostState = snackbarHostState,
                 snackbar = { snackbarData ->
-                    DefaultSnackbar(
-                        state = DefaultSnackbarState(
-                            snackbarData = snackbarData,
-                            isError = state.snackbarState.isError,
+                    state.snackbarState?.let {
+                        DefaultSnackbar(
+                            state = DefaultSnackbarState(
+                                snackbarData = snackbarData,
+                                isError = state.snackbarState.isError,
+                            )
                         )
-                    )
+                    }
                 }
             )
         },
@@ -78,8 +80,8 @@ fun AppScreen(
     )
 
     val onSnackbarShown by rememberUpdatedState(onSnackbarShown)
-    LaunchedEffect(state.snackbarState.showSnackbar) {
-        if (state.snackbarState.showSnackbar) {
+    LaunchedEffect(state.snackbarState) {
+        if (state.snackbarState != null) {
             snackbarHostState.showSnackbar(state.snackbarState.text)
             onSnackbarShown()
         }
@@ -174,7 +176,7 @@ private fun NavigationBarRoute.toLabel(): String =
 
 data class AppScreenState(
     val navigationBar: NavigationBar?,
-    val snackbarState: SnackbarState,
+    val snackbarState: SnackbarState?,
 ) {
     sealed interface NavigationBar {
         val selectedRoute: NavigationBarRoute
@@ -184,7 +186,6 @@ data class AppScreenState(
     }
 
     data class SnackbarState(
-        val showSnackbar: Boolean,
         val text: String,
         val isError: Boolean,
     )

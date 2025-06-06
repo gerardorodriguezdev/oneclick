@@ -50,11 +50,10 @@ class AppEntrypoint(
                 )
 
                 val coroutineScope = rememberCoroutineScope()
-                val notification = coreComponent.notificationsController.notificationEvents.collectAsState(null)
                 AppScreen(
                     state = AppScreenState(
                         navigationBar = navHostController.navigationBar(),
-                        snackbarState = notification.value.toSnackbarState(),
+                        snackbarState = snackbarState(),
                     ),
                     onNavigationBarClick = { navigationBarRoute ->
                         navHostController.handleNavigationBarClick(navigationBarRoute)
@@ -127,15 +126,22 @@ class AppEntrypoint(
         }
     }
 
-    private fun Notification?.toSnackbarState(): AppScreenState.SnackbarState =
-        when (this) {
-            null -> AppScreenState.SnackbarState(showSnackbar = false, text = "", isError = false)
-            is Notification.Success -> AppScreenState.SnackbarState(
-                showSnackbar = true,
-                text = message,
-                isError = false
-            )
+    @Composable
+    private fun snackbarState(): AppScreenState.SnackbarState? {
+        val notification = coreComponent.notificationsController.notificationEvents.collectAsState(null).value
+        return when (notification) {
+            null -> null
+            is Notification.Success ->
+                AppScreenState.SnackbarState(
+                    text = notification.message,
+                    isError = false
+                )
 
-            is Notification.Error -> AppScreenState.SnackbarState(showSnackbar = true, text = message, isError = true)
+            is Notification.Error ->
+                AppScreenState.SnackbarState(
+                    text = notification.message,
+                    isError = true
+                )
         }
+    }
 }
