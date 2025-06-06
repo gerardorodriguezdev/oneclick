@@ -16,8 +16,8 @@ import theoneclick.client.feature.home.generated.resources.userSettingsScreen_sn
 import theoneclick.client.feature.home.generated.resources.userSettingsScreen_snackbar_unknownError
 import theoneclick.client.feature.home.generated.resources.userSettingsScreen_title_userSettings
 import theoneclick.client.feature.home.states.UserSettingsState
-import theoneclick.client.feature.home.ui.screens.UserSettingsTestTags.TITLE_TEST_TAG
 import theoneclick.client.feature.home.ui.events.UserSettingsEvent
+import theoneclick.client.feature.home.ui.screens.UserSettingsTestTags.TITLE_TEST_TAG
 import theoneclick.client.shared.ui.components.DefaultButton
 import theoneclick.client.shared.ui.components.DefaultScaffold
 import theoneclick.client.shared.ui.components.SnackbarState
@@ -25,7 +25,7 @@ import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 
 @Composable
-fun UserSettingsScreen(
+internal fun UserSettingsScreen(
     state: UserSettingsState,
     onEvent: (event: UserSettingsEvent) -> Unit,
 ) {
@@ -83,12 +83,12 @@ private fun snackbarText(isErrorType: Boolean) =
         stringResource(Res.string.userSettingsScreen_snackbar_logout)
     }
 
-object UserSettingsTestTags {
+internal object UserSettingsTestTags {
     const val TITLE_TEST_TAG = "UserSettingsScreen.Title"
 }
 
 @Composable
-fun UserSettingsPreview(previewModel: PreviewModel<UserSettingsState>) {
+internal fun UserSettingsPreview(previewModel: PreviewModel<UserSettingsState>) {
     ScreenPreviewComposable(previewModel) {
         UserSettingsScreen(
             state = previewModel.model,

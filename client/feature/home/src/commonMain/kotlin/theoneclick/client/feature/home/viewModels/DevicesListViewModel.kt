@@ -17,7 +17,7 @@ import theoneclick.client.feature.home.states.DevicesListState
 import theoneclick.client.feature.home.ui.events.DevicesListEvent
 
 @Inject
-class DevicesListViewModel(
+internal class DevicesListViewModel(
     private val devicesRepository: DevicesRepository,
 ) : ViewModel() {
 

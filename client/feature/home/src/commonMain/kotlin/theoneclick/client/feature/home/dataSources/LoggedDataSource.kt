@@ -22,7 +22,7 @@ import theoneclick.shared.core.models.responses.DevicesResponse
 import theoneclick.shared.core.platform.AppLogger
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
-interface LoggedDataSource {
+internal interface LoggedDataSource {
     fun addDevice(
         deviceName: String,
         room: String,
@@ -35,7 +35,7 @@ interface LoggedDataSource {
 }
 
 @Inject
-class RemoteLoggedDataSource(
+internal class RemoteLoggedDataSource(
     private val httpClient: HttpClient,
     private val dispatchersProvider: DispatchersProvider,
     private val appLogger: AppLogger,

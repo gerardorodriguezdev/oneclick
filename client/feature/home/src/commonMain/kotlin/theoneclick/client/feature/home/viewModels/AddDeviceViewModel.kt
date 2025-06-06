@@ -17,7 +17,7 @@ import theoneclick.shared.core.validators.deviceNameValidator
 import theoneclick.shared.core.validators.roomNameValidator
 
 @Inject
-class AddDeviceViewModel(private val devicesRepository: DevicesRepository) : ViewModel() {
+internal class AddDeviceViewModel(private val devicesRepository: DevicesRepository) : ViewModel() {
     private val _state = mutableStateOf(AddDeviceState())
     val state: State<AddDeviceState> = _state
 

@@ -15,7 +15,7 @@ import theoneclick.client.shared.network.models.LogoutResult
 import theoneclick.client.shared.network.platform.AuthenticationDataSource
 
 @Inject
-class UserSettingsViewModel(
+internal class UserSettingsViewModel(
     private val authenticationDataSource: AuthenticationDataSource,
 ) : ViewModel() {
     private val _state = mutableStateOf(UserSettingsState())

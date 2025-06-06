@@ -2,7 +2,7 @@ package theoneclick.client.feature.home.states
 
 import theoneclick.shared.core.models.entities.DeviceType
 
-data class AddDeviceState(
+internal data class AddDeviceState(
     val deviceName: String = "",
     val isDeviceNameValid: Boolean? = null,
 

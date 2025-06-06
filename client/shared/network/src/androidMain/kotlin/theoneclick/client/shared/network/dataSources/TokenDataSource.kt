@@ -8,7 +8,7 @@ interface TokenDataSource {
     suspend fun clear()
 }
 
-class AndroidInMemoryTokenDataSource : TokenDataSource {
+internal class AndroidInMemoryTokenDataSource : TokenDataSource {
     private var token: String? = null
 
     override suspend fun token(): String? = token
@@ -25,7 +25,7 @@ class AndroidLocalTokenDataSource(
     private val encryptedPreferences: EncryptedPreferences,
 ) : TokenDataSource {
     override suspend fun token(): String? =
-        encryptedPreferences.preference<String>(TOKEN_KEY, String.serializer())
+        encryptedPreferences.preference(TOKEN_KEY, String.serializer())
 
     override suspend fun clear() {
         encryptedPreferences.clearPreference(TOKEN_KEY)

@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.stringResource
 import theoneclick.client.feature.home.generated.resources.*
-import theoneclick.client.feature.home.mappers.toStringResource
 import theoneclick.client.feature.home.states.AddDeviceState
 import theoneclick.client.feature.home.ui.events.AddDeviceEvent
 import theoneclick.client.shared.ui.components.DefaultButton
@@ -22,7 +21,7 @@ import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 import theoneclick.shared.core.models.entities.DeviceType
 
 @Composable
-fun AddDeviceScreen(
+internal fun AddDeviceScreen(
     state: AddDeviceState,
     onEvent: (event: AddDeviceEvent) -> Unit,
 ) {
@@ -208,7 +207,14 @@ private fun RoomNameTextField(
     )
 }
 
-object AddDeviceScreenTestTags {
+@Composable
+private fun DeviceType.toStringResource(): String =
+    when (this) {
+        DeviceType.BLIND -> stringResource(Res.string.general_deviceType_blind)
+    }
+
+
+internal object AddDeviceScreenTestTags {
     const val TITLE_TEST_TAG = "AddDeviceScreen.Title"
 
     const val DEVICE_NAME_TEXT_FIELD_TEST_TAG = "AddDeviceScreen.DeviceNameTextField"
@@ -221,7 +227,7 @@ object AddDeviceScreenTestTags {
 }
 
 @Composable
-fun AddDeviceScreenPreview(previewModel: PreviewModel<AddDeviceState>) {
+internal fun AddDeviceScreenPreview(previewModel: PreviewModel<AddDeviceState>) {
     ScreenPreviewComposable(previewModel) {
         AddDeviceScreen(
             state = previewModel.model,

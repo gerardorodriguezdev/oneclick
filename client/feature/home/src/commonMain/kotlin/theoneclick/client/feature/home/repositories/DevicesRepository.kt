@@ -9,7 +9,7 @@ import theoneclick.client.feature.home.models.results.UpdateDeviceResult
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.DeviceType
 
-interface DevicesRepository {
+internal interface DevicesRepository {
     val devices: SharedFlow<List<Device>>
 
     fun addDevice(
@@ -24,7 +24,7 @@ interface DevicesRepository {
 }
 
 @Inject
-class InMemoryDevicesRepository(
+internal class InMemoryDevicesRepository(
     private val loggedDataSource: LoggedDataSource,
 ) : DevicesRepository {
     private val _devices = MutableStateFlow<List<Device>>(emptyList())

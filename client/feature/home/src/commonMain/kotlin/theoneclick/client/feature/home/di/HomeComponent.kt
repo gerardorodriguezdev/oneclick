@@ -19,15 +19,15 @@ abstract class HomeComponent(@Component val coreComponent: CoreComponent) {
 
     @HomeScope
     @Provides
-    fun loggedDataSource(bind: RemoteLoggedDataSource): LoggedDataSource = bind
+    internal fun loggedDataSource(bind: RemoteLoggedDataSource): LoggedDataSource = bind
 
     @HomeScope
     @Provides
-    fun devicesRepository(bind: InMemoryDevicesRepository): DevicesRepository = bind
+    internal fun devicesRepository(bind: InMemoryDevicesRepository): DevicesRepository = bind
 
-    abstract val devicesListViewModelFactory: () -> DevicesListViewModel
-    abstract val addDeviceViewModelFactory: () -> AddDeviceViewModel
-    abstract val userSettingsViewModelFactory: () -> UserSettingsViewModel
+    internal abstract val devicesListViewModelFactory: () -> DevicesListViewModel
+    internal abstract val addDeviceViewModelFactory: () -> AddDeviceViewModel
+    internal abstract val userSettingsViewModelFactory: () -> UserSettingsViewModel
 }
 
 @KmpComponentCreate

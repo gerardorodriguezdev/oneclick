@@ -9,7 +9,7 @@ import theoneclick.client.shared.ui.previews.providers.base.lightThemeCompactPre
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.Uuid
 
-class DevicesListStateProvider : PreviewParameterProvider<PreviewModel<DevicesListState>> {
+internal class DevicesListStateProvider : PreviewParameterProvider<PreviewModel<DevicesListState>> {
     override val values = sequenceOf(
         lightThemeCompactPreviewModel(description = "Init", model = initState),
         lightThemeCompactPreviewModel(description = "Loading", model = loadingState),

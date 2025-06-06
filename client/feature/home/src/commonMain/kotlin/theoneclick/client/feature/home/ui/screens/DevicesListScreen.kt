@@ -22,13 +22,13 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import theoneclick.client.feature.home.generated.resources.*
 import theoneclick.client.feature.home.states.DevicesListState
+import theoneclick.client.feature.home.ui.events.DevicesListEvent
 import theoneclick.client.feature.home.ui.screens.DevicesListScreenTestTags.DEVICE_CONTAINER
 import theoneclick.client.feature.home.ui.screens.DevicesListScreenTestTags.DEVICE_NAME_TEXT
 import theoneclick.client.feature.home.ui.screens.DevicesListScreenTestTags.OPENING_STATE_SWITCH
 import theoneclick.client.feature.home.ui.screens.DevicesListScreenTestTags.ROOM_NAME_TEXT
 import theoneclick.client.feature.home.ui.screens.DevicesListScreenTestTags.ROTATION_SLIDER
 import theoneclick.client.feature.home.ui.screens.DevicesListScreenTestTags.labelTestTag
-import theoneclick.client.feature.home.ui.events.DevicesListEvent
 import theoneclick.client.shared.ui.components.DefaultScaffold
 import theoneclick.client.shared.ui.components.SnackbarState
 import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
@@ -38,7 +38,7 @@ import theoneclick.shared.core.models.entities.DeviceFeature.Openable
 import theoneclick.shared.core.models.entities.DeviceFeature.Rotateable
 
 @Composable
-fun DevicesListScreen(
+internal fun DevicesListScreen(
     state: DevicesListState,
     onEvent: (model: DevicesListEvent) -> Unit,
 ) {
@@ -256,11 +256,11 @@ private fun RotatableDeviceSection(rotation: Int, onRotateDevice: (newRotation: 
     )
 }
 
-object DevicesListScreenConstants {
+internal object DevicesListScreenConstants {
     val deviceCardMinWidth: Dp = 250.dp
 }
 
-object DevicesListScreenTestTags {
+internal object DevicesListScreenTestTags {
     const val LIST_CONTAINER = "DevicesListScreen.ListContainer"
     const val DEVICE_CONTAINER = "DevicesListScreen.DeviceContainer"
     const val DEVICE_NAME_TEXT = "DevicesListScreen.DeviceNameText"
@@ -272,7 +272,7 @@ object DevicesListScreenTestTags {
 }
 
 @Composable
-fun DevicesListScreenPreview(previewModel: PreviewModel<DevicesListState>) {
+internal fun DevicesListScreenPreview(previewModel: PreviewModel<DevicesListState>) {
     ScreenPreviewComposable(previewModel) {
         DevicesListScreen(
             state = previewModel.model,

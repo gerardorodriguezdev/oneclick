@@ -1,6 +1,6 @@
 package theoneclick.client.feature.home.states
 
-data class UserSettingsState(
+internal data class UserSettingsState(
     val isButtonEnabled: Boolean = true,
     val isLoading: Boolean = false,
     val showError: Boolean = false,

@@ -22,7 +22,7 @@ interface NavigationControllerObserver {
     fun onNavigationEvent(navigationEvent: NavigationEvent)
 }
 
-class DefaultNavigationControllerObserver(
+internal class DefaultNavigationControllerObserver(
     override val navigationController: NavigationController,
     override val navHostController: NavHostController,
 ) : NavigationControllerObserver {

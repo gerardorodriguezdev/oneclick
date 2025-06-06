@@ -6,7 +6,7 @@ import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 import theoneclick.client.shared.ui.previews.providers.base.darkThemeCompactPreviewModel
 import theoneclick.client.shared.ui.previews.providers.base.lightThemeCompactPreviewModel
 
-class AddDeviceStateProvider : PreviewParameterProvider<PreviewModel<AddDeviceState>> {
+internal class AddDeviceStateProvider : PreviewParameterProvider<PreviewModel<AddDeviceState>> {
     override val values = sequenceOf(
         lightThemeCompactPreviewModel(description = "Init", model = initState),
         lightThemeCompactPreviewModel(description = "InvalidDeviceName", model = invalidDeviceNameState),

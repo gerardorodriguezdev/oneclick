@@ -6,7 +6,7 @@ import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 import theoneclick.client.shared.ui.previews.providers.base.darkThemeCompactPreviewModel
 import theoneclick.client.shared.ui.previews.providers.base.lightThemeCompactPreviewModel
 
-class UserSettingsStateProvider : PreviewParameterProvider<PreviewModel<UserSettingsState>> {
+internal class UserSettingsStateProvider : PreviewParameterProvider<PreviewModel<UserSettingsState>> {
     override val values = sequenceOf(
         lightThemeCompactPreviewModel(description = "Init", model = initState),
         lightThemeCompactPreviewModel(description = "DisabledState", model = disabledState),
