@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import me.tatarka.inject.annotations.Inject
-import theoneclick.client.app.models.results.AddDeviceResult
-import theoneclick.client.app.models.results.DevicesResult
-import theoneclick.client.app.models.results.UpdateDeviceResult
+import theoneclick.client.feature.home.models.results.AddDeviceResult
+import theoneclick.client.feature.home.models.results.DevicesResult
+import theoneclick.client.feature.home.models.results.UpdateDeviceResult
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.DeviceType

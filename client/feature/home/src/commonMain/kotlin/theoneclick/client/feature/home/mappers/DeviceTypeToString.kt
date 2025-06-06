@@ -1,9 +1,9 @@
-package theoneclick.client.app.mappers
+package theoneclick.client.feature.home.mappers
 
 import androidx.compose.runtime.Composable
 import org.jetbrains.compose.resources.stringResource
-import theoneclick.client.app.generated.resources.Res
-import theoneclick.client.app.generated.resources.general_deviceType_blind
+import theoneclick.client.feature.home.generated.resources.Res
+import theoneclick.client.feature.home.generated.resources.general_deviceType_blind
 import theoneclick.shared.core.models.entities.DeviceType
 
 @Composable

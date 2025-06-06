@@ -16,13 +16,13 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 import theoneclick.client.app.generated.resources.Res
-import theoneclick.client.app.generated.resources.homeScreen_navigationBar_addDevice
-import theoneclick.client.app.generated.resources.homeScreen_navigationBar_devicesList
-import theoneclick.client.app.generated.resources.homeScreen_navigationBar_userSettings
+import theoneclick.client.app.generated.resources.appScreen_navigationBar_addDevice
+import theoneclick.client.app.generated.resources.appScreen_navigationBar_devicesList
+import theoneclick.client.app.generated.resources.appScreen_navigationBar_userSettings
+import theoneclick.client.app.ui.screens.AppScreenConstants.navigationBarRoutes
 import theoneclick.client.shared.ui.previews.dev.MockContent
 import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
-import theoneclick.client.app.ui.previews.providers.base.PreviewModel
-import theoneclick.client.app.ui.screens.AppScreenConstants.navigationBarRoutes
+import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute
 import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.*
 
@@ -142,9 +142,9 @@ private fun NavigationLabel(navigationBarRoute: NavigationBarRoute) {
 @Composable
 private fun NavigationBarRoute.toLabel(): String =
     when (this) {
-        is DevicesList -> stringResource(Res.string.homeScreen_navigationBar_devicesList)
-        is AddDevice -> stringResource(Res.string.homeScreen_navigationBar_addDevice)
-        is UserSettings -> stringResource(Res.string.homeScreen_navigationBar_userSettings)
+        is DevicesList -> stringResource(Res.string.appScreen_navigationBar_devicesList)
+        is AddDevice -> stringResource(Res.string.appScreen_navigationBar_addDevice)
+        is UserSettings -> stringResource(Res.string.appScreen_navigationBar_userSettings)
     }
 
 data class AppScreenState(val navigationBar: NavigationBar?) {

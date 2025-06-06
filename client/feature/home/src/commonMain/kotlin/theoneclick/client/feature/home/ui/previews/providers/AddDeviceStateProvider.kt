@@ -1,10 +1,10 @@
 package theoneclick.client.feature.home.ui.previews.providers
 
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
-import theoneclick.client.app.ui.previews.providers.base.PreviewModel
-import theoneclick.client.app.ui.previews.providers.base.darkThemeCompactPreviewModel
-import theoneclick.client.app.ui.previews.providers.base.lightThemeCompactPreviewModel
-import theoneclick.client.app.ui.states.homeScreen.AddDeviceState
+import theoneclick.client.feature.home.states.AddDeviceState
+import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
+import theoneclick.client.shared.ui.previews.providers.base.darkThemeCompactPreviewModel
+import theoneclick.client.shared.ui.previews.providers.base.lightThemeCompactPreviewModel
 
 class AddDeviceStateProvider : PreviewParameterProvider<PreviewModel<AddDeviceState>> {
     override val values = sequenceOf(

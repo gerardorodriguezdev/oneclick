@@ -1,9 +1,9 @@
-package theoneclick.client.app.ui.previews.providers.screens
+package theoneclick.client.shared.ui.previews.providers.shared
 
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
-import theoneclick.client.app.ui.previews.providers.base.PreviewModel
-import theoneclick.client.app.ui.previews.providers.base.darkThemeCompactPreviewModel
-import theoneclick.client.app.ui.previews.providers.base.lightThemeCompactPreviewModel
+import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
+import theoneclick.client.shared.ui.previews.providers.base.darkThemeCompactPreviewModel
+import theoneclick.client.shared.ui.previews.providers.base.lightThemeCompactPreviewModel
 
 class UnitProvider : PreviewParameterProvider<PreviewModel<Unit>> {
 

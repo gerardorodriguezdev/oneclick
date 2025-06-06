@@ -11,18 +11,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.stringResource
-import theoneclick.client.app.generated.resources.Res
-import theoneclick.client.app.generated.resources.userSettingsScreen_snackbar_logout
-import theoneclick.client.app.generated.resources.userSettingsScreen_snackbar_unknownError
-import theoneclick.client.app.generated.resources.userSettingsScreen_title_userSettings
+import theoneclick.client.feature.home.generated.resources.Res
+import theoneclick.client.feature.home.generated.resources.userSettingsScreen_snackbar_logout
+import theoneclick.client.feature.home.generated.resources.userSettingsScreen_snackbar_unknownError
+import theoneclick.client.feature.home.generated.resources.userSettingsScreen_title_userSettings
+import theoneclick.client.feature.home.states.UserSettingsState
+import theoneclick.client.feature.home.ui.UserSettingsTestTags.TITLE_TEST_TAG
+import theoneclick.client.feature.home.ui.events.UserSettingsEvent
 import theoneclick.client.shared.ui.components.DefaultButton
 import theoneclick.client.shared.ui.components.DefaultScaffold
 import theoneclick.client.shared.ui.components.SnackbarState
 import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
-import theoneclick.client.app.ui.previews.providers.base.PreviewModel
-import theoneclick.client.feature.home.states.UserSettingsState
-import theoneclick.client.feature.home.ui.UserSettingsTestTags.TITLE_TEST_TAG
-import theoneclick.client.feature.home.ui.events.UserSettingsEvent
+import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 
 @Composable
 fun UserSettingsScreen(

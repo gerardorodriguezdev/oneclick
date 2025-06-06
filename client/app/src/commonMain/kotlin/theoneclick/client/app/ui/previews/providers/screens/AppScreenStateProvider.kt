@@ -1,8 +1,8 @@
 package theoneclick.client.app.ui.previews.providers.screens
 
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
-import theoneclick.client.app.ui.previews.providers.base.*
 import theoneclick.client.app.ui.screens.AppScreenState
+import theoneclick.client.shared.ui.previews.providers.base.*
 import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute
 
 class AppScreenStateProvider : PreviewParameterProvider<PreviewModel<AppScreenState>> {

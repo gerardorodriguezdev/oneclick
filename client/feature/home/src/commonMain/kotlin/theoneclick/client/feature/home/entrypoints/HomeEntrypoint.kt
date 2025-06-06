@@ -1,5 +1,20 @@
 package theoneclick.client.feature.home.entrypoints
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavBackStackEntry
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
+import androidx.navigation.compose.composable
+import androidx.navigation.navigation
+import theoneclick.client.feature.home.di.HomeComponent
+import theoneclick.client.feature.home.di.createHomeComponent
+import theoneclick.client.feature.home.ui.AddDeviceScreen
+import theoneclick.client.feature.home.ui.DevicesListScreen
+import theoneclick.client.feature.home.ui.UserSettingsScreen
+import theoneclick.client.shared.di.CoreComponent
 import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.core.models.routes.HomeRoute
 

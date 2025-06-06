@@ -10,15 +10,15 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.stringResource
-import theoneclick.client.app.generated.resources.*
-import theoneclick.client.app.mappers.toStringResource
+import theoneclick.client.feature.home.generated.resources.*
+import theoneclick.client.feature.home.mappers.toStringResource
+import theoneclick.client.feature.home.states.AddDeviceState
+import theoneclick.client.feature.home.ui.events.AddDeviceEvent
 import theoneclick.client.shared.ui.components.DefaultButton
 import theoneclick.client.shared.ui.components.DefaultScaffold
 import theoneclick.client.shared.ui.components.SnackbarState
-import theoneclick.client.app.ui.events.homeScreen.AddDeviceEvent
 import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
-import theoneclick.client.app.ui.previews.providers.base.PreviewModel
-import theoneclick.client.app.ui.states.homeScreen.AddDeviceState
+import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 import theoneclick.shared.core.models.entities.DeviceType
 
 @Composable

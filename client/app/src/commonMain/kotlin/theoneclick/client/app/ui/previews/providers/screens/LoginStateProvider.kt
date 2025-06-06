@@ -1,10 +1,10 @@
 package theoneclick.client.app.ui.previews.providers.screens
 
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
-import theoneclick.client.app.ui.previews.providers.base.PreviewModel
-import theoneclick.client.app.ui.previews.providers.base.darkThemeCompactPreviewModel
-import theoneclick.client.app.ui.previews.providers.base.lightThemeCompactPreviewModel
 import theoneclick.client.app.ui.states.LoginState
+import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
+import theoneclick.client.shared.ui.previews.providers.base.darkThemeCompactPreviewModel
+import theoneclick.client.shared.ui.previews.providers.base.lightThemeCompactPreviewModel
 
 class LoginStateProvider : PreviewParameterProvider<PreviewModel<LoginState>> {
 

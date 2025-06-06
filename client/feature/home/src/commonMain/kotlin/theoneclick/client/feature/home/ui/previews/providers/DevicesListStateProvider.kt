@@ -2,10 +2,10 @@ package theoneclick.client.feature.home.ui.previews.providers
 
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
-import theoneclick.client.app.ui.previews.providers.base.PreviewModel
-import theoneclick.client.app.ui.previews.providers.base.darkThemeCompactPreviewModel
-import theoneclick.client.app.ui.previews.providers.base.lightThemeCompactPreviewModel
-import theoneclick.client.app.ui.states.homeScreen.DevicesListState
+import theoneclick.client.feature.home.states.DevicesListState
+import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
+import theoneclick.client.shared.ui.previews.providers.base.darkThemeCompactPreviewModel
+import theoneclick.client.shared.ui.previews.providers.base.lightThemeCompactPreviewModel
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.Uuid
 
