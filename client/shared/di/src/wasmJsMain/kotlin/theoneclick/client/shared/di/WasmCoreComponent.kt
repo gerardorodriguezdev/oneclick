@@ -27,7 +27,6 @@ fun wasmCoreComponent(
         appLogger = appLogger,
         navigationController = navigationController,
         dispatchersProvider = dispatchersProvider,
-        logoutManager = logoutManager,
         httpClient = httpClient,
         authenticationDataSource = WasmRemoteAuthenticationDataSource(httpClient, dispatchersProvider, appLogger),
         notificationsController = notificationsController,

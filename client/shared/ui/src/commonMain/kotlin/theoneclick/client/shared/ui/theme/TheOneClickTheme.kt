@@ -29,11 +29,7 @@ fun TheOneClickTheme(isDarkTheme: Boolean, content: @Composable () -> Unit) {
 
 //TODO: Sep ui state from logic state
 //TODO: Update AddDevice + DevicesList (vm + ui)
-//TODO: UI to other module + Presentation to other module
-//TODO: Separate home module
-//TODO: Maybe sources abstraction
 //TODO: Common models to safe validated ones? token, deviceName, roomName, rotation range, uuid, username, password
-//TODO: Naming TheOneClick vs OneClick
 //TODO: App icon
 //TODO: Proper error handling
 //TODO: Server update endpoint (addDevice, devices, updateDevice)

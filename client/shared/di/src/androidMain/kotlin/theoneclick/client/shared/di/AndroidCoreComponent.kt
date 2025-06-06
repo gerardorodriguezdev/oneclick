@@ -37,7 +37,6 @@ fun androidCoreComponent(
         appLogger = appLogger,
         dispatchersProvider = dispatchersProvider,
         navigationController = navigationController,
-        logoutManager = logoutManager,
         httpClient = httpClient,
         authenticationDataSource = AndroidRemoteAuthenticationDataSource(
             httpClient,

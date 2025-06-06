@@ -5,7 +5,6 @@ import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.Provides
 import theoneclick.client.shared.navigation.NavigationController
 import theoneclick.client.shared.network.platform.AuthenticationDataSource
-import theoneclick.client.shared.network.platform.LogoutManager
 import theoneclick.client.shared.notifications.NotificationsController
 import theoneclick.shared.core.platform.AppLogger
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
@@ -26,9 +25,6 @@ abstract class CoreComponent(
 
     @get:Provides
     val authenticationDataSource: AuthenticationDataSource,
-
-    @get:Provides
-    val logoutManager: LogoutManager,
 
     @get:Provides
     val notificationsController: NotificationsController,
