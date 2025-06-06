@@ -16,7 +16,7 @@ import theoneclick.client.app.ui.screens.AppScreen
 import theoneclick.client.app.ui.screens.AppScreenState
 import theoneclick.client.app.ui.screens.LoadingScreen
 import theoneclick.client.app.ui.screens.LoginScreen
-import theoneclick.client.feature.home.entrypoints.HomeEntrypoint
+import theoneclick.client.features.home.entrypoints.HomeEntrypoint
 import theoneclick.client.shared.di.CoreComponent
 import theoneclick.client.shared.navigation.RegisterNavigationControllerObserver
 import theoneclick.client.shared.ui.screenProperties.LocalScreenProperties

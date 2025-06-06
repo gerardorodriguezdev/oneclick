@@ -26,7 +26,7 @@ include(
     "client:shared:ui",
     "client:shared:navigation",
     "client:shared:network",
-    "client:feature:home",
+    "client:features:home",
 )
 
 include(
