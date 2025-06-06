@@ -35,7 +35,7 @@ dependencies {
     implementation(libs.jvm.bcrypt)
     implementation(libs.jvm.logback.classic)
     implementation(libs.jvm.ktor.server.auth)
-    implementation(projects.shared.base)
+    implementation(projects.shared.core)
     implementation(projects.shared.timeProvider)
     implementation(projects.server.shared)
 

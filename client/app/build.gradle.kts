@@ -75,7 +75,7 @@ kotlin {
                 implementation(libs.kmp.window.classes)
                 implementation(libs.kmp.kotlin.inject)
                 implementation(libs.kmp.kotlin.inject.kmp)
-                implementation(projects.shared.base)
+                implementation(projects.shared.core)
                 implementation(projects.shared.dispatchers)
                 implementation(projects.shared.timeProvider)
                 implementation(projects.client.shared.di)

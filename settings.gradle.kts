@@ -30,7 +30,7 @@ include(
 )
 
 include(
-    "shared:base",
+    "shared:core",
     "shared:testing",
     "shared:dispatchers",
     "shared:timeProvider",

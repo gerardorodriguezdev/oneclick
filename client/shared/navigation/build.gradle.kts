@@ -18,7 +18,7 @@ kotlin {
             dependencies {
                 implementation(compose.runtime)
                 implementation(libs.kmp.navigation)
-                implementation(projects.shared.base)
+                implementation(projects.shared.core)
             }
         }
     }
