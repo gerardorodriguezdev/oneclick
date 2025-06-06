@@ -10,13 +10,12 @@ import androidx.compose.ui.platform.testTag
 import theoneclick.client.shared.ui.components.DefaultSnackbarTestTags.SNACKBAR_TEST_TAG
 import theoneclick.client.shared.ui.previews.dev.ComponentPreviewComposable
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
-import theoneclick.client.shared.ui.previews.providers.components.DefaultSnackbarModelProvider.DefaultSnackbarModel
 
 @Composable
-fun DefaultSnackbar(snackbarData: SnackbarData, isError: Boolean = false) {
+fun DefaultSnackbar(state: DefaultSnackbarState) {
     Snackbar(
-        containerColor = containerColor(isError),
-        snackbarData = snackbarData,
+        containerColor = containerColor(state.isError),
+        snackbarData = state.snackbarData,
         modifier = Modifier.testTag(SNACKBAR_TEST_TAG)
     )
 }
@@ -33,12 +32,16 @@ object DefaultSnackbarTestTags {
     const val SNACKBAR_TEST_TAG = "DefaultSnackbar.Container"
 }
 
+data class DefaultSnackbarState(
+    val snackbarData: SnackbarData,
+    val isError: Boolean,
+)
+
 @Composable
-fun DefaultSnackbarPreview(previewModel: PreviewModel<DefaultSnackbarModel>) {
+fun DefaultSnackbarPreview(previewModel: PreviewModel<DefaultSnackbarState>) {
     ComponentPreviewComposable(previewModel) {
         DefaultSnackbar(
-            snackbarData = previewModel.model.snackbarData,
-            isError = previewModel.model.isError,
+            state = previewModel.model,
         )
     }
 }

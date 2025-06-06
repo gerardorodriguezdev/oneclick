@@ -13,12 +13,10 @@ internal class DevicesListStateProvider : PreviewParameterProvider<PreviewModel<
     override val values = sequenceOf(
         lightThemeCompactPreviewModel(description = "Init", model = initState),
         lightThemeCompactPreviewModel(description = "Loading", model = loadingState),
-        lightThemeCompactPreviewModel(description = "Error", model = isErrorState),
         lightThemeCompactPreviewModel(description = "Loaded", model = loadedState),
 
         darkThemeCompactPreviewModel(description = "Init", model = initState),
         darkThemeCompactPreviewModel(description = "Loading", model = loadingState),
-        darkThemeCompactPreviewModel(description = "Error", model = isErrorState),
         darkThemeCompactPreviewModel(description = "Loaded", model = loadedState),
     )
 
@@ -57,8 +55,6 @@ internal class DevicesListStateProvider : PreviewParameterProvider<PreviewModel<
         val initState = DevicesListState()
 
         val loadingState = DevicesListState(isLoading = true)
-
-        val isErrorState = DevicesListState(showError = true)
 
         val loadedState = DevicesListState(
             devices = devices,

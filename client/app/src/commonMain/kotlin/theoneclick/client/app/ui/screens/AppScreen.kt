@@ -6,7 +6,7 @@ import androidx.compose.material.icons.automirrored.filled.List
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ManageAccounts
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -20,6 +20,8 @@ import theoneclick.client.app.generated.resources.appScreen_navigationBar_addDev
 import theoneclick.client.app.generated.resources.appScreen_navigationBar_devicesList
 import theoneclick.client.app.generated.resources.appScreen_navigationBar_userSettings
 import theoneclick.client.app.ui.screens.AppScreenConstants.navigationBarRoutes
+import theoneclick.client.shared.ui.components.DefaultSnackbar
+import theoneclick.client.shared.ui.components.DefaultSnackbarState
 import theoneclick.client.shared.ui.previews.dev.MockContent
 import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
@@ -30,9 +32,24 @@ import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.*
 fun AppScreen(
     state: AppScreenState,
     onNavigationBarClick: (navigationBarRoute: NavigationBarRoute) -> Unit,
+    onSnackbarShown: () -> Unit,
     content: @Composable () -> Unit,
 ) {
+    val snackbarHostState = remember { SnackbarHostState() }
     Scaffold(
+        snackbarHost = {
+            SnackbarHost(
+                hostState = snackbarHostState,
+                snackbar = { snackbarData ->
+                    DefaultSnackbar(
+                        state = DefaultSnackbarState(
+                            snackbarData = snackbarData,
+                            isError = state.snackbarState.isError,
+                        )
+                    )
+                }
+            )
+        },
         content = { paddingValues ->
             Row(
                 modifier = Modifier
@@ -59,6 +76,14 @@ fun AppScreen(
             .fillMaxSize()
             .imePadding(),
     )
+
+    val onSnackbarShown by rememberUpdatedState(onSnackbarShown)
+    LaunchedEffect(state.snackbarState.showSnackbar) {
+        if (state.snackbarState.showSnackbar) {
+            snackbarHostState.showSnackbar(state.snackbarState.text)
+            onSnackbarShown()
+        }
+    }
 }
 
 @Composable
@@ -147,13 +172,22 @@ private fun NavigationBarRoute.toLabel(): String =
         is UserSettings -> stringResource(Res.string.appScreen_navigationBar_userSettings)
     }
 
-data class AppScreenState(val navigationBar: NavigationBar?) {
+data class AppScreenState(
+    val navigationBar: NavigationBar?,
+    val snackbarState: SnackbarState,
+) {
     sealed interface NavigationBar {
         val selectedRoute: NavigationBarRoute
 
         data class Start(override val selectedRoute: NavigationBarRoute) : NavigationBar
         data class Bottom(override val selectedRoute: NavigationBarRoute) : NavigationBar
     }
+
+    data class SnackbarState(
+        val showSnackbar: Boolean,
+        val text: String,
+        val isError: Boolean,
+    )
 }
 
 private object AppScreenConstants {
@@ -179,12 +213,14 @@ object AppScreenTestTags {
 @Composable
 fun AppScreenPreview(
     previewModel: PreviewModel<AppScreenState>,
-    onNavigationBarClick: (navigationBarRoute: NavigationBarRoute) -> Unit = {}
+    onNavigationBarClick: (navigationBarRoute: NavigationBarRoute) -> Unit = {},
+    onSnackbarShown: () -> Unit,
 ) {
     ScreenPreviewComposable(previewModel) {
         AppScreen(
             state = previewModel.model,
             onNavigationBarClick = onNavigationBarClick,
+            onSnackbarShown = onSnackbarShown,
             content = {
                 MockContent(modifier = Modifier.fillMaxSize())
             }

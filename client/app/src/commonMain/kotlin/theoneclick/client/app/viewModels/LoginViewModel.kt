@@ -9,6 +9,9 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
+import org.jetbrains.compose.resources.getString
+import theoneclick.client.app.generated.resources.Res
+import theoneclick.client.app.generated.resources.loginScreen_snackbar_unknownError
 import theoneclick.client.app.ui.events.LoginEvent
 import theoneclick.client.app.ui.states.LoginState
 import theoneclick.client.shared.navigation.NavigationController
@@ -16,6 +19,7 @@ import theoneclick.client.shared.navigation.NavigationController.NavigationEvent
 import theoneclick.client.shared.navigation.popUpToInclusive
 import theoneclick.client.shared.network.models.RequestLoginResult
 import theoneclick.client.shared.network.platform.AuthenticationDataSource
+import theoneclick.client.shared.notifications.NotificationsController
 import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.core.validators.passwordValidator
 import theoneclick.shared.core.validators.usernameValidator
@@ -24,6 +28,7 @@ import theoneclick.shared.core.validators.usernameValidator
 class LoginViewModel(
     private val navigationController: NavigationController,
     private val authenticationDataSource: AuthenticationDataSource,
+    private val notificationsController: NotificationsController,
 ) : ViewModel() {
 
     private val _state = mutableStateOf(LoginState())
@@ -37,8 +42,6 @@ class LoginViewModel(
             is LoginEvent.PasswordChanged -> event.handlePasswordChange()
 
             is LoginEvent.RegisterButtonClicked -> handleRegisterButtonClicked()
-
-            is LoginEvent.ErrorShown -> handleErrorShown()
         }
     }
 
@@ -75,7 +78,6 @@ class LoginViewModel(
                     _state.value = _state.value.copy(
                         isLoading = true,
                         isRegisterButtonEnabled = false,
-                        showError = false,
                     )
                 }
                 .onCompletion {
@@ -89,8 +91,11 @@ class LoginViewModel(
                         is RequestLoginResult.ValidLogin ->
                             navigationController.sendNavigationEvent(navigationEvent = toNavigationEvent())
 
-                        is RequestLoginResult.Error ->
-                            _state.value = _state.value.copy(showError = true)
+                        is RequestLoginResult.Error -> {
+                            notificationsController.showErrorNotification(
+                                getString(Res.string.loginScreen_snackbar_unknownError)
+                            )
+                        }
                     }
                 }
         }
@@ -102,10 +107,6 @@ class LoginViewModel(
             launchSingleTop = true,
             popUpTo = popUpToInclusive(startRoute = AppRoute.Login),
         )
-
-    private fun handleErrorShown() {
-        _state.value = _state.value.copy(showError = false)
-    }
 
     override fun onCleared() {
         super.onCleared()

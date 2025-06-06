@@ -2,7 +2,9 @@ package theoneclick.client.app.entrypoints
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
@@ -11,6 +13,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.launch
 import theoneclick.client.app.di.AppComponent
 import theoneclick.client.app.ui.screens.AppScreen
 import theoneclick.client.app.ui.screens.AppScreenState
@@ -19,6 +22,7 @@ import theoneclick.client.app.ui.screens.LoginScreen
 import theoneclick.client.features.home.entrypoints.HomeEntrypoint
 import theoneclick.client.shared.di.CoreComponent
 import theoneclick.client.shared.navigation.RegisterNavigationControllerObserver
+import theoneclick.client.shared.notifications.NotificationsController.Notification
 import theoneclick.client.shared.ui.screenProperties.LocalScreenProperties
 import theoneclick.client.shared.ui.screenProperties.ScreenProperties
 import theoneclick.client.shared.ui.theme.TheOneClickTheme
@@ -45,13 +49,21 @@ class AppEntrypoint(
                     navHostController = navHostController
                 )
 
+                val coroutineScope = rememberCoroutineScope()
+                val notification = coreComponent.notificationsController.notificationEvents.collectAsState(null)
                 AppScreen(
                     state = AppScreenState(
                         navigationBar = navHostController.navigationBar(),
+                        snackbarState = notification.value.toSnackbarState(),
                     ),
                     onNavigationBarClick = { navigationBarRoute ->
                         navHostController.handleNavigationBarClick(navigationBarRoute)
                     },
+                    onSnackbarShown = {
+                        coroutineScope.launch {
+                            coreComponent.notificationsController.clearNotifications()
+                        }
+                    }
                 ) {
                     NavHost(
                         navController = navHostController,
@@ -114,4 +126,16 @@ class AppEntrypoint(
             }
         }
     }
+
+    private fun Notification?.toSnackbarState(): AppScreenState.SnackbarState =
+        when (this) {
+            null -> AppScreenState.SnackbarState(showSnackbar = false, text = "", isError = false)
+            is Notification.Success -> AppScreenState.SnackbarState(
+                showSnackbar = true,
+                text = message,
+                isError = false
+            )
+
+            is Notification.Error -> AppScreenState.SnackbarState(showSnackbar = true, text = message, isError = true)
+        }
 }

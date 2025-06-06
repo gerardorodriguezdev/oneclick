@@ -1,20 +1,21 @@
 <resources>
-    <string name="homeScreen_snackbar_unknownError">Unknown error</string>
-    <string name="devicesListScreen_snackbar_unknownError">Unknown error</string>
     <string name="addDeviceScreen_title_addDevice">Add device</string>
     <string name="addDeviceScreen_deviceNamePlaceholder_deviceName">Device name</string>
     <string name="addDeviceScreen_roomNamePlaceholder_roomName">Room name</string>
     <string name="addDeviceScreen_addDeviceButton_addDevice">Add device</string>
-    <string name="addDeviceScreen_snackbar_unknownError">Unknown error</string>
+    <string name="addDeviceScreen_dropdown_deviceType">Blind</string>
     <string name="addDeviceScreen_snackbar_deviceAdded">Device added</string>
+    <string name="addDeviceScreen_snackbar_unknownError">Unknown error</string>
+
     <string name="devicesListScreen_deviceCardDeviceNameLabel_deviceName">Device name</string>
     <string name="devicesListScreen_deviceCardRoomNameLabel_room">Room</string>
     <string name="devicesListScreen_deviceCardOpenedLabel_opened">Opened</string>
     <string name="devicesListScreen_deviceCardClosedLabel_closed">Closed</string>
     <string name="devicesListScreen_deviceCardRotationLabel_rotation">Rotation</string>
     <string name="devicesListScreen_placeholder_noDevicesFound">No devices found</string>
+    <string name="devicesListScreen_snackbar_unknownError">Unknown error</string>
+
     <string name="userSettingsScreen_title_userSettings">User settings</string>
-    <string name="userSettingsScreen_snackbar_unknownError">Unknown error</string>
     <string name="userSettingsScreen_snackbar_logout">Logout</string>
-    <string name="general_deviceType_blind">Blind</string>
+    <string name="userSettingsScreen_snackbar_unknownError">Unknown error</string>
 </resources>

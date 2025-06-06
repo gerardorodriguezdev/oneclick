@@ -14,6 +14,4 @@ internal data class AddDeviceState(
     val isAddDeviceButtonEnabled: Boolean = false,
 
     val isLoading: Boolean = false,
-    val showError: Boolean = false,
-    val showSuccess: Boolean = false,
 )

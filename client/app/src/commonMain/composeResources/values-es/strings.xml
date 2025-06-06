@@ -1,10 +1,11 @@
 <resources>
+    <string name="appScreen_navigationBar_devicesList">Dispositivos</string>
+    <string name="appScreen_navigationBar_addDevice">Agregar dispositivo</string>
+    <string name="appScreen_navigationBar_userSettings">Configuración</string>
+
     <string name="loginScreen_title_register">Registrar</string>
     <string name="loginScreen_usernameTextField_username">Usuario</string>
     <string name="loginScreen_passwordTextField_password">Contraseña</string>
     <string name="loginScreen_registerButton_register">Registrar</string>
     <string name="loginScreen_snackbar_unknownError">Error desconocido</string>
-    <string name="appScreen_navigationBar_devicesList">Dispositivos</string>
-    <string name="appScreen_navigationBar_addDevice">Agregar dispositivo</string>
-    <string name="appScreen_navigationBar_userSettings">Configuración</string>
 </resources>

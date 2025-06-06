@@ -29,39 +29,17 @@ import theoneclick.client.features.home.ui.screens.DevicesListScreenTestTags.OPE
 import theoneclick.client.features.home.ui.screens.DevicesListScreenTestTags.ROOM_NAME_TEXT
 import theoneclick.client.features.home.ui.screens.DevicesListScreenTestTags.ROTATION_SLIDER
 import theoneclick.client.features.home.ui.screens.DevicesListScreenTestTags.labelTestTag
-import theoneclick.client.shared.ui.components.DefaultScaffold
-import theoneclick.client.shared.ui.components.SnackbarState
 import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.DeviceFeature.Openable
 import theoneclick.shared.core.models.entities.DeviceFeature.Rotateable
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun DevicesListScreen(
     state: DevicesListState,
     onEvent: (model: DevicesListEvent) -> Unit,
-) {
-    DefaultScaffold(
-        snackbarState = SnackbarState(
-            text = stringResource(Res.string.devicesListScreen_snackbar_unknownError),
-            isErrorType = true,
-            showSnackbar = state.showError,
-        ),
-        onSnackbarShow = { onEvent(DevicesListEvent.ErrorShown) }
-    ) {
-        Content(
-            state = state,
-            onEvent = onEvent,
-        )
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-private fun Content(
-    state: DevicesListState,
-    onEvent: (devicesListEvent: DevicesListEvent) -> Unit
 ) {
     PullToRefreshBox(
         isRefreshing = state.isLoading,

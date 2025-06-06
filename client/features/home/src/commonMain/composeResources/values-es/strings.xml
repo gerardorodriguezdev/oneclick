@@ -1,20 +1,21 @@
 <resources>
-    <string name="homeScreen_snackbar_unknownError">Error desconocido</string>
-    <string name="devicesListScreen_snackbar_unknownError">Error desconocido</string>
     <string name="addDeviceScreen_title_addDevice">Agregar dispositivo</string>
     <string name="addDeviceScreen_deviceNamePlaceholder_deviceName">Nombre del dispositivo</string>
     <string name="addDeviceScreen_roomNamePlaceholder_roomName">Nombre del cuarto</string>
     <string name="addDeviceScreen_addDeviceButton_addDevice">Agregar dispositivo</string>
-    <string name="addDeviceScreen_snackbar_unknownError">Error desconocido</string>
+    <string name="addDeviceScreen_dropdown_deviceType">Cortina</string>
     <string name="addDeviceScreen_snackbar_deviceAdded">Dispositivo agregado</string>
+    <string name="addDeviceScreen_snackbar_unknownError">Error desconocido</string>
+
     <string name="devicesListScreen_deviceCardDeviceNameLabel_deviceName">Nombre del dispositivo</string>
     <string name="devicesListScreen_deviceCardRoomNameLabel_room">Cuarto</string>
     <string name="devicesListScreen_deviceCardOpenedLabel_opened">Abierto</string>
     <string name="devicesListScreen_deviceCardClosedLabel_closed">Cerrado</string>
     <string name="devicesListScreen_deviceCardRotationLabel_rotation">Rotación</string>
     <string name="devicesListScreen_placeholder_noDevicesFound">Dispositivos no encontrados</string>
+    <string name="devicesListScreen_snackbar_unknownError">Error desconocido</string>
+
     <string name="userSettingsScreen_title_userSettings">Configuración de cuenta</string>
-    <string name="userSettingsScreen_snackbar_unknownError">Error desconocido</string>
     <string name="userSettingsScreen_snackbar_logout">Salir</string>
-    <string name="general_deviceType_blind">Cortina</string>
+    <string name="userSettingsScreen_snackbar_unknownError">Error desconocido</string>
 </resources>

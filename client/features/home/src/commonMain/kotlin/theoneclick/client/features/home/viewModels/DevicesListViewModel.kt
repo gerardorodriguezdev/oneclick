@@ -10,15 +10,20 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
+import org.jetbrains.compose.resources.getString
+import theoneclick.client.features.home.generated.resources.Res
+import theoneclick.client.features.home.generated.resources.devicesListScreen_snackbar_unknownError
 import theoneclick.client.features.home.models.results.DevicesResult
 import theoneclick.client.features.home.models.results.UpdateDeviceResult
 import theoneclick.client.features.home.repositories.DevicesRepository
 import theoneclick.client.features.home.states.DevicesListState
 import theoneclick.client.features.home.ui.events.DevicesListEvent
+import theoneclick.client.shared.notifications.NotificationsController
 
 @Inject
 internal class DevicesListViewModel(
     private val devicesRepository: DevicesRepository,
+    private val notificationsController: NotificationsController,
 ) : ViewModel() {
 
     private val _state = mutableStateOf(DevicesListState())
@@ -43,7 +48,6 @@ internal class DevicesListViewModel(
     fun onEvent(event: DevicesListEvent) {
         when (event) {
             is DevicesListEvent.Refresh -> refreshDevices()
-            is DevicesListEvent.ErrorShown -> handleErrorShown()
             is DevicesListEvent.UpdateDevice -> event.handleUpdateDevice()
         }
     }
@@ -69,14 +73,6 @@ internal class DevicesListViewModel(
         }
     }
 
-    private fun handleUnknownError() {
-        _state.value = _state.value.copy(showError = true)
-    }
-
-    private fun handleErrorShown() {
-        _state.value = _state.value.copy(showError = false)
-    }
-
     private fun DevicesListEvent.UpdateDevice.handleUpdateDevice() {
         updateDeviceJob?.cancel()
 
@@ -90,6 +86,14 @@ internal class DevicesListViewModel(
                     }
                 }
         }
+    }
+
+    private suspend fun handleUnknownError() {
+        notificationsController.showErrorNotification(
+            getString(
+                Res.string.devicesListScreen_snackbar_unknownError
+            )
+        )
     }
 
     override fun onCleared() {

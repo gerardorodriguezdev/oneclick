@@ -15,7 +15,6 @@ class LoginStateProvider : PreviewParameterProvider<PreviewModel<LoginState>> {
             lightThemeCompactPreviewModel(description = "InvalidUsername", invalidUsernameState),
             lightThemeCompactPreviewModel(description = "InvalidPassword", invalidPasswordState),
             lightThemeCompactPreviewModel(description = "Loading", loadingState),
-            lightThemeCompactPreviewModel(description = "Error", errorState),
             lightThemeCompactPreviewModel(description = "Valid", validState),
 
             // Dark
@@ -23,7 +22,6 @@ class LoginStateProvider : PreviewParameterProvider<PreviewModel<LoginState>> {
             darkThemeCompactPreviewModel(description = "InvalidUsername", invalidUsernameState),
             darkThemeCompactPreviewModel(description = "InvalidPassword", invalidPasswordState),
             darkThemeCompactPreviewModel(description = "Loading", loadingState),
-            darkThemeCompactPreviewModel(description = "Error", errorState),
             darkThemeCompactPreviewModel(description = "Valid", validState),
         )
 
@@ -56,15 +54,6 @@ class LoginStateProvider : PreviewParameterProvider<PreviewModel<LoginState>> {
             isPasswordValid = true,
             isRegisterButtonEnabled = false,
             isLoading = true,
-        )
-
-        val errorState = LoginState(
-            username = USERNAME,
-            isUsernameValid = true,
-            password = PASSWORD,
-            isPasswordValid = true,
-            isRegisterButtonEnabled = true,
-            showError = true,
         )
 
         val validState = LoginState(

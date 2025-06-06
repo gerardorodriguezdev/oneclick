@@ -4,20 +4,20 @@ import androidx.compose.material3.SnackbarData
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarVisuals
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
+import theoneclick.client.shared.ui.components.DefaultSnackbarState
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 import theoneclick.client.shared.ui.previews.providers.base.darkThemeCompactPreviewModel
 import theoneclick.client.shared.ui.previews.providers.base.lightThemeCompactPreviewModel
-import theoneclick.client.shared.ui.previews.providers.components.DefaultSnackbarModelProvider.DefaultSnackbarModel
 
-class DefaultSnackbarModelProvider : PreviewParameterProvider<PreviewModel<DefaultSnackbarModel>> {
+class DefaultSnackbarModelProvider : PreviewParameterProvider<PreviewModel<DefaultSnackbarState>> {
 
-    override val values: Sequence<PreviewModel<DefaultSnackbarModel>> =
+    override val values: Sequence<PreviewModel<DefaultSnackbarState>> =
         sequenceOf(
-            lightThemeCompactPreviewModel(description = "Error", model = errorDefaultSnackbarModel),
-            lightThemeCompactPreviewModel(description = "Success", model = successDefaultSnackbarModel),
+            lightThemeCompactPreviewModel(description = "Error", model = errorDefaultSnackbarState),
+            lightThemeCompactPreviewModel(description = "Success", model = successDefaultSnackbarState),
 
-            darkThemeCompactPreviewModel(description = "Error", model = errorDefaultSnackbarModel),
-            darkThemeCompactPreviewModel(description = "Success", model = successDefaultSnackbarModel),
+            darkThemeCompactPreviewModel(description = "Error", model = errorDefaultSnackbarState),
+            darkThemeCompactPreviewModel(description = "Success", model = successDefaultSnackbarState),
         )
 
     companion object Companion {
@@ -38,19 +38,14 @@ class DefaultSnackbarModelProvider : PreviewParameterProvider<PreviewModel<Defau
             }
         }
 
-        val errorDefaultSnackbarModel = DefaultSnackbarModel(
+        val errorDefaultSnackbarState = DefaultSnackbarState(
             snackbarData = mockSnackbarData,
             isError = true,
         )
 
-        val successDefaultSnackbarModel = DefaultSnackbarModel(
+        val successDefaultSnackbarState = DefaultSnackbarState(
             snackbarData = mockSnackbarData,
             isError = false,
         )
     }
-
-    data class DefaultSnackbarModel(
-        val snackbarData: SnackbarData,
-        val isError: Boolean,
-    )
 }

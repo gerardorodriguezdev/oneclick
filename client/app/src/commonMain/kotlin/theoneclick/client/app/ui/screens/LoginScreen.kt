@@ -24,8 +24,6 @@ import theoneclick.client.app.ui.screens.LoginScreenTestTags.USERNAME_PLACEHOLDE
 import theoneclick.client.app.ui.screens.LoginScreenTestTags.USERNAME_TEXT_FIELD_TEST_TAG
 import theoneclick.client.app.ui.states.LoginState
 import theoneclick.client.shared.ui.components.DefaultButton
-import theoneclick.client.shared.ui.components.DefaultScaffold
-import theoneclick.client.shared.ui.components.SnackbarState
 import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 
@@ -34,36 +32,26 @@ fun LoginScreen(
     state: LoginState,
     onEvent: (event: LoginEvent) -> Unit,
 ) {
-    DefaultScaffold(
-        snackbarState = SnackbarState(
-            text = stringResource(Res.string.loginScreen_snackbar_unknownError),
-            isErrorType = true,
-            showSnackbar = state.showError,
-        ),
-        onSnackbarShow = { onEvent(LoginEvent.ErrorShown) },
-    ) { paddingValues ->
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
+    Box(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Card(
+            modifier = Modifier.align(Alignment.Center)
         ) {
-            Card(
-                modifier = Modifier.align(Alignment.Center)
-            ) {
-                FormContent(
-                    username = state.username,
-                    onUsernameChange = { newUsername -> onEvent(LoginEvent.UsernameChanged(newUsername)) },
-                    isUsernameValid = state.isUsernameValid != false,
-                    password = state.password,
-                    onPasswordChange = { newPassword -> onEvent(LoginEvent.PasswordChanged(newPassword)) },
-                    isPasswordValid = state.isPasswordValid != false,
-                    onRegisterButtonClick = { onEvent(LoginEvent.RegisterButtonClicked) },
-                    isRegisterButtonEnabled = state.isRegisterButtonEnabled,
-                    isLoading = state.isLoading,
-                )
-            }
+            FormContent(
+                username = state.username,
+                onUsernameChange = { newUsername -> onEvent(LoginEvent.UsernameChanged(newUsername)) },
+                isUsernameValid = state.isUsernameValid != false,
+                password = state.password,
+                onPasswordChange = { newPassword -> onEvent(LoginEvent.PasswordChanged(newPassword)) },
+                isPasswordValid = state.isPasswordValid != false,
+                onRegisterButtonClick = { onEvent(LoginEvent.RegisterButtonClicked) },
+                isRegisterButtonEnabled = state.isRegisterButtonEnabled,
+                isLoading = state.isLoading,
+            )
         }
     }
+
 }
 
 @Suppress("LongParameterList")

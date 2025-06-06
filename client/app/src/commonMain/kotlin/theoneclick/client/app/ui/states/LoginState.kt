@@ -10,5 +10,4 @@ data class LoginState(
     val isRegisterButtonEnabled: Boolean = false,
 
     val isLoading: Boolean = false,
-    val showError: Boolean = false,
 )

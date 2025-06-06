@@ -9,15 +9,23 @@ import kotlinx.coroutines.flow.onCompletion
 import kotlinx.coroutines.flow.onStart
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
+import org.jetbrains.compose.resources.getString
+import theoneclick.client.features.home.generated.resources.Res
+import theoneclick.client.features.home.generated.resources.addDeviceScreen_snackbar_deviceAdded
+import theoneclick.client.features.home.generated.resources.addDeviceScreen_snackbar_unknownError
 import theoneclick.client.features.home.models.results.AddDeviceResult
 import theoneclick.client.features.home.repositories.DevicesRepository
 import theoneclick.client.features.home.states.AddDeviceState
 import theoneclick.client.features.home.ui.events.AddDeviceEvent
+import theoneclick.client.shared.notifications.NotificationsController
 import theoneclick.shared.core.validators.deviceNameValidator
 import theoneclick.shared.core.validators.roomNameValidator
 
 @Inject
-internal class AddDeviceViewModel(private val devicesRepository: DevicesRepository) : ViewModel() {
+internal class AddDeviceViewModel(
+    private val devicesRepository: DevicesRepository,
+    private val notificationsController: NotificationsController,
+) : ViewModel() {
     private val _state = mutableStateOf(AddDeviceState())
     val state: State<AddDeviceState> = _state
 
@@ -30,9 +38,6 @@ internal class AddDeviceViewModel(private val devicesRepository: DevicesReposito
             is AddDeviceEvent.DeviceTypeChanged -> event.handleDeviceTypeChanged()
 
             is AddDeviceEvent.AddDeviceButtonClicked -> handleAddDeviceButtonClicked()
-
-            is AddDeviceEvent.SuccessShown -> handleSuccessShown()
-            is AddDeviceEvent.ErrorShown -> handleErrorShown()
         }
     }
 
@@ -74,8 +79,6 @@ internal class AddDeviceViewModel(private val devicesRepository: DevicesReposito
                     _state.value = _state.value.copy(
                         isLoading = true,
                         isAddDeviceButtonEnabled = false,
-                        showError = false,
-                        showSuccess = false,
                     )
                 }
                 .onCompletion {
@@ -86,22 +89,20 @@ internal class AddDeviceViewModel(private val devicesRepository: DevicesReposito
                 }
                 .collect { addDeviceResult ->
                     when (addDeviceResult) {
-                        is AddDeviceResult.Success ->
-                            _state.value = _state.value.copy(showSuccess = true)
+                        is AddDeviceResult.Success -> {
+                            notificationsController.showSuccessNotification(
+                                getString(Res.string.addDeviceScreen_snackbar_deviceAdded)
+                            )
+                        }
 
-                        is AddDeviceResult.Error ->
-                            _state.value = _state.value.copy(showError = true)
+                        is AddDeviceResult.Error -> {
+                            notificationsController.showSuccessNotification(
+                                getString(Res.string.addDeviceScreen_snackbar_unknownError)
+                            )
+                        }
                     }
                 }
         }
-    }
-
-    private fun handleSuccessShown() {
-        _state.value = _state.value.copy(showSuccess = false)
-    }
-
-    private fun handleErrorShown() {
-        _state.value = _state.value.copy(showError = false)
     }
 
     override fun onCleared() {

@@ -14,8 +14,6 @@ import theoneclick.client.features.home.generated.resources.*
 import theoneclick.client.features.home.states.AddDeviceState
 import theoneclick.client.features.home.ui.events.AddDeviceEvent
 import theoneclick.client.shared.ui.components.DefaultButton
-import theoneclick.client.shared.ui.components.DefaultScaffold
-import theoneclick.client.shared.ui.components.SnackbarState
 import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 import theoneclick.shared.core.models.entities.DeviceType
@@ -25,41 +23,24 @@ internal fun AddDeviceScreen(
     state: AddDeviceState,
     onEvent: (event: AddDeviceEvent) -> Unit,
 ) {
-    DefaultScaffold(
-        snackbarState = SnackbarState(
-            text = snackbarText(state.showError),
-            isErrorType = state.showError,
-            showSnackbar = state.showError || state.showSuccess,
-        ),
-        onSnackbarShow = { onEvent(AddDeviceEvent.ErrorShown) },
-    ) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            Card(modifier = Modifier.align(Alignment.Center)) {
-                FormContent(
-                    deviceName = state.deviceName,
-                    onDeviceNameChange = { newDeviceName -> onEvent(AddDeviceEvent.DeviceNameChanged(newDeviceName)) },
-                    isDeviceNameValid = state.isDeviceNameValid ?: true,
-                    roomName = state.roomName,
-                    onRoomNameChange = { newRoomName -> onEvent(AddDeviceEvent.RoomNameChanged(newRoomName)) },
-                    isRoomNameValid = state.isRoomNameValid ?: true,
-                    deviceType = state.deviceType,
-                    onDeviceTypeChange = { newDeviceType -> onEvent(AddDeviceEvent.DeviceTypeChanged(newDeviceType)) },
-                    isLoading = state.isLoading,
-                    isAddDeviceButtonEnabled = state.isAddDeviceButtonEnabled,
-                    onAddDeviceClick = { onEvent(AddDeviceEvent.AddDeviceButtonClicked) },
-                )
-            }
+    Box(modifier = Modifier.fillMaxSize()) {
+        Card(modifier = Modifier.align(Alignment.Center)) {
+            FormContent(
+                deviceName = state.deviceName,
+                onDeviceNameChange = { newDeviceName -> onEvent(AddDeviceEvent.DeviceNameChanged(newDeviceName)) },
+                isDeviceNameValid = state.isDeviceNameValid ?: true,
+                roomName = state.roomName,
+                onRoomNameChange = { newRoomName -> onEvent(AddDeviceEvent.RoomNameChanged(newRoomName)) },
+                isRoomNameValid = state.isRoomNameValid ?: true,
+                deviceType = state.deviceType,
+                onDeviceTypeChange = { newDeviceType -> onEvent(AddDeviceEvent.DeviceTypeChanged(newDeviceType)) },
+                isLoading = state.isLoading,
+                isAddDeviceButtonEnabled = state.isAddDeviceButtonEnabled,
+                onAddDeviceClick = { onEvent(AddDeviceEvent.AddDeviceButtonClicked) },
+            )
         }
     }
 }
-
-@Composable
-private fun snackbarText(isErrorType: Boolean) =
-    if (isErrorType) {
-        stringResource(Res.string.addDeviceScreen_snackbar_unknownError)
-    } else {
-        stringResource(Res.string.addDeviceScreen_snackbar_deviceAdded)
-    }
 
 @Suppress("LongParameterList")
 @Composable
@@ -210,7 +191,7 @@ private fun RoomNameTextField(
 @Composable
 private fun DeviceType.toStringResource(): String =
     when (this) {
-        DeviceType.BLIND -> stringResource(Res.string.general_deviceType_blind)
+        DeviceType.BLIND -> stringResource(Res.string.addDeviceScreen_dropdown_deviceType)
     }
 
 

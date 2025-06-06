@@ -12,17 +12,13 @@ internal class AddDeviceStateProvider : PreviewParameterProvider<PreviewModel<Ad
         lightThemeCompactPreviewModel(description = "InvalidDeviceName", model = invalidDeviceNameState),
         lightThemeCompactPreviewModel(description = "InvalidRoomName", model = invalidRoomNameState),
         lightThemeCompactPreviewModel(description = "Loading", model = loadingState),
-        lightThemeCompactPreviewModel(description = "Error", model = errorState),
         lightThemeCompactPreviewModel(description = "Valid", model = validState),
-        lightThemeCompactPreviewModel(description = "Success", model = successState),
 
         darkThemeCompactPreviewModel(description = "Init", model = initState),
         darkThemeCompactPreviewModel(description = "InvalidDeviceName", model = invalidDeviceNameState),
         darkThemeCompactPreviewModel(description = "InvalidRoomName", model = invalidRoomNameState),
         darkThemeCompactPreviewModel(description = "Loading", model = loadingState),
-        darkThemeCompactPreviewModel(description = "Error", model = errorState),
         darkThemeCompactPreviewModel(description = "Valid", model = validState),
-        darkThemeCompactPreviewModel(description = "Success", model = successState),
     )
 
     companion object Companion {
@@ -54,29 +50,11 @@ internal class AddDeviceStateProvider : PreviewParameterProvider<PreviewModel<Ad
             isLoading = true,
         )
 
-        val errorState = AddDeviceState(
-            deviceName = DEVICE_NAME,
-            isDeviceNameValid = true,
-            roomName = ROOM_NAME,
-            isRoomNameValid = true,
-            isAddDeviceButtonEnabled = true,
-            showError = true,
-        )
-
         val validState = AddDeviceState(
             deviceName = DEVICE_NAME,
             isDeviceNameValid = true,
             roomName = ROOM_NAME,
             isRoomNameValid = true,
-            isAddDeviceButtonEnabled = true,
-        )
-
-        val successState = AddDeviceState(
-            deviceName = DEVICE_NAME,
-            isDeviceNameValid = true,
-            roomName = ROOM_NAME,
-            isRoomNameValid = true,
-            showSuccess = true,
             isAddDeviceButtonEnabled = true,
         )
     }
