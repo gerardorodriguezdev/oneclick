@@ -1,4 +1,4 @@
-package theoneclick.client.feature.home.ui
+package theoneclick.client.feature.home.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
@@ -16,7 +16,7 @@ import theoneclick.client.feature.home.generated.resources.userSettingsScreen_sn
 import theoneclick.client.feature.home.generated.resources.userSettingsScreen_snackbar_unknownError
 import theoneclick.client.feature.home.generated.resources.userSettingsScreen_title_userSettings
 import theoneclick.client.feature.home.states.UserSettingsState
-import theoneclick.client.feature.home.ui.UserSettingsTestTags.TITLE_TEST_TAG
+import theoneclick.client.feature.home.ui.screens.UserSettingsTestTags.TITLE_TEST_TAG
 import theoneclick.client.feature.home.ui.events.UserSettingsEvent
 import theoneclick.client.shared.ui.components.DefaultButton
 import theoneclick.client.shared.ui.components.DefaultScaffold

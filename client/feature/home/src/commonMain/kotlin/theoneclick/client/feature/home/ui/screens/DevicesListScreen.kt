@@ -1,4 +1,4 @@
-package theoneclick.client.feature.home.ui
+package theoneclick.client.feature.home.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -22,12 +22,12 @@ import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
 import theoneclick.client.feature.home.generated.resources.*
 import theoneclick.client.feature.home.states.DevicesListState
-import theoneclick.client.feature.home.ui.DevicesListScreenTestTags.DEVICE_CONTAINER
-import theoneclick.client.feature.home.ui.DevicesListScreenTestTags.DEVICE_NAME_TEXT
-import theoneclick.client.feature.home.ui.DevicesListScreenTestTags.OPENING_STATE_SWITCH
-import theoneclick.client.feature.home.ui.DevicesListScreenTestTags.ROOM_NAME_TEXT
-import theoneclick.client.feature.home.ui.DevicesListScreenTestTags.ROTATION_SLIDER
-import theoneclick.client.feature.home.ui.DevicesListScreenTestTags.labelTestTag
+import theoneclick.client.feature.home.ui.screens.DevicesListScreenTestTags.DEVICE_CONTAINER
+import theoneclick.client.feature.home.ui.screens.DevicesListScreenTestTags.DEVICE_NAME_TEXT
+import theoneclick.client.feature.home.ui.screens.DevicesListScreenTestTags.OPENING_STATE_SWITCH
+import theoneclick.client.feature.home.ui.screens.DevicesListScreenTestTags.ROOM_NAME_TEXT
+import theoneclick.client.feature.home.ui.screens.DevicesListScreenTestTags.ROTATION_SLIDER
+import theoneclick.client.feature.home.ui.screens.DevicesListScreenTestTags.labelTestTag
 import theoneclick.client.feature.home.ui.events.DevicesListEvent
 import theoneclick.client.shared.ui.components.DefaultScaffold
 import theoneclick.client.shared.ui.components.SnackbarState

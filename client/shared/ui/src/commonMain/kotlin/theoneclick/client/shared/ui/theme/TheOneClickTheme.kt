@@ -27,12 +27,10 @@ fun TheOneClickTheme(isDarkTheme: Boolean, content: @Composable () -> Unit) {
     )
 }
 
-//TODO: Expect/actual issue warning
-//TODO: Refactor di
+//TODO: Update public/private methods
 //TODO: Report errors from vm bubble to parent
 //TODO: Sep ui state from logic state
 //TODO: Update AddDevice + DevicesList (vm + ui)
-//TODO: Update public/private methods
 //TODO: Make AppScreen cleaner
 //TODO: UI to other module + Presentation to other module
 //TODO: Separate home module

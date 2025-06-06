@@ -1,4 +1,4 @@
-package theoneclick.client.feature.home.ui
+package theoneclick.client.feature.home.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*

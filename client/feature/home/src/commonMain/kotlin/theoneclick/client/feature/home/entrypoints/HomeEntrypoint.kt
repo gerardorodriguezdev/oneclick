@@ -11,9 +11,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import theoneclick.client.feature.home.di.HomeComponent
 import theoneclick.client.feature.home.di.createHomeComponent
-import theoneclick.client.feature.home.ui.AddDeviceScreen
-import theoneclick.client.feature.home.ui.DevicesListScreen
-import theoneclick.client.feature.home.ui.UserSettingsScreen
+import theoneclick.client.feature.home.ui.screens.AddDeviceScreen
+import theoneclick.client.feature.home.ui.screens.DevicesListScreen
+import theoneclick.client.feature.home.ui.screens.UserSettingsScreen
 import theoneclick.client.shared.di.CoreComponent
 import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.core.models.routes.HomeRoute
