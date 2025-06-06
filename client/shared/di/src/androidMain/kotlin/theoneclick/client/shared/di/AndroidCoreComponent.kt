@@ -1,9 +1,7 @@
-package theoneclick.client.app.di
+package theoneclick.client.shared.di
 
 import io.ktor.client.engine.*
 import io.ktor.http.*
-import theoneclick.client.shared.di.CoreComponent
-import theoneclick.client.shared.di.create
 import theoneclick.client.shared.navigation.NavigationController
 import theoneclick.client.shared.network.dataSources.TokenDataSource
 import theoneclick.client.shared.network.platform.AndroidRemoteAuthenticationDataSource

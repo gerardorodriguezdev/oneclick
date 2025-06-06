@@ -5,7 +5,7 @@ import io.ktor.http.*
 import theoneclick.client.shared.network.dataSources.AndroidInMemoryTokenDataSource
 import theoneclick.client.shared.network.dataSources.TokenDataSource
 
-val TokenProxy = createClientPlugin("TokenProxy", ::TokenManagerConfiguration) {
+internal val TokenProxy = createClientPlugin("TokenProxy", ::TokenManagerConfiguration) {
     val tokenDataSource = pluginConfig.tokenDataSource
 
     onRequest { request, _ ->
@@ -16,6 +16,6 @@ val TokenProxy = createClientPlugin("TokenProxy", ::TokenManagerConfiguration) {
     }
 }
 
-class TokenManagerConfiguration(
+internal class TokenManagerConfiguration(
     var tokenDataSource: TokenDataSource = AndroidInMemoryTokenDataSource(),
 )

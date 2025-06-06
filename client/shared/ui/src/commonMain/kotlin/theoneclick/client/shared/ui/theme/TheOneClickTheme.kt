@@ -27,7 +27,6 @@ fun TheOneClickTheme(isDarkTheme: Boolean, content: @Composable () -> Unit) {
     )
 }
 
-//TODO: Update public/private methods
 //TODO: Report errors from vm bubble to parent
 //TODO: Sep ui state from logic state
 //TODO: Update AddDevice + DevicesList (vm + ui)

@@ -7,7 +7,7 @@ import android.os.StrictMode.VmPolicy
 import io.ktor.http.*
 import theoneclick.client.app.buildkonfig.BuildKonfig
 import theoneclick.client.app.di.AppComponent
-import theoneclick.client.app.di.androidCoreComponent
+import theoneclick.client.shared.di.androidCoreComponent
 import theoneclick.client.app.di.create
 import theoneclick.client.app.entrypoints.AppEntrypoint
 import theoneclick.client.app.mappers.urlProtocol

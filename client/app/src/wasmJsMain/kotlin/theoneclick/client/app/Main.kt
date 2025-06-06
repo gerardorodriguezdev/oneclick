@@ -12,7 +12,7 @@ import kotlinx.browser.window
 import theoneclick.client.app.buildkonfig.BuildKonfig
 import theoneclick.client.app.di.AppComponent
 import theoneclick.client.app.di.create
-import theoneclick.client.app.di.wasmCoreComponent
+import theoneclick.client.shared.di.wasmCoreComponent
 import theoneclick.client.app.entrypoints.AppEntrypoint
 import theoneclick.client.shared.navigation.DefaultNavigationController
 import theoneclick.client.shared.network.platform.WasmLogoutManager
