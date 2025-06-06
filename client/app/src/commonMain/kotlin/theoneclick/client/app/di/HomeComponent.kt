@@ -35,4 +35,4 @@ expect fun createHomeComponent(coreComponent: CoreComponent): HomeComponent
 
 @Scope
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER)
-annotation class HomeScope
+private annotation class HomeScope

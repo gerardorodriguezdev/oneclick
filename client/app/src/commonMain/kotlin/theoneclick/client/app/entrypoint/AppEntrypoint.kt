@@ -71,6 +71,7 @@ class AppEntrypoint(
                             )
                         }
 
+                        //TODO: Move
                         navigation<Home>(startDestination = DevicesList) {
                             val homeEntrypoint = HomeEntrypoint(
                                 navController = navHostController,

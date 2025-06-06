@@ -2,15 +2,16 @@ package theoneclick.client.shared.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
-import theoneclick.client.shared.navigation.NavigationController.NavigationEvent
+import theoneclick.client.shared.navigation.NavigationController.NavigationEvent.Navigate
 import theoneclick.shared.core.models.routes.base.Route
 
 fun popUpToInclusive(
     startRoute: Route,
     saveState: Boolean = false,
-): NavigationEvent.Navigate.PopUpTo =
-    NavigationEvent.Navigate.PopUpTo(
+): Navigate.PopUpTo =
+    Navigate.PopUpTo(
         startRoute = startRoute,
         isInclusive = true,
         saveState = saveState,
@@ -28,3 +29,12 @@ fun RegisterNavigationControllerObserver(
         navigationControllerObserver.subscribe()
     }
 }
+
+@Composable
+private fun rememberNavigationObserver(
+    navigationController: NavigationController,
+    navHostController: NavHostController,
+): NavigationControllerObserver =
+    remember {
+        DefaultNavigationControllerObserver(navigationController, navHostController)
+    }

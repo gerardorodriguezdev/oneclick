@@ -1,7 +1,5 @@
 package theoneclick.client.shared.navigation
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
@@ -46,12 +44,3 @@ class DefaultNavigationControllerObserver(
         }
     }
 }
-
-@Composable
-fun rememberNavigationObserver(
-    navigationController: NavigationController,
-    navHostController: NavHostController,
-): NavigationControllerObserver =
-    remember {
-        DefaultNavigationControllerObserver(navigationController, navHostController)
-    }
