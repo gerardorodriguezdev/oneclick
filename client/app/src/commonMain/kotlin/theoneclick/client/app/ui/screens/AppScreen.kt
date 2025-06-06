@@ -19,8 +19,8 @@ import theoneclick.client.app.generated.resources.Res
 import theoneclick.client.app.generated.resources.homeScreen_navigationBar_addDevice
 import theoneclick.client.app.generated.resources.homeScreen_navigationBar_devicesList
 import theoneclick.client.app.generated.resources.homeScreen_navigationBar_userSettings
-import theoneclick.client.app.ui.previews.dev.MockContent
-import theoneclick.client.app.ui.previews.dev.ScreenPreviewComposable
+import theoneclick.client.shared.ui.previews.dev.MockContent
+import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.app.ui.previews.providers.base.PreviewModel
 import theoneclick.client.app.ui.screens.AppScreenConstants.navigationBarRoutes
 import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute

@@ -16,11 +16,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.stringResource
 import theoneclick.client.app.generated.resources.*
-import theoneclick.client.app.ui.components.DefaultButton
-import theoneclick.client.app.ui.components.DefaultScaffold
-import theoneclick.client.app.ui.components.SnackbarState
+import theoneclick.client.shared.ui.components.DefaultButton
+import theoneclick.client.shared.ui.components.DefaultScaffold
+import theoneclick.client.shared.ui.components.SnackbarState
 import theoneclick.client.app.ui.events.LoginEvent
-import theoneclick.client.app.ui.previews.dev.ScreenPreviewComposable
+import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.app.ui.previews.providers.base.PreviewModel
 import theoneclick.client.app.ui.screens.LoginScreenTestTags.PASSWORD_PLACEHOLDER_TEST_TAG
 import theoneclick.client.app.ui.screens.LoginScreenTestTags.PASSWORD_TEXT_FIELD_TEST_TAG

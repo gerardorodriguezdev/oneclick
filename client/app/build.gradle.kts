@@ -60,6 +60,7 @@ kotlin {
                 implementation(compose.material3)
                 implementation(compose.materialIconsExtended)
                 implementation(compose.ui)
+                implementation(libs.kmp.window.classes)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.kmp.coroutines)
@@ -72,7 +73,6 @@ kotlin {
                 implementation(libs.kmp.ktor.client.logging)
                 implementation(libs.kmp.datetime)
                 implementation(libs.kmp.immutable)
-                implementation(libs.kmp.window.classes)
                 implementation(libs.kmp.kotlin.inject)
                 implementation(libs.kmp.kotlin.inject.kmp)
                 implementation(projects.shared.core)
@@ -81,6 +81,8 @@ kotlin {
                 implementation(projects.client.shared.di)
                 implementation(projects.client.shared.network)
                 implementation(projects.client.shared.navigation)
+                implementation(projects.client.shared.ui)
+                implementation(projects.client.feature.home)
 
                 api(libs.kmp.atomicfu)
 
