@@ -6,6 +6,7 @@ import theoneclick.client.shared.navigation.NavigationController
 import theoneclick.client.shared.network.platform.LogoutManager
 import theoneclick.client.shared.network.platform.WasmRemoteAuthenticationDataSource
 import theoneclick.client.shared.network.platform.wasmHttpClient
+import theoneclick.client.shared.notifications.NotificationsController
 import theoneclick.shared.core.platform.AppLogger
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
@@ -15,6 +16,7 @@ fun wasmCoreComponent(
     dispatchersProvider: DispatchersProvider,
     navigationController: NavigationController,
     logoutManager: LogoutManager,
+    notificationsController: NotificationsController,
 ): CoreComponent {
     val httpClient: HttpClient = wasmHttpClient(
         httpClientEngine = httpClientEngine,
@@ -28,5 +30,6 @@ fun wasmCoreComponent(
         logoutManager = logoutManager,
         httpClient = httpClient,
         authenticationDataSource = WasmRemoteAuthenticationDataSource(httpClient, dispatchersProvider, appLogger),
+        notificationsController = notificationsController,
     )
 }

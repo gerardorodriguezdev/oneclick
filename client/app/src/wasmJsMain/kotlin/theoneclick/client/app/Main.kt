@@ -12,10 +12,11 @@ import kotlinx.browser.window
 import theoneclick.client.app.buildkonfig.BuildKonfig
 import theoneclick.client.app.di.AppComponent
 import theoneclick.client.app.di.create
-import theoneclick.client.shared.di.wasmCoreComponent
 import theoneclick.client.app.entrypoints.AppEntrypoint
+import theoneclick.client.shared.di.wasmCoreComponent
 import theoneclick.client.shared.navigation.DefaultNavigationController
 import theoneclick.client.shared.network.platform.WasmLogoutManager
+import theoneclick.client.shared.notifications.DefaultNotificationsController
 import theoneclick.shared.core.platform.EmptyAppLogger
 import theoneclick.shared.core.platform.appLogger
 import theoneclick.shared.dispatchers.platform.dispatchersProvider
@@ -29,7 +30,8 @@ fun main() {
         appLogger = appLogger,
         dispatchersProvider = dispatchersProvider(),
         navigationController = navigationController,
-        logoutManager = WasmLogoutManager(navigationController)
+        logoutManager = WasmLogoutManager(navigationController),
+        notificationsController = DefaultNotificationsController(),
     )
     val appComponent = AppComponent::class.create(coreComponent)
     val appEntrypoint = AppEntrypoint(appComponent = appComponent, coreComponent = coreComponent)

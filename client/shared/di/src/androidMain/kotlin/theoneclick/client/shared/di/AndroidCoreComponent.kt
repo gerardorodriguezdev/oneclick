@@ -7,6 +7,7 @@ import theoneclick.client.shared.network.dataSources.TokenDataSource
 import theoneclick.client.shared.network.platform.AndroidRemoteAuthenticationDataSource
 import theoneclick.client.shared.network.platform.LogoutManager
 import theoneclick.client.shared.network.platform.androidHttpClient
+import theoneclick.client.shared.notifications.NotificationsController
 import theoneclick.shared.core.platform.AppLogger
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
@@ -20,6 +21,7 @@ fun androidCoreComponent(
     dispatchersProvider: DispatchersProvider,
     navigationController: NavigationController,
     logoutManager: LogoutManager,
+    notificationsController: NotificationsController,
 ): CoreComponent {
     val httpClient = androidHttpClient(
         urlProtocol = urlProtocol,
@@ -43,5 +45,6 @@ fun androidCoreComponent(
             tokenDataSource,
             appLogger
         ),
+        notificationsController = notificationsController,
     )
 }

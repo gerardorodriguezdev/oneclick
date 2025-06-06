@@ -7,10 +7,10 @@ import android.os.StrictMode.VmPolicy
 import io.ktor.http.*
 import theoneclick.client.app.buildkonfig.BuildKonfig
 import theoneclick.client.app.di.AppComponent
-import theoneclick.client.shared.di.androidCoreComponent
 import theoneclick.client.app.di.create
 import theoneclick.client.app.entrypoints.AppEntrypoint
 import theoneclick.client.app.mappers.urlProtocol
+import theoneclick.client.shared.di.androidCoreComponent
 import theoneclick.client.shared.navigation.DefaultNavigationController
 import theoneclick.client.shared.network.dataSources.AndroidEncryptedPreferences
 import theoneclick.client.shared.network.dataSources.AndroidLocalTokenDataSource
@@ -18,6 +18,7 @@ import theoneclick.client.shared.network.dataSources.EncryptedPreferences
 import theoneclick.client.shared.network.platform.AndroidLogoutManager
 import theoneclick.client.shared.network.platform.androidHttpClientEngine
 import theoneclick.client.shared.network.security.AndroidEncryptor
+import theoneclick.client.shared.notifications.DefaultNotificationsController
 import theoneclick.shared.core.platform.EmptyAppLogger
 import theoneclick.shared.core.platform.appLogger
 import theoneclick.shared.dispatchers.platform.dispatchersProvider
@@ -57,7 +58,8 @@ class TheOneClickApplication : Application() {
                 appLogger = appLogger,
                 navigationController = navigationController,
                 tokenDataSource = tokenDataSource,
-            )
+            ),
+            notificationsController = DefaultNotificationsController(),
         )
         val appComponent = AppComponent::class.create(coreComponent)
         appEntrypoint = AppEntrypoint(appComponent = appComponent, coreComponent = coreComponent)

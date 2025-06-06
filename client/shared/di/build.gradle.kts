@@ -23,6 +23,7 @@ kotlin {
                 implementation(projects.shared.timeProvider)
                 implementation(projects.client.shared.network)
                 implementation(projects.client.shared.navigation)
+                implementation(projects.client.shared.notifications)
 
                 project.dependencies {
                     kspCommonMainMetadata(libs.ksp.kotlin.inject)

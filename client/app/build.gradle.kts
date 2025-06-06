@@ -82,6 +82,7 @@ kotlin {
                 implementation(projects.client.shared.network)
                 implementation(projects.client.shared.navigation)
                 implementation(projects.client.shared.ui)
+                implementation(projects.client.shared.notifications)
                 implementation(projects.client.features.home)
 
                 api(libs.kmp.atomicfu)
