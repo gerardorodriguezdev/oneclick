@@ -89,7 +89,7 @@ class LoginViewModel(
                         is RequestLoginResult.ValidLogin ->
                             navigationController.sendNavigationEvent(navigationEvent = toNavigationEvent())
 
-                        is RequestLoginResult.Failure ->
+                        is RequestLoginResult.Error ->
                             _state.value = _state.value.copy(showError = true)
                     }
                 }

@@ -63,7 +63,7 @@ internal class DevicesListViewModel(
                 .collect { devicesResult ->
                     when (devicesResult) {
                         is DevicesResult.Success -> Unit // Observed at the start
-                        is DevicesResult.Failure -> handleUnknownError()
+                        is DevicesResult.Error -> handleUnknownError()
                     }
                 }
         }
@@ -86,7 +86,7 @@ internal class DevicesListViewModel(
                 .collect { updatedDeviceResult ->
                     when (updatedDeviceResult) {
                         is UpdateDeviceResult.Success -> Unit // Observed at the start
-                        is UpdateDeviceResult.Failure -> handleUnknownError()
+                        is UpdateDeviceResult.Error -> handleUnknownError()
                     }
                 }
         }

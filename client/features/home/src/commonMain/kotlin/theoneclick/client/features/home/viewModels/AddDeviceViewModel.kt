@@ -89,7 +89,7 @@ internal class AddDeviceViewModel(private val devicesRepository: DevicesReposito
                         is AddDeviceResult.Success ->
                             _state.value = _state.value.copy(showSuccess = true)
 
-                        is AddDeviceResult.Failure ->
+                        is AddDeviceResult.Error ->
                             _state.value = _state.value.copy(showError = true)
                     }
                 }

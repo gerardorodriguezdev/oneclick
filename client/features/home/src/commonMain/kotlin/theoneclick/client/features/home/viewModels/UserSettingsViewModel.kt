@@ -56,7 +56,7 @@ internal class UserSettingsViewModel(
                         is LogoutResult.Success ->
                             _state.value = _state.value.copy(showSuccess = true)
 
-                        is LogoutResult.Failure ->
+                        is LogoutResult.Error ->
                             _state.value = _state.value.copy(showError = true)
                     }
                 }

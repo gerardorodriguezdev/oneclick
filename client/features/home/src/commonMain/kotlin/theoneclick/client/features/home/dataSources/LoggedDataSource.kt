@@ -63,13 +63,13 @@ internal class RemoteLoggedDataSource(
                     emit(AddDeviceResult.Success(responseBody.device))
                 }
 
-                else -> emit(AddDeviceResult.Failure)
+                else -> emit(AddDeviceResult.Error)
             }
         }
             .catch { exception ->
                 appLogger.e("Exception catched '${exception.stackTraceToString()}' while adding device '$deviceName'")
 
-                emit(AddDeviceResult.Failure)
+                emit(AddDeviceResult.Error)
             }
             .flowOn(dispatchersProvider.io())
 
@@ -83,12 +83,12 @@ internal class RemoteLoggedDataSource(
                     emit(DevicesResult.Success(devices = responseBody.devices))
                 }
 
-                else -> emit(DevicesResult.Failure)
+                else -> emit(DevicesResult.Error)
             }
         }
             .catch { exception ->
                 appLogger.e("Exception catched '${exception.stackTraceToString()}' while getting devices ")
-                emit(DevicesResult.Failure)
+                emit(DevicesResult.Error)
             }
             .flowOn(dispatchersProvider.io())
 
@@ -100,14 +100,14 @@ internal class RemoteLoggedDataSource(
 
             when (response.status) {
                 HttpStatusCode.OK -> emit(UpdateDeviceResult.Success)
-                else -> emit(UpdateDeviceResult.Failure)
+                else -> emit(UpdateDeviceResult.Error)
             }
         }
             .catch { exception ->
                 appLogger.e(
                     "Exception catched '${exception.stackTraceToString()}' while updating device '$updatedDevice'"
                 )
-                emit(UpdateDeviceResult.Failure)
+                emit(UpdateDeviceResult.Error)
             }
             .flowOn(dispatchersProvider.io())
 }

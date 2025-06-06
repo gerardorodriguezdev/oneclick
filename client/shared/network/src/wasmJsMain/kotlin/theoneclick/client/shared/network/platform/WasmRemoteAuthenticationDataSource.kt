@@ -56,12 +56,12 @@ class WasmRemoteAuthenticationDataSource(
 
             when (response.status) {
                 HttpStatusCode.OK -> emit(RequestLoginResult.ValidLogin)
-                else -> emit(RequestLoginResult.Failure)
+                else -> emit(RequestLoginResult.Error)
             }
         }
             .catch { exception ->
                 appLogger.e("Exception catched '${exception.stackTraceToString()}' while requesting login '$username'")
-                emit(RequestLoginResult.Failure)
+                emit(RequestLoginResult.Error)
             }
             .flowOn(dispatchersProvider.io())
 
@@ -71,13 +71,13 @@ class WasmRemoteAuthenticationDataSource(
 
             when (response.status) {
                 HttpStatusCode.OK -> emit(LogoutResult.Success)
-                else -> emit(LogoutResult.Failure)
+                else -> emit(LogoutResult.Error)
             }
         }
             .catch { exception ->
                 appLogger.e("Exception catched '${exception.stackTraceToString()}' while logging out")
 
-                emit(LogoutResult.Failure)
+                emit(LogoutResult.Error)
             }
             .flowOn(dispatchersProvider.io())
 }
