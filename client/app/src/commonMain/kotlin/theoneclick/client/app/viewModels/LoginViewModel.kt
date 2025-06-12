@@ -20,6 +20,7 @@ import theoneclick.client.shared.navigation.popUpToInclusive
 import theoneclick.client.shared.network.models.RequestLoginResult
 import theoneclick.client.shared.network.platform.AuthenticationDataSource
 import theoneclick.client.shared.notifications.NotificationsController
+import theoneclick.client.shared.ui.models.Field
 import theoneclick.shared.core.models.routes.AppRoute
 import theoneclick.shared.core.validators.passwordValidator
 import theoneclick.shared.core.validators.usernameValidator
@@ -49,9 +50,11 @@ class LoginViewModel(
         val isNewUsernameValid = usernameValidator.isValid(newUsername)
 
         _state.value = _state.value.copy(
-            username = newUsername,
-            isUsernameValid = isNewUsernameValid,
-            isRegisterButtonEnabled = isNewUsernameValid && passwordValidator.isValid(_state.value.password),
+            username = Field(
+                text = newUsername,
+                isValid = isNewUsernameValid,
+            ),
+            isRegisterButtonEnabled = isNewUsernameValid && passwordValidator.isValid(_state.value.password.text),
         )
     }
 
@@ -59,9 +62,11 @@ class LoginViewModel(
         val isNewPasswordValid = passwordValidator.isValid(newPassword)
 
         _state.value = _state.value.copy(
-            password = newPassword,
-            isPasswordValid = isNewPasswordValid,
-            isRegisterButtonEnabled = isNewPasswordValid && usernameValidator.isValid(_state.value.username),
+            password = Field(
+                text = newPassword,
+                isValid = isNewPasswordValid,
+            ),
+            isRegisterButtonEnabled = isNewPasswordValid && usernameValidator.isValid(_state.value.username.text),
         )
     }
 
@@ -71,8 +76,8 @@ class LoginViewModel(
         requestLoginJob = viewModelScope.launch {
             authenticationDataSource
                 .login(
-                    username = _state.value.username,
-                    password = _state.value.password,
+                    username = _state.value.username.text,
+                    password = _state.value.password.text,
                 )
                 .onStart {
                     _state.value = _state.value.copy(

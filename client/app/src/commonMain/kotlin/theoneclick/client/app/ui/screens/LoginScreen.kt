@@ -10,6 +10,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.password
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import org.jetbrains.compose.resources.stringResource
@@ -23,7 +25,6 @@ import theoneclick.client.app.ui.states.LoginState
 import theoneclick.client.shared.ui.components.Body
 import theoneclick.client.shared.ui.components.DefaultButton
 import theoneclick.client.shared.ui.components.DialogBox
-import theoneclick.client.shared.ui.components.Label
 import theoneclick.client.shared.ui.components.ScreenBox
 import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
@@ -36,22 +37,22 @@ fun LoginScreen(
     ScreenBox {
         DialogBox(header = stringResource(Res.string.loginScreen_title_register)) {
             UsernameTextField(
-                username = state.username,
+                username = state.username.text,
+                isUsernameValid = state.username.isValid != false,
                 onUsernameChange = { newUsername -> onEvent(LoginEvent.UsernameChanged(newUsername)) },
-                isUsernameValid = state.isUsernameValid != false,
             )
 
             PasswordTextField(
-                password = state.password,
+                password = state.password.text,
+                isPasswordValid = state.password.isValid != false,
                 onPasswordChange = { newPassword -> onEvent(LoginEvent.PasswordChanged(newPassword)) },
-                isPasswordValid = state.isPasswordValid != false,
             )
 
             DefaultButton(
                 text = stringResource(Res.string.loginScreen_registerButton_register),
-                onClick = { onEvent(LoginEvent.RegisterButtonClicked) },
                 isEnabled = state.isRegisterButtonEnabled,
                 isLoading = state.isLoading,
+                onClick = { onEvent(LoginEvent.RegisterButtonClicked) },
                 modifier = Modifier.fillMaxWidth(),
             )
         }
@@ -61,8 +62,8 @@ fun LoginScreen(
 @Composable
 private fun UsernameTextField(
     username: String,
-    onUsernameChange: (String) -> Unit,
-    isUsernameValid: Boolean
+    isUsernameValid: Boolean,
+    onUsernameChange: (String) -> Unit
 ) {
     OutlinedTextField(
         placeholder = {
@@ -82,8 +83,8 @@ private fun UsernameTextField(
 @Composable
 private fun PasswordTextField(
     password: String,
-    onPasswordChange: (String) -> Unit,
-    isPasswordValid: Boolean
+    isPasswordValid: Boolean,
+    onPasswordChange: (String) -> Unit
 ) {
     var showPassword by remember { mutableStateOf(false) }
 
@@ -107,7 +108,9 @@ private fun PasswordTextField(
         visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
         isError = !isPasswordValid,
         maxLines = 1,
-        modifier = Modifier.testTag(PASSWORD_TEXT_FIELD),
+        modifier = Modifier
+            .semantics { password() }
+            .testTag(PASSWORD_TEXT_FIELD),
     )
 }
 

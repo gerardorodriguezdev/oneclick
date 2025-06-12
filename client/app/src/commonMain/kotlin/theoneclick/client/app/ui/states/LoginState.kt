@@ -1,13 +1,10 @@
 package theoneclick.client.app.ui.states
 
+import theoneclick.client.shared.ui.models.Field
+
 data class LoginState(
-    val username: String = "",
-    val isUsernameValid: Boolean? = null,
-
-    val password: String = "",
-    val isPasswordValid: Boolean? = null,
-
+    val username: Field = Field(),
+    val password: Field = Field(),
     val isRegisterButtonEnabled: Boolean = false,
-
     val isLoading: Boolean = false,
 )
