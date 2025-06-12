@@ -21,17 +21,17 @@ import theoneclick.client.app.ui.screens.LoginScreenTestTags.PASSWORD_PLACEHOLDE
 import theoneclick.client.app.ui.screens.LoginScreenTestTags.PASSWORD_TEXT_FIELD
 import theoneclick.client.app.ui.screens.LoginScreenTestTags.USERNAME_PLACEHOLDER
 import theoneclick.client.app.ui.screens.LoginScreenTestTags.USERNAME_TEXT_FIELD
-import theoneclick.client.app.ui.states.LoginState
 import theoneclick.client.shared.ui.components.Body
 import theoneclick.client.shared.ui.components.DefaultButton
 import theoneclick.client.shared.ui.components.DialogBox
 import theoneclick.client.shared.ui.components.ScreenBox
+import theoneclick.client.shared.ui.models.Field
 import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 
 @Composable
 fun LoginScreen(
-    state: LoginState,
+    state: LoginScreenState,
     onEvent: (event: LoginEvent) -> Unit,
 ) {
     ScreenBox {
@@ -121,8 +121,15 @@ object LoginScreenTestTags {
     const val PASSWORD_PLACEHOLDER = "LoginScreen.Password.Placeholder"
 }
 
+data class LoginScreenState(
+    val username: Field = Field(),
+    val password: Field = Field(),
+    val isRegisterButtonEnabled: Boolean = false,
+    val isLoading: Boolean = false,
+)
+
 @Composable
-fun LoginScreenPreview(previewModel: PreviewModel<LoginState>) {
+fun LoginScreenPreview(previewModel: PreviewModel<LoginScreenState>) {
     ScreenPreviewComposable(previewModel) {
         LoginScreen(
             state = previewModel.model,
