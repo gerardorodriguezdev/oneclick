@@ -2,7 +2,7 @@ package theoneclick.shared.core.models.entities
 
 import kotlinx.serialization.Serializable
 import theoneclick.shared.core.models.entities.DeviceFeature.Openable
-import theoneclick.shared.core.models.entities.DeviceFeature.Rotateable
+import theoneclick.shared.core.models.entities.DeviceFeature.Rotable
 
 @Serializable
 sealed interface Device {
@@ -17,7 +17,7 @@ sealed interface Device {
         override val room: String,
         override val isOpened: Boolean,
         override val rotation: Int,
-    ) : Device, Openable, Rotateable {
+    ) : Device, Openable, Rotable {
         override val range: DeviceFeature.Range = blindRange
 
         override fun toggle(newState: Boolean): Device = copy(isOpened = newState)

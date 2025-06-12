@@ -9,7 +9,7 @@ sealed interface DeviceFeature {
         fun toggle(newState: Boolean): Device
     }
 
-    interface Rotateable : DeviceFeature {
+    interface Rotable : DeviceFeature {
         val rotation: Int
         val range: Range
 

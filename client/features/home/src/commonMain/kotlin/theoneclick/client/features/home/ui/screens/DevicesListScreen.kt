@@ -35,7 +35,7 @@ import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 import theoneclick.client.shared.ui.theme.Tokens
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.DeviceFeature.Openable
-import theoneclick.shared.core.models.entities.DeviceFeature.Rotateable
+import theoneclick.shared.core.models.entities.DeviceFeature.Rotable
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -131,7 +131,7 @@ private fun DeviceCard(
                 )
             }
 
-            if (device is Rotateable) {
+            if (device is Rotable) {
                 RotatableDeviceSection(
                     rotation = device.rotation,
                     onRotateDevice = { newRotation -> updateDevice(device.rotate(newRotation)) }
