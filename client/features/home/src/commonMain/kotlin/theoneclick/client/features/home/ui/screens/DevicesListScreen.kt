@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Blinds
 import androidx.compose.material3.*
@@ -15,7 +13,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
@@ -29,8 +26,13 @@ import theoneclick.client.features.home.ui.screens.DevicesListScreenTestTags.OPE
 import theoneclick.client.features.home.ui.screens.DevicesListScreenTestTags.ROOM_NAME_TEXT
 import theoneclick.client.features.home.ui.screens.DevicesListScreenTestTags.ROTATION_SLIDER
 import theoneclick.client.features.home.ui.screens.DevicesListScreenTestTags.labelTestTag
+import theoneclick.client.shared.ui.components.Body
+import theoneclick.client.shared.ui.components.Label
+import theoneclick.client.shared.ui.components.ScreenBox
+import theoneclick.client.shared.ui.components.Title
 import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
+import theoneclick.client.shared.ui.theme.Tokens
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.DeviceFeature.Openable
 import theoneclick.shared.core.models.entities.DeviceFeature.Rotateable
@@ -54,9 +56,9 @@ internal fun DevicesListScreen(
         } else {
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(minSize = DevicesListScreenConstants.deviceCardMinWidth),
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalArrangement = Arrangement.spacedBy(16.dp),
-                contentPadding = PaddingValues(16.dp),
+                verticalArrangement = Arrangement.spacedBy(Tokens.itemsSpacing),
+                horizontalArrangement = Arrangement.spacedBy(Tokens.itemsSpacing),
+                contentPadding = PaddingValues(Tokens.containerPadding),
                 modifier = Modifier.fillMaxSize(),
             ) {
                 items(
@@ -77,15 +79,9 @@ internal fun DevicesListScreen(
 
 @Composable
 private fun Empty() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState()),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
+    ScreenBox {
+        Title(
             text = stringResource(Res.string.devicesListScreen_placeholder_noDevicesFound),
-            style = MaterialTheme.typography.titleLarge,
             textAlign = TextAlign.Center,
         )
     }
@@ -102,10 +98,10 @@ private fun DeviceCard(
         modifier = modifier.fillMaxWidth()
     ) {
         Column(
-            verticalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(Tokens.itemsSpacing),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(Tokens.containerPadding),
         ) {
             val icon by remember {
                 derivedStateOf {
@@ -119,13 +115,13 @@ private fun DeviceCard(
             DeviceSection(
                 label = stringResource(Res.string.devicesListScreen_deviceCardDeviceNameLabel_deviceName),
                 content = {
-                    DeviceSectionBodyText(text = device.deviceName, modifier = Modifier.testTag(DEVICE_NAME_TEXT))
+                    Body(text = device.deviceName, modifier = Modifier.testTag(DEVICE_NAME_TEXT))
                 }
             )
 
             DeviceSection(
                 label = stringResource(Res.string.devicesListScreen_deviceCardRoomNameLabel_room),
-                content = { DeviceSectionBodyText(text = device.room, modifier = Modifier.testTag(ROOM_NAME_TEXT)) }
+                content = { Body(text = device.room, modifier = Modifier.testTag(ROOM_NAME_TEXT)) }
             )
 
             if (device is Openable) {
@@ -162,7 +158,7 @@ private fun DeviceSection(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        DeviceSectionLabelText(
+        Label(
             text = label,
             modifier = Modifier
                 .padding(end = 16.dp)
@@ -171,26 +167,6 @@ private fun DeviceSection(
 
         content()
     }
-}
-
-@Composable
-private fun DeviceSectionLabelText(text: String, modifier: Modifier = Modifier) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.labelSmall,
-        modifier = modifier,
-    )
-}
-
-@Composable
-private fun DeviceSectionBodyText(text: String, modifier: Modifier = Modifier) {
-    Text(
-        text = text,
-        style = MaterialTheme.typography.labelSmall.copy(
-            fontWeight = FontWeight.Light,
-        ),
-        modifier = modifier,
-    )
 }
 
 @Composable
@@ -234,7 +210,7 @@ private fun RotatableDeviceSection(rotation: Int, onRotateDevice: (newRotation: 
     )
 }
 
-internal object DevicesListScreenConstants {
+private object DevicesListScreenConstants {
     val deviceCardMinWidth: Dp = 250.dp
 }
 

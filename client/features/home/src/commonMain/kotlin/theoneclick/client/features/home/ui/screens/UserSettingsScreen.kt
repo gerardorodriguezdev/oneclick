@@ -1,23 +1,18 @@
 package theoneclick.client.features.home.ui.screens
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Card
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.stringResource
 import theoneclick.client.features.home.generated.resources.Res
 import theoneclick.client.features.home.generated.resources.userSettingsScreen_snackbar_logout
 import theoneclick.client.features.home.generated.resources.userSettingsScreen_title_userSettings
 import theoneclick.client.features.home.states.UserSettingsState
 import theoneclick.client.features.home.ui.events.UserSettingsEvent
-import theoneclick.client.features.home.ui.screens.UserSettingsTestTags.TITLE_TEST_TAG
 import theoneclick.client.shared.ui.components.DefaultButton
+import theoneclick.client.shared.ui.components.DialogBox
+import theoneclick.client.shared.ui.components.ScreenBox
 import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 
@@ -26,45 +21,19 @@ internal fun UserSettingsScreen(
     state: UserSettingsState,
     onEvent: (event: UserSettingsEvent) -> Unit,
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Card(modifier = Modifier.align(Alignment.Center)) {
-            Column(
-                verticalArrangement = Arrangement.spacedBy(16.dp),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                modifier = Modifier
-                    .padding(16.dp)
-                    .width(IntrinsicSize.Max),
-            ) {
-                Title()
-
-                DefaultButton(
-                    text = stringResource(Res.string.userSettingsScreen_snackbar_logout),
-                    onClick = {
-                        onEvent(UserSettingsEvent.LogoutClicked)
-                    },
-                    isLoading = state.isLoading,
-                    isEnabled = state.isButtonEnabled,
-                    modifier = Modifier.widthIn(min = 200.dp),
-                )
-            }
+    ScreenBox {
+        DialogBox(header = stringResource(Res.string.userSettingsScreen_title_userSettings)) {
+            DefaultButton(
+                text = stringResource(Res.string.userSettingsScreen_snackbar_logout),
+                onClick = {
+                    onEvent(UserSettingsEvent.LogoutClicked)
+                },
+                isLoading = state.isLoading,
+                isEnabled = state.isButtonEnabled,
+                modifier = Modifier.widthIn(min = 200.dp),
+            )
         }
     }
-}
-
-@Composable
-private fun Title() {
-    Text(
-        text = stringResource(Res.string.userSettingsScreen_title_userSettings),
-        fontSize = 20.sp,
-        textAlign = TextAlign.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .testTag(TITLE_TEST_TAG),
-    )
-}
-
-internal object UserSettingsTestTags {
-    const val TITLE_TEST_TAG = "UserSettingsScreen.Title"
 }
 
 @Composable

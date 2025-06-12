@@ -12,9 +12,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import theoneclick.client.shared.ui.components.DefaultButtonTestTags.BUTTON_PROGRESS_INDICATOR_TEST_TAG
-import theoneclick.client.shared.ui.components.DefaultButtonTestTags.BUTTON_TEST_TAG
-import theoneclick.client.shared.ui.components.DefaultButtonTestTags.BUTTON_TEXT_TEST_TAG
+import theoneclick.client.shared.ui.components.DefaultButtonTestTags.BUTTON_PROGRESS_INDICATOR
+import theoneclick.client.shared.ui.components.DefaultButtonTestTags.BUTTON_TEXT
 import theoneclick.client.shared.ui.previews.dev.ComponentPreviewComposable
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 import theoneclick.client.shared.ui.previews.providers.components.DefaultButtonModelProvider.DefaultButtonModel
@@ -29,10 +28,10 @@ fun DefaultButton(
 ) {
     Button(
         onClick = onClick,
-        modifier = modifier.testTag(BUTTON_TEST_TAG),
+        modifier = modifier,
         enabled = isEnabled,
     ) {
-        Box(modifier = Modifier.sizeIn(minHeight = 40.dp)) {
+        Box(modifier = Modifier.sizeIn(minHeight = DefaultButtonConstants.minHeight)) {
             AnimatedContent(
                 targetState = isLoading,
                 contentAlignment = Alignment.Center,
@@ -41,12 +40,12 @@ fun DefaultButton(
                 if (targetState) {
                     CircularProgressIndicator(
                         color = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.testTag(BUTTON_PROGRESS_INDICATOR_TEST_TAG),
+                        modifier = Modifier.testTag(BUTTON_PROGRESS_INDICATOR),
                     )
                 } else {
                     Text(
                         text = text,
-                        modifier = Modifier.testTag(BUTTON_TEXT_TEST_TAG)
+                        modifier = Modifier.testTag(BUTTON_TEXT)
                     )
                 }
             }
@@ -55,9 +54,12 @@ fun DefaultButton(
 }
 
 object DefaultButtonTestTags {
-    const val BUTTON_TEST_TAG = "DefaultButton.Container"
-    const val BUTTON_TEXT_TEST_TAG = "DefaultButton.Text"
-    const val BUTTON_PROGRESS_INDICATOR_TEST_TAG = "DefaultButton.ProgressIndicator"
+    const val BUTTON_TEXT = "DefaultButton.Text"
+    const val BUTTON_PROGRESS_INDICATOR = "DefaultButton.ProgressIndicator"
+}
+
+object DefaultButtonConstants {
+    val minHeight = 40.dp
 }
 
 @Composable

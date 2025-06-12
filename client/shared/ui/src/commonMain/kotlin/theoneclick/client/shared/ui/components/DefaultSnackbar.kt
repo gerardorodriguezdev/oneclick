@@ -7,7 +7,7 @@ import androidx.compose.material3.SnackbarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import theoneclick.client.shared.ui.components.DefaultSnackbarTestTags.SNACKBAR_TEST_TAG
+import theoneclick.client.shared.ui.components.DefaultSnackbarTestTags.SNACKBAR
 import theoneclick.client.shared.ui.previews.dev.ComponentPreviewComposable
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 
@@ -16,7 +16,7 @@ fun DefaultSnackbar(state: DefaultSnackbarState) {
     Snackbar(
         containerColor = containerColor(state.isError),
         snackbarData = state.snackbarData,
-        modifier = Modifier.testTag(SNACKBAR_TEST_TAG)
+        modifier = Modifier.testTag(SNACKBAR)
     )
 }
 
@@ -29,7 +29,7 @@ private fun containerColor(isError: Boolean) =
     }
 
 object DefaultSnackbarTestTags {
-    const val SNACKBAR_TEST_TAG = "DefaultSnackbar.Container"
+    const val SNACKBAR = "DefaultSnackbar.Container"
 }
 
 data class DefaultSnackbarState(

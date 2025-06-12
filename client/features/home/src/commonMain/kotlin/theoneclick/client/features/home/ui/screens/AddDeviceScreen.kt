@@ -1,19 +1,15 @@
 package theoneclick.client.features.home.ui.screens
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.stringResource
 import theoneclick.client.features.home.generated.resources.*
 import theoneclick.client.features.home.states.AddDeviceState
 import theoneclick.client.features.home.ui.events.AddDeviceEvent
-import theoneclick.client.shared.ui.components.DefaultButton
+import theoneclick.client.shared.ui.components.*
 import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 import theoneclick.shared.core.models.entities.DeviceType
@@ -23,72 +19,33 @@ internal fun AddDeviceScreen(
     state: AddDeviceState,
     onEvent: (event: AddDeviceEvent) -> Unit,
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Card(modifier = Modifier.align(Alignment.Center)) {
-            FormContent(
+    ScreenBox {
+        DialogBox(header = stringResource(Res.string.addDeviceScreen_title_addDevice)) {
+            DeviceNameTextField(
                 deviceName = state.deviceName,
                 onDeviceNameChange = { newDeviceName -> onEvent(AddDeviceEvent.DeviceNameChanged(newDeviceName)) },
                 isDeviceNameValid = state.isDeviceNameValid ?: true,
+            )
+
+            RoomNameTextField(
                 roomName = state.roomName,
                 onRoomNameChange = { newRoomName -> onEvent(AddDeviceEvent.RoomNameChanged(newRoomName)) },
                 isRoomNameValid = state.isRoomNameValid ?: true,
-                deviceType = state.deviceType,
+            )
+
+            DeviceTypeDropdownList(
+                selectedDeviceType = state.deviceType,
                 onDeviceTypeChange = { newDeviceType -> onEvent(AddDeviceEvent.DeviceTypeChanged(newDeviceType)) },
+            )
+
+            DefaultButton(
+                text = stringResource(Res.string.addDeviceScreen_addDeviceButton_addDevice),
+                onClick = { onEvent(AddDeviceEvent.AddDeviceButtonClicked) },
+                isEnabled = state.isAddDeviceButtonEnabled,
                 isLoading = state.isLoading,
-                isAddDeviceButtonEnabled = state.isAddDeviceButtonEnabled,
-                onAddDeviceClick = { onEvent(AddDeviceEvent.AddDeviceButtonClicked) },
+                modifier = Modifier.fillMaxWidth(),
             )
         }
-    }
-}
-
-@Suppress("LongParameterList")
-@Composable
-private fun FormContent(
-    deviceName: String,
-    onDeviceNameChange: (newDeviceName: String) -> Unit,
-    isDeviceNameValid: Boolean,
-    roomName: String,
-    onRoomNameChange: (newRoomName: String) -> Unit,
-    isRoomNameValid: Boolean,
-    deviceType: DeviceType,
-    onDeviceTypeChange: (newDeviceType: DeviceType) -> Unit,
-    isLoading: Boolean,
-    isAddDeviceButtonEnabled: Boolean,
-    onAddDeviceClick: () -> Unit,
-) {
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .width(IntrinsicSize.Min),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        Title()
-
-        DeviceNameTextField(
-            deviceName = deviceName,
-            onDeviceNameChange = onDeviceNameChange,
-            isDeviceNameValid = isDeviceNameValid,
-        )
-
-        RoomNameTextField(
-            roomName = roomName,
-            onRoomNameChange = onRoomNameChange,
-            isRoomNameValid = isRoomNameValid,
-        )
-
-        DeviceTypeDropdownList(
-            selectedDeviceType = deviceType,
-            onDeviceTypeChange = onDeviceTypeChange,
-        )
-
-        DefaultButton(
-            text = stringResource(Res.string.addDeviceScreen_addDeviceButton_addDevice),
-            onClick = onAddDeviceClick,
-            isEnabled = isAddDeviceButtonEnabled,
-            isLoading = isLoading,
-            modifier = Modifier.fillMaxWidth(),
-        )
     }
 }
 
@@ -121,7 +78,7 @@ private fun DeviceTypeDropdownList(
             DeviceType.entries.forEach { deviceType ->
                 DropdownMenuItem(
                     text = {
-                        Text(text = deviceType.toStringResource())
+                        Label(text = deviceType.toStringResource())
                     },
                     onClick = {
                         isExpanded = false
@@ -135,18 +92,6 @@ private fun DeviceTypeDropdownList(
 }
 
 @Composable
-private fun Title() {
-    Text(
-        text = stringResource(Res.string.addDeviceScreen_title_addDevice),
-        fontSize = 20.sp,
-        textAlign = TextAlign.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .testTag(AddDeviceScreenTestTags.TITLE_TEST_TAG),
-    )
-}
-
-@Composable
 private fun DeviceNameTextField(
     deviceName: String,
     onDeviceNameChange: (newDeviceName: String) -> Unit,
@@ -154,16 +99,16 @@ private fun DeviceNameTextField(
 ) {
     OutlinedTextField(
         placeholder = {
-            Text(
+            Body(
                 text = stringResource(Res.string.addDeviceScreen_deviceNamePlaceholder_deviceName),
-                modifier = Modifier.testTag(AddDeviceScreenTestTags.DEVICE_NAME_PLACEHOLDER_TEST_TAG)
+                modifier = Modifier.testTag(AddDeviceScreenTestTags.DEVICE_NAME_PLACEHOLDER)
             )
         },
         value = deviceName,
         onValueChange = onDeviceNameChange,
         isError = !isDeviceNameValid,
         maxLines = 1,
-        modifier = Modifier.testTag(AddDeviceScreenTestTags.DEVICE_NAME_TEXT_FIELD_TEST_TAG)
+        modifier = Modifier.testTag(AddDeviceScreenTestTags.DEVICE_NAME_TEXT_FIELD)
     )
 }
 
@@ -175,16 +120,16 @@ private fun RoomNameTextField(
 ) {
     OutlinedTextField(
         placeholder = {
-            Text(
+            Body(
                 text = stringResource(Res.string.addDeviceScreen_roomNamePlaceholder_roomName),
-                modifier = Modifier.testTag(AddDeviceScreenTestTags.ROOM_NAME_PLACEHOLDER_TEST_TAG)
+                modifier = Modifier.testTag(AddDeviceScreenTestTags.ROOM_NAME_PLACEHOLDER)
             )
         },
         value = roomName,
         onValueChange = onRoomNameChange,
         isError = !isRoomNameValid,
         maxLines = 1,
-        modifier = Modifier.testTag(AddDeviceScreenTestTags.ROOM_NAME_TEXT_FIELD_TEST_TAG)
+        modifier = Modifier.testTag(AddDeviceScreenTestTags.ROOM_NAME_TEXT_FIELD)
     )
 }
 
@@ -196,13 +141,11 @@ private fun DeviceType.toStringResource(): String =
 
 
 internal object AddDeviceScreenTestTags {
-    const val TITLE_TEST_TAG = "AddDeviceScreen.Title"
+    const val DEVICE_NAME_TEXT_FIELD = "AddDeviceScreen.DeviceNameTextField"
+    const val DEVICE_NAME_PLACEHOLDER = "AddDeviceScreen.DeviceNamePlaceholder"
 
-    const val DEVICE_NAME_TEXT_FIELD_TEST_TAG = "AddDeviceScreen.DeviceNameTextField"
-    const val DEVICE_NAME_PLACEHOLDER_TEST_TAG = "AddDeviceScreen.DeviceNamePlaceholder"
-
-    const val ROOM_NAME_TEXT_FIELD_TEST_TAG = "AddDeviceScreen.RoomNameTextField"
-    const val ROOM_NAME_PLACEHOLDER_TEST_TAG = "AddDeviceScreen.RoomNamePlaceholder"
+    const val ROOM_NAME_TEXT_FIELD = "AddDeviceScreen.RoomNameTextField"
+    const val ROOM_NAME_PLACEHOLDER = "AddDeviceScreen.RoomNamePlaceholder"
 
     fun dropDownItemTestTag(deviceType: DeviceType): String = "AddDeviceScreen.DropDownMenuItem.${deviceType.name}"
 }

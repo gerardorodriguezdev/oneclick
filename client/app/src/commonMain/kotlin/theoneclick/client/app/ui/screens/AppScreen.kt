@@ -22,9 +22,11 @@ import theoneclick.client.app.generated.resources.appScreen_navigationBar_userSe
 import theoneclick.client.app.ui.screens.AppScreenConstants.navigationBarRoutes
 import theoneclick.client.shared.ui.components.DefaultSnackbar
 import theoneclick.client.shared.ui.components.DefaultSnackbarState
+import theoneclick.client.shared.ui.components.Label
 import theoneclick.client.shared.ui.previews.dev.MockContent
 import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
+import theoneclick.client.shared.ui.theme.Tokens
 import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute
 import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.*
 
@@ -99,7 +101,7 @@ private fun AppScreenState.NavigationBar.Start.StartNavigationBar(
         Column(
             modifier = Modifier
                 .fillMaxHeight()
-                .padding(horizontal = 16.dp),
+                .padding(horizontal = Tokens.containerPadding),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
@@ -110,7 +112,7 @@ private fun AppScreenState.NavigationBar.Start.StartNavigationBar(
                     icon = { NavigationIcon(navigationBarRoute) },
                     label = { NavigationLabel(navigationBarRoute) },
                     modifier = Modifier.testTag(
-                        AppScreenTestTags.navigationItemTestTag(navigationBarRoute)
+                        AppScreenTestTags.navigationItem(navigationBarRoute)
                     ),
                 )
             }
@@ -123,11 +125,7 @@ private fun AppScreenState.NavigationBar.Bottom.BottomNavigationBar(
     onNavigationBarClick: (navigationBarRoute: NavigationBarRoute) -> Unit,
 ) {
     NavigationBar {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = 8.dp),
-        ) {
+        Row(modifier = Modifier.fillMaxWidth()) {
             navigationBarRoutes.forEach { navigationBarRoute ->
                 NavigationBarItem(
                     selected = navigationBarRoute == selectedRoute,
@@ -135,7 +133,7 @@ private fun AppScreenState.NavigationBar.Bottom.BottomNavigationBar(
                     icon = { NavigationIcon(navigationBarRoute) },
                     label = { NavigationLabel(navigationBarRoute) },
                     modifier = Modifier.testTag(
-                        AppScreenTestTags.navigationItemTestTag(navigationBarRoute)
+                        AppScreenTestTags.navigationItem(navigationBarRoute)
                     ),
                 )
             }
@@ -159,10 +157,10 @@ private fun NavigationIcon(navigationBarRoute: NavigationBarRoute) {
 
 @Composable
 private fun NavigationLabel(navigationBarRoute: NavigationBarRoute) {
-    Text(
+    Label(
         text = navigationBarRoute.toLabel(),
-        fontSize = MaterialTheme.typography.labelSmall.fontSize,
         textAlign = TextAlign.Center,
+        modifier = Modifier.padding(top = AppScreenConstants.navigationLabelTopPadding)
     )
 }
 
@@ -197,10 +195,12 @@ private object AppScreenConstants {
         AddDevice,
         UserSettings
     )
+
+    val navigationLabelTopPadding = 8.dp
 }
 
 object AppScreenTestTags {
-    fun navigationItemTestTag(navigationBarRoute: NavigationBarRoute): String =
+    fun navigationItem(navigationBarRoute: NavigationBarRoute): String =
         "AppScreen.NavigationItem.${navigationBarRoute.toTestTag()}"
 
     private fun NavigationBarRoute.toTestTag(): String =

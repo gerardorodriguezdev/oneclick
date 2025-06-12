@@ -1,29 +1,30 @@
 package theoneclick.client.app.ui.screens
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.*
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import org.jetbrains.compose.resources.stringResource
 import theoneclick.client.app.generated.resources.*
 import theoneclick.client.app.ui.events.LoginEvent
-import theoneclick.client.app.ui.screens.LoginScreenTestTags.PASSWORD_PLACEHOLDER_TEST_TAG
-import theoneclick.client.app.ui.screens.LoginScreenTestTags.PASSWORD_TEXT_FIELD_TEST_TAG
-import theoneclick.client.app.ui.screens.LoginScreenTestTags.TITLE_TEST_TAG
-import theoneclick.client.app.ui.screens.LoginScreenTestTags.USERNAME_PLACEHOLDER_TEST_TAG
-import theoneclick.client.app.ui.screens.LoginScreenTestTags.USERNAME_TEXT_FIELD_TEST_TAG
+import theoneclick.client.app.ui.screens.LoginScreenTestTags.PASSWORD_PLACEHOLDER
+import theoneclick.client.app.ui.screens.LoginScreenTestTags.PASSWORD_TEXT_FIELD
+import theoneclick.client.app.ui.screens.LoginScreenTestTags.USERNAME_PLACEHOLDER
+import theoneclick.client.app.ui.screens.LoginScreenTestTags.USERNAME_TEXT_FIELD
 import theoneclick.client.app.ui.states.LoginState
+import theoneclick.client.shared.ui.components.Body
 import theoneclick.client.shared.ui.components.DefaultButton
+import theoneclick.client.shared.ui.components.DialogBox
+import theoneclick.client.shared.ui.components.Label
+import theoneclick.client.shared.ui.components.ScreenBox
 import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 
@@ -32,77 +33,29 @@ fun LoginScreen(
     state: LoginState,
     onEvent: (event: LoginEvent) -> Unit,
 ) {
-    Box(modifier = Modifier.fillMaxSize()) {
-        Card(modifier = Modifier.align(Alignment.Center)) {
-            FormContent(
+    ScreenBox {
+        DialogBox(header = stringResource(Res.string.loginScreen_title_register)) {
+            UsernameTextField(
                 username = state.username,
                 onUsernameChange = { newUsername -> onEvent(LoginEvent.UsernameChanged(newUsername)) },
                 isUsernameValid = state.isUsernameValid != false,
+            )
+
+            PasswordTextField(
                 password = state.password,
                 onPasswordChange = { newPassword -> onEvent(LoginEvent.PasswordChanged(newPassword)) },
                 isPasswordValid = state.isPasswordValid != false,
-                onRegisterButtonClick = { onEvent(LoginEvent.RegisterButtonClicked) },
-                isRegisterButtonEnabled = state.isRegisterButtonEnabled,
+            )
+
+            DefaultButton(
+                text = stringResource(Res.string.loginScreen_registerButton_register),
+                onClick = { onEvent(LoginEvent.RegisterButtonClicked) },
+                isEnabled = state.isRegisterButtonEnabled,
                 isLoading = state.isLoading,
+                modifier = Modifier.fillMaxWidth(),
             )
         }
     }
-
-}
-
-@Suppress("LongParameterList")
-@Composable
-private fun FormContent(
-    username: String,
-    onUsernameChange: (username: String) -> Unit,
-    isUsernameValid: Boolean,
-    password: String,
-    onPasswordChange: (password: String) -> Unit,
-    isPasswordValid: Boolean,
-    onRegisterButtonClick: () -> Unit,
-    isRegisterButtonEnabled: Boolean,
-    isLoading: Boolean,
-) {
-    Column(
-        modifier = Modifier
-            .padding(16.dp)
-            .width(IntrinsicSize.Min),
-        verticalArrangement = Arrangement.spacedBy(16.dp),
-    ) {
-        Title()
-
-        UsernameTextField(
-            username = username,
-            onUsernameChange = onUsernameChange,
-            isUsernameValid = isUsernameValid,
-        )
-
-        PasswordTextField(
-            password = password,
-            onPasswordChange = onPasswordChange,
-            isPasswordValid = isPasswordValid,
-        )
-
-        DefaultButton(
-            text = stringResource(Res.string.loginScreen_registerButton_register),
-            onClick = onRegisterButtonClick,
-            isEnabled = isRegisterButtonEnabled,
-            isLoading = isLoading,
-            modifier = Modifier.fillMaxWidth(),
-        )
-    }
-}
-
-@Composable
-private fun Title() {
-    Text(
-        text = stringResource(Res.string.loginScreen_title_register),
-        fontSize = 20.sp,
-        textAlign = TextAlign.Center,
-        modifier = Modifier
-            .fillMaxWidth()
-            .testTag(TITLE_TEST_TAG),
-    )
 }
 
 @Composable
@@ -113,16 +66,16 @@ private fun UsernameTextField(
 ) {
     OutlinedTextField(
         placeholder = {
-            Text(
+            Body(
                 text = stringResource(Res.string.loginScreen_usernameTextField_username),
-                modifier = Modifier.testTag(USERNAME_PLACEHOLDER_TEST_TAG)
+                modifier = Modifier.testTag(USERNAME_PLACEHOLDER)
             )
         },
         value = username,
         onValueChange = onUsernameChange,
         isError = !isUsernameValid,
         maxLines = 1,
-        modifier = Modifier.testTag(USERNAME_TEXT_FIELD_TEST_TAG),
+        modifier = Modifier.testTag(USERNAME_TEXT_FIELD),
     )
 }
 
@@ -136,9 +89,9 @@ private fun PasswordTextField(
 
     OutlinedTextField(
         placeholder = {
-            Text(
+            Body(
                 text = stringResource(Res.string.loginScreen_passwordTextField_password),
-                modifier = Modifier.testTag(PASSWORD_PLACEHOLDER_TEST_TAG)
+                modifier = Modifier.testTag(PASSWORD_PLACEHOLDER)
             )
         },
         trailingIcon = {
@@ -154,16 +107,15 @@ private fun PasswordTextField(
         visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
         isError = !isPasswordValid,
         maxLines = 1,
-        modifier = Modifier.testTag(PASSWORD_TEXT_FIELD_TEST_TAG),
+        modifier = Modifier.testTag(PASSWORD_TEXT_FIELD),
     )
 }
 
 object LoginScreenTestTags {
-    const val TITLE_TEST_TAG = "LoginScreen.Title"
-    const val USERNAME_TEXT_FIELD_TEST_TAG = "LoginScreen.Username.TextField"
-    const val USERNAME_PLACEHOLDER_TEST_TAG = "LoginScreen.Username.Placeholder"
-    const val PASSWORD_TEXT_FIELD_TEST_TAG = "LoginScreen.Password.TextField"
-    const val PASSWORD_PLACEHOLDER_TEST_TAG = "LoginScreen.Password.Placeholder"
+    const val USERNAME_TEXT_FIELD = "LoginScreen.Username.TextField"
+    const val USERNAME_PLACEHOLDER = "LoginScreen.Username.Placeholder"
+    const val PASSWORD_TEXT_FIELD = "LoginScreen.Password.TextField"
+    const val PASSWORD_PLACEHOLDER = "LoginScreen.Password.Placeholder"
 }
 
 @Composable
