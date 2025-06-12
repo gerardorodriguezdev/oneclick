@@ -6,7 +6,7 @@ import theoneclick.client.shared.ui.models.Field
 import theoneclick.shared.core.validators.passwordValidator
 import theoneclick.shared.core.validators.usernameValidator
 
-fun LoginViewModel.LoginState.toLoginScreenState(): LoginScreenState {
+fun LoginViewModel.LoginViewModelState.toLoginScreenState(): LoginScreenState {
     val isUsernameValid = usernameValidator.isValid(username)
     val isPasswordValid = passwordValidator.isValid(password)
 

@@ -76,9 +76,9 @@ class AppEntrypoint(
 
                         composable<Login> {
                             val loginViewModel = viewModel { appComponent.loginViewModelFactory() }
-                            val state = loginViewModel.loginScreenState.collectAsState()
+                            val state by loginViewModel.loginScreenState.collectAsState()
                             LoginScreen(
-                                state = state.value,
+                                state = state,
                                 onEvent = loginViewModel::onEvent,
                             )
                         }

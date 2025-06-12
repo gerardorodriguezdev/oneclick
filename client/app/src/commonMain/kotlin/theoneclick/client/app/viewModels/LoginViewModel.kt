@@ -27,10 +27,10 @@ class LoginViewModel(
     private val notificationsController: NotificationsController,
 ) : ViewModel() {
 
-    private val loginState = MutableStateFlow<LoginState>(LoginState())
+    private val loginViewModelState = MutableStateFlow<LoginViewModelState>(LoginViewModelState())
     val loginScreenState: StateFlow<LoginScreenState> =
-        loginState
-            .map(LoginState::toLoginScreenState)
+        loginViewModelState
+            .map(LoginViewModelState::toLoginScreenState)
             .stateIn(viewModelScope, SharingStarted.Eagerly, LoginScreenState())
 
     private var requestLoginJob: Job? = null
@@ -45,13 +45,13 @@ class LoginViewModel(
     }
 
     private fun LoginEvent.UsernameChanged.handleUsernameChange() {
-        loginState.value = loginState.value.copy(
+        loginViewModelState.value = loginViewModelState.value.copy(
             username = newUsername,
         )
     }
 
     private fun LoginEvent.PasswordChanged.handlePasswordChange() {
-        loginState.value = loginState.value.copy(
+        loginViewModelState.value = loginViewModelState.value.copy(
             password = newPassword,
         )
     }
@@ -62,14 +62,14 @@ class LoginViewModel(
         requestLoginJob = viewModelScope.launch {
             authenticationDataSource
                 .login(
-                    username = loginState.value.username!!,
-                    password = loginState.value.password!!,
+                    username = loginViewModelState.value.username!!,
+                    password = loginViewModelState.value.password!!,
                 )
                 .onStart {
-                    loginState.value = loginState.value.copy(isLoading = true)
+                    loginViewModelState.value = loginViewModelState.value.copy(isLoading = true)
                 }
                 .onCompletion {
-                    loginState.value = loginState.value.copy(isLoading = false)
+                    loginViewModelState.value = loginViewModelState.value.copy(isLoading = false)
                 }
                 .collect { result ->
                     when (result) {
@@ -101,7 +101,7 @@ class LoginViewModel(
         requestLoginJob?.cancel()
     }
 
-    data class LoginState(
+    data class LoginViewModelState(
         val username: String? = null,
         val password: String? = null,
         val isLoading: Boolean = false,

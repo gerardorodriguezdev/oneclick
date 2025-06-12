@@ -1,6 +1,8 @@
 package theoneclick.client.features.home.entrypoints
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -45,9 +47,10 @@ class HomeEntrypoint(private val coreComponent: CoreComponent) {
             composable<NavigationBarRoute.UserSettings> { navBackstackEntry ->
                 val homeComponent = navController.getOrBuildHomeComponent(navBackstackEntry)
                 val userSettingsViewModel = viewModel { homeComponent.userSettingsViewModelFactory() }
+                val state by userSettingsViewModel.userSettingsScreenState.collectAsState()
 
                 UserSettingsScreen(
-                    state = userSettingsViewModel.state.value,
+                    state = state,
                     onEvent = userSettingsViewModel::onEvent,
                 )
             }

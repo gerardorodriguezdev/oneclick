@@ -1,20 +1,18 @@
 package theoneclick.client.features.home.viewModels
 
-import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.onCompletion
-import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
 import org.jetbrains.compose.resources.getString
 import theoneclick.client.features.home.generated.resources.Res
 import theoneclick.client.features.home.generated.resources.userSettingsScreen_snackbar_logout
 import theoneclick.client.features.home.generated.resources.userSettingsScreen_snackbar_unknownError
-import theoneclick.client.features.home.states.UserSettingsState
+import theoneclick.client.features.home.mapper.toUserSettingsScreenState
 import theoneclick.client.features.home.ui.events.UserSettingsEvent
+import theoneclick.client.features.home.ui.screens.UserSettingsScreenState
 import theoneclick.client.shared.network.models.LogoutResult
 import theoneclick.client.shared.network.platform.AuthenticationDataSource
 import theoneclick.client.shared.notifications.NotificationsController
@@ -24,8 +22,11 @@ internal class UserSettingsViewModel(
     private val authenticationDataSource: AuthenticationDataSource,
     private val notificationsController: NotificationsController,
 ) : ViewModel() {
-    private val _state = mutableStateOf(UserSettingsState())
-    val state: State<UserSettingsState> = _state
+    private val isLoading = MutableStateFlow(false)
+    val userSettingsScreenState: StateFlow<UserSettingsScreenState> =
+        isLoading
+            .map(Boolean::toUserSettingsScreenState)
+            .stateIn(viewModelScope, SharingStarted.Eagerly, UserSettingsScreenState())
 
     private var logoutJob: Job? = null
 
@@ -42,16 +43,10 @@ internal class UserSettingsViewModel(
             authenticationDataSource
                 .logout()
                 .onStart {
-                    _state.value = _state.value.copy(
-                        isLoading = true,
-                        isButtonEnabled = false,
-                    )
+                    isLoading.value = true
                 }
                 .onCompletion {
-                    _state.value = _state.value.copy(
-                        isLoading = false,
-                        isButtonEnabled = true,
-                    )
+                    isLoading.value = false
                 }
                 .collect { logoutResult ->
                     when (logoutResult) {

@@ -20,6 +20,7 @@ import theoneclick.client.features.home.states.DevicesListState
 import theoneclick.client.features.home.ui.events.DevicesListEvent
 import theoneclick.client.shared.notifications.NotificationsController
 
+//TODO: Migrate
 @Inject
 internal class DevicesListViewModel(
     private val devicesRepository: DevicesRepository,

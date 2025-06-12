@@ -21,6 +21,7 @@ import theoneclick.client.shared.notifications.NotificationsController
 import theoneclick.shared.core.validators.deviceNameValidator
 import theoneclick.shared.core.validators.roomNameValidator
 
+//TODO: Migrate
 @Inject
 internal class AddDeviceViewModel(
     private val devicesRepository: DevicesRepository,
