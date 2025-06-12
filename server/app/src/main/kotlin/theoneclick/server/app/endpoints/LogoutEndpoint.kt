@@ -4,10 +4,10 @@ import io.ktor.http.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import org.koin.ktor.ext.inject
 import theoneclick.server.app.dataSources.UsersDataSource
 import theoneclick.server.app.extensions.defaultAuthentication
 import theoneclick.server.app.models.UserSession
-import org.koin.ktor.ext.inject
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
 
 fun Routing.logoutEndpoint() {
