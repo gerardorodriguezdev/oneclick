@@ -14,7 +14,6 @@ import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.entities.Device
 import theoneclick.shared.core.models.entities.Uuid
 import theoneclick.shared.core.models.requests.RequestLoginRequest
-import theoneclick.shared.core.models.responses.AddDeviceResponse
 import theoneclick.shared.core.models.responses.DevicesResponse
 import theoneclick.shared.core.models.responses.RequestLoginResponse
 import theoneclick.shared.core.models.responses.UserLoggedResponse
@@ -68,18 +67,6 @@ private fun Application.configureRouting() {
 
         post(ClientEndpoint.UPDATE_DEVICE.route) {
             call.respond(HttpStatusCode.OK)
-        }
-
-        post(ClientEndpoint.ADD_DEVICE.route) {
-            val newDevice = Device.Blind(
-                id = Uuid(devices.last().id.value + "a"),
-                deviceName = "Device1",
-                room = "Room1",
-                isOpened = false,
-                rotation = 0,
-            )
-            devices.add(newDevice)
-            call.respond(AddDeviceResponse(newDevice))
         }
 
         get(ClientEndpoint.LOGOUT.route) {

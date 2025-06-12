@@ -8,8 +8,6 @@ import theoneclick.server.app.platform.SecurityUtils
 import theoneclick.server.app.validators.ParamsValidator.RequestLoginValidationResult.InvalidRequestLoginParams
 import theoneclick.server.app.validators.ParamsValidator.RequestLoginValidationResult.ValidRequestLogin
 import theoneclick.shared.core.models.entities.Device
-import theoneclick.shared.core.models.entities.DeviceType
-import theoneclick.shared.core.models.requests.AddDeviceRequest
 import theoneclick.shared.core.models.requests.UpdateDeviceRequest
 import theoneclick.shared.core.validators.*
 import theoneclick.shared.timeProvider.TimeProvider
@@ -66,39 +64,10 @@ class ParamsValidator(
             user.sessionToken == null -> false
 
             timeProvider.currentTimeMillis() > user.sessionToken.creationTimeInMillis +
-                USER_SESSION_TOKEN_EXPIRATION_IN_MILLIS -> false
+                    USER_SESSION_TOKEN_EXPIRATION_IN_MILLIS -> false
 
             user.sessionToken.value != sessionToken -> false
             else -> true
-        }
-    }
-
-    fun isAddDeviceRequestValid(
-        sessionToken: String?,
-        addDeviceRequest: AddDeviceRequest
-    ): AddDeviceRequestValidationResult {
-        return when {
-            sessionToken == null -> AddDeviceRequestValidationResult.InvalidDevice
-            roomNameValidator.isNotValid(addDeviceRequest.room) -> AddDeviceRequestValidationResult.InvalidDevice
-            deviceNameValidator.isNotValid(addDeviceRequest.deviceName) ->
-                AddDeviceRequestValidationResult.InvalidDevice
-
-            else -> addDeviceRequest.handleUserDataValidationForAddDeviceRequest(sessionToken)
-        }
-    }
-
-    private fun AddDeviceRequest.handleUserDataValidationForAddDeviceRequest(sessionToken: String): AddDeviceRequestValidationResult {
-        val user = usersDataSource.user(sessionToken)
-
-        return when {
-            user == null -> AddDeviceRequestValidationResult.InvalidDevice
-            user.hasDevice(deviceName) -> AddDeviceRequestValidationResult.InvalidDevice
-            else -> AddDeviceRequestValidationResult.ValidDevice(
-                user = user,
-                deviceName = deviceName,
-                room = room,
-                deviceType = type,
-            )
         }
     }
 
@@ -151,17 +120,6 @@ class ParamsValidator(
         }
 
         data object InvalidRequestLoginParams : RequestLoginValidationResult
-    }
-
-    sealed interface AddDeviceRequestValidationResult {
-        data class ValidDevice(
-            val user: User,
-            val deviceName: String,
-            val room: String,
-            val deviceType: DeviceType,
-        ) : AddDeviceRequestValidationResult
-
-        data object InvalidDevice : AddDeviceRequestValidationResult
     }
 
     sealed interface UpdateDeviceValidationResult {

@@ -13,7 +13,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import theoneclick.client.features.home.di.HomeComponent
 import theoneclick.client.features.home.di.createHomeComponent
-import theoneclick.client.features.home.ui.screens.AddDeviceScreen
 import theoneclick.client.features.home.ui.screens.DevicesListScreen
 import theoneclick.client.features.home.ui.screens.UserSettingsScreen
 import theoneclick.client.shared.di.CoreComponent
@@ -31,16 +30,6 @@ class HomeEntrypoint(private val coreComponent: CoreComponent) {
                 DevicesListScreen(
                     state = devicesListViewModel.state.value,
                     onEvent = devicesListViewModel::onEvent,
-                )
-            }
-
-            composable<NavigationBarRoute.AddDevice> { navBackstackEntry ->
-                val homeComponent = navController.getOrBuildHomeComponent(navBackstackEntry)
-                val addDeviceViewModel = viewModel { homeComponent.addDeviceViewModelFactory() }
-
-                AddDeviceScreen(
-                    state = addDeviceViewModel.state.value,
-                    onEvent = addDeviceViewModel::onEvent,
                 )
             }
 

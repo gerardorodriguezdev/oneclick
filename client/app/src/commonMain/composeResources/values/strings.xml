@@ -1,6 +1,5 @@
 <resources>
     <string name="appScreen_navigationBar_devicesList">Devices</string>
-    <string name="appScreen_navigationBar_addDevice">Add device</string>
     <string name="appScreen_navigationBar_userSettings">Settings</string>
 
     <string name="loginScreen_title_register">Register</string>

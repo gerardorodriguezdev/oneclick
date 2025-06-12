@@ -1,12 +1,4 @@
 <resources>
-    <string name="addDeviceScreen_title_addDevice">Add device</string>
-    <string name="addDeviceScreen_deviceNamePlaceholder_deviceName">Device name</string>
-    <string name="addDeviceScreen_roomNamePlaceholder_roomName">Room name</string>
-    <string name="addDeviceScreen_addDeviceButton_addDevice">Add device</string>
-    <string name="addDeviceScreen_dropdown_deviceType">Blind</string>
-    <string name="addDeviceScreen_snackbar_deviceAdded">Device added</string>
-    <string name="addDeviceScreen_snackbar_unknownError">Unknown error</string>
-
     <string name="devicesListScreen_deviceCardDeviceNameLabel_deviceName">Device name</string>
     <string name="devicesListScreen_deviceCardRoomNameLabel_room">Room</string>
     <string name="devicesListScreen_deviceCardOpenedLabel_opened">Opened</string>

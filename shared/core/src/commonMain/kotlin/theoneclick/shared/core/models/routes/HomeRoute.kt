@@ -13,10 +13,6 @@ sealed interface HomeRoute : Route {
         data object DevicesList : NavigationBarRoute
 
         @Serializable
-        @SerialName("home--add-device")
-        data object AddDevice : NavigationBarRoute
-
-        @Serializable
         @SerialName("home--user-settings")
         data object UserSettings : NavigationBarRoute
     }

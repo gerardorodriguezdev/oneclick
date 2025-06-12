@@ -1,12 +1,4 @@
 <resources>
-    <string name="addDeviceScreen_title_addDevice">Agregar dispositivo</string>
-    <string name="addDeviceScreen_deviceNamePlaceholder_deviceName">Nombre del dispositivo</string>
-    <string name="addDeviceScreen_roomNamePlaceholder_roomName">Nombre del cuarto</string>
-    <string name="addDeviceScreen_addDeviceButton_addDevice">Agregar dispositivo</string>
-    <string name="addDeviceScreen_dropdown_deviceType">Cortina</string>
-    <string name="addDeviceScreen_snackbar_deviceAdded">Dispositivo agregado</string>
-    <string name="addDeviceScreen_snackbar_unknownError">Error desconocido</string>
-
     <string name="devicesListScreen_deviceCardDeviceNameLabel_deviceName">Nombre del dispositivo</string>
     <string name="devicesListScreen_deviceCardRoomNameLabel_room">Cuarto</string>
     <string name="devicesListScreen_deviceCardOpenedLabel_opened">Abierto</string>

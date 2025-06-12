@@ -8,7 +8,6 @@ import theoneclick.client.features.home.dataSources.LoggedDataSource
 import theoneclick.client.features.home.dataSources.RemoteLoggedDataSource
 import theoneclick.client.features.home.repositories.DevicesRepository
 import theoneclick.client.features.home.repositories.InMemoryDevicesRepository
-import theoneclick.client.features.home.viewModels.AddDeviceViewModel
 import theoneclick.client.features.home.viewModels.DevicesListViewModel
 import theoneclick.client.features.home.viewModels.UserSettingsViewModel
 import theoneclick.client.shared.di.CoreComponent
@@ -26,7 +25,6 @@ abstract class HomeComponent(@Component val coreComponent: CoreComponent) {
     internal fun devicesRepository(bind: InMemoryDevicesRepository): DevicesRepository = bind
 
     internal abstract val devicesListViewModelFactory: () -> DevicesListViewModel
-    internal abstract val addDeviceViewModelFactory: () -> AddDeviceViewModel
     internal abstract val userSettingsViewModelFactory: () -> UserSettingsViewModel
 }
 

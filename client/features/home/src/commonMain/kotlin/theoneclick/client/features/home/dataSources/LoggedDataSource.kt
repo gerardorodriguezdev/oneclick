@@ -9,26 +9,16 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import me.tatarka.inject.annotations.Inject
-import theoneclick.client.features.home.models.results.AddDeviceResult
 import theoneclick.client.features.home.models.results.DevicesResult
 import theoneclick.client.features.home.models.results.UpdateDeviceResult
 import theoneclick.shared.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.core.models.entities.Device
-import theoneclick.shared.core.models.entities.DeviceType
-import theoneclick.shared.core.models.requests.AddDeviceRequest
 import theoneclick.shared.core.models.requests.UpdateDeviceRequest
-import theoneclick.shared.core.models.responses.AddDeviceResponse
 import theoneclick.shared.core.models.responses.DevicesResponse
 import theoneclick.shared.core.platform.AppLogger
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
 internal interface LoggedDataSource {
-    fun addDevice(
-        deviceName: String,
-        room: String,
-        type: DeviceType,
-    ): Flow<AddDeviceResult>
-
     fun updateDevice(updatedDevice: Device): Flow<UpdateDeviceResult>
 
     fun devices(): Flow<DevicesResult>
@@ -40,38 +30,6 @@ internal class RemoteLoggedDataSource(
     private val dispatchersProvider: DispatchersProvider,
     private val appLogger: AppLogger,
 ) : LoggedDataSource {
-
-    override fun addDevice(
-        deviceName: String,
-        room: String,
-        type: DeviceType
-    ): Flow<AddDeviceResult> =
-        flow {
-            val response = httpClient.post(ClientEndpoint.ADD_DEVICE.route) {
-                setBody(
-                    AddDeviceRequest(
-                        deviceName = deviceName,
-                        room = room,
-                        type = type,
-                    )
-                )
-            }
-
-            when (response.status) {
-                HttpStatusCode.OK -> {
-                    val responseBody = response.body<AddDeviceResponse>()
-                    emit(AddDeviceResult.Success(responseBody.device))
-                }
-
-                else -> emit(AddDeviceResult.Error)
-            }
-        }
-            .catch { exception ->
-                appLogger.e("Exception catched '${exception.stackTraceToString()}' while adding device '$deviceName'")
-
-                emit(AddDeviceResult.Error)
-            }
-            .flowOn(dispatchersProvider.io())
 
     override fun devices(): Flow<DevicesResult> =
         flow {

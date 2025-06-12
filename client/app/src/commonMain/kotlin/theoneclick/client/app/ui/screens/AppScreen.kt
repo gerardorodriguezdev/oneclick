@@ -3,7 +3,6 @@ package theoneclick.client.app.ui.screens
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.List
-import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ManageAccounts
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
@@ -16,7 +15,6 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 import theoneclick.client.app.generated.resources.Res
-import theoneclick.client.app.generated.resources.appScreen_navigationBar_addDevice
 import theoneclick.client.app.generated.resources.appScreen_navigationBar_devicesList
 import theoneclick.client.app.generated.resources.appScreen_navigationBar_userSettings
 import theoneclick.client.app.ui.screens.AppScreenConstants.navigationBarRoutes
@@ -28,7 +26,8 @@ import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 import theoneclick.client.shared.ui.theme.Tokens
 import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute
-import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.*
+import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.DevicesList
+import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.UserSettings
 
 @Composable
 fun AppScreen(
@@ -145,7 +144,6 @@ private fun AppScreenState.NavigationBar.Bottom.BottomNavigationBar(
 private fun NavigationIcon(navigationBarRoute: NavigationBarRoute) {
     val imageVector = when (navigationBarRoute) {
         is DevicesList -> Icons.AutoMirrored.Filled.List
-        is AddDevice -> Icons.Filled.Add
         is UserSettings -> Icons.Filled.ManageAccounts
     }
 
@@ -168,7 +166,6 @@ private fun NavigationLabel(navigationBarRoute: NavigationBarRoute) {
 private fun NavigationBarRoute.toLabel(): String =
     when (this) {
         is DevicesList -> stringResource(Res.string.appScreen_navigationBar_devicesList)
-        is AddDevice -> stringResource(Res.string.appScreen_navigationBar_addDevice)
         is UserSettings -> stringResource(Res.string.appScreen_navigationBar_userSettings)
     }
 
@@ -192,7 +189,6 @@ data class AppScreenState(
 private object AppScreenConstants {
     val navigationBarRoutes: PersistentList<NavigationBarRoute> = persistentListOf(
         DevicesList,
-        AddDevice,
         UserSettings
     )
 
@@ -205,7 +201,6 @@ object AppScreenTestTags {
 
     private fun NavigationBarRoute.toTestTag(): String =
         when (this) {
-            AddDevice -> "AddDevice"
             DevicesList -> "DevicesList"
             UserSettings -> "UserSettings"
         }

@@ -29,7 +29,8 @@ import theoneclick.client.shared.ui.theme.TheOneClickTheme
 import theoneclick.shared.core.models.routes.AppRoute.Init
 import theoneclick.shared.core.models.routes.AppRoute.Login
 import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute
-import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.*
+import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.DevicesList
+import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.UserSettings
 
 class AppEntrypoint(
     private val coreComponent: CoreComponent,
@@ -112,7 +113,6 @@ class AppEntrypoint(
     private fun NavDestination.toNavigationBarRoute(): NavigationBarRoute? =
         when {
             hasRoute<DevicesList>() -> DevicesList
-            hasRoute<AddDevice>() -> AddDevice
             hasRoute<UserSettings>() -> UserSettings
             else -> null
         }
