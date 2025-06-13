@@ -2,7 +2,6 @@ package theoneclick.client.shared.network.security
 
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
-import theoneclick.shared.logging.AppLogger
 import java.security.KeyStore
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator
@@ -16,7 +15,7 @@ interface Encryptor {
     fun decrypt(bytes: ByteArray): Result<ByteArray?>
 }
 
-class AndroidEncryptor(private val appLogger: AppLogger) : Encryptor {
+class AndroidEncryptor : Encryptor {
     private val keyStore = KeyStore.getInstance(KEY_STORE_TYPE)
 
     init {
@@ -57,8 +56,6 @@ class AndroidEncryptor(private val appLogger: AppLogger) : Encryptor {
     }
 
     private fun generateKey(): SecretKey {
-        appLogger.i("Generating secret key")
-
         val keyGenerator = KeyGenerator.getInstance(ALGORITHM, KEY_STORE_TYPE)
         keyGenerator.init(
             KeyGenParameterSpec

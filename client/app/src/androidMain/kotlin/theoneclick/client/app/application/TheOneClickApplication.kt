@@ -41,10 +41,10 @@ class TheOneClickApplication : Application() {
             },
             appLogger = appLogger,
             dispatchersProvider = dispatchersProvider,
-            encryptor = AndroidEncryptor(appLogger),
+            encryptor = AndroidEncryptor(),
         )
         val tokenDataSource = AndroidLocalTokenDataSource(encryptedPreferences)
-        val navigationController = DefaultNavigationController(appLogger)
+        val navigationController = DefaultNavigationController()
         val coreComponent = androidCoreComponent(
             urlProtocol = BuildKonfig.urlProtocol(),
             host = BuildKonfig.HOST,
@@ -55,7 +55,6 @@ class TheOneClickApplication : Application() {
             dispatchersProvider = dispatchersProvider(),
             navigationController = navigationController,
             logoutManager = AndroidLogoutManager(
-                appLogger = appLogger,
                 navigationController = navigationController,
                 tokenDataSource = tokenDataSource,
             ),

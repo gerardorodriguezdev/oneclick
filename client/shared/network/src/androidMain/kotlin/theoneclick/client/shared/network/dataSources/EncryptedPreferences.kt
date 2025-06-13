@@ -39,25 +39,15 @@ class AndroidEncryptedPreferences(
     )
 
     override suspend fun <T> preference(key: String, serializer: KSerializer<T>): T? {
-        appLogger.i("Getting preference key '$key'")
-
         val value = dataStore
             .data
             .map { preferences ->
                 val key = stringPreferencesKey(key)
-                val value = preferences[key]
-
-                if (value == null) {
-                    appLogger.i("Value for preference key '$key' is null")
-                    return@map null
-                }
-
+                val value = preferences[key] ?: return@map null
                 val valueByteArray = value.toByteArray(Charsets.UTF_8)
                 val decryptedValue = encryptor.decrypt(valueByteArray).getOrThrow()
                 val decryptedValueString = decryptedValue?.toString(Charsets.UTF_8) ?: return@map null
                 val decodedValue = Json.decodeFromString(serializer, decryptedValueString)
-
-                appLogger.i("Returning value '$decodedValue' for key '$key'")
                 decodedValue
             }
             .catch { error ->
@@ -73,8 +63,6 @@ class AndroidEncryptedPreferences(
 
     override suspend fun <T> putPreference(key: String, value: T, serializer: KSerializer<T>): Boolean {
         return try {
-            appLogger.i("Putting preference key '$key' of value '$value'")
-
             dataStore
                 .edit { preferences ->
                     val valueString = Json.encodeToString(serializer, value)
@@ -95,8 +83,6 @@ class AndroidEncryptedPreferences(
 
     override suspend fun clearPreference(key: String): Boolean =
         try {
-            appLogger.i("Clearing preference key '$key'")
-
             dataStore
                 .edit { mutablePreference ->
                     val key = stringPreferencesKey(key)

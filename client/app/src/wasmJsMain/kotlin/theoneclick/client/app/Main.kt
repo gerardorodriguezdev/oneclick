@@ -24,7 +24,7 @@ import theoneclick.shared.logging.appLogger
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalBrowserHistoryApi::class)
 fun main() {
     val appLogger = if (BuildKonfig.IS_DEBUG) appLogger() else EmptyAppLogger()
-    val navigationController = DefaultNavigationController(appLogger)
+    val navigationController = DefaultNavigationController()
     val coreComponent = wasmCoreComponent(
         httpClientEngine = Js.create(),
         appLogger = appLogger,
