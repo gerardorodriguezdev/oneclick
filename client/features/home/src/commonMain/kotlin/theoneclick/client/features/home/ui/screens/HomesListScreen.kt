@@ -3,6 +3,7 @@ package theoneclick.client.features.home.ui.screens
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
@@ -46,9 +47,7 @@ internal fun HomesListScreen(
             .fillMaxSize()
             .testTag(HomesListScreenTestTags.LIST_CONTAINER)
     ) {
-        if (state.homes.isEmpty()) {
-            Empty()
-        } else {
+        if (state.homes.isNotEmpty()) {
             LazyVerticalGrid(
                 columns = GridCells.Adaptive(minSize = HomesListScreenConstants.itemCardMinSize),
                 verticalArrangement = Arrangement.spacedBy(Tokens.itemsSpacing),
@@ -57,66 +56,82 @@ internal fun HomesListScreen(
                 modifier = Modifier.fillMaxSize(),
             ) {
                 state.homes.forEachIndexed { homeIndex, home ->
-                    stickyHeader(key = home.name, contentType = HomesListContentType.HOME_NAME) {
-                        Title(
-                            text = stringResource(Res.string.homesListScreen_homeName_home, home.name),
-                            modifier = Modifier.background(color = MaterialTheme.colorScheme.background)
-                        )
-                    }
+                    homeName(homeName = home.name)
 
                     home.rooms.forEachIndexed { roomIndex, room ->
-                        stickyHeader(key = room.name, contentType = HomesListContentType.ROOM_NAME) {
-                            Title(
-                                text = stringResource(
-                                    Res.string.homesListScreen_roomName_room,
-                                    room.name
-                                ),
-                                modifier = Modifier.background(color = MaterialTheme.colorScheme.background)
-                            )
-                        }
+                        roomName(roomName = room.name)
 
                         itemsIndexed(
                             items = room.devices,
                             key = { deviceIndex, device -> device.id },
                             contentType = { _, device -> HomesListContentType.deviceCard(device) },
                         ) { deviceIndex, device ->
-                            Card(modifier = Modifier.fillMaxWidth()) {
-                                Column(
-                                    verticalArrangement = Arrangement.spacedBy(Tokens.itemsSpacing),
-                                    horizontalAlignment = Alignment.CenterHorizontally,
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(Tokens.containerPadding),
-                                ) {
-                                    Body(
-                                        text = stringResource(
-                                            Res.string.homesListScreen_deviceName_room,
-                                            device.name
-                                        )
-                                    )
-
-                                    when (device) {
-                                        is UiDevice.UiWaterSensor -> {
-                                            Body(
-                                                text = stringResource(Res.string.homesListScreen_waterSensor_type)
-                                            )
-
-                                            Label(
-                                                text = stringResource(
-                                                    Res.string.homesListScreen_waterSensor_level,
-                                                    device.level
-                                                )
-                                            )
-                                        }
-                                    }
-                                }
-                            }
+                            DeviceCard(device = device)
                         }
                     }
                 }
             }
+        } else {
+            Empty()
         }
     }
+}
+
+private fun LazyGridScope.homeName(homeName: String) {
+    stickyHeader(key = homeName, contentType = HomesListContentType.HOME_NAME) {
+        Title(
+            text = stringResource(Res.string.homesListScreen_homeName_home, homeName),
+            modifier = Modifier.background(color = MaterialTheme.colorScheme.background)
+        )
+    }
+}
+
+private fun LazyGridScope.roomName(roomName: String) {
+    stickyHeader(key = roomName, contentType = HomesListContentType.ROOM_NAME) {
+        Title(
+            text = stringResource(
+                Res.string.homesListScreen_roomName_room,
+                roomName
+            ),
+            modifier = Modifier.background(color = MaterialTheme.colorScheme.background)
+        )
+    }
+}
+
+@Composable
+private fun DeviceCard(device: UiDevice) {
+    Card(modifier = Modifier.fillMaxWidth()) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(Tokens.itemsSpacing),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(Tokens.containerPadding),
+        ) {
+            Body(
+                text = stringResource(
+                    Res.string.homesListScreen_deviceName_room,
+                    device.name
+                )
+            )
+
+            when (device) {
+                is UiDevice.UiWaterSensor -> WaterSensorInfo(device)
+            }
+        }
+    }
+}
+
+@Composable
+private fun ColumnScope.WaterSensorInfo(waterSensor: UiDevice.UiWaterSensor) {
+    Body(text = stringResource(Res.string.homesListScreen_waterSensor_type))
+
+    Label(
+        text = stringResource(
+            Res.string.homesListScreen_waterSensor_level,
+            waterSensor.level
+        )
+    )
 }
 
 @Composable
