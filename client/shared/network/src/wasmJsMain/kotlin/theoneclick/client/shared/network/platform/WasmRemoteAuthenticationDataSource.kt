@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.flowOn
 import theoneclick.client.shared.network.models.LogoutResult
 import theoneclick.client.shared.network.models.RequestLoginResult
 import theoneclick.client.shared.network.models.UserLoggedResult
-import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
 import theoneclick.shared.contracts.core.dtos.requests.RequestLoginRequestDto
 import theoneclick.shared.contracts.core.dtos.responses.UserLoggedResponseDto
+import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.logging.AppLogger
 
@@ -40,18 +40,10 @@ class WasmRemoteAuthenticationDataSource(
             is UserLoggedResponseDto.NotLoggedDto -> UserLoggedResult.NotLogged
         }
 
-    override fun login(
-        username: String,
-        password: String
-    ): Flow<RequestLoginResult> =
+    override fun login(request: RequestLoginRequestDto): Flow<RequestLoginResult> =
         flow {
             val response = httpClient.post(ClientEndpoint.REQUEST_LOGIN.route) {
-                setBody(
-                    RequestLoginRequestDto(
-                        username = username,
-                        password = password,
-                    )
-                )
+                setBody(request)
             }
 
             when (response.status) {
@@ -60,7 +52,10 @@ class WasmRemoteAuthenticationDataSource(
             }
         }
             .catch { exception ->
-                appLogger.e("Exception catched '${exception.stackTraceToString()}' while requesting login '$username'")
+                appLogger.e(
+                    "Exception catched '${exception.stackTraceToString()}' " +
+                            "while requesting logging user '${request.username.value}'"
+                )
                 emit(RequestLoginResult.Error)
             }
             .flowOn(dispatchersProvider.io())
