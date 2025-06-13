@@ -5,7 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import theoneclick.client.shared.navigation.NavigationController.NavigationEvent.Navigate
-import theoneclick.shared.core.models.routes.base.Route
+import theoneclick.client.shared.navigation.models.routes.base.Route
 
 fun popUpToInclusive(
     startRoute: Route,

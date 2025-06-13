@@ -3,6 +3,7 @@ plugins {
     id("theoneclick.android.library")
     alias(libs.plugins.kmp.compose.compiler)
     alias(libs.plugins.kmp.compose.jetbrains)
+    alias(libs.plugins.kmp.serialization)
 }
 
 androidLibrary {
@@ -18,7 +19,7 @@ kotlin {
             dependencies {
                 implementation(compose.runtime)
                 implementation(libs.kmp.navigation)
-                implementation(projects.shared.core)
+                implementation(projects.shared.logging)
             }
         }
     }

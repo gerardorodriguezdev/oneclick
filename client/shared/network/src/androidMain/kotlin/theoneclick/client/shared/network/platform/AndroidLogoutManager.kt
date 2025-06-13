@@ -2,7 +2,7 @@ package theoneclick.client.shared.network.platform
 
 import theoneclick.client.shared.navigation.NavigationController
 import theoneclick.client.shared.network.dataSources.TokenDataSource
-import theoneclick.shared.core.platform.AppLogger
+import theoneclick.shared.logging.AppLogger
 
 class AndroidLogoutManager(
     private val appLogger: AppLogger,

@@ -7,10 +7,10 @@ import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
 import theoneclick.client.shared.navigation.NavigationController
 import theoneclick.client.shared.navigation.NavigationController.NavigationEvent.Navigate
+import theoneclick.client.shared.navigation.models.routes.AppRoute
 import theoneclick.client.shared.navigation.popUpToInclusive
 import theoneclick.client.shared.network.models.UserLoggedResult
 import theoneclick.client.shared.network.platform.AuthenticationDataSource
-import theoneclick.shared.core.models.routes.AppRoute
 
 @Inject
 class InitViewModel(

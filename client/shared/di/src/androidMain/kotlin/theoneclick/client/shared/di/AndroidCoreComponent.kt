@@ -8,8 +8,8 @@ import theoneclick.client.shared.network.platform.AndroidRemoteAuthenticationDat
 import theoneclick.client.shared.network.platform.LogoutManager
 import theoneclick.client.shared.network.platform.androidHttpClient
 import theoneclick.client.shared.notifications.NotificationsController
-import theoneclick.shared.core.platform.AppLogger
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
+import theoneclick.shared.logging.AppLogger
 
 fun androidCoreComponent(
     urlProtocol: URLProtocol?,

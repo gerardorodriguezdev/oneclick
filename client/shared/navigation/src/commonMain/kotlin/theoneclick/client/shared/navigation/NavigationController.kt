@@ -3,8 +3,8 @@ package theoneclick.client.shared.navigation
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
 import theoneclick.client.shared.navigation.NavigationController.NavigationEvent
-import theoneclick.shared.core.models.routes.base.Route
-import theoneclick.shared.core.platform.AppLogger
+import theoneclick.client.shared.navigation.models.routes.base.Route
+import theoneclick.shared.logging.AppLogger
 
 interface NavigationController {
 
@@ -34,11 +34,11 @@ class DefaultNavigationController(
     private val appLogger: AppLogger,
 ) : NavigationController {
 
-    private val _navigationEvents = MutableSharedFlow<NavigationEvent>()
-    override val navigationEvents: SharedFlow<NavigationEvent> = _navigationEvents
+    private val mutableNavigationEvents = MutableSharedFlow<NavigationEvent>()
+    override val navigationEvents: SharedFlow<NavigationEvent> = mutableNavigationEvents
 
     override suspend fun sendNavigationEvent(navigationEvent: NavigationEvent) {
         appLogger.i("Emitting navigation event '$navigationEvent'")
-        _navigationEvents.emit(navigationEvent)
+        mutableNavigationEvents.emit(navigationEvent)
     }
 }

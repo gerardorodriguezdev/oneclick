@@ -17,9 +17,9 @@ import theoneclick.client.shared.di.wasmCoreComponent
 import theoneclick.client.shared.navigation.DefaultNavigationController
 import theoneclick.client.shared.network.platform.WasmLogoutManager
 import theoneclick.client.shared.notifications.DefaultNotificationsController
-import theoneclick.shared.core.platform.EmptyAppLogger
-import theoneclick.shared.core.platform.appLogger
 import theoneclick.shared.dispatchers.platform.dispatchersProvider
+import theoneclick.shared.logging.EmptyAppLogger
+import theoneclick.shared.logging.appLogger
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalBrowserHistoryApi::class)
 fun main() {

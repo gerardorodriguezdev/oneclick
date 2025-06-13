@@ -22,15 +22,15 @@ import theoneclick.client.app.ui.screens.LoginScreen
 import theoneclick.client.features.home.entrypoints.HomeEntrypoint
 import theoneclick.client.shared.di.CoreComponent
 import theoneclick.client.shared.navigation.RegisterNavigationControllerObserver
+import theoneclick.client.shared.navigation.models.routes.AppRoute.Init
+import theoneclick.client.shared.navigation.models.routes.AppRoute.Login
+import theoneclick.client.shared.navigation.models.routes.HomeRoute.NavigationBarRoute
+import theoneclick.client.shared.navigation.models.routes.HomeRoute.NavigationBarRoute.HomesList
+import theoneclick.client.shared.navigation.models.routes.HomeRoute.NavigationBarRoute.UserSettings
 import theoneclick.client.shared.notifications.NotificationsController.Notification
 import theoneclick.client.shared.ui.screenProperties.LocalScreenProperties
 import theoneclick.client.shared.ui.screenProperties.ScreenProperties
 import theoneclick.client.shared.ui.theme.TheOneClickTheme
-import theoneclick.shared.core.models.routes.AppRoute.Init
-import theoneclick.shared.core.models.routes.AppRoute.Login
-import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute
-import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.DevicesList
-import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.UserSettings
 
 class AppEntrypoint(
     private val coreComponent: CoreComponent,
@@ -112,7 +112,7 @@ class AppEntrypoint(
 
     private fun NavDestination.toNavigationBarRoute(): NavigationBarRoute? =
         when {
-            hasRoute<DevicesList>() -> DevicesList
+            hasRoute<HomesList>() -> HomesList
             hasRoute<UserSettings>() -> UserSettings
             else -> null
         }
@@ -121,7 +121,7 @@ class AppEntrypoint(
         navigate(navigationBarRoute) {
             launchSingleTop = true
             restoreState = true
-            popUpTo(DevicesList) {
+            popUpTo(HomesList) {
                 saveState = true
             }
         }

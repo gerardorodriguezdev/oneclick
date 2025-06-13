@@ -2,7 +2,7 @@ package theoneclick.client.shared.network.security
 
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties
-import theoneclick.shared.core.platform.AppLogger
+import theoneclick.shared.logging.AppLogger
 import java.security.KeyStore
 import javax.crypto.Cipher
 import javax.crypto.KeyGenerator

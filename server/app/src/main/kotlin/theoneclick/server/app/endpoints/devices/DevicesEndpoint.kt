@@ -7,22 +7,22 @@ import theoneclick.server.app.dataSources.UsersDataSource
 import theoneclick.server.app.extensions.defaultAuthentication
 import theoneclick.server.app.models.UserSession
 import org.koin.ktor.ext.inject
-import theoneclick.shared.core.models.endpoints.ClientEndpoint
-import theoneclick.shared.core.models.responses.DevicesResponse
+import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
+import theoneclick.shared.contracts.core.responses.HomesResponse
 
 fun Routing.devicesEndpoint() {
     val usersDataSource: UsersDataSource by inject()
 
     defaultAuthentication {
-        get(path = ClientEndpoint.DEVICES.route) {
+        get(path = ClientEndpoint.HOMES.route) {
             val userSession = call.principal<UserSession>()!!
             val sessionToken = userSession.sessionToken
             val user = usersDataSource.user(sessionToken)
             val devices = user?.devices?.toList() ?: emptyList()
 
             call.respond(
-                DevicesResponse(
-                    devices = devices,
+                HomesResponse(
+                    homes = devices,
                 )
             )
         }

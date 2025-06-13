@@ -31,10 +31,10 @@ include(
 )
 
 include(
-    "shared:core",
-    "shared:testing",
+    "shared:logging",
     "shared:dispatchers",
     "shared:timeProvider",
+    "shared:contracts:core",
 )
 
 

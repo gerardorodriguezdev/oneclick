@@ -5,8 +5,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import theoneclick.server.app.extensions.defaultAuthentication
 import theoneclick.server.app.models.UserSession
-import theoneclick.shared.core.models.endpoints.ClientEndpoint
-import theoneclick.shared.core.models.responses.UserLoggedResponse
+import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
+import theoneclick.shared.contracts.core.responses.UserLoggedResponse
 
 fun Routing.isUserLoggedEndpoint() {
     defaultAuthentication(optional = true) {

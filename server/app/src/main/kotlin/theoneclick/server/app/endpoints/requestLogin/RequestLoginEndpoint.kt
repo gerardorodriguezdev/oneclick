@@ -15,10 +15,10 @@ import theoneclick.server.app.validators.ParamsValidator
 import theoneclick.server.app.validators.ParamsValidator.RequestLoginValidationResult.InvalidRequestLoginParams
 import theoneclick.server.app.validators.ParamsValidator.RequestLoginValidationResult.ValidRequestLogin
 import theoneclick.server.shared.extensions.agent
-import theoneclick.shared.core.models.agents.Agent
-import theoneclick.shared.core.models.endpoints.ClientEndpoint
-import theoneclick.shared.core.models.requests.RequestLoginRequest
-import theoneclick.shared.core.models.responses.RequestLoginResponse
+import theoneclick.shared.contracts.core.agents.Agent
+import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
+import theoneclick.shared.contracts.core.requests.RequestLoginRequest
+import theoneclick.shared.contracts.core.responses.RequestLoginResponse
 
 fun Routing.requestLoginEndpoint() {
     val usersDataSource: UsersDataSource by inject()

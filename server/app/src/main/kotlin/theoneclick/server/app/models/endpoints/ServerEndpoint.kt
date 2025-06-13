@@ -1,6 +1,6 @@
 package theoneclick.server.app.models.endpoints
 
-import theoneclick.shared.core.models.endpoints.base.Endpoint
+import theoneclick.shared.contracts.core.endpoints.base.Endpoint
 
 enum class ServerEndpoint(override val route: String) : Endpoint {
     // Apis

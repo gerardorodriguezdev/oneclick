@@ -6,9 +6,9 @@ import me.tatarka.inject.annotations.Provides
 import me.tatarka.inject.annotations.Scope
 import theoneclick.client.features.home.dataSources.LoggedDataSource
 import theoneclick.client.features.home.dataSources.RemoteLoggedDataSource
-import theoneclick.client.features.home.repositories.DevicesRepository
-import theoneclick.client.features.home.repositories.InMemoryDevicesRepository
-import theoneclick.client.features.home.viewModels.DevicesListViewModel
+import theoneclick.client.features.home.repositories.HomesRepository
+import theoneclick.client.features.home.repositories.InMemoryHomesRepository
+import theoneclick.client.features.home.viewModels.HomesListViewModel
 import theoneclick.client.features.home.viewModels.UserSettingsViewModel
 import theoneclick.client.shared.di.CoreComponent
 
@@ -22,9 +22,9 @@ abstract class HomeComponent(@Component val coreComponent: CoreComponent) {
 
     @HomeScope
     @Provides
-    internal fun devicesRepository(bind: InMemoryDevicesRepository): DevicesRepository = bind
+    internal fun homesRepository(bind: InMemoryHomesRepository): HomesRepository = bind
 
-    internal abstract val devicesListViewModelFactory: () -> DevicesListViewModel
+    internal abstract val homesListViewModelFactory: () -> HomesListViewModel
     internal abstract val userSettingsViewModelFactory: () -> UserSettingsViewModel
 }
 

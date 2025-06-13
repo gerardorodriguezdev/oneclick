@@ -6,7 +6,7 @@ import theoneclick.server.app.models.Username
 import theoneclick.server.app.platform.FileSystem
 import theoneclick.server.app.platform.PathProvider
 import theoneclick.server.app.platform.SecurityUtils
-import theoneclick.shared.core.models.entities.Uuid
+import theoneclick.shared.contracts.core.models.Uuid
 
 interface UsersDataSource {
     fun user(sessionToken: String): User?

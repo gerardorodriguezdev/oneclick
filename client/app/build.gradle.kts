@@ -75,7 +75,8 @@ kotlin {
                 implementation(libs.kmp.immutable)
                 implementation(libs.kmp.kotlin.inject)
                 implementation(libs.kmp.kotlin.inject.kmp)
-                implementation(projects.shared.core)
+                implementation(projects.shared.logging)
+                implementation(projects.shared.contracts.core)
                 implementation(projects.shared.dispatchers)
                 implementation(projects.shared.timeProvider)
                 implementation(projects.client.shared.di)
@@ -102,7 +103,6 @@ kotlin {
                 implementation(compose.uiTest)
                 implementation(libs.kmp.test.ktor.client.mock)
                 implementation(libs.kmp.test.turbine)
-                implementation(projects.shared.testing)
             }
         }
 

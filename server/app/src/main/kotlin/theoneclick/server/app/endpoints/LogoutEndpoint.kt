@@ -8,7 +8,7 @@ import org.koin.ktor.ext.inject
 import theoneclick.server.app.dataSources.UsersDataSource
 import theoneclick.server.app.extensions.defaultAuthentication
 import theoneclick.server.app.models.UserSession
-import theoneclick.shared.core.models.endpoints.ClientEndpoint
+import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
 
 fun Routing.logoutEndpoint() {
     val usersDataSource: UsersDataSource by inject()

@@ -1,6 +1,6 @@
 package theoneclick.server.app.platform
 
-import theoneclick.shared.core.models.entities.Uuid
+import theoneclick.shared.contracts.core.models.Uuid
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid.Companion as KmpUuid
 

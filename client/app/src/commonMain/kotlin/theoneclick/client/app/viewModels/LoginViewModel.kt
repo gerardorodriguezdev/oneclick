@@ -14,11 +14,11 @@ import theoneclick.client.app.ui.events.LoginEvent
 import theoneclick.client.app.ui.screens.LoginScreenState
 import theoneclick.client.shared.navigation.NavigationController
 import theoneclick.client.shared.navigation.NavigationController.NavigationEvent.Navigate
+import theoneclick.client.shared.navigation.models.routes.AppRoute
 import theoneclick.client.shared.navigation.popUpToInclusive
 import theoneclick.client.shared.network.models.RequestLoginResult
 import theoneclick.client.shared.network.platform.AuthenticationDataSource
 import theoneclick.client.shared.notifications.NotificationsController
-import theoneclick.shared.core.models.routes.AppRoute
 
 @Inject
 class LoginViewModel(
@@ -27,7 +27,7 @@ class LoginViewModel(
     private val notificationsController: NotificationsController,
 ) : ViewModel() {
 
-    private val loginViewModelState = MutableStateFlow<LoginViewModelState>(LoginViewModelState())
+    private val loginViewModelState = MutableStateFlow(LoginViewModelState())
     val loginScreenState: StateFlow<LoginScreenState> =
         loginViewModelState
             .map(LoginViewModelState::toLoginScreenState)

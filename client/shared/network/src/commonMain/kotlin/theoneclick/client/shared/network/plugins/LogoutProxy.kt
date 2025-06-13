@@ -3,7 +3,7 @@ package theoneclick.client.shared.network.plugins
 import io.ktor.client.plugins.api.*
 import io.ktor.client.statement.*
 import io.ktor.http.*
-import theoneclick.shared.core.models.endpoints.ClientEndpoint
+import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
 
 val LogoutProxy = createClientPlugin("LogoutProxy", ::LogoutProxyConfiguration) {
     val onLogout = pluginConfig.onLogout

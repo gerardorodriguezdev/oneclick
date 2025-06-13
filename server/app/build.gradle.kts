@@ -35,7 +35,8 @@ dependencies {
     implementation(libs.jvm.bcrypt)
     implementation(libs.jvm.logback.classic)
     implementation(libs.jvm.ktor.server.auth)
-    implementation(projects.shared.core)
+    implementation(projects.shared.logging)
+    implementation(projects.shared.contracts.core)
     implementation(projects.shared.timeProvider)
     implementation(projects.server.shared)
 
@@ -45,7 +46,6 @@ dependencies {
     testImplementation(libs.kmp.ktor.client.cio)
     testImplementation(libs.kmp.ktor.client.content.negotiation)
     testImplementation(libs.kmp.test)
-    testImplementation(projects.shared.testing)
 }
 
 fun stringProvider(name: String): Provider<String> =

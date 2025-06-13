@@ -21,9 +21,10 @@ kotlin {
                 implementation(libs.kmp.ktor.client.logging)
                 implementation(libs.kmp.ktor.serialization.kotlinx.json)
                 implementation(libs.kmp.datetime)
-                implementation(projects.shared.core)
+                implementation(projects.shared.contracts.core)
                 implementation(projects.shared.dispatchers)
                 implementation(projects.shared.timeProvider)
+                implementation(projects.shared.logging)
                 implementation(projects.client.shared.navigation)
 
                 api(libs.kmp.atomicfu)

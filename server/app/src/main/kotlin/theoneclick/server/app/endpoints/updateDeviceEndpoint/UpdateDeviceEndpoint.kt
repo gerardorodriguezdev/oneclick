@@ -11,8 +11,7 @@ import org.koin.ktor.ext.inject
 import theoneclick.server.app.validators.ParamsValidator
 import theoneclick.server.app.validators.ParamsValidator.UpdateDeviceValidationResult.InvalidDevice
 import theoneclick.server.app.validators.ParamsValidator.UpdateDeviceValidationResult.ValidDevice
-import theoneclick.shared.core.models.endpoints.ClientEndpoint
-import theoneclick.shared.core.models.requests.UpdateDeviceRequest
+import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
 
 fun Routing.updateDeviceEndpoint() {
     val paramsValidator: ParamsValidator by inject()

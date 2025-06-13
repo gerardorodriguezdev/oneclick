@@ -7,8 +7,8 @@ import theoneclick.client.shared.network.platform.LogoutManager
 import theoneclick.client.shared.network.platform.WasmRemoteAuthenticationDataSource
 import theoneclick.client.shared.network.platform.wasmHttpClient
 import theoneclick.client.shared.notifications.NotificationsController
-import theoneclick.shared.core.platform.AppLogger
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
+import theoneclick.shared.logging.AppLogger
 
 fun wasmCoreComponent(
     httpClientEngine: HttpClientEngine,

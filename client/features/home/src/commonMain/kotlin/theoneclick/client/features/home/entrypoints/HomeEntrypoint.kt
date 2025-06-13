@@ -13,23 +13,24 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navigation
 import theoneclick.client.features.home.di.HomeComponent
 import theoneclick.client.features.home.di.createHomeComponent
-import theoneclick.client.features.home.ui.screens.DevicesListScreen
+import theoneclick.client.features.home.ui.screens.HomesListScreen
 import theoneclick.client.features.home.ui.screens.UserSettingsScreen
 import theoneclick.client.shared.di.CoreComponent
-import theoneclick.shared.core.models.routes.AppRoute.Home
-import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute
+import theoneclick.client.shared.navigation.models.routes.AppRoute.Home
+import theoneclick.client.shared.navigation.models.routes.HomeRoute.NavigationBarRoute
 
 class HomeEntrypoint(private val coreComponent: CoreComponent) {
 
     fun NavGraphBuilder.home(navController: NavController) {
-        navigation<Home>(startDestination = NavigationBarRoute.DevicesList) {
-            composable<NavigationBarRoute.DevicesList> { navBackstackEntry ->
+        navigation<Home>(startDestination = NavigationBarRoute.HomesList) {
+            composable<NavigationBarRoute.HomesList> { navBackstackEntry ->
                 val homeComponent = navController.getOrBuildHomeComponent(navBackstackEntry)
-                val devicesListViewModel = viewModel { homeComponent.devicesListViewModelFactory() }
+                val homesListViewModel = viewModel { homeComponent.homesListViewModelFactory() }
+                val state by homesListViewModel.homesListScreenState.collectAsState()
 
-                DevicesListScreen(
-                    state = devicesListViewModel.state.value,
-                    onEvent = devicesListViewModel::onEvent,
+                HomesListScreen(
+                    state = state,
+                    onEvent = homesListViewModel::onEvent,
                 )
             }
 

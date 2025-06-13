@@ -12,12 +12,12 @@ import theoneclick.client.shared.network.dataSources.TokenDataSource
 import theoneclick.client.shared.network.models.LogoutResult
 import theoneclick.client.shared.network.models.RequestLoginResult
 import theoneclick.client.shared.network.models.UserLoggedResult
-import theoneclick.shared.core.models.endpoints.ClientEndpoint
-import theoneclick.shared.core.models.requests.RequestLoginRequest
-import theoneclick.shared.core.models.responses.RequestLoginResponse
-import theoneclick.shared.core.models.responses.UserLoggedResponse
-import theoneclick.shared.core.platform.AppLogger
+import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
+import theoneclick.shared.contracts.core.requests.RequestLoginRequest
+import theoneclick.shared.contracts.core.responses.RequestLoginResponse
+import theoneclick.shared.contracts.core.responses.UserLoggedResponse
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
+import theoneclick.shared.logging.AppLogger
 
 class AndroidRemoteAuthenticationDataSource(
     private val httpClient: HttpClient,

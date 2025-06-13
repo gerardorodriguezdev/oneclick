@@ -15,9 +15,12 @@ import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 import theoneclick.client.app.generated.resources.Res
-import theoneclick.client.app.generated.resources.appScreen_navigationBar_devicesList
+import theoneclick.client.app.generated.resources.appScreen_navigationBar_homesList
 import theoneclick.client.app.generated.resources.appScreen_navigationBar_userSettings
 import theoneclick.client.app.ui.screens.AppScreenConstants.navigationBarRoutes
+import theoneclick.client.shared.navigation.models.routes.HomeRoute.NavigationBarRoute
+import theoneclick.client.shared.navigation.models.routes.HomeRoute.NavigationBarRoute.HomesList
+import theoneclick.client.shared.navigation.models.routes.HomeRoute.NavigationBarRoute.UserSettings
 import theoneclick.client.shared.ui.components.DefaultSnackbar
 import theoneclick.client.shared.ui.components.DefaultSnackbarState
 import theoneclick.client.shared.ui.components.Label
@@ -25,9 +28,6 @@ import theoneclick.client.shared.ui.previews.dev.MockContent
 import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 import theoneclick.client.shared.ui.theme.Tokens
-import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute
-import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.DevicesList
-import theoneclick.shared.core.models.routes.HomeRoute.NavigationBarRoute.UserSettings
 
 @Composable
 fun AppScreen(
@@ -143,7 +143,7 @@ private fun AppScreenState.NavigationBar.Bottom.BottomNavigationBar(
 @Composable
 private fun NavigationIcon(navigationBarRoute: NavigationBarRoute) {
     val imageVector = when (navigationBarRoute) {
-        is DevicesList -> Icons.AutoMirrored.Filled.List
+        is HomesList -> Icons.AutoMirrored.Filled.List
         is UserSettings -> Icons.Filled.ManageAccounts
     }
 
@@ -165,7 +165,7 @@ private fun NavigationLabel(navigationBarRoute: NavigationBarRoute) {
 @Composable
 private fun NavigationBarRoute.toLabel(): String =
     when (this) {
-        is DevicesList -> stringResource(Res.string.appScreen_navigationBar_devicesList)
+        is HomesList -> stringResource(Res.string.appScreen_navigationBar_homesList)
         is UserSettings -> stringResource(Res.string.appScreen_navigationBar_userSettings)
     }
 
@@ -188,7 +188,7 @@ data class AppScreenState(
 
 private object AppScreenConstants {
     val navigationBarRoutes: PersistentList<NavigationBarRoute> = persistentListOf(
-        DevicesList,
+        HomesList,
         UserSettings
     )
 
@@ -201,7 +201,7 @@ object AppScreenTestTags {
 
     private fun NavigationBarRoute.toTestTag(): String =
         when (this) {
-            DevicesList -> "DevicesList"
+            HomesList -> "DevicesList"
             UserSettings -> "UserSettings"
         }
 }

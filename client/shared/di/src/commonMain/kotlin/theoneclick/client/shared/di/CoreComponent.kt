@@ -6,8 +6,8 @@ import me.tatarka.inject.annotations.Provides
 import theoneclick.client.shared.navigation.NavigationController
 import theoneclick.client.shared.network.platform.AuthenticationDataSource
 import theoneclick.client.shared.notifications.NotificationsController
-import theoneclick.shared.core.platform.AppLogger
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
+import theoneclick.shared.logging.AppLogger
 
 @Component
 abstract class CoreComponent(

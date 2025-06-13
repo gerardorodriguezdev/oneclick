@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import theoneclick.client.shared.network.security.Encryptor
-import theoneclick.shared.core.platform.AppLogger
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
+import theoneclick.shared.logging.AppLogger
 import java.io.File
 
 interface EncryptedPreferences {

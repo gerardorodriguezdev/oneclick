@@ -7,8 +7,7 @@ import theoneclick.server.app.models.Username
 import theoneclick.server.app.platform.SecurityUtils
 import theoneclick.server.app.validators.ParamsValidator.RequestLoginValidationResult.InvalidRequestLoginParams
 import theoneclick.server.app.validators.ParamsValidator.RequestLoginValidationResult.ValidRequestLogin
-import theoneclick.shared.core.models.entities.Device
-import theoneclick.shared.core.models.requests.UpdateDeviceRequest
+import theoneclick.shared.contracts.core.models.Device
 import theoneclick.shared.core.validators.*
 import theoneclick.shared.timeProvider.TimeProvider
 

@@ -20,18 +20,18 @@ interface NotificationsController {
 }
 
 class DefaultNotificationsController : NotificationsController {
-    private val _notificationEvents = MutableSharedFlow<Notification?>()
-    override val notificationEvents: SharedFlow<Notification?> = _notificationEvents
+    private val mutableNotificationEvents = MutableSharedFlow<Notification?>()
+    override val notificationEvents: SharedFlow<Notification?> = mutableNotificationEvents
 
     override suspend fun showSuccessNotification(message: String) {
-        _notificationEvents.emit(Notification.Success(message))
+        mutableNotificationEvents.emit(Notification.Success(message))
     }
 
     override suspend fun showErrorNotification(message: String) {
-        _notificationEvents.emit(Notification.Error(message))
+        mutableNotificationEvents.emit(Notification.Error(message))
     }
 
     override suspend fun clearNotifications() {
-        _notificationEvents.emit(null)
+        mutableNotificationEvents.emit(null)
     }
 }

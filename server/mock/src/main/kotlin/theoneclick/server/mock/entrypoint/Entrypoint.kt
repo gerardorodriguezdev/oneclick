@@ -9,14 +9,11 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import theoneclick.server.shared.extensions.agent
-import theoneclick.shared.core.models.agents.Agent
-import theoneclick.shared.core.models.endpoints.ClientEndpoint
-import theoneclick.shared.core.models.entities.Device
-import theoneclick.shared.core.models.entities.Uuid
-import theoneclick.shared.core.models.requests.RequestLoginRequest
-import theoneclick.shared.core.models.responses.DevicesResponse
-import theoneclick.shared.core.models.responses.RequestLoginResponse
-import theoneclick.shared.core.models.responses.UserLoggedResponse
+import theoneclick.shared.contracts.core.agents.Agent
+import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
+import theoneclick.shared.contracts.core.requests.RequestLoginRequest
+import theoneclick.shared.contracts.core.responses.RequestLoginResponse
+import theoneclick.shared.contracts.core.responses.UserLoggedResponse
 
 fun server(): EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration> =
     embeddedServer(
@@ -35,16 +32,6 @@ private fun Application.configureContentNegotiation() {
 }
 
 private fun Application.configureRouting() {
-    val devices = mutableListOf<Device>(
-        Device.Blind(
-            id = Uuid("1"),
-            deviceName = "Device1",
-            room = "Room1",
-            isOpened = false,
-            rotation = 0,
-        )
-    )
-
     routing {
         get(ClientEndpoint.IS_USER_LOGGED.route) {
             call.respond<UserLoggedResponse>(UserLoggedResponse.Logged)
@@ -57,15 +44,7 @@ private fun Application.configureRouting() {
             }
         }
 
-        get(ClientEndpoint.DEVICES.route) {
-            call.respond(
-                DevicesResponse(
-                    devices = devices
-                )
-            )
-        }
-
-        post(ClientEndpoint.UPDATE_DEVICE.route) {
+        get(ClientEndpoint.HOMES.route) {
             call.respond(HttpStatusCode.OK)
         }
 

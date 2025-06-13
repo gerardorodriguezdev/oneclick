@@ -18,12 +18,12 @@ kotlin {
                 implementation(libs.kmp.kotlin.inject)
                 implementation(libs.kmp.kotlin.inject.kmp)
                 implementation(libs.kmp.ktor.client.core)
-                implementation(projects.shared.core)
                 implementation(projects.shared.dispatchers)
                 implementation(projects.shared.timeProvider)
                 implementation(projects.client.shared.network)
                 implementation(projects.client.shared.navigation)
                 implementation(projects.client.shared.notifications)
+                implementation(projects.shared.logging)
 
                 project.dependencies {
                     kspCommonMainMetadata(libs.ksp.kotlin.inject)
