@@ -1,10 +1,12 @@
 package theoneclick.client.features.home.ui.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
@@ -20,6 +22,9 @@ import org.jetbrains.compose.resources.stringResource
 import theoneclick.client.features.home.generated.resources.Res
 import theoneclick.client.features.home.generated.resources.homesListScreen_placeholder_noHomesFound
 import theoneclick.client.features.home.ui.events.HomesListEvent
+import theoneclick.client.features.home.ui.screens.HomesListScreenState.UiHome.UiRoom.UiDevice
+import theoneclick.client.shared.ui.components.Body
+import theoneclick.client.shared.ui.components.Label
 import theoneclick.client.shared.ui.components.ScreenBox
 import theoneclick.client.shared.ui.components.Title
 import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
@@ -50,7 +55,43 @@ internal fun HomesListScreen(
                 contentPadding = PaddingValues(Tokens.containerPadding),
                 modifier = Modifier.fillMaxSize(),
             ) {
-                //TODO: Finish
+                //TODO: Proper string
+                state.homes.forEachIndexed { homeIndex, home ->
+                    stickyHeader(key = home.name, contentType = 1) { //TODO: Proper key + content type
+                        Title(text = home.name) //TODO: Proper string
+                    }
+
+                    home.rooms.forEachIndexed { roomIndex, room ->
+                        stickyHeader(key = room.name, contentType = 2) { //TODO: Proper key + content type
+                            Title(text = room.name) //TODO: Proper string
+                        }
+
+                        itemsIndexed(
+                            items = room.devices,
+                            key = { deviceIndex, device -> device.name }, //TODO: Proper key + content type
+                            contentType = { _, device -> 3 },
+                        ) { deviceIndex, device ->
+                            Card(modifier = Modifier.fillMaxWidth()) {
+                                Column(
+                                    verticalArrangement = Arrangement.spacedBy(Tokens.itemsSpacing),
+                                    horizontalAlignment = Alignment.CenterHorizontally,
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(Tokens.containerPadding),
+                                ) {
+                                    Body(text = device.name) //TODO: Proper string
+
+                                    when (device) {
+                                        is UiDevice.UiWaterSensor -> {
+                                            //TODO: Add type
+                                            Label(text = device.level) //TODO: Proper string
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }
@@ -59,10 +100,18 @@ internal fun HomesListScreen(
 @Composable
 private fun Empty() {
     ScreenBox {
-        Title(
-            text = stringResource(Res.string.homesListScreen_placeholder_noHomesFound),
-            textAlign = TextAlign.Center,
-        )
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+        ) {
+            Title(
+                text = stringResource(Res.string.homesListScreen_placeholder_noHomesFound),
+                textAlign = TextAlign.Center,
+            )
+        }
     }
 }
 
@@ -91,13 +140,11 @@ internal data class HomesListScreenState(
 }
 
 private object HomesListScreenConstants {
-    val itemCardMinSize: Dp = 250.dp
+    val itemCardMinSize: Dp = 200.dp
 }
 
 internal object HomesListScreenTestTags {
     const val LIST_CONTAINER = "HomesListScreen.ListContainer"
-
-    fun labelTestTag(label: String): String = "HomesListScreen.Label.$label"
 }
 
 @Composable
