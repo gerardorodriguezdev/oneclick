@@ -37,6 +37,7 @@ private fun List<Device>.toUiDevices(): ImmutableList<UiDevice> =
 private fun Device.toUiDevice(): UiDevice =
     when (this) {
         is Device.WaterSensor -> UiWaterSensor(
+            id = id,
             name = name,
             level = level.toString(),
         )

@@ -55,21 +55,20 @@ internal fun HomesListScreen(
                 contentPadding = PaddingValues(Tokens.containerPadding),
                 modifier = Modifier.fillMaxSize(),
             ) {
-                //TODO: Proper string
                 state.homes.forEachIndexed { homeIndex, home ->
-                    stickyHeader(key = home.name, contentType = 1) { //TODO: Proper key + content type
+                    stickyHeader(key = home.name, contentType = HomesListContentType.HOME_NAME) {
                         Title(text = home.name) //TODO: Proper string
                     }
 
                     home.rooms.forEachIndexed { roomIndex, room ->
-                        stickyHeader(key = room.name, contentType = 2) { //TODO: Proper key + content type
+                        stickyHeader(key = room.name, contentType = HomesListContentType.ROOM_NAME) {
                             Title(text = room.name) //TODO: Proper string
                         }
 
                         itemsIndexed(
                             items = room.devices,
-                            key = { deviceIndex, device -> device.name }, //TODO: Proper key + content type
-                            contentType = { _, device -> 3 },
+                            key = { deviceIndex, device -> device.id },
+                            contentType = { _, device -> HomesListContentType.deviceCard(device) },
                         ) { deviceIndex, device ->
                             Card(modifier = Modifier.fillMaxWidth()) {
                                 Column(
@@ -128,15 +127,28 @@ internal data class HomesListScreenState(
             val devices: ImmutableList<UiDevice> = persistentListOf(),
         ) {
             sealed interface UiDevice {
+                val id: String
                 val name: String
 
                 data class UiWaterSensor(
+                    override val id: String,
                     override val name: String,
                     val level: String,
                 ) : UiDevice
             }
         }
     }
+}
+
+private object HomesListContentType {
+    const val HOME_NAME = 1
+
+    const val ROOM_NAME = 2
+
+    fun deviceCard(device: UiDevice): Int =
+        when (device) {
+            is UiDevice.UiWaterSensor -> 3
+        }
 }
 
 private object HomesListScreenConstants {

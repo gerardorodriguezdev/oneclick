@@ -50,7 +50,7 @@ private fun Application.configureRouting() {
         get(ClientEndpoint.HOMES.route) {
             call.respond(
                 HomesResponseDto(
-                    homeDtos = mockHomes(5)
+                    homeDtos = mockHomes(5),
                 )
             )
         }
