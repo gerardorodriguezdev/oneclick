@@ -10,7 +10,7 @@ import org.jetbrains.compose.resources.getString
 import theoneclick.client.features.home.generated.resources.Res
 import theoneclick.client.features.home.generated.resources.userSettingsScreen_snackbar_logout
 import theoneclick.client.features.home.generated.resources.userSettingsScreen_snackbar_unknownError
-import theoneclick.client.features.home.mapper.toUserSettingsScreenState
+import theoneclick.client.features.home.mappers.toUserSettingsScreenState
 import theoneclick.client.features.home.ui.events.UserSettingsEvent
 import theoneclick.client.features.home.ui.screens.UserSettingsScreenState
 import theoneclick.client.shared.network.models.LogoutResult

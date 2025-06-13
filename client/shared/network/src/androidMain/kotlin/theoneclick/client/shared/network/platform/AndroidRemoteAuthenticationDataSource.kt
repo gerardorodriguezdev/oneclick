@@ -12,10 +12,10 @@ import theoneclick.client.shared.network.dataSources.TokenDataSource
 import theoneclick.client.shared.network.models.LogoutResult
 import theoneclick.client.shared.network.models.RequestLoginResult
 import theoneclick.client.shared.network.models.UserLoggedResult
-import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
 import theoneclick.shared.contracts.core.dtos.requests.RequestLoginRequestDto
 import theoneclick.shared.contracts.core.dtos.responses.RequestLoginResponseDto
 import theoneclick.shared.contracts.core.dtos.responses.UserLoggedResponseDto
+import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.logging.AppLogger
 
@@ -56,24 +56,16 @@ class AndroidRemoteAuthenticationDataSource(
             is UserLoggedResponseDto.NotLoggedDto -> UserLoggedResult.NotLogged
         }
 
-    override fun login(
-        username: String,
-        password: String
-    ): Flow<RequestLoginResult> =
+    override fun login(request: RequestLoginRequestDto): Flow<RequestLoginResult> =
         flow {
             val response = httpClient.post(ClientEndpoint.REQUEST_LOGIN.route) {
-                setBody(
-                    RequestLoginRequestDto(
-                        username = username,
-                        password = password,
-                    )
-                )
+                setBody(request)
             }
 
             when (response.status) {
                 HttpStatusCode.OK -> {
                     val requestLoginResponseDto: RequestLoginResponseDto = response.body()
-                    tokenDataSource.set(requestLoginResponseDto.token)
+                    tokenDataSource.set(requestLoginResponseDto.token.value)
                     emit(RequestLoginResult.ValidLogin)
                 }
 
@@ -82,7 +74,8 @@ class AndroidRemoteAuthenticationDataSource(
         }
             .catch { exception ->
                 appLogger.e(
-                    "Exception catched '${exception.stackTraceToString()}' while requesting logging user '$username'"
+                    "Exception catched '${exception.stackTraceToString()}' " +
+                            "while requesting logging user '${request.username.value}'"
                 )
                 emit(RequestLoginResult.Error)
             }

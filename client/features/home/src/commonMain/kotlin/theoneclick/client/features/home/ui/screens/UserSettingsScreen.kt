@@ -28,7 +28,7 @@ internal fun UserSettingsScreen(
                     onEvent(UserSettingsEvent.LogoutClicked)
                 },
                 isLoading = state.isLoading,
-                isEnabled = state.isButtonEnabled,
+                isEnabled = !state.isLoading,
                 modifier = Modifier.widthIn(min = 200.dp),
             )
         }
@@ -36,7 +36,6 @@ internal fun UserSettingsScreen(
 }
 
 internal data class UserSettingsScreenState(
-    val isButtonEnabled: Boolean = true,
     val isLoading: Boolean = false,
 )
 

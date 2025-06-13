@@ -9,13 +9,13 @@ import me.tatarka.inject.annotations.Inject
 import org.jetbrains.compose.resources.getString
 import theoneclick.client.features.home.generated.resources.Res
 import theoneclick.client.features.home.generated.resources.homesListScreen_snackbar_unknownError
-import theoneclick.client.features.home.mapper.toHomesListScreenState
-import theoneclick.client.features.home.models.results.HomesResult
+import theoneclick.client.features.home.mappers.toHomesListScreenState
 import theoneclick.client.features.home.repositories.HomesRepository
+import theoneclick.client.features.home.repositories.HomesRepository.HomesResult
+import theoneclick.client.features.home.repositories.HomesRepository.HomesResult.Success.Home
 import theoneclick.client.features.home.ui.events.HomesListEvent
 import theoneclick.client.features.home.ui.screens.HomesListScreenState
 import theoneclick.client.shared.notifications.NotificationsController
-import theoneclick.shared.contracts.core.dtos.HomeDto
 
 @Inject
 internal class HomesListViewModel(
@@ -35,7 +35,7 @@ internal class HomesListViewModel(
         viewModelScope.launch {
             homesRepository.homes.collect { homes ->
                 homesListViewModelState.value = homesListViewModelState.value.copy(
-                    homesDtos = homes,
+                    homes = homes,
                 )
             }
         }
@@ -85,7 +85,7 @@ internal class HomesListViewModel(
     }
 
     data class HomesListViewModelState(
-        val homesDtos: List<HomeDto> = emptyList(),
+        val homes: List<Home> = emptyList(),
         val isLoading: Boolean = false,
     )
 }

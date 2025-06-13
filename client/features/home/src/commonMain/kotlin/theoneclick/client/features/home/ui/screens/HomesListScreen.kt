@@ -1,11 +1,13 @@
 package theoneclick.client.features.home.ui.screens
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
@@ -15,7 +17,8 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
-import theoneclick.client.features.home.generated.resources.*
+import theoneclick.client.features.home.generated.resources.Res
+import theoneclick.client.features.home.generated.resources.homesListScreen_placeholder_noHomesFound
 import theoneclick.client.features.home.ui.events.HomesListEvent
 import theoneclick.client.shared.ui.components.ScreenBox
 import theoneclick.client.shared.ui.components.Title
@@ -47,7 +50,7 @@ internal fun HomesListScreen(
                 contentPadding = PaddingValues(Tokens.containerPadding),
                 modifier = Modifier.fillMaxSize(),
             ) {
-
+                //TODO: Finish
             }
         }
     }
@@ -64,22 +67,24 @@ private fun Empty() {
 }
 
 internal data class HomesListScreenState(
-    val homes: ImmutableList<Home> = persistentListOf(),
+    val homes: ImmutableList<UiHome> = persistentListOf(),
     val isLoading: Boolean = false,
 ) {
-    data class Home(
-        val rooms: ImmutableList<Room> = persistentListOf(),
+    data class UiHome(
+        val name: String,
+        val rooms: ImmutableList<UiRoom> = persistentListOf(),
     ) {
-        data class Room(
-            val devices: ImmutableList<Device> = persistentListOf(),
+        data class UiRoom(
+            val name: String,
+            val devices: ImmutableList<UiDevice> = persistentListOf(),
         ) {
-            sealed interface Device {
+            sealed interface UiDevice {
                 val name: String
 
-                data class WaterSensor(
+                data class UiWaterSensor(
                     override val name: String,
                     val level: String,
-                ) : Device
+                ) : UiDevice
             }
         }
     }

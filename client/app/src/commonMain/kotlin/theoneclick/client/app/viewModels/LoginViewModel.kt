@@ -19,6 +19,9 @@ import theoneclick.client.shared.navigation.popUpToInclusive
 import theoneclick.client.shared.network.models.RequestLoginResult
 import theoneclick.client.shared.network.platform.AuthenticationDataSource
 import theoneclick.client.shared.notifications.NotificationsController
+import theoneclick.shared.contracts.core.dtos.PasswordDto.Companion.toPassword
+import theoneclick.shared.contracts.core.dtos.UsernameDto.Companion.toUsername
+import theoneclick.shared.contracts.core.dtos.requests.RequestLoginRequestDto
 
 @Inject
 class LoginViewModel(
@@ -62,8 +65,10 @@ class LoginViewModel(
         requestLoginJob = viewModelScope.launch {
             authenticationDataSource
                 .login(
-                    username = loginViewModelState.value.username!!,
-                    password = loginViewModelState.value.password!!,
+                    request = RequestLoginRequestDto(
+                        username = loginViewModelState.value.username?.toUsername()!!,
+                        password = loginViewModelState.value.password?.toPassword()!!,
+                    )
                 )
                 .onStart {
                     loginViewModelState.value = loginViewModelState.value.copy(isLoading = true)
