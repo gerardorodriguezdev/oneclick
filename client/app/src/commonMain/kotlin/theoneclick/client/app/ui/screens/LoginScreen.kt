@@ -9,7 +9,9 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.semantics.contentType
 import androidx.compose.ui.semantics.password
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -76,7 +78,11 @@ private fun UsernameTextField(
         onValueChange = onUsernameChange,
         isError = !isUsernameValid,
         maxLines = 1,
-        modifier = Modifier.testTag(USERNAME_TEXT_FIELD),
+        modifier = Modifier
+            .semantics {
+                contentType = ContentType.Username
+            }
+            .testTag(USERNAME_TEXT_FIELD),
     )
 }
 
@@ -109,7 +115,10 @@ private fun PasswordTextField(
         isError = !isPasswordValid,
         maxLines = 1,
         modifier = Modifier
-            .semantics { password() }
+            .semantics {
+                contentType = ContentType.Password
+                password()
+            }
             .testTag(PASSWORD_TEXT_FIELD),
     )
 }
