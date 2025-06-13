@@ -8,12 +8,15 @@ import io.ktor.server.engine.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import theoneclick.server.mock.utils.mockHomes
 import theoneclick.server.shared.extensions.agent
 import theoneclick.shared.contracts.core.agents.Agent
-import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
+import theoneclick.shared.contracts.core.dtos.TokenDto
 import theoneclick.shared.contracts.core.dtos.requests.RequestLoginRequestDto
+import theoneclick.shared.contracts.core.dtos.responses.HomesResponseDto
 import theoneclick.shared.contracts.core.dtos.responses.RequestLoginResponseDto
 import theoneclick.shared.contracts.core.dtos.responses.UserLoggedResponseDto
+import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
 
 fun server(): EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration> =
     embeddedServer(
@@ -39,13 +42,17 @@ private fun Application.configureRouting() {
 
         post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequestDto: RequestLoginRequestDto ->
             when (call.request.agent) {
-                Agent.MOBILE -> call.respond(RequestLoginResponseDto("token"))
+                Agent.MOBILE -> call.respond(RequestLoginResponseDto(token = TokenDto("token")))
                 Agent.BROWSER -> call.respond(HttpStatusCode.OK)
             }
         }
 
         get(ClientEndpoint.HOMES.route) {
-            call.respond(HttpStatusCode.OK)
+            call.respond(
+                HomesResponseDto(
+                    homeDtos = mockHomes(5)
+                )
+            )
         }
 
         get(ClientEndpoint.LOGOUT.route) {
