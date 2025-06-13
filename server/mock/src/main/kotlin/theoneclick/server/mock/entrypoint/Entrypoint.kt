@@ -11,9 +11,9 @@ import io.ktor.server.routing.*
 import theoneclick.server.shared.extensions.agent
 import theoneclick.shared.contracts.core.agents.Agent
 import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
-import theoneclick.shared.contracts.core.requests.RequestLoginRequest
-import theoneclick.shared.contracts.core.responses.RequestLoginResponse
-import theoneclick.shared.contracts.core.responses.UserLoggedResponse
+import theoneclick.shared.contracts.core.dtos.requests.RequestLoginRequestDto
+import theoneclick.shared.contracts.core.dtos.responses.RequestLoginResponseDto
+import theoneclick.shared.contracts.core.dtos.responses.UserLoggedResponseDto
 
 fun server(): EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration> =
     embeddedServer(
@@ -34,12 +34,12 @@ private fun Application.configureContentNegotiation() {
 private fun Application.configureRouting() {
     routing {
         get(ClientEndpoint.IS_USER_LOGGED.route) {
-            call.respond<UserLoggedResponse>(UserLoggedResponse.Logged)
+            call.respond<UserLoggedResponseDto>(UserLoggedResponseDto.LoggedDto)
         }
 
-        post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
+        post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequestDto: RequestLoginRequestDto ->
             when (call.request.agent) {
-                Agent.MOBILE -> call.respond(RequestLoginResponse("token"))
+                Agent.MOBILE -> call.respond(RequestLoginResponseDto("token"))
                 Agent.BROWSER -> call.respond(HttpStatusCode.OK)
             }
         }

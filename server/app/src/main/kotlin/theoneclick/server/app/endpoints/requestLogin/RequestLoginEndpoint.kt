@@ -17,8 +17,8 @@ import theoneclick.server.app.validators.ParamsValidator.RequestLoginValidationR
 import theoneclick.server.shared.extensions.agent
 import theoneclick.shared.contracts.core.agents.Agent
 import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
-import theoneclick.shared.contracts.core.requests.RequestLoginRequest
-import theoneclick.shared.contracts.core.responses.RequestLoginResponse
+import theoneclick.shared.contracts.core.dtos.requests.RequestLoginRequestDto
+import theoneclick.shared.contracts.core.dtos.responses.RequestLoginResponseDto
 
 fun Routing.requestLoginEndpoint() {
     val usersDataSource: UsersDataSource by inject()
@@ -26,10 +26,10 @@ fun Routing.requestLoginEndpoint() {
     val paramsValidator: ParamsValidator by inject()
     val uuidProvider: UuidProvider by inject()
 
-    post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
+    post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequestDto: RequestLoginRequestDto ->
         val requestLoginParams = RequestLoginParams(
-            username = requestLoginRequest.username,
-            password = requestLoginRequest.password,
+            username = requestLoginRequestDto.username,
+            password = requestLoginRequestDto.password,
         )
         val requestLoginValidationResult = paramsValidator.isRequestLoginParamsValid(requestLoginParams)
 
@@ -83,7 +83,7 @@ private fun ValidRequestLogin.user(
 private suspend fun RoutingContext.handleSuccess(userSession: UserSession) {
     when (call.request.agent) {
         Agent.MOBILE -> {
-            call.respond(RequestLoginResponse(token = userSession.sessionToken))
+            call.respond(RequestLoginResponseDto(token = userSession.sessionToken))
         }
 
         Agent.BROWSER -> {

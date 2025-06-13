@@ -12,8 +12,8 @@ import theoneclick.client.shared.network.models.LogoutResult
 import theoneclick.client.shared.network.models.RequestLoginResult
 import theoneclick.client.shared.network.models.UserLoggedResult
 import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
-import theoneclick.shared.contracts.core.requests.RequestLoginRequest
-import theoneclick.shared.contracts.core.responses.UserLoggedResponse
+import theoneclick.shared.contracts.core.dtos.requests.RequestLoginRequestDto
+import theoneclick.shared.contracts.core.dtos.responses.UserLoggedResponseDto
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.logging.AppLogger
 
@@ -25,7 +25,7 @@ class WasmRemoteAuthenticationDataSource(
 
     override fun isUserLogged(): Flow<UserLoggedResult> =
         flow {
-            val response: UserLoggedResponse = httpClient.get(ClientEndpoint.IS_USER_LOGGED.route).body()
+            val response: UserLoggedResponseDto = httpClient.get(ClientEndpoint.IS_USER_LOGGED.route).body()
             emit(response.toUserLoggedResult())
         }
             .catch { exception ->
@@ -34,10 +34,10 @@ class WasmRemoteAuthenticationDataSource(
             }
             .flowOn(dispatchersProvider.io())
 
-    private fun UserLoggedResponse.toUserLoggedResult(): UserLoggedResult =
+    private fun UserLoggedResponseDto.toUserLoggedResult(): UserLoggedResult =
         when (this) {
-            is UserLoggedResponse.Logged -> UserLoggedResult.Logged
-            is UserLoggedResponse.NotLogged -> UserLoggedResult.NotLogged
+            is UserLoggedResponseDto.LoggedDto -> UserLoggedResult.Logged
+            is UserLoggedResponseDto.NotLoggedDto -> UserLoggedResult.NotLogged
         }
 
     override fun login(
@@ -47,7 +47,7 @@ class WasmRemoteAuthenticationDataSource(
         flow {
             val response = httpClient.post(ClientEndpoint.REQUEST_LOGIN.route) {
                 setBody(
-                    RequestLoginRequest(
+                    RequestLoginRequestDto(
                         username = username,
                         password = password,
                     )

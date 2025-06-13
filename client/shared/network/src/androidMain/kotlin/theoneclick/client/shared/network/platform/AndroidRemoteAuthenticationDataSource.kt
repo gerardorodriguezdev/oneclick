@@ -13,9 +13,9 @@ import theoneclick.client.shared.network.models.LogoutResult
 import theoneclick.client.shared.network.models.RequestLoginResult
 import theoneclick.client.shared.network.models.UserLoggedResult
 import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
-import theoneclick.shared.contracts.core.requests.RequestLoginRequest
-import theoneclick.shared.contracts.core.responses.RequestLoginResponse
-import theoneclick.shared.contracts.core.responses.UserLoggedResponse
+import theoneclick.shared.contracts.core.dtos.requests.RequestLoginRequestDto
+import theoneclick.shared.contracts.core.dtos.responses.RequestLoginResponseDto
+import theoneclick.shared.contracts.core.dtos.responses.UserLoggedResponseDto
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.logging.AppLogger
 
@@ -37,8 +37,8 @@ class AndroidRemoteAuthenticationDataSource(
             val response = httpClient.get(ClientEndpoint.IS_USER_LOGGED.route)
             when (response.status) {
                 HttpStatusCode.OK -> {
-                    val isUserLoggedResponse: UserLoggedResponse = response.body()
-                    emit(isUserLoggedResponse.toUserLoggedResult())
+                    val isUserLoggedResponseDto: UserLoggedResponseDto = response.body()
+                    emit(isUserLoggedResponseDto.toUserLoggedResult())
                 }
 
                 else -> emit(UserLoggedResult.UnknownError)
@@ -50,10 +50,10 @@ class AndroidRemoteAuthenticationDataSource(
             }
             .flowOn(dispatchersProvider.io())
 
-    private fun UserLoggedResponse.toUserLoggedResult(): UserLoggedResult =
+    private fun UserLoggedResponseDto.toUserLoggedResult(): UserLoggedResult =
         when (this) {
-            is UserLoggedResponse.Logged -> UserLoggedResult.Logged
-            is UserLoggedResponse.NotLogged -> UserLoggedResult.NotLogged
+            is UserLoggedResponseDto.LoggedDto -> UserLoggedResult.Logged
+            is UserLoggedResponseDto.NotLoggedDto -> UserLoggedResult.NotLogged
         }
 
     override fun login(
@@ -63,7 +63,7 @@ class AndroidRemoteAuthenticationDataSource(
         flow {
             val response = httpClient.post(ClientEndpoint.REQUEST_LOGIN.route) {
                 setBody(
-                    RequestLoginRequest(
+                    RequestLoginRequestDto(
                         username = username,
                         password = password,
                     )
@@ -72,8 +72,8 @@ class AndroidRemoteAuthenticationDataSource(
 
             when (response.status) {
                 HttpStatusCode.OK -> {
-                    val requestLoginResponse: RequestLoginResponse = response.body()
-                    tokenDataSource.set(requestLoginResponse.token)
+                    val requestLoginResponseDto: RequestLoginResponseDto = response.body()
+                    tokenDataSource.set(requestLoginResponseDto.token)
                     emit(RequestLoginResult.ValidLogin)
                 }
 

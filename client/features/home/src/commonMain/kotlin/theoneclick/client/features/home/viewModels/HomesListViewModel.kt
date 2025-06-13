@@ -15,7 +15,7 @@ import theoneclick.client.features.home.repositories.HomesRepository
 import theoneclick.client.features.home.ui.events.HomesListEvent
 import theoneclick.client.features.home.ui.screens.HomesListScreenState
 import theoneclick.client.shared.notifications.NotificationsController
-import theoneclick.shared.contracts.core.models.Home
+import theoneclick.shared.contracts.core.dtos.HomeDto
 
 @Inject
 internal class HomesListViewModel(
@@ -35,7 +35,7 @@ internal class HomesListViewModel(
         viewModelScope.launch {
             homesRepository.homes.collect { homes ->
                 homesListViewModelState.value = homesListViewModelState.value.copy(
-                    homes = homes,
+                    homesDtos = homes,
                 )
             }
         }
@@ -85,7 +85,7 @@ internal class HomesListViewModel(
     }
 
     data class HomesListViewModelState(
-        val homes: List<Home> = emptyList(),
+        val homesDtos: List<HomeDto> = emptyList(),
         val isLoading: Boolean = false,
     )
 }

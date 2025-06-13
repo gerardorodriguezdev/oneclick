@@ -8,7 +8,7 @@ import theoneclick.server.app.extensions.defaultAuthentication
 import theoneclick.server.app.models.UserSession
 import org.koin.ktor.ext.inject
 import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
-import theoneclick.shared.contracts.core.responses.HomesResponse
+import theoneclick.shared.contracts.core.dtos.responses.HomesResponseDto
 
 fun Routing.devicesEndpoint() {
     val usersDataSource: UsersDataSource by inject()
@@ -21,8 +21,8 @@ fun Routing.devicesEndpoint() {
             val devices = user?.devices?.toList() ?: emptyList()
 
             call.respond(
-                HomesResponse(
-                    homes = devices,
+                HomesResponseDto(
+                    homeDtos = devices,
                 )
             )
         }

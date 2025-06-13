@@ -1,7 +1,7 @@
 package theoneclick.server.app.models
 
 import kotlinx.serialization.Serializable
-import theoneclick.shared.contracts.core.models.Device
+import theoneclick.shared.contracts.core.dtos.Device
 import theoneclick.shared.contracts.core.models.Uuid
 
 @Serializable

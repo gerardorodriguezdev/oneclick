@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import me.tatarka.inject.annotations.Inject
 import theoneclick.client.features.home.models.results.HomesResult
+import theoneclick.shared.contracts.core.dtos.responses.HomesResponseDto
 import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
-import theoneclick.shared.contracts.core.responses.HomesResponse
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.logging.AppLogger
 
@@ -32,8 +32,8 @@ internal class RemoteLoggedDataSource(
 
             when (response.status) {
                 HttpStatusCode.OK -> {
-                    val responseBody = response.body<HomesResponse>()
-                    emit(HomesResult.Success(homes = responseBody.homes))
+                    val responseBody = response.body<HomesResponseDto>()
+                    emit(HomesResult.Success(homeDtos = responseBody.homeDtos))
                 }
 
                 else -> emit(HomesResult.Error)
