@@ -1,5 +1,6 @@
 package theoneclick.client.features.home.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -8,6 +9,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -19,8 +21,7 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
-import theoneclick.client.features.home.generated.resources.Res
-import theoneclick.client.features.home.generated.resources.homesListScreen_placeholder_noHomesFound
+import theoneclick.client.features.home.generated.resources.*
 import theoneclick.client.features.home.ui.events.HomesListEvent
 import theoneclick.client.features.home.ui.screens.HomesListScreenState.UiHome.UiRoom.UiDevice
 import theoneclick.client.shared.ui.components.Body
@@ -57,12 +58,21 @@ internal fun HomesListScreen(
             ) {
                 state.homes.forEachIndexed { homeIndex, home ->
                     stickyHeader(key = home.name, contentType = HomesListContentType.HOME_NAME) {
-                        Title(text = home.name) //TODO: Proper string
+                        Title(
+                            text = stringResource(Res.string.homesListScreen_homeName_home, home.name),
+                            modifier = Modifier.background(color = MaterialTheme.colorScheme.background)
+                        )
                     }
 
                     home.rooms.forEachIndexed { roomIndex, room ->
                         stickyHeader(key = room.name, contentType = HomesListContentType.ROOM_NAME) {
-                            Title(text = room.name) //TODO: Proper string
+                            Title(
+                                text = stringResource(
+                                    Res.string.homesListScreen_roomName_room,
+                                    room.name
+                                ),
+                                modifier = Modifier.background(color = MaterialTheme.colorScheme.background)
+                            )
                         }
 
                         itemsIndexed(
@@ -78,12 +88,25 @@ internal fun HomesListScreen(
                                         .fillMaxWidth()
                                         .padding(Tokens.containerPadding),
                                 ) {
-                                    Body(text = device.name) //TODO: Proper string
+                                    Body(
+                                        text = stringResource(
+                                            Res.string.homesListScreen_deviceName_room,
+                                            device.name
+                                        )
+                                    )
 
                                     when (device) {
                                         is UiDevice.UiWaterSensor -> {
-                                            //TODO: Add type
-                                            Label(text = device.level) //TODO: Proper string
+                                            Body(
+                                                text = stringResource(Res.string.homesListScreen_waterSensor_type)
+                                            )
+
+                                            Label(
+                                                text = stringResource(
+                                                    Res.string.homesListScreen_waterSensor_level,
+                                                    device.level
+                                                )
+                                            )
                                         }
                                     }
                                 }
