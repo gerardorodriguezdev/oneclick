@@ -8,7 +8,6 @@ import org.jetbrains.compose.resources.stringResource
 import theoneclick.client.features.home.generated.resources.Res
 import theoneclick.client.features.home.generated.resources.userSettingsScreen_snackbar_logout
 import theoneclick.client.features.home.generated.resources.userSettingsScreen_title_userSettings
-import theoneclick.client.features.home.ui.events.UserSettingsEvent
 import theoneclick.client.shared.ui.components.DefaultButton
 import theoneclick.client.shared.ui.components.DialogBox
 import theoneclick.client.shared.ui.components.ScreenBox
@@ -38,6 +37,11 @@ internal fun UserSettingsScreen(
 internal data class UserSettingsScreenState(
     val isLoading: Boolean = false,
 )
+
+internal sealed interface UserSettingsEvent {
+    data object LogoutClicked : UserSettingsEvent
+}
+
 
 @Composable
 internal fun UserSettingsScreenPreview(previewModel: PreviewModel<UserSettingsScreenState>) {

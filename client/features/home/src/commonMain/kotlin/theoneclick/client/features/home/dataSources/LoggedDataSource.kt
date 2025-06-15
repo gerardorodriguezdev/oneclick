@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import me.tatarka.inject.annotations.Inject
 import theoneclick.client.features.home.mappers.toHomes
-import theoneclick.client.features.home.repositories.HomesRepository.HomesResult
+import theoneclick.client.features.home.models.results.HomesResult
 import theoneclick.shared.contracts.core.dtos.responses.HomesResponseDto
 import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
 import theoneclick.shared.dispatchers.platform.DispatchersProvider

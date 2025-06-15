@@ -10,10 +10,10 @@ import org.jetbrains.compose.resources.getString
 import theoneclick.client.features.home.generated.resources.Res
 import theoneclick.client.features.home.generated.resources.homesListScreen_snackbar_unknownError
 import theoneclick.client.features.home.mappers.toHomesListScreenState
+import theoneclick.client.features.home.models.results.HomesResult
+import theoneclick.client.features.home.models.results.HomesResult.Success.Home
 import theoneclick.client.features.home.repositories.HomesRepository
-import theoneclick.client.features.home.repositories.HomesRepository.HomesResult
-import theoneclick.client.features.home.repositories.HomesRepository.HomesResult.Success.Home
-import theoneclick.client.features.home.ui.events.HomesListEvent
+import theoneclick.client.features.home.ui.screens.HomesListEvent
 import theoneclick.client.features.home.ui.screens.HomesListScreenState
 import theoneclick.client.shared.notifications.NotificationsController
 

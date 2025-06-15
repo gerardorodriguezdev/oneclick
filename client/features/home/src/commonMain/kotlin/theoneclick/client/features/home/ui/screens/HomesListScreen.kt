@@ -23,7 +23,6 @@ import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
 import theoneclick.client.features.home.generated.resources.*
-import theoneclick.client.features.home.ui.events.HomesListEvent
 import theoneclick.client.features.home.ui.screens.HomesListScreenState.UiHome.UiRoom.UiDevice
 import theoneclick.client.shared.ui.components.Body
 import theoneclick.client.shared.ui.components.Label
@@ -176,6 +175,10 @@ internal data class HomesListScreenState(
             }
         }
     }
+}
+
+internal sealed interface HomesListEvent {
+    data object Refresh : HomesListEvent
 }
 
 private object HomesListContentType {

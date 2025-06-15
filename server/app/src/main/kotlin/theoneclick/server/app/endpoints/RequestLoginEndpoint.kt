@@ -27,10 +27,6 @@ fun Routing.requestLoginEndpoint() {
     val uuidProvider: UuidProvider by inject()
 
     post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequestDto: RequestLoginRequestDto ->
-        val requestLoginParams = RequestLoginParams(
-            username = requestLoginRequestDto.username,
-            password = requestLoginRequestDto.password,
-        )
         val requestLoginValidationResult = paramsValidator.isRequestLoginParamsValid(requestLoginParams)
 
         when (requestLoginValidationResult) {

@@ -10,7 +10,7 @@ import org.jetbrains.compose.resources.getString
 import theoneclick.client.app.generated.resources.Res
 import theoneclick.client.app.generated.resources.loginScreen_snackbar_unknownError
 import theoneclick.client.app.mappers.toLoginScreenState
-import theoneclick.client.app.ui.events.LoginEvent
+import theoneclick.client.app.ui.screens.LoginEvent
 import theoneclick.client.app.ui.screens.LoginScreenState
 import theoneclick.client.shared.navigation.NavigationController
 import theoneclick.client.shared.navigation.NavigationController.NavigationEvent.Navigate

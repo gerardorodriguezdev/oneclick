@@ -51,7 +51,7 @@ class AndroidEncryptedPreferences(
                 decodedValue
             }
             .catch { error ->
-                appLogger.e("Exception '${error.stackTraceToString()}' when getting preference key '$key'")
+                appLogger.e("Exception '${error.stackTraceToString()}' while getting preference key '$key'")
 
                 clearPreference(key)
                 emit(null)
@@ -74,7 +74,7 @@ class AndroidEncryptedPreferences(
 
             true
         } catch (error: Throwable) {
-            appLogger.e("Exception '${error.stackTraceToString()}' when putting preference key '$key'")
+            appLogger.e("Exception '${error.stackTraceToString()}' while putting preference key '$key'")
 
             clearPreference(key)
             false
@@ -91,7 +91,7 @@ class AndroidEncryptedPreferences(
 
             true
         } catch (error: Throwable) {
-            appLogger.e("Exception '${error.stackTraceToString()}' when clearing key '$key'")
+            appLogger.e("Exception '${error.stackTraceToString()}' while clearing key '$key'")
             false
         }
 }

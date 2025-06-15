@@ -1,8 +1,8 @@
 package theoneclick.client.features.home.mappers
 
-import theoneclick.client.features.home.repositories.HomesRepository.HomesResult.Success.Home
-import theoneclick.client.features.home.repositories.HomesRepository.HomesResult.Success.Home.Room
-import theoneclick.client.features.home.repositories.HomesRepository.HomesResult.Success.Home.Room.Device
+import theoneclick.client.features.home.models.results.HomesResult.Success.Home
+import theoneclick.client.features.home.models.results.HomesResult.Success.Home.Room
+import theoneclick.client.features.home.models.results.HomesResult.Success.Home.Room.Device
 import theoneclick.shared.contracts.core.dtos.DeviceDto
 import theoneclick.shared.contracts.core.dtos.HomeDto
 import theoneclick.shared.contracts.core.dtos.RoomDto

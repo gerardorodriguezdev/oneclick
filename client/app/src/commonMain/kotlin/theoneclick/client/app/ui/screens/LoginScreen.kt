@@ -18,7 +18,6 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import org.jetbrains.compose.resources.stringResource
 import theoneclick.client.app.generated.resources.*
-import theoneclick.client.app.ui.events.LoginEvent
 import theoneclick.client.app.ui.screens.LoginScreenTestTags.PASSWORD_PLACEHOLDER
 import theoneclick.client.app.ui.screens.LoginScreenTestTags.PASSWORD_TEXT_FIELD
 import theoneclick.client.app.ui.screens.LoginScreenTestTags.USERNAME_PLACEHOLDER
@@ -128,6 +127,13 @@ object LoginScreenTestTags {
     const val USERNAME_PLACEHOLDER = "LoginScreen.Username.Placeholder"
     const val PASSWORD_TEXT_FIELD = "LoginScreen.Password.TextField"
     const val PASSWORD_PLACEHOLDER = "LoginScreen.Password.Placeholder"
+}
+
+sealed interface LoginEvent {
+    data class UsernameChanged(val newUsername: String) : LoginEvent
+    data class PasswordChanged(val newPassword: String) : LoginEvent
+
+    data object RegisterButtonClicked : LoginEvent
 }
 
 data class LoginScreenState(

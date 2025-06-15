@@ -6,7 +6,6 @@ import theoneclick.server.app.models.Username
 import theoneclick.server.app.platform.SecurityUtils
 import theoneclick.server.app.validators.ParamsValidator.RequestLoginValidationResult.InvalidRequestLoginParams
 import theoneclick.server.app.validators.ParamsValidator.RequestLoginValidationResult.ValidRequestLogin
-import theoneclick.shared.contracts.core.dtos.Device
 import theoneclick.shared.core.validators.*
 import theoneclick.shared.timeProvider.TimeProvider
 
@@ -69,44 +68,6 @@ class ParamsValidator(
         }
     }
 
-    fun isUpdateDeviceRequestValid(
-        sessionToken: String?,
-        updateDeviceRequest: UpdateDeviceRequest
-    ): UpdateDeviceValidationResult {
-        val device = updateDeviceRequest.updatedDevice
-
-        return when {
-            sessionToken == null -> UpdateDeviceValidationResult.InvalidDevice
-            !device.isDeviceValid() -> UpdateDeviceValidationResult.InvalidDevice
-            else -> device.handleDeviceUpdate(sessionToken)
-        }
-    }
-
-    private fun Device.isDeviceValid(): Boolean =
-        when {
-            deviceNameValidator.isNotValid(deviceName) -> false
-            roomNameValidator.isNotValid(room) -> false
-            deviceIdValidator.isNotValid(id.value) -> false
-            else -> when (this) {
-                is Device.Blind -> isDeviceValid()
-            }
-        }
-
-    private fun Device.Blind.isDeviceValid(): Boolean = Device.Blind.blindRange.isOnRange(rotation)
-
-    private fun Device.handleDeviceUpdate(sessionToken: String): UpdateDeviceValidationResult {
-        val user = usersDataSource.user(sessionToken)
-
-        return when {
-            user == null -> UpdateDeviceValidationResult.InvalidDevice
-            !user.canUpdateDevice(this) -> UpdateDeviceValidationResult.InvalidDevice
-            else -> UpdateDeviceValidationResult.ValidDevice(
-                user = user,
-                updatedDevice = this,
-            )
-        }
-    }
-
     sealed interface RequestLoginValidationResult {
         sealed interface ValidRequestLogin : RequestLoginValidationResult {
             data class ValidUser(val user: User) : ValidRequestLogin
@@ -118,15 +79,6 @@ class ParamsValidator(
         }
 
         data object InvalidRequestLoginParams : RequestLoginValidationResult
-    }
-
-    sealed interface UpdateDeviceValidationResult {
-        data class ValidDevice(
-            val user: User,
-            val updatedDevice: Device,
-        ) : UpdateDeviceValidationResult
-
-        data object InvalidDevice : UpdateDeviceValidationResult
     }
 
     companion object {
