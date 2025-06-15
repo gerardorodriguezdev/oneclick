@@ -36,6 +36,10 @@
       "propertyType": "String"
     },
     {
+      "name": "STORAGE_DIRECTORY",
+      "propertyType": "String"
+    },
+    {
       "name": "ENABLE_QAAPI",
       "propertyType": "Boolean"
     },

@@ -1,4 +1,4 @@
-package theoneclick.server.app.platform
+package theoneclick.server.app.security
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import io.ktor.util.hex
@@ -9,88 +9,90 @@ import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
-import kotlin.text.decodeToString
-import kotlin.text.toByteArray
 import kotlin.text.toCharArray
 import theoneclick.server.app.models.EncryptedToken.Companion.create as createEncryptedToken
 import theoneclick.server.app.models.HashedPassword.Companion.create as createHashedPassword
 
-interface SecurityUtils {
-    fun encrypt(input: String): ByteArray
-    fun decrypt(input: ByteArray): String
+interface Encryptor {
+    fun encrypt(input: String): Result<ByteArray>
+    fun decrypt(input: ByteArray): Result<String>
     fun hashPassword(password: String): HashedPassword
     fun verifyPassword(password: String, hashedPassword: HashedPassword): Boolean
     fun encryptedToken(): EncryptedToken
 }
 
-class JvmSecurityUtils(
+class DefaultEncryptor(
     private val secretEncryptionKey: String,
-    private val jvmSecureRandomProvider: JvmSecureRandomProvider,
+    private val secureRandomProvider: SecureRandomProvider,
     private val timeProvider: TimeProvider,
-) : SecurityUtils {
+) : Encryptor {
 
     private val secretEncryptionKeySpec by lazy {
         SecretKeySpec(hex(secretEncryptionKey), "AES")
     }
 
-    override fun encrypt(input: String): ByteArray {
-        val cipher = cipher()
-        val ivBytes = ByteArray(secretEncryptionKeySpec.encoded.size)
+    override fun encrypt(input: String): Result<ByteArray> =
+        runCatching {
+            val cipher = cipher()
+            val ivBytes = ByteArray(secretEncryptionKeySpec.encoded.size)
 
-        val secureRandom = jvmSecureRandomProvider.secureRandom()
-        secureRandom.nextBytes(ivBytes)
+            val secureRandom = secureRandomProvider.secureRandom()
+            secureRandom.nextBytes(ivBytes)
 
-        val ivSpec = IvParameterSpec(ivBytes)
+            val ivSpec = IvParameterSpec(ivBytes)
 
-        cipher.init(Cipher.ENCRYPT_MODE, secretEncryptionKeySpec, ivSpec)
+            cipher.init(Cipher.ENCRYPT_MODE, secretEncryptionKeySpec, ivSpec)
 
-        val encryptedBytes = cipher.doFinal(input.toByteArray())
+            val encryptedBytes = cipher.doFinal(input.toByteArray())
 
-        return ivBytes + encryptedBytes
-    }
+            ivBytes + encryptedBytes
+        }
 
     @Suppress("MagicNumber")
-    override fun decrypt(input: ByteArray): String {
-        val iv = input.sliceArray(0 until 16)
-        val ivSpec = IvParameterSpec(iv)
+    override fun decrypt(input: ByteArray): Result<String> =
+        runCatching {
+            val iv = input.sliceArray(0 until 16)
+            val ivSpec = IvParameterSpec(iv)
 
-        val encryptedBytes = input.sliceArray(16 until input.size)
+            val encryptedBytes = input.sliceArray(16 until input.size)
 
-        val cipher = cipher()
-        cipher.init(Cipher.DECRYPT_MODE, secretEncryptionKeySpec, ivSpec)
+            val cipher = cipher()
+            cipher.init(Cipher.DECRYPT_MODE, secretEncryptionKeySpec, ivSpec)
 
-        val decryptedBytes = cipher.doFinal(encryptedBytes)
+            val decryptedBytes = cipher.doFinal(encryptedBytes)
 
-        return decryptedBytes.decodeToString()
-    }
+            decryptedBytes.decodeToString()
+        }
 
     override fun hashPassword(password: String): HashedPassword =
         createHashedPassword(
-            BCrypt.with(jvmSecureRandomProvider.secureRandom())
+            BCrypt.with(secureRandomProvider.secureRandom())
                 .hashToString(PASSWORD_VERIFICATION_COST, password.toCharArray())
         )
 
     override fun verifyPassword(password: String, hashedPassword: HashedPassword): Boolean =
-        BCrypt.verifyer().verify(password.toCharArray(), hashedPassword.value.toCharArray()).verified
+        BCrypt.verifyer().verify(
+            password.toCharArray(), hashedPassword.value.toCharArray()
+        ).verified
 
     override fun encryptedToken(): EncryptedToken {
-        val secureRandom = jvmSecureRandomProvider.secureRandom()
+        val secureRandom = secureRandomProvider.secureRandom()
 
         val bytes = ByteArray(TOKEN_SIZE)
         secureRandom.nextBytes(bytes)
 
         val plainToken = bytes.decodeToString()
-        val encryptedToken = encrypt(plainToken)
+        val encryptedToken = encrypt(plainToken).getOrThrow()
         val encryptedTokenValue = Base64.getEncoder().encodeToString(encryptedToken)
         return createEncryptedToken(
-            value = encryptedTokenValue,
+            token = encryptedTokenValue,
             creationTimeInMillis = timeProvider.currentTimeMillis(),
         )
     }
 
     private fun cipher(): Cipher = Cipher.getInstance(ALGORITHM)
 
-    private companion object {
+    private companion object Companion {
         const val ALGORITHM = "AES/CBC/PKCS5Padding"
         const val TOKEN_SIZE = 32
         const val PASSWORD_VERIFICATION_COST = 12

@@ -3,7 +3,7 @@ package theoneclick.server.app.entrypoint
 import io.ktor.server.application.*
 import io.ktor.server.cio.*
 import io.ktor.server.engine.*
-import theoneclick.server.app.platform.base.Dependencies
+import theoneclick.server.app.di.base.Dependencies
 import theoneclick.server.app.plugins.*
 import theoneclick.server.app.plugins.authentication.configureAuthentication
 import theoneclick.server.app.plugins.callid.configureCallId

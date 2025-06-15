@@ -4,25 +4,24 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
-import theoneclick.server.app.models.UserSession
+import org.koin.ktor.ext.inject
+import theoneclick.server.app.dataSources.AuthenticationDataSource
+import theoneclick.server.app.models.Token
 import theoneclick.server.app.plugins.authentication.AuthenticationConstants.SESSION_AUTHENTICATION
 import theoneclick.server.app.plugins.authentication.AuthenticationConstants.TOKEN_AUTHENTICATION
-import org.koin.ktor.ext.inject
-import theoneclick.server.app.validators.ParamsValidator
 
 fun Application.configureAuthentication() {
-    val paramsValidator: ParamsValidator by inject()
-
+    val authenticationDataSource by inject<AuthenticationDataSource>()
     install(Authentication) {
-        registerSessionAuthentication(paramsValidator)
-        registerTokenAuthentication(paramsValidator)
+        registerSessionAuthentication(authenticationDataSource)
+        registerTokenAuthentication(authenticationDataSource)
     }
 }
 
-private fun AuthenticationConfig.registerSessionAuthentication(paramsValidator: ParamsValidator) {
-    session<UserSession>(SESSION_AUTHENTICATION) {
-        validate { userSession ->
-            if (paramsValidator.isUserSessionValid(userSession.sessionToken)) userSession else null
+private fun AuthenticationConfig.registerSessionAuthentication(authenticationDataSource: AuthenticationDataSource) {
+    session<Token>(SESSION_AUTHENTICATION) {
+        validate { token ->
+            if (authenticationDataSource.isUserSessionValid(token)) token else null
         }
 
         challenge {
@@ -31,12 +30,16 @@ private fun AuthenticationConfig.registerSessionAuthentication(paramsValidator: 
     }
 }
 
-private fun AuthenticationConfig.registerTokenAuthentication(paramsValidator: ParamsValidator) {
+private fun AuthenticationConfig.registerTokenAuthentication(authenticationDataSource: AuthenticationDataSource) {
     bearer(TOKEN_AUTHENTICATION) {
         realm = "Access to the '/' path"
 
         authenticate { tokenCredential ->
-            if (paramsValidator.isUserSessionValid(tokenCredential.token)) UserSession(tokenCredential.token) else null
+            if (authenticationDataSource.isUserSessionValid(tokenCredential.token)) {
+                Token.unsafe(tokenCredential.token)
+            } else {
+                null
+            }
         }
     }
 }

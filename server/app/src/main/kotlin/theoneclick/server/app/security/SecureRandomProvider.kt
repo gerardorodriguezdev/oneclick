@@ -1,11 +1,11 @@
-package theoneclick.server.app.platform
+package theoneclick.server.app.security
 
 import java.security.SecureRandom
 
-interface JvmSecureRandomProvider {
+interface SecureRandomProvider {
     fun secureRandom(): SecureRandom
 }
 
-class DefaultJvmSecureRandomProvider : JvmSecureRandomProvider {
+class DefaultSecureRandomProvider : SecureRandomProvider {
     override fun secureRandom(): SecureRandom = SecureRandom()
 }

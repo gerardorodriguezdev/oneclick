@@ -4,7 +4,7 @@ import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
 import theoneclick.server.app.endpoints.*
-import theoneclick.server.app.platform.Environment
+import theoneclick.server.app.di.Environment
 
 fun Application.configureRouting() {
     val environment: Environment by inject()

@@ -4,87 +4,108 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import theoneclick.server.app.dataSources.UsersDataSource
-import theoneclick.server.app.models.User
-import theoneclick.server.app.models.UserSession
-import theoneclick.server.app.models.Username
-import theoneclick.server.app.platform.SecurityUtils
-import theoneclick.server.app.platform.UuidProvider
 import org.koin.ktor.ext.inject
-import theoneclick.server.app.validators.ParamsValidator
-import theoneclick.server.app.validators.ParamsValidator.RequestLoginValidationResult.InvalidRequestLoginParams
-import theoneclick.server.app.validators.ParamsValidator.RequestLoginValidationResult.ValidRequestLogin
+import theoneclick.server.app.dataSources.UsersDataSource
+import theoneclick.server.app.models.Token
+import theoneclick.server.app.models.Token.Companion.toToken
+import theoneclick.server.app.models.User
+import theoneclick.server.app.models.Username
+import theoneclick.server.app.models.Username.Companion.toUsername
+import theoneclick.server.app.security.Encryptor
+import theoneclick.server.app.security.UuidProvider
 import theoneclick.server.shared.extensions.agent
 import theoneclick.shared.contracts.core.agents.Agent
-import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
+import theoneclick.shared.contracts.core.dtos.TokenDto
 import theoneclick.shared.contracts.core.dtos.requests.RequestLoginRequestDto
 import theoneclick.shared.contracts.core.dtos.responses.RequestLoginResponseDto
+import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
 
 fun Routing.requestLoginEndpoint() {
     val usersDataSource: UsersDataSource by inject()
-    val securityUtils: SecurityUtils by inject()
-    val paramsValidator: ParamsValidator by inject()
+    val encryptor: Encryptor by inject()
     val uuidProvider: UuidProvider by inject()
 
     post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequestDto: RequestLoginRequestDto ->
-        val requestLoginValidationResult = paramsValidator.isRequestLoginParamsValid(requestLoginParams)
+        val username = requestLoginRequestDto.username.toUsername()
+        val password = requestLoginRequestDto.password.value
+        val user = usersDataSource.user(username = username)
 
-        when (requestLoginValidationResult) {
-            is ValidRequestLogin -> {
-                handleSuccess(
-                    validRequestLogin = requestLoginValidationResult,
-                    securityUtils = securityUtils,
-                    usersDataSource = usersDataSource,
+        when {
+            user == null ->
+                registerUser(
+                    username = username,
+                    password = password,
+                    encryptor = encryptor,
                     uuidProvider = uuidProvider,
+                    usersDataSource = usersDataSource,
                 )
-            }
 
-            is InvalidRequestLoginParams -> call.respond(HttpStatusCode.BadRequest)
+            !encryptor.verifyPassword(
+                password = password,
+                hashedPassword = user.hashedPassword
+            ) -> handleError()
+
+            else -> handleSuccess(
+                user = user,
+                encryptor = encryptor,
+                usersDataSource = usersDataSource,
+            )
         }
     }
 }
 
-private suspend fun RoutingContext.handleSuccess(
-    validRequestLogin: ValidRequestLogin,
-    securityUtils: SecurityUtils,
-    usersDataSource: UsersDataSource,
+private suspend fun RoutingContext.registerUser(
+    username: Username,
+    password: String,
+    encryptor: Encryptor,
     uuidProvider: UuidProvider,
+    usersDataSource: UsersDataSource,
 ) {
-    val user = validRequestLogin.user(uuidProvider, securityUtils)
+    val newUser = User(
+        id = uuidProvider.uuid(),
+        username = username,
+        hashedPassword = encryptor.hashPassword(password),
+        sessionToken = null,
+    )
 
-    val sessionToken = securityUtils.encryptedToken()
+    handleSuccess(
+        user = newUser,
+        encryptor = encryptor,
+        usersDataSource = usersDataSource,
+    )
+}
+
+private suspend fun RoutingContext.handleSuccess(
+    user: User,
+    encryptor: Encryptor,
+    usersDataSource: UsersDataSource,
+) {
+    val sessionToken = encryptor.encryptedToken()
     usersDataSource.saveUser(
         user.copy(sessionToken = sessionToken)
     )
 
-    val userSession = UserSession(sessionToken = sessionToken.value)
-    handleSuccess(userSession)
+    val token = sessionToken.toToken()
+    handleSuccess(token)
 }
 
-private fun ValidRequestLogin.user(
-    uuidProvider: UuidProvider,
-    securityUtils: SecurityUtils
-): User =
-    when (this) {
-        is ValidRequestLogin.ValidUser -> user
-        is ValidRequestLogin.RegistrableUser -> {
-            User(
-                id = uuidProvider.uuid(),
-                username = Username(username),
-                hashedPassword = securityUtils.hashPassword(password),
-            )
-        }
-    }
-
-private suspend fun RoutingContext.handleSuccess(userSession: UserSession) {
+private suspend fun RoutingContext.handleSuccess(token: Token) {
     when (call.request.agent) {
         Agent.MOBILE -> {
-            call.respond(RequestLoginResponseDto(token = userSession.sessionToken))
+            call.respond(
+                RequestLoginResponseDto(
+                    token = TokenDto.unsafe(token.value)
+                )
+            )
         }
 
         Agent.BROWSER -> {
-            call.sessions.set(userSession)
+            call.sessions.set(token)
             call.respond(HttpStatusCode.OK)
         }
     }
+}
+
+private suspend fun RoutingContext.handleError() {
+    call.respond(HttpStatusCode.BadRequest)
 }

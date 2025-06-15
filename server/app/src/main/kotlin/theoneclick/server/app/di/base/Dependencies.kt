@@ -1,15 +1,14 @@
-package theoneclick.server.app.platform.base
+package theoneclick.server.app.di.base
 
 import io.ktor.util.logging.*
 import org.koin.core.module.Module
-import org.koin.core.module.dsl.singleOf
-import org.koin.dsl.bind
 import org.koin.dsl.module
+import theoneclick.server.app.dataSources.AuthenticationDataSource
+import theoneclick.server.app.dataSources.DefaultAuthenticationDataSource
 import theoneclick.server.app.dataSources.FileSystemUsersDataSource
 import theoneclick.server.app.dataSources.UsersDataSource
-import theoneclick.server.app.models.Path
-import theoneclick.server.app.platform.*
-import theoneclick.server.app.validators.ParamsValidator
+import theoneclick.server.app.di.Environment
+import theoneclick.server.app.security.*
 import theoneclick.shared.timeProvider.SystemTimeProvider
 import theoneclick.shared.timeProvider.TimeProvider
 
@@ -18,29 +17,20 @@ interface Dependencies {
     val timeProvider: TimeProvider
     val uuidProvider: UuidProvider
     val ivGenerator: IvGenerator
-    val securityUtils: SecurityUtils
-    val pathProvider: PathProvider
-    val fileSystem: FileSystem
+    val encryptor: Encryptor
 }
 
 class JvmDependencies(
     override val environment: Environment,
-    val directory: Path,
 ) : Dependencies {
-    private val jvmSecureRandomProvider = DefaultJvmSecureRandomProvider()
-
+    private val jvmSecureRandomProvider = DefaultSecureRandomProvider()
     override val timeProvider: TimeProvider = SystemTimeProvider()
     override val uuidProvider: UuidProvider = DefaultUuidProvider()
-    override val ivGenerator: IvGenerator = JvmIvGenerator(jvmSecureRandomProvider)
-    override val securityUtils: SecurityUtils = JvmSecurityUtils(
+    override val ivGenerator: IvGenerator = DefaultIvGenerator(jvmSecureRandomProvider)
+    override val encryptor: Encryptor = DefaultEncryptor(
         secretEncryptionKey = environment.secretEncryptionKey,
-        jvmSecureRandomProvider = jvmSecureRandomProvider,
+        secureRandomProvider = jvmSecureRandomProvider,
         timeProvider = timeProvider,
-    )
-    override val fileSystem: FileSystem = JvmFileSystem()
-    override val pathProvider: PathProvider = PathProvider(
-        directory = directory,
-        fileSystem = fileSystem,
     )
 }
 
@@ -49,11 +39,18 @@ fun buildModule(dependencies: Dependencies): Module =
         single<TimeProvider> { dependencies.timeProvider }
         single<UuidProvider> { dependencies.uuidProvider }
         single<IvGenerator> { dependencies.ivGenerator }
-        single<SecurityUtils> { dependencies.securityUtils }
+        single<Encryptor> { dependencies.encryptor }
         single<Environment> { dependencies.environment }
-        single<FileSystem> { dependencies.fileSystem }
-        single<PathProvider> { dependencies.pathProvider }
         single<Logger> { KtorSimpleLogger("theoneclick.defaultlogger") }
-        singleOf(::FileSystemUsersDataSource) bind UsersDataSource::class
-        singleOf(::ParamsValidator)
+        single<UsersDataSource> {
+            val environment: Environment = get()
+            FileSystemUsersDataSource(
+                storageDirectory = get<Environment>().storageDirectory,
+                encryptor = get(),
+                logger = get(),
+            )
+        }
+        single<AuthenticationDataSource> {
+            DefaultAuthenticationDataSource(usersDataSource = get(), timeProvider = get())
+        }
     }

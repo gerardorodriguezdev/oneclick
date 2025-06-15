@@ -1,15 +1,15 @@
-package theoneclick.server.app.platform
+package theoneclick.server.app.security
 
 interface IvGenerator {
     fun iv(size: Int): ByteArray
 }
 
-class JvmIvGenerator(
-    private val jvmSecureRandomProvider: JvmSecureRandomProvider,
+class DefaultIvGenerator(
+    private val secureRandomProvider: SecureRandomProvider,
 ) : IvGenerator {
 
     override fun iv(size: Int): ByteArray {
-        val secureRandom = jvmSecureRandomProvider.secureRandom()
+        val secureRandom = secureRandomProvider.secureRandom()
         return ByteArray(size).apply {
             secureRandom.nextBytes(this)
         }
