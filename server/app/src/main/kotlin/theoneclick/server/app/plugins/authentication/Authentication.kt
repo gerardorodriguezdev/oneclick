@@ -6,9 +6,9 @@ import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import org.koin.ktor.ext.inject
 import theoneclick.server.app.dataSources.AuthenticationDataSource
-import theoneclick.server.app.models.Token
 import theoneclick.server.app.plugins.authentication.AuthenticationConstants.SESSION_AUTHENTICATION
 import theoneclick.server.app.plugins.authentication.AuthenticationConstants.TOKEN_AUTHENTICATION
+import theoneclick.shared.contracts.core.dtos.TokenDto
 
 fun Application.configureAuthentication() {
     val authenticationDataSource by inject<AuthenticationDataSource>()
@@ -19,7 +19,7 @@ fun Application.configureAuthentication() {
 }
 
 private fun AuthenticationConfig.registerSessionAuthentication(authenticationDataSource: AuthenticationDataSource) {
-    session<Token>(SESSION_AUTHENTICATION) {
+    session<TokenDto>(SESSION_AUTHENTICATION) {
         validate { token ->
             if (authenticationDataSource.isUserSessionValid(token)) token else null
         }
@@ -36,7 +36,7 @@ private fun AuthenticationConfig.registerTokenAuthentication(authenticationDataS
 
         authenticate { tokenCredential ->
             if (authenticationDataSource.isUserSessionValid(tokenCredential.token)) {
-                Token.unsafe(tokenCredential.token)
+                TokenDto.unsafe(tokenCredential.token)
             } else {
                 null
             }

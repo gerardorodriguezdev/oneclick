@@ -2,19 +2,20 @@ package theoneclick.server.app.models
 
 import kotlinx.serialization.Serializable
 import theoneclick.server.app.security.Encryptor
+import theoneclick.shared.contracts.core.dtos.TokenDto
 
 @Serializable
-class EncryptedToken private constructor(
-    val token: String,
+class EncryptedTokenDto private constructor(
+    val token: TokenDto,
     val creationTimeInMillis: Long,
 ) {
     companion object {
         fun Encryptor.create(
             token: String,
             creationTimeInMillis: Long,
-        ): EncryptedToken =
-            EncryptedToken(
-                token = token,
+        ): EncryptedTokenDto =
+            EncryptedTokenDto(
+                token = TokenDto.unsafe(token),
                 creationTimeInMillis = creationTimeInMillis,
             )
     }

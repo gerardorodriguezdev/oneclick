@@ -8,20 +8,21 @@ import org.koin.ktor.ext.inject
 import theoneclick.server.app.dataSources.UsersDataSource
 import theoneclick.server.app.extensions.defaultAuthentication
 import theoneclick.shared.contracts.core.dtos.TokenDto
+import theoneclick.shared.contracts.core.dtos.responses.HomesResponseDto
 import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
 
-fun Routing.logoutEndpoint() {
+fun Routing.homesListEndpoint() {
     val usersDataSource: UsersDataSource by inject()
 
     defaultAuthentication {
-        get(ClientEndpoint.LOGOUT.route) {
+        get(ClientEndpoint.HOMES.route) {
             val token = call.principal<TokenDto>()!!
-            val currentUser = usersDataSource.user(token)
-            val updatedUser = currentUser?.copy(sessionToken = null)
-            updatedUser?.let {
-                usersDataSource.saveUser(updatedUser)
+            val user = usersDataSource.user(token)
+            if (user == null) {
+                call.respond(HttpStatusCode.InternalServerError)
+            } else {
+                call.respond(HomesResponseDto(homes = user.homes))
             }
-            call.respond(HttpStatusCode.OK)
         }
     }
 }

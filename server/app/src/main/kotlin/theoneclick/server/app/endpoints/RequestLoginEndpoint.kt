@@ -6,16 +6,13 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import org.koin.ktor.ext.inject
 import theoneclick.server.app.dataSources.UsersDataSource
-import theoneclick.server.app.models.Token
-import theoneclick.server.app.models.Token.Companion.toToken
-import theoneclick.server.app.models.User
-import theoneclick.server.app.models.Username
-import theoneclick.server.app.models.Username.Companion.toUsername
+import theoneclick.server.app.models.UserDto
 import theoneclick.server.app.security.Encryptor
 import theoneclick.server.app.security.UuidProvider
 import theoneclick.server.shared.extensions.agent
 import theoneclick.shared.contracts.core.agents.Agent
 import theoneclick.shared.contracts.core.dtos.TokenDto
+import theoneclick.shared.contracts.core.dtos.UsernameDto
 import theoneclick.shared.contracts.core.dtos.requests.RequestLoginRequestDto
 import theoneclick.shared.contracts.core.dtos.responses.RequestLoginResponseDto
 import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
@@ -26,7 +23,7 @@ fun Routing.requestLoginEndpoint() {
     val uuidProvider: UuidProvider by inject()
 
     post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequestDto: RequestLoginRequestDto ->
-        val username = requestLoginRequestDto.username.toUsername()
+        val username = requestLoginRequestDto.username
         val password = requestLoginRequestDto.password.value
         val user = usersDataSource.user(username = username)
 
@@ -55,17 +52,18 @@ fun Routing.requestLoginEndpoint() {
 }
 
 private suspend fun RoutingContext.registerUser(
-    username: Username,
+    username: UsernameDto,
     password: String,
     encryptor: Encryptor,
     uuidProvider: UuidProvider,
     usersDataSource: UsersDataSource,
 ) {
-    val newUser = User(
+    val newUser = UserDto(
         id = uuidProvider.uuid(),
         username = username,
         hashedPassword = encryptor.hashPassword(password),
         sessionToken = null,
+        homes = emptyList(),
     )
 
     handleSuccess(
@@ -76,7 +74,7 @@ private suspend fun RoutingContext.registerUser(
 }
 
 private suspend fun RoutingContext.handleSuccess(
-    user: User,
+    user: UserDto,
     encryptor: Encryptor,
     usersDataSource: UsersDataSource,
 ) {
@@ -85,11 +83,10 @@ private suspend fun RoutingContext.handleSuccess(
         user.copy(sessionToken = sessionToken)
     )
 
-    val token = sessionToken.toToken()
-    handleSuccess(token)
+    handleSuccess(sessionToken.token)
 }
 
-private suspend fun RoutingContext.handleSuccess(token: Token) {
+private suspend fun RoutingContext.handleSuccess(token: TokenDto) {
     when (call.request.agent) {
         Agent.MOBILE -> {
             call.respond(

@@ -11,7 +11,7 @@ value class RoomNameDto private constructor(val value: String) {
         require(isValid(value)) { ERROR_MESSAGE }
     }
 
-    companion object Companion {
+    companion object {
         private const val ERROR_MESSAGE = "Invalid room name"
 
         private val REGEX = "^[a-zA-Z0-9_]{3,20}$".toRegex()

@@ -18,7 +18,7 @@ class DefaultButtonModelProvider : PreviewParameterProvider<PreviewModel<Default
         darkThemeCompactPreviewModel(description = "Loading", model = loadingButtonModel),
     )
 
-    companion object Companion {
+    companion object {
         const val BUTTON_TEXT = "ButtonText"
 
         val disabledButtonModel = DefaultButtonModel(

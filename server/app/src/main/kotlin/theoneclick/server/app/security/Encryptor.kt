@@ -2,23 +2,23 @@ package theoneclick.server.app.security
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import io.ktor.util.hex
-import theoneclick.server.app.models.EncryptedToken
-import theoneclick.server.app.models.HashedPassword
+import theoneclick.server.app.models.EncryptedTokenDto
+import theoneclick.server.app.models.HashedPasswordDto
 import theoneclick.shared.timeProvider.TimeProvider
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import kotlin.text.toCharArray
-import theoneclick.server.app.models.EncryptedToken.Companion.create as createEncryptedToken
-import theoneclick.server.app.models.HashedPassword.Companion.create as createHashedPassword
+import theoneclick.server.app.models.EncryptedTokenDto.Companion.create as createEncryptedToken
+import theoneclick.server.app.models.HashedPasswordDto.Companion.create as createHashedPassword
 
 interface Encryptor {
     fun encrypt(input: String): Result<ByteArray>
     fun decrypt(input: ByteArray): Result<String>
-    fun hashPassword(password: String): HashedPassword
-    fun verifyPassword(password: String, hashedPassword: HashedPassword): Boolean
-    fun encryptedToken(): EncryptedToken
+    fun hashPassword(password: String): HashedPasswordDto
+    fun verifyPassword(password: String, hashedPassword: HashedPasswordDto): Boolean
+    fun encryptedToken(): EncryptedTokenDto
 }
 
 class DefaultEncryptor(
@@ -64,18 +64,18 @@ class DefaultEncryptor(
             decryptedBytes.decodeToString()
         }
 
-    override fun hashPassword(password: String): HashedPassword =
+    override fun hashPassword(password: String): HashedPasswordDto =
         createHashedPassword(
             BCrypt.with(secureRandomProvider.secureRandom())
                 .hashToString(PASSWORD_VERIFICATION_COST, password.toCharArray())
         )
 
-    override fun verifyPassword(password: String, hashedPassword: HashedPassword): Boolean =
+    override fun verifyPassword(password: String, hashedPassword: HashedPasswordDto): Boolean =
         BCrypt.verifyer().verify(
             password.toCharArray(), hashedPassword.value.toCharArray()
         ).verified
 
-    override fun encryptedToken(): EncryptedToken {
+    override fun encryptedToken(): EncryptedTokenDto {
         val secureRandom = secureRandomProvider.secureRandom()
 
         val bytes = ByteArray(TOKEN_SIZE)
@@ -92,7 +92,7 @@ class DefaultEncryptor(
 
     private fun cipher(): Cipher = Cipher.getInstance(ALGORITHM)
 
-    private companion object Companion {
+    private companion object {
         const val ALGORITHM = "AES/CBC/PKCS5Padding"
         const val TOKEN_SIZE = 32
         const val PASSWORD_VERIFICATION_COST = 12

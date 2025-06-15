@@ -20,7 +20,7 @@ class DefaultSnackbarModelProvider : PreviewParameterProvider<PreviewModel<Defau
             darkThemeCompactPreviewModel(description = "Success", model = successDefaultSnackbarState),
         )
 
-    companion object Companion {
+    companion object {
         val mockSnackbarData = object : SnackbarData {
             override val visuals: SnackbarVisuals = object : SnackbarVisuals {
                 override val actionLabel: String? = null

@@ -1,11 +1,11 @@
 package theoneclick.server.app.dataSources
 
-import theoneclick.server.app.models.Token
-import theoneclick.server.app.models.Token.Companion.toToken
+import theoneclick.shared.contracts.core.dtos.TokenDto
+import theoneclick.shared.contracts.core.dtos.TokenDto.Companion.toToken
 import theoneclick.shared.timeProvider.TimeProvider
 
 interface AuthenticationDataSource {
-    fun isUserSessionValid(token: Token): Boolean
+    fun isUserSessionValid(token: TokenDto): Boolean
     fun isUserSessionValid(token: String): Boolean
 }
 
@@ -19,7 +19,7 @@ class DefaultAuthenticationDataSource(
         return isUserSessionValid(token)
     }
 
-    override fun isUserSessionValid(token: Token): Boolean {
+    override fun isUserSessionValid(token: TokenDto): Boolean {
         val user = usersDataSource.user(token)
 
         return when {
@@ -29,7 +29,7 @@ class DefaultAuthenticationDataSource(
             timeProvider.currentTimeMillis() > user.sessionToken.creationTimeInMillis +
                     USER_SESSION_TOKEN_EXPIRATION_IN_MILLIS -> false
 
-            user.sessionToken.token != token.value -> false
+            user.sessionToken.token.value != token.value -> false
             else -> true
         }
     }
