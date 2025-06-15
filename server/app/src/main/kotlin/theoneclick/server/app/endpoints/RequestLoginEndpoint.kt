@@ -1,4 +1,4 @@
-package theoneclick.server.app.endpoints.requestLogin
+package theoneclick.server.app.endpoints
 
 import io.ktor.http.*
 import io.ktor.server.response.*

@@ -9,17 +9,17 @@ fun mockHomes(number: Int): List<HomeDto> =
         repeat(number) {
             add(
                 mockHome(
-                    name = HomeNameDto("H_$it"),
+                    name = HomeNameDto.unsafe("H_$it"),
                 )
             )
         }
     }
 
 private fun mockHome(
-    name: HomeNameDto = HomeNameDto("HomeName"),
+    name: HomeNameDto = HomeNameDto.unsafe("HomeName"),
     rooms: List<RoomDto> = mockRooms(name.value, 5),
 ): HomeDto =
-    HomeDto(
+    HomeDto.unsafe(
         name = name,
         roomsDtos = rooms,
     )
@@ -29,19 +29,19 @@ private fun mockRooms(parentName: String, number: Int): List<RoomDto> =
         repeat(number) {
             add(
                 mockRoom(
-                    name = RoomNameDto("${parentName}_R_$it"),
+                    name = RoomNameDto.unsafe("${parentName}_R_$it"),
                 )
             )
         }
     }
 
 private fun mockRoom(
-    name: RoomNameDto = RoomNameDto("RoomName"),
+    name: RoomNameDto = RoomNameDto.unsafe("RoomName"),
     devices: List<DeviceDto> = mockDevices(name.value, 5),
 ): RoomDto =
-    RoomDto(
+    RoomDto.unsafe(
         name = name,
-        devicesDtos = devices,
+        devices = devices,
     )
 
 private fun mockDevices(parentName: String, number: Int): List<DeviceDto> =
@@ -49,25 +49,25 @@ private fun mockDevices(parentName: String, number: Int): List<DeviceDto> =
         repeat(number) {
             add(
                 mockDevice(
-                    nameDto = DeviceNameDto("${parentName}_D_$it"),
+                    nameDto = DeviceNameDto.unsafe("${parentName}_D_$it"),
                 )
             )
         }
     }
 
 private fun mockDevice(
-    nameDto: DeviceNameDto = DeviceNameDto("DeviceName"),
+    nameDto: DeviceNameDto = DeviceNameDto.unsafe("DeviceName"),
     id: UuidDto = mockUuid()
 ): DeviceDto =
-    DeviceDto.WaterSensorDto(
+    DeviceDto.WaterSensorDto.unsafe(
         id = id,
         name = nameDto,
-        range = PositiveIntRangeDto(
-            start = PositiveIntDto(0),
-            end = PositiveIntDto(10),
+        range = PositiveIntRangeDto.unsafe(
+            start = PositiveIntDto.unsafe(0),
+            end = PositiveIntDto.unsafe(10),
         ),
-        level = PositiveIntDto(1)
+        level = PositiveIntDto.unsafe(1)
     )
 
 @OptIn(ExperimentalUuidApi::class)
-private fun mockUuid(): UuidDto = UuidDto(Uuid.random().toHexDashString())
+private fun mockUuid(): UuidDto = UuidDto.unsafe(Uuid.random().toHexDashString())

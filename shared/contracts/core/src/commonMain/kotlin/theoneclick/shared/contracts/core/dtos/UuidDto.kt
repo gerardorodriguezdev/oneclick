@@ -1,9 +1,11 @@
 package theoneclick.shared.contracts.core.dtos
 
 import kotlinx.serialization.Serializable
+import kotlin.jvm.JvmInline
 
+@JvmInline
 @Serializable
-data class UuidDto(val value: String) {
+value class UuidDto private constructor(val value: String) {
 
     init {
         require(isValid(value)) { ERROR_MESSAGE }
@@ -18,5 +20,7 @@ data class UuidDto(val value: String) {
 
         fun String.toUuid(): UuidDto? =
             if (isValid(this)) UuidDto(this) else null
+
+        fun unsafe(value: String): UuidDto = UuidDto(value)
     }
 }

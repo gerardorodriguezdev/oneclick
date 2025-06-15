@@ -34,7 +34,7 @@ internal class RemoteLoggedDataSource(
             when (response.status) {
                 HttpStatusCode.OK -> {
                     val responseBody = response.body<HomesResponseDto>()
-                    emit(HomesResult.Success(homes = responseBody.homeDtos.toHomes()))
+                    emit(HomesResult.Success(homes = responseBody.homes.toHomes()))
                 }
 
                 else -> emit(HomesResult.Error)

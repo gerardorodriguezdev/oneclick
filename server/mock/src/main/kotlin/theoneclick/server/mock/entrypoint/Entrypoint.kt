@@ -42,7 +42,7 @@ private fun Application.configureRouting() {
 
         post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequestDto: RequestLoginRequestDto ->
             when (call.request.agent) {
-                Agent.MOBILE -> call.respond(RequestLoginResponseDto(token = TokenDto("token")))
+                Agent.MOBILE -> call.respond(RequestLoginResponseDto(token = TokenDto.unsafe("token")))
                 Agent.BROWSER -> call.respond(HttpStatusCode.OK)
             }
         }
@@ -50,7 +50,7 @@ private fun Application.configureRouting() {
         get(ClientEndpoint.HOMES.route) {
             call.respond(
                 HomesResponseDto(
-                    homeDtos = mockHomes(5),
+                    homes = mockHomes(5),
                 )
             )
         }

@@ -5,5 +5,5 @@ import theoneclick.shared.contracts.core.dtos.HomeDto
 
 @Serializable
 data class HomesResponseDto(
-    val homeDtos: List<HomeDto>,
+    val homes: List<HomeDto>,
 )

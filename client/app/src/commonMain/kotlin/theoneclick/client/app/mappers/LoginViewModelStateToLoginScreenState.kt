@@ -7,8 +7,8 @@ import theoneclick.shared.contracts.core.dtos.PasswordDto
 import theoneclick.shared.contracts.core.dtos.UsernameDto
 
 fun LoginViewModel.LoginViewModelState.toLoginScreenState(): LoginScreenState {
-    val isUsernameValid = UsernameDto.isValid(username)
-    val isPasswordValid = PasswordDto.isValid(password)
+    val isUsernameValid = UsernameDto.isValid(username ?: "")
+    val isPasswordValid = PasswordDto.isValid(password ?: "")
 
     return LoginScreenState(
         username = Field(

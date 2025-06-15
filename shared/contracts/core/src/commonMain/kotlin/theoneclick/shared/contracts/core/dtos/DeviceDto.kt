@@ -8,7 +8,7 @@ sealed interface DeviceDto {
     val name: DeviceNameDto
 
     @Serializable
-    data class WaterSensorDto(
+    class WaterSensorDto private constructor(
         override val id: UuidDto,
         override val name: DeviceNameDto,
         val range: PositiveIntRangeDto,
@@ -16,25 +16,43 @@ sealed interface DeviceDto {
     ) : DeviceDto {
 
         init {
-            require(isValid(level, range)) { ERROR_MESSAGE }
+            require(isValid(level = level, range = range)) { ERROR_MESSAGE }
         }
 
         companion object {
             private const val ERROR_MESSAGE = "Level not in range"
 
-            fun isValid(level: PositiveIntDto, range: PositiveIntRangeDto): Boolean = range.inRange(level)
+            private fun isValid(level: PositiveIntDto, range: PositiveIntRangeDto): Boolean = range.inRange(level)
 
             fun waterSensorDto(
                 id: UuidDto,
-                nameDto: DeviceNameDto,
-                rangeDto: PositiveIntRangeDto,
+                name: DeviceNameDto,
+                range: PositiveIntRangeDto,
                 level: PositiveIntDto
             ): WaterSensorDto? =
-                if (isValid(level, rangeDto)) {
-                    WaterSensorDto(id, nameDto, rangeDto, level)
+                if (isValid(level, range)) {
+                    WaterSensorDto(
+                        id = id,
+                        name = name,
+                        range = range,
+                        level = level,
+                    )
                 } else {
                     null
                 }
+
+            fun unsafe(
+                id: UuidDto,
+                name: DeviceNameDto,
+                range: PositiveIntRangeDto,
+                level: PositiveIntDto
+            ): WaterSensorDto =
+                WaterSensorDto(
+                    id = id,
+                    name = name,
+                    range = range,
+                    level = level,
+                )
         }
     }
 }

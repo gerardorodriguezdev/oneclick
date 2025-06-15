@@ -1,9 +1,11 @@
 package theoneclick.shared.contracts.core.dtos
 
 import kotlinx.serialization.Serializable
+import kotlin.jvm.JvmInline
 
+@JvmInline
 @Serializable
-data class DeviceNameDto(val value: String) {
+value class DeviceNameDto private constructor(val value: String) {
 
     init {
         require(isValid(value)) { ERROR_MESSAGE }
@@ -18,5 +20,7 @@ data class DeviceNameDto(val value: String) {
 
         fun String.toDeviceName(): DeviceNameDto? =
             if (isValid(this)) DeviceNameDto(this) else null
+
+        fun unsafe(value: String): DeviceNameDto = DeviceNameDto(value)
     }
 }

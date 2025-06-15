@@ -13,7 +13,7 @@ internal fun List<HomeDto>.toHomes(): List<Home> =
 private fun HomeDto.toHome(): Home =
     Home(
         name = name.value,
-        rooms = roomsDtos.toRooms(),
+        rooms = rooms.toRooms(),
     )
 
 private fun List<RoomDto>.toRooms(): List<Room> =
@@ -22,7 +22,7 @@ private fun List<RoomDto>.toRooms(): List<Room> =
 private fun RoomDto.toRoom(): Room =
     Room(
         name = name.value,
-        devices = devicesDtos.toDevices()
+        devices = devices.toDevices()
     )
 
 private fun List<DeviceDto>.toDevices(): List<Device> =

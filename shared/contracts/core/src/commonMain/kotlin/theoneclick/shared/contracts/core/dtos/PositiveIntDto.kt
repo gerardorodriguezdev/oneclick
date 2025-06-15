@@ -1,9 +1,11 @@
 package theoneclick.shared.contracts.core.dtos
 
 import kotlinx.serialization.Serializable
+import kotlin.jvm.JvmInline
 
+@JvmInline
 @Serializable
-data class PositiveIntDto(val value: Int) : Comparable<PositiveIntDto> {
+value class PositiveIntDto private constructor(val value: Int) : Comparable<PositiveIntDto> {
 
     init {
         require(isValid(value)) { ERROR_MESSAGE }
@@ -17,5 +19,7 @@ data class PositiveIntDto(val value: Int) : Comparable<PositiveIntDto> {
         fun isValid(value: Int): Boolean = value >= 0
 
         fun Int.toPositiveIntDto(): PositiveIntDto? = if (isValid(this)) PositiveIntDto(this) else null
+
+        fun unsafe(value: Int): PositiveIntDto = PositiveIntDto(value)
     }
 }

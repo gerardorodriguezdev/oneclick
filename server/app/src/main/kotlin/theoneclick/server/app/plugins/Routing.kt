@@ -3,13 +3,7 @@ package theoneclick.server.app.plugins
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import org.koin.ktor.ext.inject
-import theoneclick.server.app.endpoints.devices.devicesEndpoint
-import theoneclick.server.app.endpoints.healthzEndpoint
-import theoneclick.server.app.endpoints.isUserLoggedEndpoint
-import theoneclick.server.app.endpoints.logoutEndpoint
-import theoneclick.server.app.endpoints.qaapi
-import theoneclick.server.app.endpoints.requestLogin.requestLoginEndpoint
-import theoneclick.server.app.endpoints.updateDeviceEndpoint.updateDeviceEndpoint
+import theoneclick.server.app.endpoints.*
 import theoneclick.server.app.platform.Environment
 
 fun Application.configureRouting() {
@@ -19,9 +13,8 @@ fun Application.configureRouting() {
         healthzEndpoint()
         requestLoginEndpoint()
         isUserLoggedEndpoint()
-        devicesEndpoint()
-        updateDeviceEndpoint()
         logoutEndpoint()
+        //TODO: Homes
 
         if (environment.enableQAAPI) {
             qaapi()

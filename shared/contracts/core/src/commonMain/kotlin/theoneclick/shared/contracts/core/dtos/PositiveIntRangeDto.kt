@@ -3,12 +3,12 @@ package theoneclick.shared.contracts.core.dtos
 import kotlinx.serialization.Serializable
 
 @Serializable
-data class PositiveIntRangeDto(
+class PositiveIntRangeDto private constructor(
     val start: PositiveIntDto,
     val end: PositiveIntDto,
 ) {
     init {
-        require(areValid(start, end)) { ERROR_MESSAGE }
+        require(isValid(start, end)) { ERROR_MESSAGE }
     }
 
     fun inRange(value: PositiveIntDto): Boolean = value in start..end
@@ -16,9 +16,16 @@ data class PositiveIntRangeDto(
     companion object {
         private const val ERROR_MESSAGE = "End was bigger than start"
 
-        private fun areValid(start: PositiveIntDto, end: PositiveIntDto): Boolean = start <= end
+        private fun isValid(start: PositiveIntDto, end: PositiveIntDto): Boolean = start <= end
 
         fun positiveIntRangeDto(start: PositiveIntDto, end: PositiveIntDto): PositiveIntRangeDto? =
-            if (areValid(start, end)) PositiveIntRangeDto(start, end) else null
+            if (isValid(start = start, end = end)) {
+                PositiveIntRangeDto(start = start, end = end)
+            } else {
+                null
+            }
+
+        fun unsafe(start: PositiveIntDto, end: PositiveIntDto): PositiveIntRangeDto =
+            PositiveIntRangeDto(start = start, end = end)
     }
 }

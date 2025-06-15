@@ -4,21 +4,34 @@ import kotlinx.serialization.Serializable
 import theoneclick.shared.contracts.core.containsDuplicatesBy
 
 @Serializable
-data class RoomDto(
+class RoomDto private constructor(
     val name: RoomNameDto,
-    val devicesDtos: List<DeviceDto>,
+    val devices: List<DeviceDto>,
 ) {
     init {
-        require(isValid(devicesDtos)) { ERROR_MESSAGE }
+        require(isValid(devices)) { ERROR_MESSAGE }
     }
 
     companion object {
         private const val ERROR_MESSAGE = "Duplicated device id"
 
-        fun isValid(devicesDtos: List<DeviceDto>): Boolean =
-            devicesDtos.containsDuplicatesBy { deviceDto -> deviceDto.id }
+        fun isValid(devices: List<DeviceDto>): Boolean =
+            devices.containsDuplicatesBy { deviceDto -> deviceDto.id }
 
-        fun roomDto(nameDto: RoomNameDto, devicesDtos: List<DeviceDto>): RoomDto? =
-            if (isValid(devicesDtos)) RoomDto(nameDto, devicesDtos) else null
+        fun roomDto(name: RoomNameDto, devices: List<DeviceDto>): RoomDto? =
+            if (isValid(devices)) {
+                RoomDto(
+                    name = name,
+                    devices = devices
+                )
+            } else {
+                null
+            }
+
+        fun unsafe(name: RoomNameDto, devices: List<DeviceDto>): RoomDto =
+            RoomDto(
+                name = name,
+                devices = devices,
+            )
     }
 }

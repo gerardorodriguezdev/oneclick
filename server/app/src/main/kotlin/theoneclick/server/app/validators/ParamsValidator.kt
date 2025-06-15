@@ -1,7 +1,6 @@
 package theoneclick.server.app.validators
 
 import theoneclick.server.app.dataSources.UsersDataSource
-import theoneclick.server.app.endpoints.requestLogin.RequestLoginParams
 import theoneclick.server.app.models.User
 import theoneclick.server.app.models.Username
 import theoneclick.server.app.platform.SecurityUtils

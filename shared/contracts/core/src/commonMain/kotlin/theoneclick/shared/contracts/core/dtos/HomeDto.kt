@@ -4,12 +4,12 @@ import kotlinx.serialization.Serializable
 import theoneclick.shared.contracts.core.containsDuplicatesBy
 
 @Serializable
-data class HomeDto(
+class HomeDto private constructor(
     val name: HomeNameDto,
-    val roomsDtos: List<RoomDto>,
+    val rooms: List<RoomDto>,
 ) {
     init {
-        require(isValid(roomsDtos)) { ERROR_MESSAGE }
+        require(isValid(rooms)) { ERROR_MESSAGE }
     }
 
     companion object {
@@ -18,7 +18,14 @@ data class HomeDto(
         fun isValid(roomsDtos: List<RoomDto>): Boolean =
             roomsDtos.containsDuplicatesBy { roomDto -> roomDto.name }
 
-        fun homeDto(nameDto: HomeNameDto, roomsDtos: List<RoomDto>): HomeDto? =
-            if (isValid(roomsDtos)) HomeDto(nameDto, roomsDtos) else null
+        fun homeDto(name: HomeNameDto, rooms: List<RoomDto>): HomeDto? =
+            if (isValid(rooms)) {
+                HomeDto(name = name, rooms = rooms)
+            } else {
+                null
+            }
+
+        fun unsafe(name: HomeNameDto, roomsDtos: List<RoomDto>): HomeDto =
+            HomeDto(name = name, rooms = roomsDtos)
     }
 }
