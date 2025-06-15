@@ -8,7 +8,7 @@ class PositiveIntRangeDto private constructor(
     val end: PositiveIntDto,
 ) {
     init {
-        require(isValid(start, end)) { ERROR_MESSAGE }
+        require(isValid(start = start, end = end)) { ERROR_MESSAGE }
     }
 
     fun inRange(value: PositiveIntDto): Boolean = value in start..end
