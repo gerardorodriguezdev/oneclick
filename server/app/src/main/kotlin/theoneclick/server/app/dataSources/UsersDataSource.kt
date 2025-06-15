@@ -40,7 +40,7 @@ class FileSystemUsersDataSource(
             val userFile = userFile(user.id)
             userFile.writeBytes(encryptedUserBytes)
         } catch (e: Exception) {
-            logger.error(e)
+            logger.error("Error trying to save user", e)
         }
     }
 
@@ -55,14 +55,16 @@ class FileSystemUsersDataSource(
             }
             null
         } catch (e: Exception) {
-            logger.error(e)
+            logger.error("Error trying to find user", e)
             null
         }
 
     private fun userFile(userId: UuidDto): File = File(usersDirectory, userFileName(userId))
 
     private fun userFiles(): Array<File> =
-        usersDirectory.listFiles { fileName -> fileName.endsWith(USER_FILE_NAME_SUFFIX) }
+        usersDirectory.listFiles { file ->
+            file.name.endsWith(USER_FILE_NAME_SUFFIX)
+        }
 
     private companion object {
         const val USERS_DIRECTORY_NAME = "users"
