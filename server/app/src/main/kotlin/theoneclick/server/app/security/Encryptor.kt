@@ -2,16 +2,16 @@ package theoneclick.server.app.security
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import io.ktor.util.hex
-import theoneclick.server.app.models.EncryptedTokenDto
-import theoneclick.server.app.models.HashedPasswordDto
+import theoneclick.server.app.models.dtos.EncryptedTokenDto
+import theoneclick.server.app.models.dtos.HashedPasswordDto
 import theoneclick.shared.timeProvider.TimeProvider
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import kotlin.text.toCharArray
-import theoneclick.server.app.models.EncryptedTokenDto.Companion.create as createEncryptedToken
-import theoneclick.server.app.models.HashedPasswordDto.Companion.create as createHashedPassword
+import theoneclick.server.app.models.dtos.EncryptedTokenDto.Companion.create as createEncryptedToken
+import theoneclick.server.app.models.dtos.HashedPasswordDto.Companion.create as createHashedPassword
 
 interface Encryptor {
     fun encrypt(input: String): Result<ByteArray>

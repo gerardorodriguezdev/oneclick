@@ -1,4 +1,4 @@
-package theoneclick.client.features.home.models
+package theoneclick.client.features.home.models.entities
 
 data class Home(
     val name: String,

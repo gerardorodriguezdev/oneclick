@@ -4,7 +4,7 @@ import kotlinx.coroutines.flow.*
 import me.tatarka.inject.annotations.Inject
 import theoneclick.client.features.home.dataSources.LoggedDataSource
 import theoneclick.client.features.home.models.results.HomesResult
-import theoneclick.client.features.home.models.Home
+import theoneclick.client.features.home.models.entities.Home
 
 internal interface HomesRepository {
     val homes: SharedFlow<List<Home>>

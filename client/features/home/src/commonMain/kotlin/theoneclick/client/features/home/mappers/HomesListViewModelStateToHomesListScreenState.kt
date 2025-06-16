@@ -3,9 +3,9 @@ package theoneclick.client.features.home.mappers
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
-import theoneclick.client.features.home.models.Home
-import theoneclick.client.features.home.models.Home.Room
-import theoneclick.client.features.home.models.Home.Room.Device
+import theoneclick.client.features.home.models.entities.Home
+import theoneclick.client.features.home.models.entities.Home.Room
+import theoneclick.client.features.home.models.entities.Home.Room.Device
 import theoneclick.client.features.home.ui.screens.HomesListScreenState
 import theoneclick.client.features.home.ui.screens.HomesListScreenState.UiHome
 import theoneclick.client.features.home.ui.screens.HomesListScreenState.UiHome.UiRoom

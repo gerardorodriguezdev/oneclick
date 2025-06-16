@@ -2,7 +2,7 @@ package theoneclick.server.app.dataSources
 
 import io.ktor.util.logging.*
 import kotlinx.serialization.json.Json
-import theoneclick.server.app.models.UserDto
+import theoneclick.server.app.models.dtos.UserDto
 import theoneclick.server.app.security.Encryptor
 import theoneclick.shared.contracts.core.dtos.TokenDto
 import theoneclick.shared.contracts.core.dtos.UsernameDto
