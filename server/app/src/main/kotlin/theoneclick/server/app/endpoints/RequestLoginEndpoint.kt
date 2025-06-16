@@ -27,14 +27,13 @@ fun Routing.requestLoginEndpoint(
         val user = usersDataSource.user(username = username)
 
         when {
-            user == null ->
-                registerUser(
-                    username = username,
-                    password = password,
-                    encryptor = encryptor,
-                    uuidProvider = uuidProvider,
-                    usersDataSource = usersDataSource,
-                )
+            user == null -> registerUser(
+                username = username,
+                password = password,
+                encryptor = encryptor,
+                uuidProvider = uuidProvider,
+                usersDataSource = usersDataSource,
+            )
 
             !encryptor.verifyPassword(
                 password = password,

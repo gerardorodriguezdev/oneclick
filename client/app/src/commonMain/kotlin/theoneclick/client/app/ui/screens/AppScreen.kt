@@ -82,7 +82,7 @@ fun AppScreen(
 
     val onSnackbarShown by rememberUpdatedState(onSnackbarShown)
     LaunchedEffect(state.snackbarState) {
-        if (state.snackbarState != null) {
+        state.snackbarState?.let {
             snackbarHostState.showSnackbar(state.snackbarState.text)
             onSnackbarShown()
         }

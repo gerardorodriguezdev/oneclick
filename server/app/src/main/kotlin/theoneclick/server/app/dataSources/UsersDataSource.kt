@@ -24,7 +24,8 @@ class FileSystemUsersDataSource(
     override fun user(sessionToken: TokenDto): UserDto? =
         findUser { user -> user.sessionToken?.token?.value == sessionToken.value }
 
-    override fun user(username: UsernameDto): UserDto? = findUser { user -> user.username.value == username.value }
+    override fun user(username: UsernameDto): UserDto? =
+        findUser { user -> user.username.value == username.value }
 
     override fun saveUser(user: UserDto) {
         try {

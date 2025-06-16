@@ -66,8 +66,8 @@ class LoginViewModel(
             authenticationDataSource
                 .login(
                     request = RequestLoginRequestDto(
-                        username = loginViewModelState.value.username?.toUsername()!!,
-                        password = loginViewModelState.value.password?.toPassword()!!,
+                        username = requireNotNull(loginViewModelState.value.username?.toUsername()),
+                        password = requireNotNull(loginViewModelState.value.password?.toPassword()),
                     )
                 )
                 .onStart {
