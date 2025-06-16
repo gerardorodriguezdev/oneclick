@@ -3,8 +3,8 @@ package theoneclick.server.mock.entrypoint
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
-import io.ktor.server.cio.*
 import io.ktor.server.engine.*
+import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
@@ -18,9 +18,9 @@ import theoneclick.shared.contracts.core.dtos.responses.RequestLoginResponseDto
 import theoneclick.shared.contracts.core.dtos.responses.UserLoggedResponseDto
 import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
 
-fun server(): EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration> =
+fun server(): EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration> =
     embeddedServer(
-        factory = CIO,
+        factory = Netty,
         port = 8080,
         module = {
             configureContentNegotiation()

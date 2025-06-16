@@ -1,16 +1,16 @@
 package theoneclick.server.app.entrypoint
 
 import io.ktor.server.application.*
-import io.ktor.server.cio.*
 import io.ktor.server.engine.*
+import io.ktor.server.netty.*
 import theoneclick.server.app.di.AppComponent
 import theoneclick.server.app.plugins.*
 import theoneclick.server.app.plugins.authentication.configureAuthentication
 import theoneclick.server.app.plugins.callid.configureCallId
 
-fun server(appComponent: AppComponent): EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration> =
+fun server(appComponent: AppComponent): EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration> =
     embeddedServer(
-        factory = CIO,
+        factory = Netty,
         port = 8080,
         module = {
             configureModules(appComponent)

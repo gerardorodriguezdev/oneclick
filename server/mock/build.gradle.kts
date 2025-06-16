@@ -12,7 +12,7 @@ dependencies {
     implementation(libs.kmp.ktor.serialization.kotlinx.json)
     implementation(libs.kmp.ktor.server.core)
     implementation(libs.kmp.ktor.server.content.negotiation)
-    implementation(libs.kmp.ktor.server.cio)
+    implementation(libs.kmp.ktor.server.netty)
     implementation(projects.shared.contracts.core)
     implementation(projects.server.shared)
     implementation(libs.jvm.logback.classic)

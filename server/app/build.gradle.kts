@@ -20,7 +20,7 @@ jvmServer {
 
 dependencies {
     implementation(libs.kmp.ktor.server.core)
-    implementation(libs.kmp.ktor.server.cio)
+    implementation(libs.kmp.ktor.server.netty)
     implementation(libs.kmp.ktor.serialization.kotlinx.json)
     implementation(libs.kmp.ktor.server.core)
     implementation(libs.kmp.ktor.server.content.negotiation)
@@ -29,7 +29,6 @@ dependencies {
     implementation(libs.kmp.ktor.server.status.pages)
     implementation(libs.kmp.ktor.server.rate.limit)
     implementation(libs.kmp.ktor.server.call.id)
-    implementation(libs.kmp.ktor.server.cio)
     implementation(libs.kmp.datetime)
     implementation(libs.kmp.kotlin.inject)
     implementation(libs.jvm.bcrypt)
