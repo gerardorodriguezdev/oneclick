@@ -4,15 +4,12 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import org.koin.ktor.ext.inject
 import theoneclick.server.app.dataSources.UsersDataSource
 import theoneclick.server.app.models.UserDto
 import theoneclick.server.app.models.endpoints.ServerEndpoint
 import theoneclick.shared.contracts.core.dtos.TokenDto
 
-fun Routing.qaapi() {
-    val usersDataSource: UsersDataSource by inject()
-
+fun Routing.qaapi(usersDataSource: UsersDataSource) {
     post(ServerEndpoint.ADD_USER_DATA.route) { user: UserDto ->
         usersDataSource.saveUser(user)
         call.respond(HttpStatusCode.OK)

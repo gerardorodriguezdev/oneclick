@@ -4,14 +4,12 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
-import org.koin.ktor.ext.inject
 import theoneclick.server.app.dataSources.AuthenticationDataSource
 import theoneclick.server.app.plugins.authentication.AuthenticationConstants.SESSION_AUTHENTICATION
 import theoneclick.server.app.plugins.authentication.AuthenticationConstants.TOKEN_AUTHENTICATION
 import theoneclick.shared.contracts.core.dtos.TokenDto
 
-fun Application.configureAuthentication() {
-    val authenticationDataSource by inject<AuthenticationDataSource>()
+fun Application.configureAuthentication(authenticationDataSource: AuthenticationDataSource) {
     install(Authentication) {
         registerSessionAuthentication(authenticationDataSource)
         registerTokenAuthentication(authenticationDataSource)

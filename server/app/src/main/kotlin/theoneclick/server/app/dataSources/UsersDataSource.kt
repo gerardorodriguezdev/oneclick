@@ -16,17 +16,10 @@ interface UsersDataSource {
 }
 
 class FileSystemUsersDataSource(
-    storageDirectory: String,
+    private val usersDirectory: File,
     private val encryptor: Encryptor,
     private val logger: Logger,
 ) : UsersDataSource {
-    private val usersDirectory = File(storageDirectory, USERS_DIRECTORY_NAME)
-
-    init {
-        if (!usersDirectory.exists()) {
-            usersDirectory.mkdirs()
-        }
-    }
 
     override fun user(sessionToken: TokenDto): UserDto? =
         findUser { user -> user.sessionToken?.token?.value == sessionToken.value }
@@ -66,9 +59,19 @@ class FileSystemUsersDataSource(
             file.name.endsWith(USER_FILE_NAME_SUFFIX)
         }
 
-    private companion object {
-        const val USERS_DIRECTORY_NAME = "users"
-        const val USER_FILE_NAME_SUFFIX = "user.txt"
-        fun userFileName(id: UuidDto): String = "${id.value}.$USER_FILE_NAME_SUFFIX"
+    companion object {
+        private const val USERS_DIRECTORY_NAME = "users"
+        private const val USER_FILE_NAME_SUFFIX = "user.txt"
+        private fun userFileName(id: UuidDto): String = "${id.value}.$USER_FILE_NAME_SUFFIX"
+        fun usersDirectory(
+            storageDirectory: String,
+        ): File = File(
+            storageDirectory,
+            USERS_DIRECTORY_NAME,
+        ).apply {
+            if (!exists()) {
+                mkdirs()
+            }
+        }
     }
 }

@@ -16,7 +16,6 @@ kmp-kotlin-api = "2.1.21"
 kmp-atomicfu = "0.27.0"
 kmp-compose = "1.8.0"
 kmp-coroutines = "1.10.2"
-kmp-koin = "4.1.0-RC1"
 kmp-date-time = "0.6.1"
 kmp-ktor = "3.1.3"
 kmp-navigation = "2.9.0-beta01"
@@ -55,8 +54,6 @@ jvm-logback-classic = { module = "ch.qos.logback:logback-classic", version.ref =
 jvm-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kmp-kotlin-api" }
 kmp-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kmp-coroutines" }
 kmp-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kmp-atomicfu" }
-kmp-koin-core = { module = "io.insert-koin:koin-core", version.ref = "kmp-koin" }
-kmp-koin-ktor = { module = "io.insert-koin:koin-ktor", version.ref = "kmp-koin" }
 kmp-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kmp-date-time" }
 kmp-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "kmp-navigation" }
 kmp-viewModel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "kmp-viewModel" }
@@ -79,7 +76,6 @@ kmp-ktor-server-status-pages = { module = "io.ktor:ktor-server-status-pages", ve
 kmp-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kmp-kotlin-api" }
 kmp-test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kmp-coroutines" }
 kmp-test-ktor-client-mock = { module = "io.ktor:ktor-client-mock", version.ref = "kmp-ktor" }
-kmp-test-koin = { module = "io.insert-koin:koin-test", version.ref = "kmp-koin" }
 kmp-test-ktor-server-host = { module = "io.ktor:ktor-server-test-host", version.ref = "kmp-ktor" }
 kmp-test-turbine = { module = "app.cash.turbine:turbine", version.ref = "kmp-test-turbine" }
 ksp-kotlin-inject = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kmp-kotlin-inject"}

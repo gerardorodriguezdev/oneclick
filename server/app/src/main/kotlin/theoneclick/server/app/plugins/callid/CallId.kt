@@ -3,11 +3,9 @@ package theoneclick.server.app.plugins.callid
 import io.ktor.server.application.*
 import io.ktor.server.plugins.callid.*
 import kotlinx.atomicfu.atomic
-import org.koin.ktor.ext.inject
 import theoneclick.shared.timeProvider.TimeProvider
 
-fun Application.configureCallId() {
-    val timeProvider: TimeProvider by inject()
+fun Application.configureCallId(timeProvider: TimeProvider) {
     val callCounter = CallCounter()
 
     install(CallId) {

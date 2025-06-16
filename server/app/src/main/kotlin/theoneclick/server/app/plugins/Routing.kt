@@ -2,22 +2,27 @@ package theoneclick.server.app.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
-import org.koin.ktor.ext.inject
+import theoneclick.server.app.dataSources.UsersDataSource
 import theoneclick.server.app.di.Environment
 import theoneclick.server.app.endpoints.*
+import theoneclick.server.app.security.Encryptor
+import theoneclick.server.app.security.UuidProvider
 
-fun Application.configureRouting() {
-    val environment: Environment by inject()
-
+fun Application.configureRouting(
+    environment: Environment,
+    usersDataSource: UsersDataSource,
+    encryptor: Encryptor,
+    uuidProvider: UuidProvider,
+) {
     routing {
         healthzEndpoint()
-        requestLoginEndpoint()
+        requestLoginEndpoint(usersDataSource, encryptor, uuidProvider)
         isUserLoggedEndpoint()
-        logoutEndpoint()
-        homesListEndpoint()
+        logoutEndpoint(usersDataSource)
+        homesListEndpoint(usersDataSource)
 
         if (environment.enableQAAPI) {
-            qaapi()
+            qaapi(usersDataSource)
         }
     }
 }

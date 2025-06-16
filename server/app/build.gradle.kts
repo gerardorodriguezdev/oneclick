@@ -2,6 +2,7 @@ plugins {
     id("theoneclick.jvm.server")
     alias(libs.plugins.kmp.serialization)
     alias(libs.plugins.kmp.atomicfu)
+    alias(libs.plugins.ksp)
 }
 
 jvmServer {
@@ -29,9 +30,8 @@ dependencies {
     implementation(libs.kmp.ktor.server.rate.limit)
     implementation(libs.kmp.ktor.server.call.id)
     implementation(libs.kmp.ktor.server.cio)
-    implementation(libs.kmp.koin.ktor)
     implementation(libs.kmp.datetime)
-    implementation(libs.kmp.koin.core)
+    implementation(libs.kmp.kotlin.inject)
     implementation(libs.jvm.bcrypt)
     implementation(libs.jvm.logback.classic)
     implementation(libs.jvm.ktor.server.auth)
@@ -41,11 +41,12 @@ dependencies {
     implementation(projects.server.shared)
 
     testImplementation(libs.kmp.test.ktor.server.host)
-    testImplementation(libs.kmp.test.koin)
     testImplementation(libs.kmp.ktor.client.core)
     testImplementation(libs.kmp.ktor.client.cio)
     testImplementation(libs.kmp.ktor.client.content.negotiation)
     testImplementation(libs.kmp.test)
+
+    ksp(libs.ksp.kotlin.inject)
 }
 
 fun stringProvider(name: String): Provider<String> =

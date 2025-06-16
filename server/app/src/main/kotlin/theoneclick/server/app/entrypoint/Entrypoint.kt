@@ -3,30 +3,34 @@ package theoneclick.server.app.entrypoint
 import io.ktor.server.application.*
 import io.ktor.server.cio.*
 import io.ktor.server.engine.*
-import theoneclick.server.app.di.base.Dependencies
+import theoneclick.server.app.di.AppComponent
 import theoneclick.server.app.plugins.*
 import theoneclick.server.app.plugins.authentication.configureAuthentication
 import theoneclick.server.app.plugins.callid.configureCallId
 
-fun server(dependencies: Dependencies): EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration> =
+fun server(appComponent: AppComponent): EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration> =
     embeddedServer(
         factory = CIO,
         port = 8080,
         module = {
-            configureModules(dependencies)
+            configureModules(appComponent)
         },
     )
 
-private fun Application.configureModules(dependencies: Dependencies) {
-    configureKoin(dependencies)
-    configureCallLogging()
+private fun Application.configureModules(appComponent: AppComponent) {
+    configureCallLogging(appComponent.logger, appComponent.timeProvider)
     configureSerialization()
-    configureAuthentication()
-    configureSessions()
-    configureRouting()
-    configureStatusPages()
+    configureAuthentication(appComponent.authenticationDataSource)
+    configureSessions(appComponent.environment, appComponent.ivGenerator)
+    configureRouting(
+        environment = appComponent.environment,
+        usersDataSource = appComponent.usersDataSource,
+        encryptor = appComponent.encryptor,
+        uuidProvider = appComponent.uuidProvider,
+    )
+    configureStatusPages(appComponent.logger)
     configureRequestValidation()
     configureRequestBodyLimit()
-    configureRateLimit()
-    configureCallId()
+    configureRateLimit(appComponent.environment, appComponent.timeProvider)
+    configureCallId(appComponent.timeProvider)
 }

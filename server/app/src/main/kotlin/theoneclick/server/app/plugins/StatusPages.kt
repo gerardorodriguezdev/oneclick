@@ -6,11 +6,8 @@ import io.ktor.server.plugins.requestvalidation.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import io.ktor.util.logging.*
-import org.koin.ktor.ext.inject
 
-fun Application.configureStatusPages() {
-    val logger: Logger by inject()
-
+fun Application.configureStatusPages(logger: Logger) {
     install(StatusPages) {
         exception<RequestValidationException> { call, cause ->
             logger.debug(cause.stackTraceToString())

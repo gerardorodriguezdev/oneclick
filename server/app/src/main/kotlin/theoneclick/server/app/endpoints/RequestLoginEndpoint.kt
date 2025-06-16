@@ -4,7 +4,6 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import org.koin.ktor.ext.inject
 import theoneclick.server.app.dataSources.UsersDataSource
 import theoneclick.server.app.models.UserDto
 import theoneclick.server.app.security.Encryptor
@@ -17,11 +16,11 @@ import theoneclick.shared.contracts.core.dtos.requests.RequestLoginRequestDto
 import theoneclick.shared.contracts.core.dtos.responses.RequestLoginResponseDto
 import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
 
-fun Routing.requestLoginEndpoint() {
-    val usersDataSource: UsersDataSource by inject()
-    val encryptor: Encryptor by inject()
-    val uuidProvider: UuidProvider by inject()
-
+fun Routing.requestLoginEndpoint(
+    usersDataSource: UsersDataSource,
+    encryptor: Encryptor,
+    uuidProvider: UuidProvider,
+) {
     post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequestDto: RequestLoginRequestDto ->
         val username = requestLoginRequestDto.username
         val password = requestLoginRequestDto.password.value
