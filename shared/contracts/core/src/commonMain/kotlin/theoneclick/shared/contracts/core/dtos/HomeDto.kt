@@ -25,7 +25,7 @@ class HomeDto private constructor(
                 null
             }
 
-        fun unsafe(name: HomeNameDto, roomsDtos: List<RoomDto>): HomeDto =
-            HomeDto(name = name, rooms = roomsDtos)
+        fun unsafe(name: HomeNameDto, rooms: List<RoomDto>): HomeDto =
+            HomeDto(name = name, rooms = rooms)
     }
 }

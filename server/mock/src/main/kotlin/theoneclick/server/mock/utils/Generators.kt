@@ -21,7 +21,7 @@ private fun mockHome(
 ): HomeDto =
     HomeDto.unsafe(
         name = name,
-        roomsDtos = rooms,
+        rooms = rooms,
     )
 
 private fun mockRooms(parentName: String, number: Int): List<RoomDto> =
