@@ -11,11 +11,11 @@ import theoneclick.client.features.home.generated.resources.Res
 import theoneclick.client.features.home.generated.resources.homesListScreen_snackbar_unknownError
 import theoneclick.client.features.home.mappers.toHomesListScreenState
 import theoneclick.client.features.home.models.results.HomesResult
-import theoneclick.client.features.home.models.entities.Home
 import theoneclick.client.features.home.repositories.HomesRepository
 import theoneclick.client.features.home.ui.screens.HomesListEvent
 import theoneclick.client.features.home.ui.screens.HomesListScreenState
 import theoneclick.client.shared.notifications.NotificationsController
+import theoneclick.shared.contracts.core.dtos.HomeDto
 
 @Inject
 internal class HomesListViewModel(
@@ -85,7 +85,7 @@ internal class HomesListViewModel(
     }
 
     data class HomesListViewModelState(
-        val homes: List<Home> = emptyList(),
+        val homes: List<HomeDto> = emptyList(),
         val isLoading: Boolean = false,
     )
 }

@@ -4,10 +4,10 @@ import kotlinx.coroutines.flow.*
 import me.tatarka.inject.annotations.Inject
 import theoneclick.client.features.home.dataSources.LoggedDataSource
 import theoneclick.client.features.home.models.results.HomesResult
-import theoneclick.client.features.home.models.entities.Home
+import theoneclick.shared.contracts.core.dtos.HomeDto
 
 internal interface HomesRepository {
-    val homes: SharedFlow<List<Home>>
+    val homes: SharedFlow<List<HomeDto>>
 
     fun refreshHomes(): Flow<HomesResult>
 }
@@ -16,8 +16,8 @@ internal interface HomesRepository {
 internal class InMemoryHomesRepository(
     private val loggedDataSource: LoggedDataSource,
 ) : HomesRepository {
-    private val mutableHomes = MutableStateFlow<List<Home>>(emptyList())
-    override val homes: StateFlow<List<Home>> = mutableHomes
+    private val mutableHomes = MutableStateFlow<List<HomeDto>>(emptyList())
+    override val homes: StateFlow<List<HomeDto>> = mutableHomes
 
     override fun refreshHomes(): Flow<HomesResult> =
         loggedDataSource
