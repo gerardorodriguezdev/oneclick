@@ -61,7 +61,7 @@ private suspend fun RoutingContext.registerUser(
         username = username,
         hashedPassword = encryptor.hashPassword(password),
         sessionToken = null,
-        homes = emptyList(),
+        homes = null,
     )
 
     handleSuccess(

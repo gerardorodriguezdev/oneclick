@@ -1,7 +1,7 @@
 package theoneclick.server.app.models.dtos
 
 import kotlinx.serialization.Serializable
-import theoneclick.shared.contracts.core.dtos.HomeDto
+import theoneclick.shared.contracts.core.dtos.HomesDto
 import theoneclick.shared.contracts.core.dtos.UsernameDto
 import theoneclick.shared.contracts.core.dtos.UuidDto
 
@@ -11,5 +11,5 @@ data class UserDto(
     val username: UsernameDto,
     val hashedPassword: HashedPasswordDto,
     val sessionToken: EncryptedTokenDto?,
-    val homes: List<HomeDto>,
+    val homes: HomesDto?,
 )

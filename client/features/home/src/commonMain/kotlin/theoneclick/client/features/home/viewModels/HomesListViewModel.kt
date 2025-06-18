@@ -33,10 +33,16 @@ internal class HomesListViewModel(
 
     init {
         viewModelScope.launch {
-            homesRepository.homes.collect { homes ->
-                homesListViewModelState.value = homesListViewModelState.value.copy(
-                    homes = homes,
-                )
+            homesRepository.homes.collect { homesResult ->
+                when (homesResult) {
+                    is HomesResult.Success -> {
+                        homesListViewModelState.value = homesListViewModelState.value.copy(
+                            homes = homesResult.homes,
+                        )
+                    }
+                    is HomesResult.NotModified -> Unit
+                    is HomesResult.Error -> Unit
+                }
             }
         }
 
@@ -64,6 +70,7 @@ internal class HomesListViewModel(
                 .collect { homesResult ->
                     when (homesResult) {
                         is HomesResult.Success -> Unit // Observed at the start
+                        is HomesResult.NotModified -> Unit // Observed at the start
                         is HomesResult.Error -> handleUnknownError()
                     }
                 }
