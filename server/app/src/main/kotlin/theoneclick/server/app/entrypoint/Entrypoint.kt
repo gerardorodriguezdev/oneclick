@@ -33,4 +33,5 @@ private fun Application.configureModules(appComponent: AppComponent) {
     configureRequestBodyLimit()
     configureRateLimit(appComponent.environment, appComponent.timeProvider)
     configureCallId(appComponent.timeProvider)
+    configureCompression(appComponent.environment)
 }

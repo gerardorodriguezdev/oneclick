@@ -29,6 +29,7 @@ dependencies {
     implementation(libs.kmp.ktor.server.status.pages)
     implementation(libs.kmp.ktor.server.rate.limit)
     implementation(libs.kmp.ktor.server.call.id)
+    implementation(libs.kmp.ktor.server.compression)
     implementation(libs.kmp.datetime)
     implementation(libs.kmp.kotlin.inject)
     implementation(libs.jvm.bcrypt)

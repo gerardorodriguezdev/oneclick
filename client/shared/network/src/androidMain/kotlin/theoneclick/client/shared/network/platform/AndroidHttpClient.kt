@@ -3,6 +3,7 @@ package theoneclick.client.shared.network.platform
 import io.ktor.client.*
 import io.ktor.client.engine.*
 import io.ktor.client.plugins.*
+import io.ktor.client.plugins.compression.ContentEncoding
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.http.*
@@ -56,6 +57,10 @@ fun androidHttpClient(
         install(Logging) {
             logger = appLogger.toLogger()
             level = LogLevel.ALL
+        }
+
+        install(ContentEncoding) {
+            gzip()
         }
     }
 

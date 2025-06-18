@@ -17,6 +17,7 @@ fun main() {
     val environment = Environment(
         secretSignKey = System.getenv("SECRET_SIGN_KEY"),
         secretEncryptionKey = System.getenv("SECRET_ENCRYPTION_KEY"),
+        protocol = System.getenv("PROTOCOL"),
         host = System.getenv("HOST"),
         storageDirectory = System.getenv("STORAGE_DIRECTORY"),
         enableQAAPI = System.getenv("ENABLE_QAAPI") == "true",

@@ -27,6 +27,10 @@
         "value": "00112233445566778899aabbccddeeff"
       },
       {
+        "name": "PROTOCOL",
+        "value": "http"
+      },
+      {
         "name": "HOST",
         "value": "0.0.0.0"
       },

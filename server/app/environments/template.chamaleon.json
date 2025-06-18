@@ -32,6 +32,10 @@
       "propertyType": "String"
     },
     {
+      "name": "PROTOCOL",
+      "propertyType": "String"
+    },
+    {
       "name": "HOST",
       "propertyType": "String"
     },

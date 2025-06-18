@@ -19,6 +19,7 @@ kotlin {
                 implementation(libs.kmp.ktor.client.auth)
                 implementation(libs.kmp.ktor.client.content.negotiation)
                 implementation(libs.kmp.ktor.client.logging)
+                implementation(libs.kmp.ktor.client.encoding)
                 implementation(libs.kmp.ktor.serialization.kotlinx.json)
                 implementation(libs.kmp.datetime)
                 implementation(projects.shared.contracts.core)
