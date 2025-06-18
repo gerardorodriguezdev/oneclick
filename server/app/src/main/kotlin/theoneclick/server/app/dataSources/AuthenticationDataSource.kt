@@ -1,6 +1,7 @@
 package theoneclick.server.app.dataSources
 
 import me.tatarka.inject.annotations.Inject
+import theoneclick.server.app.repositories.UsersRepository
 import theoneclick.shared.contracts.core.dtos.TokenDto
 import theoneclick.shared.contracts.core.dtos.TokenDto.Companion.toToken
 import theoneclick.shared.timeProvider.TimeProvider
@@ -12,7 +13,7 @@ interface AuthenticationDataSource {
 
 @Inject
 class DefaultAuthenticationDataSource(
-    private val usersDataSource: UsersDataSource,
+    private val usersRepository: UsersRepository,
     private val timeProvider: TimeProvider,
 ) : AuthenticationDataSource {
 
@@ -22,7 +23,7 @@ class DefaultAuthenticationDataSource(
     }
 
     override fun isUserSessionValid(token: TokenDto): Boolean {
-        val user = usersDataSource.user(token)
+        val user = usersRepository.user(token)
 
         return when {
             user == null -> false

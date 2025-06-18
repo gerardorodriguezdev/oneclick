@@ -6,7 +6,7 @@ import me.tatarka.inject.annotations.Provides
 import me.tatarka.inject.annotations.Scope
 import theoneclick.server.app.dataSources.AuthenticationDataSource
 import theoneclick.server.app.dataSources.DefaultAuthenticationDataSource
-import theoneclick.server.app.dataSources.UsersDataSource
+import theoneclick.server.app.repositories.UsersRepository
 import theoneclick.server.app.security.DefaultUuidProvider
 import theoneclick.server.app.security.Encryptor
 import theoneclick.server.app.security.IvGenerator
@@ -27,7 +27,7 @@ abstract class AppComponent(
     @get:Provides
     val logger: Logger,
     @get:Provides
-    val usersDataSource: UsersDataSource,
+    val usersRepository: UsersRepository,
     @get:Provides
     val uuidProvider: UuidProvider = DefaultUuidProvider(),
 ) {

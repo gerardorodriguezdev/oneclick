@@ -5,14 +5,34 @@ import kotlinx.serialization.json.Json
 import theoneclick.server.app.models.dtos.UserDto
 import theoneclick.server.app.security.Encryptor
 import theoneclick.shared.contracts.core.dtos.TokenDto
+import theoneclick.shared.contracts.core.dtos.UserKeyDto
 import theoneclick.shared.contracts.core.dtos.UsernameDto
 import theoneclick.shared.contracts.core.dtos.UuidDto
 import java.io.File
 
 interface UsersDataSource {
-    fun user(sessionToken: TokenDto): UserDto?
-    fun user(username: UsernameDto): UserDto?
+    fun user(key: UserKeyDto): UserDto?
     fun saveUser(user: UserDto)
+}
+
+class InMemoryUsersDataSource : UsersDataSource {
+    private val users: MutableMap<UserKeyDto, UserDto> = mutableMapOf()
+
+    override fun user(key: UserKeyDto): UserDto? = users[key]
+
+    override fun saveUser(user: UserDto) {
+        val currentSize = users.size
+
+        if (currentSize > CLEAN_UP_LIMIT) {
+            users.clear()
+        }
+
+        users[user.username] = user
+    }
+
+    private companion object {
+        const val CLEAN_UP_LIMIT = 10_000
+    }
 }
 
 class FileSystemUsersDataSource(
@@ -21,11 +41,11 @@ class FileSystemUsersDataSource(
     private val logger: Logger,
 ) : UsersDataSource {
 
-    override fun user(sessionToken: TokenDto): UserDto? =
-        findUser { user -> user.sessionToken?.token?.value == sessionToken.value }
-
-    override fun user(username: UsernameDto): UserDto? =
-        findUser { user -> user.username.value == username.value }
+    override fun user(key: UserKeyDto): UserDto? =
+        when (key) {
+            is TokenDto -> findUser { user -> user.sessionToken?.token?.value == key.value }
+            is UsernameDto -> findUser { user -> user.username.value == key.value }
+        }
 
     override fun saveUser(user: UserDto) {
         try {

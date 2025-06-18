@@ -4,7 +4,7 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import theoneclick.server.app.dataSources.UsersDataSource
+import theoneclick.server.app.repositories.UsersRepository
 import theoneclick.server.app.models.dtos.UserDto
 import theoneclick.server.app.security.Encryptor
 import theoneclick.server.app.security.UuidProvider
@@ -17,14 +17,14 @@ import theoneclick.shared.contracts.core.dtos.responses.RequestLoginResponseDto
 import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
 
 fun Routing.requestLoginEndpoint(
-    usersDataSource: UsersDataSource,
+    usersRepository: UsersRepository,
     encryptor: Encryptor,
     uuidProvider: UuidProvider,
 ) {
     post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequestDto: RequestLoginRequestDto ->
         val username = requestLoginRequestDto.username
         val password = requestLoginRequestDto.password.value
-        val user = usersDataSource.user(username = username)
+        val user = usersRepository.user(key = username)
 
         when {
             user == null -> registerUser(
@@ -32,7 +32,7 @@ fun Routing.requestLoginEndpoint(
                 password = password,
                 encryptor = encryptor,
                 uuidProvider = uuidProvider,
-                usersDataSource = usersDataSource,
+                usersRepository = usersRepository,
             )
 
             !encryptor.verifyPassword(
@@ -43,7 +43,7 @@ fun Routing.requestLoginEndpoint(
             else -> handleSuccess(
                 user = user,
                 encryptor = encryptor,
-                usersDataSource = usersDataSource,
+                usersRepository = usersRepository,
             )
         }
     }
@@ -54,7 +54,7 @@ private suspend fun RoutingContext.registerUser(
     password: String,
     encryptor: Encryptor,
     uuidProvider: UuidProvider,
-    usersDataSource: UsersDataSource,
+    usersRepository: UsersRepository,
 ) {
     val newUser = UserDto(
         id = uuidProvider.uuid(),
@@ -67,17 +67,17 @@ private suspend fun RoutingContext.registerUser(
     handleSuccess(
         user = newUser,
         encryptor = encryptor,
-        usersDataSource = usersDataSource,
+        usersRepository = usersRepository,
     )
 }
 
 private suspend fun RoutingContext.handleSuccess(
     user: UserDto,
     encryptor: Encryptor,
-    usersDataSource: UsersDataSource,
+    usersRepository: UsersRepository,
 ) {
     val sessionToken = encryptor.encryptedToken()
-    usersDataSource.saveUser(
+    usersRepository.saveUser(
         user.copy(sessionToken = sessionToken)
     )
 

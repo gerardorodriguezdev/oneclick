@@ -2,10 +2,12 @@ package theoneclick.server.app
 
 import io.ktor.util.logging.*
 import theoneclick.server.app.dataSources.FileSystemUsersDataSource
+import theoneclick.server.app.dataSources.InMemoryUsersDataSource
 import theoneclick.server.app.di.AppComponent
 import theoneclick.server.app.di.Environment
 import theoneclick.server.app.di.create
 import theoneclick.server.app.entrypoint.server
+import theoneclick.server.app.repositories.DefaultUsersRepository
 import theoneclick.server.app.security.DefaultEncryptor
 import theoneclick.server.app.security.DefaultIvGenerator
 import theoneclick.server.app.security.DefaultSecureRandomProvider
@@ -29,10 +31,15 @@ fun main() {
     )
     val ivGenerator = DefaultIvGenerator(jvmSecureRandomProvider)
     val logger = KtorSimpleLogger("theoneclick.defaultlogger")
-    val usersDataSource = FileSystemUsersDataSource(
+    val diskUsersDataSource = FileSystemUsersDataSource(
         usersDirectory = FileSystemUsersDataSource.usersDirectory(environment.storageDirectory),
         encryptor = encryptor,
         logger = logger,
+    )
+    val inMemoryUsersDataSource = InMemoryUsersDataSource()
+    val usersRepository = DefaultUsersRepository(
+        diskUsersDataSource = diskUsersDataSource,
+        memoryUsersDataSource = inMemoryUsersDataSource,
     )
     val appComponent = AppComponent::class.create(
         environment = environment,
@@ -40,7 +47,7 @@ fun main() {
         encryptor = encryptor,
         timeProvider = timeProvider,
         logger = logger,
-        usersDataSource = usersDataSource,
+        usersRepository = usersRepository,
     )
     server(appComponent).start(wait = true)
 }

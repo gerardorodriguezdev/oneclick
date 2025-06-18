@@ -24,7 +24,7 @@ private fun Application.configureModules(appComponent: AppComponent) {
     configureSessions(appComponent.environment, appComponent.ivGenerator)
     configureRouting(
         environment = appComponent.environment,
-        usersDataSource = appComponent.usersDataSource,
+        usersRepository = appComponent.usersRepository,
         encryptor = appComponent.encryptor,
         uuidProvider = appComponent.uuidProvider,
     )

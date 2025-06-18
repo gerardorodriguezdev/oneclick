@@ -15,7 +15,7 @@ import theoneclick.client.features.home.repositories.HomesRepository
 import theoneclick.client.features.home.ui.screens.HomesListEvent
 import theoneclick.client.features.home.ui.screens.HomesListScreenState
 import theoneclick.client.shared.notifications.NotificationsController
-import theoneclick.shared.contracts.core.dtos.HomeDto
+import theoneclick.shared.contracts.core.dtos.HomesDto
 
 @Inject
 internal class HomesListViewModel(
@@ -40,7 +40,7 @@ internal class HomesListViewModel(
                             homes = homesResult.homes,
                         )
                     }
-                    is HomesResult.NotModified -> Unit
+
                     is HomesResult.Error -> Unit
                 }
             }
@@ -70,7 +70,6 @@ internal class HomesListViewModel(
                 .collect { homesResult ->
                     when (homesResult) {
                         is HomesResult.Success -> Unit // Observed at the start
-                        is HomesResult.NotModified -> Unit // Observed at the start
                         is HomesResult.Error -> handleUnknownError()
                     }
                 }
@@ -92,7 +91,7 @@ internal class HomesListViewModel(
     }
 
     data class HomesListViewModelState(
-        val homes: List<HomeDto> = emptyList(),
+        val homes: HomesDto? = null,
         val isLoading: Boolean = false,
     )
 }
