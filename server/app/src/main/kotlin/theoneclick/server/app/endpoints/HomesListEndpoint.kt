@@ -30,7 +30,7 @@ fun Routing.homesListEndpoint(
             } else {
                 val pageSize = call.parameters["pageSize"]?.toIntOrNull()?.toPositiveIntDto() ?: defaultPageSize
                 val pageIndex = call.parameters["pageIndex"]?.toIntOrNull()?.toNonNegativeIntDto() ?: defaultPageIndex
-                val homesEntry = homesRepository.homesEntry(
+                val paginationResult = homesRepository.homesEntry(
                     userId = user.userId,
                     pageSize = pageSize,
                     currentPageIndex = pageIndex
@@ -38,7 +38,14 @@ fun Routing.homesListEndpoint(
 
                 call.respond(
                     HomesResponseDto(
-                        paginationResultDto = homesEntry,
+                        homesPagination = paginationResult?.let {
+                            HomesResponseDto.HomesPagination(
+                                lastModified = paginationResult.value.lastModified,
+                                homes = paginationResult.value.homes,
+                                pageIndex = paginationResult.pageIndex,
+                                totalPages = paginationResult.totalPages,
+                            )
+                        }
                     )
                 )
             }

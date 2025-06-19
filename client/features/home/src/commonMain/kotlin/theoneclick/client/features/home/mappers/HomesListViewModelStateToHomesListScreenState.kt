@@ -1,7 +1,6 @@
 package theoneclick.client.features.home.mappers
 
 import kotlinx.collections.immutable.ImmutableList
-import kotlinx.collections.immutable.persistentListOf
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import theoneclick.client.features.home.ui.screens.HomesListScreenState
@@ -16,7 +15,7 @@ import theoneclick.shared.contracts.core.dtos.RoomDto
 
 internal fun HomesListViewModel.HomesListViewModelState.toHomesListScreenState(): HomesListScreenState =
     HomesListScreenState(
-        homes = homes?.homes?.toUiHomes() ?: persistentListOf(),
+        homes = homes.toUiHomes(),
         isLoading = isLoading,
     )
 

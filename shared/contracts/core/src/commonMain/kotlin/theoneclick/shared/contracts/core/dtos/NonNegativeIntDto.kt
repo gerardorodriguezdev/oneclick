@@ -16,6 +16,8 @@ value class NonNegativeIntDto private constructor(val value: Int) : Comparable<N
     companion object {
         private const val ERROR_MESSAGE = "Value must be non-negative"
 
+        val zero = NonNegativeIntDto(0)
+
         fun isValid(value: Int): Boolean = value >= 0
 
         fun Int.toNonNegativeIntDto(): NonNegativeIntDto? = if (isValid(this)) NonNegativeIntDto(this) else null
