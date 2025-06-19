@@ -12,7 +12,7 @@ sealed interface DeviceDto {
         override val id: UuidDto,
         override val name: DeviceNameDto,
         val range: PositiveIntRangeDto,
-        val level: PositiveIntDto,
+        val level: NonNegativeIntDto,
     ) : DeviceDto {
 
         init {
@@ -22,13 +22,13 @@ sealed interface DeviceDto {
         companion object {
             private const val ERROR_MESSAGE = "Level not in range"
 
-            private fun isValid(level: PositiveIntDto, range: PositiveIntRangeDto): Boolean = range.inRange(level)
+            private fun isValid(level: NonNegativeIntDto, range: PositiveIntRangeDto): Boolean = range.inRange(level)
 
             fun waterSensorDto(
                 id: UuidDto,
                 name: DeviceNameDto,
                 range: PositiveIntRangeDto,
-                level: PositiveIntDto
+                level: NonNegativeIntDto
             ): WaterSensorDto? =
                 if (isValid(level, range)) {
                     WaterSensorDto(
@@ -45,7 +45,7 @@ sealed interface DeviceDto {
                 id: UuidDto,
                 name: DeviceNameDto,
                 range: PositiveIntRangeDto,
-                level: PositiveIntDto
+                level: NonNegativeIntDto
             ): WaterSensorDto =
                 WaterSensorDto(
                     id = id,

@@ -63,10 +63,10 @@ private fun mockDevice(
         id = id,
         name = nameDto,
         range = PositiveIntRangeDto.unsafe(
-            start = PositiveIntDto.unsafe(0),
-            end = PositiveIntDto.unsafe(10),
+            start = NonNegativeIntDto.unsafe(0),
+            end = NonNegativeIntDto.unsafe(10),
         ),
-        level = PositiveIntDto.unsafe(1)
+        level = NonNegativeIntDto.unsafe(1)
     )
 
 @OptIn(ExperimentalUuidApi::class)

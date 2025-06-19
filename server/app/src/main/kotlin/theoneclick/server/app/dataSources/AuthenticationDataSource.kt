@@ -23,7 +23,7 @@ class DefaultAuthenticationDataSource(
     }
 
     override fun isUserSessionValid(token: TokenDto): Boolean {
-        val user = usersRepository.user(token)
+        val user = usersRepository.user(UsersDataSource.Findable.ByToken(token))
 
         return when {
             user == null -> false

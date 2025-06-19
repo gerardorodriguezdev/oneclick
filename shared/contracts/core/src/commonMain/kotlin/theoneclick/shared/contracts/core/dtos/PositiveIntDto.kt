@@ -14,9 +14,9 @@ value class PositiveIntDto private constructor(val value: Int) : Comparable<Posi
     override fun compareTo(other: PositiveIntDto): Int = value.compareTo(other.value)
 
     companion object {
-        private const val ERROR_MESSAGE = "Value must be non-negative"
+        private const val ERROR_MESSAGE = "Value must be bigger than 0"
 
-        fun isValid(value: Int): Boolean = value >= 0
+        fun isValid(value: Int): Boolean = value > 0
 
         fun Int.toPositiveIntDto(): PositiveIntDto? = if (isValid(this)) PositiveIntDto(this) else null
 

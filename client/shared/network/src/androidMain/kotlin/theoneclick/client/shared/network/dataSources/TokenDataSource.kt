@@ -8,7 +8,7 @@ interface TokenDataSource {
     suspend fun clear()
 }
 
-internal class AndroidInMemoryTokenDataSource : TokenDataSource {
+internal class AndroidMemoryTokenDataSource : TokenDataSource {
     private var token: String? = null
 
     override suspend fun token(): String? = token

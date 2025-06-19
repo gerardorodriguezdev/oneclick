@@ -2,10 +2,10 @@ package theoneclick.server.app.repositories
 
 import theoneclick.server.app.dataSources.UsersDataSource
 import theoneclick.server.app.models.dtos.UserDto
-import theoneclick.shared.contracts.core.dtos.UserKeyDto
 
+//TODO: State
 interface UsersRepository {
-    fun user(key: UserKeyDto): UserDto?
+    fun user(findable: UsersDataSource.Findable): UserDto?
     fun saveUser(user: UserDto)
 }
 
@@ -14,14 +14,14 @@ class DefaultUsersRepository(
     private val memoryUsersDataSource: UsersDataSource,
 ) : UsersRepository {
 
-    override fun user(key: UserKeyDto): UserDto? {
-        val inMemoryUser = memoryUsersDataSource.user(key)
-        if (inMemoryUser != null) return inMemoryUser
+    override fun user(findable: UsersDataSource.Findable): UserDto? {
+        val memoryUser = memoryUsersDataSource.user(findable)
+        if (memoryUser != null) return memoryUser
 
-        val inDiskUser = diskUsersDataSource.user(key)
-        return if (inDiskUser != null) {
-            memoryUsersDataSource.saveUser(inDiskUser)
-            inDiskUser
+        val diskUser = diskUsersDataSource.user(findable)
+        return if (diskUser != null) {
+            memoryUsersDataSource.saveUser(diskUser)
+            diskUser
         } else {
             null
         }

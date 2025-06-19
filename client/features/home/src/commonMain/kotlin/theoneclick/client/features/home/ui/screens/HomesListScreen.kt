@@ -2,10 +2,7 @@ package theoneclick.client.features.home.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyGridScope
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
@@ -15,6 +12,7 @@ import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.onLayoutRectChanged
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
@@ -47,7 +45,9 @@ internal fun HomesListScreen(
             .testTag(HomesListScreenTestTags.LIST_CONTAINER)
     ) {
         if (state.homes.isNotEmpty()) {
+            val lazyGridState = rememberLazyGridState()
             LazyVerticalGrid(
+                state = lazyGridState,
                 columns = GridCells.Adaptive(minSize = HomesListScreenConstants.itemCardMinSize),
                 verticalArrangement = Arrangement.spacedBy(Tokens.itemsSpacing),
                 horizontalArrangement = Arrangement.spacedBy(Tokens.itemsSpacing),
@@ -68,6 +68,16 @@ internal fun HomesListScreen(
                             DeviceCard(device = device)
                         }
                     }
+                }
+
+                item {
+                    Spacer(
+                        modifier = Modifier
+                            .height(1.dp)
+                            .onLayoutRectChanged {
+                                onEvent(HomesListEvent.EndReached)
+                            }
+                    )
                 }
             }
         } else {
@@ -179,6 +189,7 @@ internal data class HomesListScreenState(
 
 internal sealed interface HomesListEvent {
     data object Refresh : HomesListEvent
+    data object EndReached : HomesListEvent
 }
 
 private object HomesListContentType {

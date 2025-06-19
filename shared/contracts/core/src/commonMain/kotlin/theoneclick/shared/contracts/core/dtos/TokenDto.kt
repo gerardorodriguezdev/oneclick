@@ -5,7 +5,7 @@ import kotlin.jvm.JvmInline
 
 @JvmInline
 @Serializable
-value class TokenDto private constructor(val value: String) : UserKeyDto {
+value class TokenDto private constructor(val value: String) {
 
     init {
         require(isValid(value)) { ERROR_MESSAGE }

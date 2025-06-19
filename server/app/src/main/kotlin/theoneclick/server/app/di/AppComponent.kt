@@ -6,6 +6,7 @@ import me.tatarka.inject.annotations.Provides
 import me.tatarka.inject.annotations.Scope
 import theoneclick.server.app.dataSources.AuthenticationDataSource
 import theoneclick.server.app.dataSources.DefaultAuthenticationDataSource
+import theoneclick.server.app.repositories.HomesRepository
 import theoneclick.server.app.repositories.UsersRepository
 import theoneclick.server.app.security.DefaultUuidProvider
 import theoneclick.server.app.security.Encryptor
@@ -28,6 +29,8 @@ abstract class AppComponent(
     val logger: Logger,
     @get:Provides
     val usersRepository: UsersRepository,
+    @get:Provides
+    val homesRepository: HomesRepository,
     @get:Provides
     val uuidProvider: UuidProvider = DefaultUuidProvider(),
 ) {

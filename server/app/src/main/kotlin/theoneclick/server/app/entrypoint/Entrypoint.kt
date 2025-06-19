@@ -27,6 +27,7 @@ private fun Application.configureModules(appComponent: AppComponent) {
         usersRepository = appComponent.usersRepository,
         encryptor = appComponent.encryptor,
         uuidProvider = appComponent.uuidProvider,
+        homesRepository = appComponent.homesRepository,
     )
     configureStatusPages(appComponent.logger)
     configureRequestValidation()

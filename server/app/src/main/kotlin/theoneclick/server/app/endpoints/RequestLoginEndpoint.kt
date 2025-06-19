@@ -4,8 +4,9 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import theoneclick.server.app.repositories.UsersRepository
+import theoneclick.server.app.dataSources.UsersDataSource
 import theoneclick.server.app.models.dtos.UserDto
+import theoneclick.server.app.repositories.UsersRepository
 import theoneclick.server.app.security.Encryptor
 import theoneclick.server.app.security.UuidProvider
 import theoneclick.server.shared.extensions.agent
@@ -24,7 +25,7 @@ fun Routing.requestLoginEndpoint(
     post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequestDto: RequestLoginRequestDto ->
         val username = requestLoginRequestDto.username
         val password = requestLoginRequestDto.password.value
-        val user = usersRepository.user(key = username)
+        val user = usersRepository.user(UsersDataSource.Findable.ByUsername(username))
 
         when {
             user == null -> registerUser(
@@ -57,11 +58,10 @@ private suspend fun RoutingContext.registerUser(
     usersRepository: UsersRepository,
 ) {
     val newUser = UserDto(
-        id = uuidProvider.uuid(),
+        userId = uuidProvider.uuid(),
         username = username,
         hashedPassword = encryptor.hashPassword(password),
         sessionToken = null,
-        homes = null,
     )
 
     handleSuccess(

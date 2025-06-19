@@ -3,6 +3,7 @@ package theoneclick.server.app.endpoints
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import theoneclick.server.app.dataSources.UsersDataSource
 import theoneclick.server.app.extensions.defaultAuthentication
 import theoneclick.server.app.extensions.requireToken
 import theoneclick.server.app.repositories.UsersRepository
@@ -12,7 +13,7 @@ fun Routing.logoutEndpoint(usersRepository: UsersRepository) {
     defaultAuthentication {
         get(ClientEndpoint.LOGOUT.route) {
             val token = requireToken()
-            val currentUser = usersRepository.user(token)
+            val currentUser = usersRepository.user(UsersDataSource.Findable.ByToken(token))
             val updatedUser = currentUser?.copy(sessionToken = null)
             updatedUser?.let {
                 usersRepository.saveUser(updatedUser)
