@@ -4,7 +4,10 @@ import io.ktor.util.logging.*
 import kotlinx.serialization.json.Json
 import theoneclick.server.app.models.dtos.HomesEntryDto
 import theoneclick.server.app.security.Encryptor
-import theoneclick.shared.contracts.core.dtos.*
+import theoneclick.shared.contracts.core.dtos.NonNegativeIntDto
+import theoneclick.shared.contracts.core.dtos.PaginationResultDto
+import theoneclick.shared.contracts.core.dtos.PositiveIntDto
+import theoneclick.shared.contracts.core.dtos.UuidDto
 import java.io.File
 
 abstract class HomesDataSource {
@@ -36,11 +39,16 @@ abstract class HomesDataSource {
         }
         if (newHomes.isEmpty()) return null
 
-        val newHomesEntry = homesEntry.copy(homes = newHomes)
+        val newHomesEntry = HomesEntryDto.unsafe(
+            userId = homesEntry.userId,
+            lastModified = homesEntry.lastModified,
+            homes = newHomes,
+        )
 
         return PaginationResultDto(
             value = newHomesEntry,
             pageIndex = NonNegativeIntDto.unsafe(newPageIndex),
+            lastModified = newHomesEntry.lastModified,
             totalPages = NonNegativeIntDto.unsafe(homesEntry.homes.size),
         )
     }

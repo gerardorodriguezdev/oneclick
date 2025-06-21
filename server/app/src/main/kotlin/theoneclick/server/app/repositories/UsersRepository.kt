@@ -3,7 +3,6 @@ package theoneclick.server.app.repositories
 import theoneclick.server.app.dataSources.UsersDataSource
 import theoneclick.server.app.models.dtos.UserDto
 
-//TODO: State
 interface UsersRepository {
     fun user(findable: UsersDataSource.Findable): UserDto?
     fun saveUser(user: UserDto)

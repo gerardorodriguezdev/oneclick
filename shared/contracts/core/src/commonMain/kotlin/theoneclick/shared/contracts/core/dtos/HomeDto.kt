@@ -15,8 +15,8 @@ class HomeDto private constructor(
     companion object {
         private const val ERROR_MESSAGE = "Duplicated room name"
 
-        fun isValid(roomsDtos: List<RoomDto>): Boolean =
-            roomsDtos.containsDuplicatesBy { roomDto -> roomDto.name }
+        fun isValid(rooms: List<RoomDto>): Boolean =
+            rooms.containsDuplicatesBy { roomDto -> roomDto.name }
 
         fun homeDto(name: HomeNameDto, rooms: List<RoomDto>): HomeDto? =
             if (isValid(rooms)) {
