@@ -9,6 +9,7 @@ import theoneclick.shared.contracts.core.dtos.HomeDto
 import theoneclick.shared.contracts.core.dtos.NonNegativeIntDto
 import theoneclick.shared.contracts.core.dtos.PaginationResultDto
 import theoneclick.shared.contracts.core.dtos.PositiveIntDto
+import theoneclick.shared.contracts.core.dtos.requests.HomesRequestDto
 
 internal interface HomesRepository {
     val pagination: SharedFlow<PaginationResultDto<List<HomeDto>>?>
@@ -34,8 +35,10 @@ internal class MemoryHomesRepository(
     override fun refreshHomes(): Flow<GenericResult<PaginationResultDto<List<HomeDto>>?>> {
         return remoteHomesDataSource
             .homes(
-                pageSize = defaultPageSize,
-                currentPageIndex = NonNegativeIntDto.zero,
+                HomesRequestDto(
+                    pageSize = defaultPageSize,
+                    pageIndex = NonNegativeIntDto.zero,
+                )
             )
             .onEach { result ->
                 // Only update if success
@@ -50,7 +53,12 @@ internal class MemoryHomesRepository(
         currentPageIndex: NonNegativeIntDto,
     ): Flow<GenericResult<PaginationResultDto<List<HomeDto>>?>> {
         return remoteHomesDataSource
-            .homes(pageSize = pageSize, currentPageIndex = currentPageIndex)
+            .homes(
+                HomesRequestDto(
+                    pageSize = pageSize,
+                    pageIndex = currentPageIndex,
+                )
+            )
             .onEach { result ->
                 // Only update if success
                 if (result is GenericResult.Success) {

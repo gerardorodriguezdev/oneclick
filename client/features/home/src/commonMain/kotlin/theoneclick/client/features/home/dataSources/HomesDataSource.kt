@@ -11,19 +11,15 @@ import kotlinx.coroutines.flow.flowOn
 import me.tatarka.inject.annotations.Inject
 import theoneclick.client.features.home.models.GenericResult
 import theoneclick.shared.contracts.core.dtos.HomeDto
-import theoneclick.shared.contracts.core.dtos.NonNegativeIntDto
 import theoneclick.shared.contracts.core.dtos.PaginationResultDto
-import theoneclick.shared.contracts.core.dtos.PositiveIntDto
+import theoneclick.shared.contracts.core.dtos.requests.HomesRequestDto
 import theoneclick.shared.contracts.core.dtos.responses.HomesResponseDto
 import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.logging.AppLogger
 
 internal interface HomesDataSource {
-    fun homes(
-        pageSize: PositiveIntDto,
-        currentPageIndex: NonNegativeIntDto,
-    ): Flow<GenericResult<PaginationResultDto<List<HomeDto>>?>>
+    fun homes(request: HomesRequestDto): Flow<GenericResult<PaginationResultDto<List<HomeDto>>?>>
 }
 
 @Inject
@@ -33,14 +29,10 @@ internal class RemoteHomesDataSource(
     private val appLogger: AppLogger,
 ) : HomesDataSource {
 
-    override fun homes(
-        pageSize: PositiveIntDto,
-        currentPageIndex: NonNegativeIntDto,
-    ): Flow<GenericResult<PaginationResultDto<List<HomeDto>>?>> =
+    override fun homes(request: HomesRequestDto): Flow<GenericResult<PaginationResultDto<List<HomeDto>>?>> =
         flow {
-            val response = httpClient.get(ClientEndpoint.HOMES.route) {
-                parameter("pageSize", pageSize.value.toString())
-                parameter("pageIndex", currentPageIndex.value.toString())
+            val response = httpClient.post(ClientEndpoint.HOMES.route) {
+                setBody(request)
             }
 
             Result
