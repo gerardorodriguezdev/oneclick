@@ -12,6 +12,7 @@ import theoneclick.server.app.repositories.HomesRepository
 import theoneclick.server.app.repositories.UsersRepository
 import theoneclick.shared.contracts.core.dtos.NonNegativeIntDto
 import theoneclick.shared.contracts.core.dtos.NonNegativeIntDto.Companion.toNonNegativeIntDto
+import theoneclick.shared.contracts.core.dtos.PaginationResultDto
 import theoneclick.shared.contracts.core.dtos.PositiveIntDto
 import theoneclick.shared.contracts.core.dtos.PositiveIntDto.Companion.toPositiveIntDto
 import theoneclick.shared.contracts.core.dtos.responses.HomesResponseDto
@@ -30,22 +31,24 @@ fun Routing.homesListEndpoint(
             } else {
                 val pageSize = call.parameters["pageSize"]?.toIntOrNull()?.toPositiveIntDto() ?: defaultPageSize
                 val pageIndex = call.parameters["pageIndex"]?.toIntOrNull()?.toNonNegativeIntDto() ?: defaultPageIndex
-                val paginationResult = homesRepository.homesEntry(
+
+                val currentPagination = homesRepository.homesEntry(
                     userId = user.userId,
                     pageSize = pageSize,
                     currentPageIndex = pageIndex
                 )
+                val newPagination = currentPagination?.let {
+                    PaginationResultDto(
+                        lastModified = currentPagination.lastModified,
+                        value = currentPagination.value.homes,
+                        pageIndex = currentPagination.pageIndex,
+                        totalPages = currentPagination.totalPages,
+                    )
+                }
 
                 call.respond(
                     HomesResponseDto(
-                        homesPagination = paginationResult?.let {
-                            HomesResponseDto.HomesPagination(
-                                lastModified = paginationResult.value.lastModified,
-                                homes = paginationResult.value.homes,
-                                pageIndex = paginationResult.pageIndex,
-                                totalPages = paginationResult.totalPages,
-                            )
-                        }
+                        paginationResultDto = newPagination,
                     )
                 )
             }

@@ -10,12 +10,14 @@ import org.jetbrains.compose.resources.getString
 import theoneclick.client.features.home.generated.resources.Res
 import theoneclick.client.features.home.generated.resources.homesListScreen_snackbar_unknownError
 import theoneclick.client.features.home.mappers.toHomesListScreenState
-import theoneclick.client.features.home.models.results.HomesResult
+import theoneclick.client.features.home.models.GenericResult
 import theoneclick.client.features.home.repositories.HomesRepository
 import theoneclick.client.features.home.ui.screens.HomesListEvent
 import theoneclick.client.features.home.ui.screens.HomesListScreenState
 import theoneclick.client.shared.notifications.NotificationsController
-import theoneclick.shared.contracts.core.dtos.HomesDto
+import theoneclick.shared.contracts.core.dtos.HomeDto
+import theoneclick.shared.contracts.core.dtos.NonNegativeIntDto
+import theoneclick.shared.contracts.core.dtos.PositiveIntDto
 
 @Inject
 internal class HomesListViewModel(
@@ -33,15 +35,11 @@ internal class HomesListViewModel(
 
     init {
         viewModelScope.launch {
-            homesRepository.homes.collect { homesResult ->
-                when (homesResult) {
-                    is HomesResult.Success -> {
-                        homesListViewModelState.value = homesListViewModelState.value.copy(
-                            homes = homesResult.homes,
-                        )
-                    }
-
-                    is HomesResult.Error -> Unit
+            homesRepository.pagination.collect { pagination ->
+                pagination?.let {
+                    homesListViewModelState.value = homesListViewModelState.value.copy(
+                        homes = pagination.value,
+                    )
                 }
             }
         }
@@ -52,6 +50,7 @@ internal class HomesListViewModel(
     fun onEvent(event: HomesListEvent) {
         when (event) {
             is HomesListEvent.Refresh -> refreshHomes()
+            is HomesListEvent.EndReached -> homes()
         }
     }
 
@@ -69,8 +68,34 @@ internal class HomesListViewModel(
                 }
                 .collect { homesResult ->
                     when (homesResult) {
-                        is HomesResult.Success -> Unit // Observed at the start
-                        is HomesResult.Error -> handleUnknownError()
+                        is GenericResult.Success -> Unit // Observed at the start
+                        is GenericResult.Error -> handleUnknownError()
+                    }
+                }
+        }
+    }
+
+    private fun homes() {
+        if (!canRequestMoreHomes()) return
+
+        requestHomesJob?.cancel()
+
+        requestHomesJob = viewModelScope.launch {
+            homesRepository
+                .homes(
+                    pageSize = HomesRepository.defaultPageSize,
+                    currentPageIndex = homesListViewModelState.value.pageIndex
+                )
+                .onStart {
+                    homesListViewModelState.value = homesListViewModelState.value.copy(isLoading = true)
+                }
+                .onCompletion {
+                    homesListViewModelState.value = homesListViewModelState.value.copy(isLoading = false)
+                }
+                .collect { homesResult ->
+                    when (homesResult) {
+                        is GenericResult.Success -> Unit // Observed at the start
+                        is GenericResult.Error -> handleUnknownError()
                     }
                 }
         }
@@ -84,6 +109,13 @@ internal class HomesListViewModel(
         )
     }
 
+    private fun canRequestMoreHomes(): Boolean {
+        val currentState = homesListViewModelState.value
+        val currentPageIndex = currentState.pageIndex
+        val currentTotalPages = currentState.totalPages ?: return true
+        return currentPageIndex.value < (currentTotalPages.value - 1)
+    }
+
     override fun onCleared() {
         super.onCleared()
 
@@ -91,7 +123,9 @@ internal class HomesListViewModel(
     }
 
     data class HomesListViewModelState(
-        val homes: HomesDto? = null,
+        val homes: List<HomeDto> = emptyList(),
+        val pageIndex: NonNegativeIntDto = NonNegativeIntDto.zero,
+        val totalPages: PositiveIntDto? = null,
         val isLoading: Boolean = false,
     )
 }

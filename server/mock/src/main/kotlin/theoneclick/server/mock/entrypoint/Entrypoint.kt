@@ -12,6 +12,7 @@ import theoneclick.server.mock.utils.mockHomes
 import theoneclick.server.shared.extensions.agent
 import theoneclick.shared.contracts.core.agents.Agent
 import theoneclick.shared.contracts.core.dtos.NonNegativeIntDto
+import theoneclick.shared.contracts.core.dtos.PaginationResultDto
 import theoneclick.shared.contracts.core.dtos.PositiveLongDto
 import theoneclick.shared.contracts.core.dtos.TokenDto
 import theoneclick.shared.contracts.core.dtos.requests.RequestLoginRequestDto
@@ -52,9 +53,9 @@ private fun Application.configureRouting() {
         get(ClientEndpoint.HOMES.route) {
             call.respond(
                 HomesResponseDto(
-                    homesPagination = HomesResponseDto.HomesPagination(
+                    paginationResultDto = PaginationResultDto(
                         lastModified = PositiveLongDto.unsafe(1),
-                        homes = mockHomes(5),
+                        value = mockHomes(5),
                         pageIndex = NonNegativeIntDto.unsafe(5),
                         totalPages = NonNegativeIntDto.unsafe(10),
                     )

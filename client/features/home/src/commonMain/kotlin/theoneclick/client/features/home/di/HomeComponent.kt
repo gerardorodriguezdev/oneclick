@@ -4,8 +4,8 @@ import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.KmpComponentCreate
 import me.tatarka.inject.annotations.Provides
 import me.tatarka.inject.annotations.Scope
-import theoneclick.client.features.home.dataSources.LoggedDataSource
-import theoneclick.client.features.home.dataSources.RemoteLoggedDataSource
+import theoneclick.client.features.home.dataSources.HomesDataSource
+import theoneclick.client.features.home.dataSources.RemoteHomesDataSource
 import theoneclick.client.features.home.repositories.HomesRepository
 import theoneclick.client.features.home.repositories.MemoryHomesRepository
 import theoneclick.client.features.home.viewModels.HomesListViewModel
@@ -18,7 +18,7 @@ abstract class HomeComponent(@Component val coreComponent: CoreComponent) {
 
     @HomeScope
     @Provides
-    internal fun loggedDataSource(bind: RemoteLoggedDataSource): LoggedDataSource = bind
+    internal fun loggedDataSource(bind: RemoteHomesDataSource): HomesDataSource = bind
 
     @HomeScope
     @Provides
