@@ -10,7 +10,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import me.tatarka.inject.annotations.Inject
 import theoneclick.client.features.home.mappers.toHomes
-import theoneclick.client.features.home.models.Homes
+import theoneclick.client.features.home.models.HomesEntry
 import theoneclick.client.features.home.models.HomesResult
 import theoneclick.shared.contracts.core.dtos.requests.HomesRequestDto
 import theoneclick.shared.contracts.core.dtos.responses.HomesResponseDto
@@ -39,21 +39,18 @@ internal class RemoteHomesDataSource(
                 HttpStatusCode.OK -> {
                     val homesResponse = response.body<HomesResponseDto>()
                     val data = homesResponse.data
-
-                    val homesResult = if (data == null) {
-                        HomesResult.Success(homes = null)
-                    } else {
+                    emit(
                         HomesResult.Success(
-                            homes = Homes(
-                                lastModified = data.lastModified.value,
-                                value = data.value.toHomes(),
-                                pageIndex = data.pageIndex.value,
-                                canRequestMore = data.canRequestMore,
-                            )
+                            homesEntry = data?.let {
+                                HomesEntry(
+                                    lastModified = data.lastModified.value,
+                                    homes = data.value.toHomes(),
+                                    pageIndex = data.pageIndex.value,
+                                    canRequestMore = data.canRequestMore,
+                                )
+                            }
                         )
-                    }
-
-                    emit(homesResult)
+                    )
                 }
 
                 else -> emit(HomesResult.Error)

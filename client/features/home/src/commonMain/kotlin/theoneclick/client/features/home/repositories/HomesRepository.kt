@@ -3,7 +3,7 @@ package theoneclick.client.features.home.repositories
 import kotlinx.coroutines.flow.*
 import me.tatarka.inject.annotations.Inject
 import theoneclick.client.features.home.dataSources.HomesDataSource
-import theoneclick.client.features.home.models.Homes
+import theoneclick.client.features.home.models.HomesEntry
 import theoneclick.client.features.home.models.HomesResult
 import theoneclick.client.features.home.repositories.HomesRepository.Companion.defaultPageSize
 import theoneclick.shared.contracts.core.dtos.NonNegativeIntDto
@@ -11,7 +11,7 @@ import theoneclick.shared.contracts.core.dtos.PositiveIntDto
 import theoneclick.shared.contracts.core.dtos.requests.HomesRequestDto
 
 internal interface HomesRepository {
-    val homes: SharedFlow<Homes?>
+    val homesEntry: SharedFlow<HomesEntry?>
 
     fun refreshHomes(): Flow<HomesResult>
     fun requestMoreHomes(currentPageIndex: Int): Flow<HomesResult>
@@ -25,8 +25,8 @@ internal interface HomesRepository {
 internal class MemoryHomesRepository(
     private val remoteHomesDataSource: HomesDataSource,
 ) : HomesRepository {
-    private val mutableHomes = MutableStateFlow<Homes?>(null)
-    override val homes: StateFlow<Homes?> = mutableHomes
+    private val mutableHomesEntry = MutableStateFlow<HomesEntry?>(null)
+    override val homesEntry: StateFlow<HomesEntry?> = mutableHomesEntry
 
     override fun refreshHomes(): Flow<HomesResult> {
         return remoteHomesDataSource
@@ -38,7 +38,7 @@ internal class MemoryHomesRepository(
             )
             .onEach { homesResult ->
                 if (homesResult is HomesResult.Success) {
-                    mutableHomes.emit(homesResult.homes)
+                    mutableHomesEntry.emit(homesResult.homesEntry)
                 }
             }
     }
@@ -52,21 +52,17 @@ internal class MemoryHomesRepository(
                 )
             )
             .onEach { homesResult ->
-                if (homesResult is HomesResult.Success && homesResult.homes != null) {
-                    val currentHomes = mutableHomes.value
-                    val newHomes = homesResult.homes
-                    if (currentHomes == null) {
-                        mutableHomes.emit(newHomes)
-                    } else {
-                        mutableHomes.emit(
-                            currentHomes.copy(
-                                lastModified = newHomes.lastModified,
-                                value = currentHomes.value + newHomes.value,
-                                pageIndex = newHomes.pageIndex,
-                                canRequestMore = newHomes.canRequestMore,
-                            )
+                if (homesResult is HomesResult.Success && homesResult.homesEntry != null) {
+                    val currentHomes = mutableHomesEntry.value?.homes ?: emptyList()
+                    val newHomesEntry = homesResult.homesEntry
+                    mutableHomesEntry.emit(
+                        HomesEntry(
+                            lastModified = newHomesEntry.lastModified,
+                            homes = currentHomes + newHomesEntry.homes,
+                            pageIndex = newHomesEntry.pageIndex,
+                            canRequestMore = newHomesEntry.canRequestMore,
                         )
-                    }
+                    )
                 }
             }
 }

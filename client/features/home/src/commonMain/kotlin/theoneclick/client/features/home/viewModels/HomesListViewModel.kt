@@ -33,10 +33,10 @@ internal class HomesListViewModel(
 
     init {
         viewModelScope.launch {
-            homesRepository.homes.collect { homes ->
+            homesRepository.homesEntry.collect { homes ->
                 homesListViewModelState.value = homesListViewModelState.value.copy(
                     pageIndex = homes?.pageIndex ?: 0,
-                    homes = homes?.value ?: emptyList(),
+                    homes = homes?.homes ?: emptyList(),
                     canRequestMore = homes?.canRequestMore ?: true,
                 )
             }
