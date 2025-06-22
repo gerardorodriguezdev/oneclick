@@ -1,15 +1,19 @@
 package theoneclick.shared.contracts.core.dtos
 
 import kotlinx.serialization.Serializable
-import kotlin.jvm.JvmInline
 
-@JvmInline
 @Serializable
-value class UuidDto private constructor(val value: String) {
+class UuidDto private constructor(val value: String) {
 
     init {
         require(isValid(value)) { ERROR_MESSAGE }
     }
+
+    override fun equals(other: Any?): Boolean = other is UuidDto && other.value == value
+
+    override fun hashCode(): Int = value.hashCode()
+
+    override fun toString(): String = value
 
     companion object {
         private const val ERROR_MESSAGE = "Invalid uuid"
