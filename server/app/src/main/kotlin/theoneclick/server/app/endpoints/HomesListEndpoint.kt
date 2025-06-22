@@ -3,7 +3,7 @@ package theoneclick.server.app.endpoints
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import theoneclick.server.app.dataSources.UsersDataSource
+import theoneclick.server.app.dataSources.base.UsersDataSource
 import theoneclick.server.app.extensions.defaultAuthentication
 import theoneclick.server.app.extensions.requireToken
 import theoneclick.server.app.repositories.HomesRepository

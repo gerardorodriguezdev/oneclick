@@ -1,6 +1,6 @@
 package theoneclick.server.app.repositories
 
-import theoneclick.server.app.dataSources.HomesDataSource
+import theoneclick.server.app.dataSources.base.HomesDataSource
 import theoneclick.server.app.models.dtos.HomesEntryDto
 import theoneclick.shared.contracts.core.dtos.*
 

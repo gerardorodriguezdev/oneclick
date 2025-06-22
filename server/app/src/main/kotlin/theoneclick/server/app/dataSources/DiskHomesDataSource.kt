@@ -1,7 +1,8 @@
 package theoneclick.server.app.dataSources
 
-import io.ktor.util.logging.*
+import io.ktor.util.logging.Logger
 import kotlinx.serialization.json.Json
+import theoneclick.server.app.dataSources.base.HomesDataSource
 import theoneclick.server.app.models.dtos.HomesEntryDto
 import theoneclick.server.app.security.Encryptor
 import theoneclick.shared.contracts.core.dtos.NonNegativeIntDto
@@ -9,71 +10,7 @@ import theoneclick.shared.contracts.core.dtos.PaginationResultDto
 import theoneclick.shared.contracts.core.dtos.PositiveIntDto
 import theoneclick.shared.contracts.core.dtos.UuidDto
 import java.io.File
-
-abstract class HomesDataSource {
-    abstract fun homesEntry(
-        userId: UuidDto,
-        pageSize: PositiveIntDto,
-        currentPageIndex: NonNegativeIntDto
-    ): PaginationResultDto<HomesEntryDto>?
-
-    protected fun paginateHomesEntry(
-        homesEntry: HomesEntryDto,
-        pageSize: PositiveIntDto,
-        currentPageIndex: NonNegativeIntDto
-    ): PaginationResultDto<HomesEntryDto>? {
-        val firstPageIndex = currentPageIndex.value + 1
-        val lastPageIndex = firstPageIndex + pageSize.value
-
-        var newPageIndex = 0
-        val newHomes = buildList {
-            for (index in firstPageIndex until lastPageIndex) {
-                val home = homesEntry.homes.getOrNull(index)
-                if (home != null) {
-                    newPageIndex = index
-                    add(home)
-                } else {
-                    break
-                }
-            }
-        }
-        if (newHomes.isEmpty()) return null
-
-        val newHomesEntry = HomesEntryDto.unsafe(
-            userId = homesEntry.userId,
-            lastModified = homesEntry.lastModified,
-            homes = newHomes,
-        )
-
-        return PaginationResultDto(
-            value = newHomesEntry,
-            pageIndex = NonNegativeIntDto.unsafe(newPageIndex),
-            totalPages = NonNegativeIntDto.unsafe(homesEntry.homes.size),
-        )
-    }
-}
-
-class MemoryHomesDataSource : HomesDataSource() {
-    private val homesEntries = linkedMapOf<UuidDto, HomesEntryDto>()
-
-    override fun homesEntry(
-        userId: UuidDto,
-        pageSize: PositiveIntDto,
-        currentPageIndex: NonNegativeIntDto
-    ): PaginationResultDto<HomesEntryDto>? {
-        val homesEntry = homesEntries[userId] ?: return null
-
-        return paginateHomesEntry(
-            homesEntry = homesEntry,
-            pageSize = pageSize,
-            currentPageIndex = currentPageIndex
-        )
-    }
-
-    private companion object {
-        const val CLEAN_UP_LIMIT = 10_000
-    }
-}
+import kotlin.collections.forEach
 
 class DiskHomesDataSource(
     private val homesEntriesDirectory: File,
@@ -100,7 +37,7 @@ class DiskHomesDataSource(
             homesEntriesFiles.forEach { homesEntryFile ->
                 val encryptedHomesEntryBytes = homesEntryFile.readBytes()
                 val homesEntryString = encryptor.decrypt(input = encryptedHomesEntryBytes).getOrThrow()
-                val homesEntry = Json.decodeFromString<HomesEntryDto>(homesEntryString)
+                val homesEntry = Json.Default.decodeFromString<HomesEntryDto>(homesEntryString)
                 if (predicate(homesEntry)) return homesEntry
             }
             null

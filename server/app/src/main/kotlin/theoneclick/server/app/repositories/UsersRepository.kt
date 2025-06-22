@@ -1,6 +1,6 @@
 package theoneclick.server.app.repositories
 
-import theoneclick.server.app.dataSources.UsersDataSource
+import theoneclick.server.app.dataSources.base.UsersDataSource
 import theoneclick.server.app.models.dtos.UserDto
 
 interface UsersRepository {

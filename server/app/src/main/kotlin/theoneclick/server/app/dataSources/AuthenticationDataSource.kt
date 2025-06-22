@@ -1,6 +1,7 @@
 package theoneclick.server.app.dataSources
 
 import me.tatarka.inject.annotations.Inject
+import theoneclick.server.app.dataSources.base.UsersDataSource
 import theoneclick.server.app.repositories.UsersRepository
 import theoneclick.shared.contracts.core.dtos.TokenDto
 import theoneclick.shared.contracts.core.dtos.TokenDto.Companion.toToken

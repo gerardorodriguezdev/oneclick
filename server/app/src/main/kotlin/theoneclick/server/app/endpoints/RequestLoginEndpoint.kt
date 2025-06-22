@@ -4,7 +4,7 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import theoneclick.server.app.dataSources.UsersDataSource
+import theoneclick.server.app.dataSources.base.UsersDataSource
 import theoneclick.server.app.models.dtos.UserDto
 import theoneclick.server.app.repositories.UsersRepository
 import theoneclick.server.app.security.Encryptor
