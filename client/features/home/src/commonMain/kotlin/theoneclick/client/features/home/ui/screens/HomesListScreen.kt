@@ -6,6 +6,7 @@ import androidx.compose.foundation.lazy.grid.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
@@ -37,7 +38,7 @@ internal fun HomesListScreen(
     onEvent: (model: HomesListEvent) -> Unit,
 ) {
     PullToRefreshBox(
-        isRefreshing = state.isLoading,
+        isRefreshing = state.isFullScreenLoading,
         onRefresh = { onEvent(HomesListEvent.Refresh) },
         contentAlignment = Alignment.TopCenter,
         modifier = Modifier
@@ -71,13 +72,7 @@ internal fun HomesListScreen(
                 }
 
                 item {
-                    Spacer(
-                        modifier = Modifier
-                            .height(1.dp)
-                            .onLayoutRectChanged {
-                                onEvent(HomesListEvent.EndReached)
-                            }
-                    )
+                    Paginator(isLoading = state.isPaginationLoading, onShown = { onEvent(HomesListEvent.EndReached) })
                 }
             }
         } else {
@@ -161,9 +156,27 @@ private fun Empty() {
     }
 }
 
+@Composable
+private fun Paginator(isLoading: Boolean, onShown: () -> Unit) {
+    if (isLoading) {
+        Box(contentAlignment = Alignment.Center, modifier = Modifier.fillMaxWidth()) {
+            CircularProgressIndicator()
+        }
+    } else {
+        Spacer(
+            modifier = Modifier
+                .height(1.dp)
+                .onLayoutRectChanged {
+                    onShown()
+                }
+        )
+    }
+}
+
 internal data class HomesListScreenState(
     val homes: ImmutableList<UiHome> = persistentListOf(),
-    val isLoading: Boolean = false,
+    val isFullScreenLoading: Boolean = false,
+    val isPaginationLoading: Boolean = false,
 ) {
     data class UiHome(
         val name: String,

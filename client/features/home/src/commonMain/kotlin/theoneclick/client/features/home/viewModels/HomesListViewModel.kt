@@ -10,14 +10,12 @@ import org.jetbrains.compose.resources.getString
 import theoneclick.client.features.home.generated.resources.Res
 import theoneclick.client.features.home.generated.resources.homesListScreen_snackbar_unknownError
 import theoneclick.client.features.home.mappers.toHomesListScreenState
-import theoneclick.client.features.home.models.GenericResult
+import theoneclick.client.features.home.models.Home
+import theoneclick.client.features.home.models.HomesResult
 import theoneclick.client.features.home.repositories.HomesRepository
 import theoneclick.client.features.home.ui.screens.HomesListEvent
 import theoneclick.client.features.home.ui.screens.HomesListScreenState
 import theoneclick.client.shared.notifications.NotificationsController
-import theoneclick.shared.contracts.core.dtos.HomeDto
-import theoneclick.shared.contracts.core.dtos.NonNegativeIntDto
-import theoneclick.shared.contracts.core.dtos.PositiveIntDto
 
 @Inject
 internal class HomesListViewModel(
@@ -36,11 +34,11 @@ internal class HomesListViewModel(
     init {
         viewModelScope.launch {
             homesRepository.pagination.collect { pagination ->
-                pagination?.let {
-                    homesListViewModelState.value = homesListViewModelState.value.copy(
-                        homes = pagination.value,
-                    )
-                }
+                homesListViewModelState.value = homesListViewModelState.value.copy(
+                    pageIndex = pagination?.pageIndex ?: 0,
+                    homes = pagination?.value ?: emptyList(),
+                    canRequestMore = pagination?.canRequestMore ?: true,
+                )
             }
         }
 
@@ -50,7 +48,7 @@ internal class HomesListViewModel(
     fun onEvent(event: HomesListEvent) {
         when (event) {
             is HomesListEvent.Refresh -> refreshHomes()
-            is HomesListEvent.EndReached -> homes()
+            is HomesListEvent.EndReached -> handleEndReached()
         }
     }
 
@@ -61,41 +59,40 @@ internal class HomesListViewModel(
             homesRepository
                 .refreshHomes()
                 .onStart {
-                    homesListViewModelState.value = homesListViewModelState.value.copy(isLoading = true)
+                    homesListViewModelState.value = homesListViewModelState.value.copy(isFullPageLoading = true)
                 }
                 .onCompletion {
-                    homesListViewModelState.value = homesListViewModelState.value.copy(isLoading = false)
+                    homesListViewModelState.value = homesListViewModelState.value.copy(isFullPageLoading = false)
                 }
                 .collect { homesResult ->
                     when (homesResult) {
-                        is GenericResult.Success -> Unit // Observed at the start
-                        is GenericResult.Error -> handleUnknownError()
+                        is HomesResult.Success -> Unit // Observed at the start
+                        is HomesResult.Error -> handleUnknownError()
                     }
                 }
         }
     }
 
-    private fun homes() {
-        if (!canRequestMoreHomes()) return
+    private fun handleEndReached() {
+        if (!homesListViewModelState.value.canRequestMore) return
 
         requestHomesJob?.cancel()
 
         requestHomesJob = viewModelScope.launch {
             homesRepository
                 .homes(
-                    pageSize = HomesRepository.defaultPageSize,
                     currentPageIndex = homesListViewModelState.value.pageIndex
                 )
                 .onStart {
-                    homesListViewModelState.value = homesListViewModelState.value.copy(isLoading = true)
+                    homesListViewModelState.value = homesListViewModelState.value.copy(isPaginationLoading = true)
                 }
                 .onCompletion {
-                    homesListViewModelState.value = homesListViewModelState.value.copy(isLoading = false)
+                    homesListViewModelState.value = homesListViewModelState.value.copy(isPaginationLoading = false)
                 }
                 .collect { homesResult ->
                     when (homesResult) {
-                        is GenericResult.Success -> Unit // Observed at the start
-                        is GenericResult.Error -> handleUnknownError()
+                        is HomesResult.Success -> Unit // Observed at the start
+                        is HomesResult.Error -> handleUnknownError()
                     }
                 }
         }
@@ -109,13 +106,6 @@ internal class HomesListViewModel(
         )
     }
 
-    private fun canRequestMoreHomes(): Boolean {
-        val currentState = homesListViewModelState.value
-        val currentPageIndex = currentState.pageIndex
-        val currentTotalPages = currentState.totalPages ?: return true
-        return currentPageIndex.value < (currentTotalPages.value - 1)
-    }
-
     override fun onCleared() {
         super.onCleared()
 
@@ -123,9 +113,10 @@ internal class HomesListViewModel(
     }
 
     data class HomesListViewModelState(
-        val homes: List<HomeDto> = emptyList(),
-        val pageIndex: NonNegativeIntDto = NonNegativeIntDto.zero,
-        val totalPages: PositiveIntDto? = null,
-        val isLoading: Boolean = false,
+        val homes: List<Home> = emptyList(),
+        val pageIndex: Int = 0,
+        val canRequestMore: Boolean = true,
+        val isFullPageLoading: Boolean = false,
+        val isPaginationLoading: Boolean = false,
     )
 }

@@ -9,9 +9,9 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import me.tatarka.inject.annotations.Inject
-import theoneclick.client.features.home.models.GenericResult
-import theoneclick.shared.contracts.core.dtos.HomeDto
-import theoneclick.shared.contracts.core.dtos.PaginationResultDto
+import theoneclick.client.features.home.mappers.toHomes
+import theoneclick.client.features.home.models.HomesResult
+import theoneclick.client.features.home.models.PaginationResult
 import theoneclick.shared.contracts.core.dtos.requests.HomesRequestDto
 import theoneclick.shared.contracts.core.dtos.responses.HomesResponseDto
 import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
@@ -19,7 +19,7 @@ import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.logging.AppLogger
 
 internal interface HomesDataSource {
-    fun homes(request: HomesRequestDto): Flow<GenericResult<PaginationResultDto<List<HomeDto>>?>>
+    fun homes(request: HomesRequestDto): Flow<HomesResult>
 }
 
 @Inject
@@ -29,26 +29,39 @@ internal class RemoteHomesDataSource(
     private val appLogger: AppLogger,
 ) : HomesDataSource {
 
-    override fun homes(request: HomesRequestDto): Flow<GenericResult<PaginationResultDto<List<HomeDto>>?>> =
+    override fun homes(request: HomesRequestDto): Flow<HomesResult> =
         flow {
             val response = httpClient.post(ClientEndpoint.HOMES.route) {
                 setBody(request)
             }
 
-            Result
-
             when (response.status) {
                 HttpStatusCode.OK -> {
                     val homesResponse = response.body<HomesResponseDto>()
-                    emit(GenericResult.Success(value = homesResponse.paginationResultDto))
+                    val data = homesResponse.data
+
+                    val homesResult = if (data == null) {
+                        HomesResult.Success(paginationResult = null)
+                    } else {
+                        HomesResult.Success(
+                            paginationResult = PaginationResult(
+                                lastModified = data.lastModified.value,
+                                value = data.value.toHomes(),
+                                pageIndex = data.pageIndex.value,
+                                canRequestMore = data.canRequestMore,
+                            )
+                        )
+                    }
+
+                    emit(homesResult)
                 }
 
-                else -> emit(GenericResult.Error)
+                else -> emit(HomesResult.Error)
             }
         }
             .catch { exception ->
                 appLogger.e("Exception catched '${exception.stackTraceToString()}' while getting homes")
-                emit(GenericResult.Error)
+                emit(HomesResult.Error)
             }
             .flowOn(dispatchersProvider.io())
 }
