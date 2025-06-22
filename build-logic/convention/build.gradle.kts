@@ -1,28 +1,11 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     `kotlin-dsl`
     alias(libs.plugins.kmp.serialization)
 }
 
 java {
-    val javaVersion = when (libs.versions.jvm.api.get().toInt()) {
-        17 -> JavaVersion.VERSION_17
-        21 -> JavaVersion.VERSION_21
-        else -> throw IllegalStateException("Version $this not supported")
-    }
-
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
-}
-
-kotlin {
-    compilerOptions {
-        jvmTarget = when (libs.versions.jvm.api.get().toInt()) {
-            17 -> JvmTarget.JVM_17
-            21 -> JvmTarget.JVM_21
-            else -> throw IllegalStateException("Version $this not supported")
-        }
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.jvm.api.get().toInt()))
     }
 }
 

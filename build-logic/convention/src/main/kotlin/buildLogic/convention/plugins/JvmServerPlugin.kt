@@ -9,6 +9,7 @@ import io.ktor.plugin.*
 import io.ktor.plugin.features.*
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.plugins.JavaApplication
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.JavaExec
@@ -54,7 +55,9 @@ class JvmServerPlugin : Plugin<Project> {
         chamaleonExtension: ChamaleonExtension?,
         jvmServerExtension: JvmServerExtension
     ) {
-        project.ktorExtensions.configure(DockerExtension::class.java) {
+        val ktorExtension = extensions.getByType(KtorExtension::class.java)
+        val ktorExtensions = (ktorExtension as ExtensionAware).extensions
+        ktorExtensions.configure(DockerExtension::class.java) {
             localImageName.set(jvmServerExtension.dockerConfiguration.imageName)
             jreVersion.set(jvmServerExtension.jvmTarget.toJavaVersion())
             imageTag.set(jvmServerExtension.dockerConfiguration.imageTag)
