@@ -23,28 +23,24 @@ fun Routing.homesListEndpoint(
             if (user == null) {
                 call.respond(HttpStatusCode.BadRequest)
             } else {
-                val pagination = homesRepository.homesEntry(
+                val homesEntry = homesRepository.homesEntry(
                     userId = user.userId,
                     pageSize = homesRequestDto.pageSize,
                     currentPageIndex = homesRequestDto.pageIndex
                 )
 
-                if (pagination == null) {
-                    call.respond(
-                        HomesResponseDto(data = null)
-                    )
-                } else {
-                    call.respond(
-                        HomesResponseDto(
-                            data = HomesResponseDto.Data(
-                                lastModified = pagination.value.lastModified,
-                                value = pagination.value.homes,
-                                pageIndex = pagination.pageIndex,
-                                canRequestMore = pagination.pageIndex.value < pagination.totalPages.value,
+                call.respond(
+                    HomesResponseDto(
+                        data = homesEntry?.let {
+                            HomesResponseDto.Data(
+                                lastModified = homesEntry.value.lastModified,
+                                value = homesEntry.value.homes,
+                                pageIndex = homesEntry.pageIndex,
+                                canRequestMore = homesEntry.pageIndex.value < homesEntry.totalPages.value,
                             )
-                        )
+                        }
                     )
-                }
+                )
             }
         }
     }
