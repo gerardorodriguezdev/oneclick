@@ -10,8 +10,8 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import me.tatarka.inject.annotations.Inject
 import theoneclick.client.features.home.mappers.toHomes
+import theoneclick.client.features.home.models.Homes
 import theoneclick.client.features.home.models.HomesResult
-import theoneclick.client.features.home.models.PaginationResult
 import theoneclick.shared.contracts.core.dtos.requests.HomesRequestDto
 import theoneclick.shared.contracts.core.dtos.responses.HomesResponseDto
 import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
@@ -41,10 +41,10 @@ internal class RemoteHomesDataSource(
                     val data = homesResponse.data
 
                     val homesResult = if (data == null) {
-                        HomesResult.Success(paginationResult = null)
+                        HomesResult.Success(homes = null)
                     } else {
                         HomesResult.Success(
-                            paginationResult = PaginationResult(
+                            homes = Homes(
                                 lastModified = data.lastModified.value,
                                 value = data.value.toHomes(),
                                 pageIndex = data.pageIndex.value,

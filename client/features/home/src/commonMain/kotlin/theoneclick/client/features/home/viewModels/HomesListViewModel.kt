@@ -33,11 +33,11 @@ internal class HomesListViewModel(
 
     init {
         viewModelScope.launch {
-            homesRepository.pagination.collect { pagination ->
+            homesRepository.homes.collect { homes ->
                 homesListViewModelState.value = homesListViewModelState.value.copy(
-                    pageIndex = pagination?.pageIndex ?: 0,
-                    homes = pagination?.value ?: emptyList(),
-                    canRequestMore = pagination?.canRequestMore ?: true,
+                    pageIndex = homes?.pageIndex ?: 0,
+                    homes = homes?.value ?: emptyList(),
+                    canRequestMore = homes?.canRequestMore ?: true,
                 )
             }
         }
@@ -80,7 +80,7 @@ internal class HomesListViewModel(
 
         requestHomesJob = viewModelScope.launch {
             homesRepository
-                .homes(
+                .requestMoreHomes(
                     currentPageIndex = homesListViewModelState.value.pageIndex
                 )
                 .onStart {
