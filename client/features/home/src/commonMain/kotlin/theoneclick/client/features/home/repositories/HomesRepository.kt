@@ -28,8 +28,8 @@ internal class MemoryHomesRepository(
     private val mutableHomesEntry = MutableStateFlow<HomesEntry?>(null)
     override val homesEntry: StateFlow<HomesEntry?> = mutableHomesEntry
 
-    override fun refreshHomes(): Flow<HomesResult> {
-        return remoteHomesDataSource
+    override fun refreshHomes(): Flow<HomesResult> =
+        remoteHomesDataSource
             .homes(
                 HomesRequestDto(
                     pageSize = defaultPageSize,
@@ -41,7 +41,6 @@ internal class MemoryHomesRepository(
                     mutableHomesEntry.emit(homesResult.homesEntry)
                 }
             }
-    }
 
     override fun requestMoreHomes(currentPageIndex: Int): Flow<HomesResult> =
         remoteHomesDataSource

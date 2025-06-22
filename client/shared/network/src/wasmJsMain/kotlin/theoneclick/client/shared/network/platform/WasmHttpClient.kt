@@ -3,7 +3,7 @@ package theoneclick.client.shared.network.platform
 import io.ktor.client.*
 import io.ktor.client.engine.*
 import io.ktor.client.plugins.*
-import io.ktor.client.plugins.compression.ContentEncoding
+import io.ktor.client.plugins.compression.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
@@ -13,8 +13,8 @@ import theoneclick.shared.contracts.core.agents.Agent
 fun wasmHttpClient(
     httpClientEngine: HttpClientEngine,
     logoutManager: LogoutManager,
-): HttpClient {
-    return HttpClient(httpClientEngine) {
+): HttpClient =
+    HttpClient(httpClientEngine) {
         install(ContentNegotiation) {
             json()
         }
@@ -33,4 +33,4 @@ fun wasmHttpClient(
             gzip()
         }
     }
-}
+

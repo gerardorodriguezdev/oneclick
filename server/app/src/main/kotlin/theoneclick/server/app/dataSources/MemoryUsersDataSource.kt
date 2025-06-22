@@ -3,9 +3,10 @@ package theoneclick.server.app.dataSources
 import theoneclick.server.app.dataSources.base.UsersDataSource
 import theoneclick.server.app.models.dtos.UserDto
 import theoneclick.shared.contracts.core.dtos.UuidDto
+import java.util.concurrent.ConcurrentHashMap
 
 class MemoryUsersDataSource : UsersDataSource {
-    private val users: MutableMap<UuidDto, UserDto> = mutableMapOf()
+    private val users = ConcurrentHashMap<UuidDto, UserDto>()
 
     override fun user(findable: UsersDataSource.Findable): UserDto? =
         when (findable) {

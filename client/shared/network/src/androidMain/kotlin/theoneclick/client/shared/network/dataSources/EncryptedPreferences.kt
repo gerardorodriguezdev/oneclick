@@ -61,8 +61,8 @@ class AndroidEncryptedPreferences(
         return value
     }
 
-    override suspend fun <T> putPreference(key: String, value: T, serializer: KSerializer<T>): Boolean {
-        return try {
+    override suspend fun <T> putPreference(key: String, value: T, serializer: KSerializer<T>): Boolean =
+        try {
             dataStore
                 .edit { preferences ->
                     val valueString = Json.encodeToString(serializer, value)
@@ -79,7 +79,6 @@ class AndroidEncryptedPreferences(
             clearPreference(key)
             false
         }
-    }
 
     override suspend fun clearPreference(key: String): Boolean =
         try {
