@@ -8,13 +8,14 @@ import theoneclick.client.features.home.models.HomesResult
 import theoneclick.client.features.home.repositories.HomesRepository.Companion.defaultPageSize
 import theoneclick.shared.contracts.core.dtos.NonNegativeIntDto
 import theoneclick.shared.contracts.core.dtos.PositiveIntDto
+import theoneclick.shared.contracts.core.dtos.PositiveLongDto
 import theoneclick.shared.contracts.core.dtos.requests.HomesRequestDto
 
 internal interface HomesRepository {
     val homesEntry: SharedFlow<HomesEntry?>
 
     fun refreshHomes(): Flow<HomesResult>
-    fun requestMoreHomes(currentPageIndex: Int): Flow<HomesResult>
+    fun requestMoreHomes(): Flow<HomesResult>
 
     companion object {
         val defaultPageSize = PositiveIntDto.unsafe(10)
@@ -22,7 +23,7 @@ internal interface HomesRepository {
 }
 
 @Inject
-internal class MemoryHomesRepository(
+internal class DefaultHomesRepository(
     private val remoteHomesDataSource: HomesDataSource,
 ) : HomesRepository {
     private val mutableHomesEntry = MutableStateFlow<HomesEntry?>(null)
@@ -31,7 +32,10 @@ internal class MemoryHomesRepository(
     override fun refreshHomes(): Flow<HomesResult> =
         remoteHomesDataSource
             .homes(
-                HomesRequestDto(
+                request = HomesRequestDto(
+                    lastModified = mutableHomesEntry.value?.lastModified?.let {
+                        PositiveLongDto.unsafe(it)
+                    },
                     pageSize = defaultPageSize,
                     pageIndex = NonNegativeIntDto.zero,
                 )
@@ -42,12 +46,26 @@ internal class MemoryHomesRepository(
                 }
             }
 
-    override fun requestMoreHomes(currentPageIndex: Int): Flow<HomesResult> =
-        remoteHomesDataSource
+    override fun requestMoreHomes(): Flow<HomesResult> {
+        val currentHomesEntry = mutableHomesEntry.value
+        if (currentHomesEntry != null && !currentHomesEntry.canRequestMore) {
+            return flow { emit(HomesResult.Success(homesEntry = null)) }
+        }
+
+        val pageIndex = currentHomesEntry?.pageIndex
+
+        return remoteHomesDataSource
             .homes(
-                HomesRequestDto(
+                request = HomesRequestDto(
+                    lastModified = mutableHomesEntry.value?.lastModified?.let {
+                        PositiveLongDto.unsafe(it)
+                    },
                     pageSize = defaultPageSize,
-                    pageIndex = NonNegativeIntDto.unsafe(currentPageIndex),
+                    pageIndex = if (pageIndex != null) {
+                        NonNegativeIntDto.unsafe(pageIndex)
+                    } else {
+                        NonNegativeIntDto.zero
+                    }
                 )
             )
             .onEach { homesResult ->
@@ -64,4 +82,5 @@ internal class MemoryHomesRepository(
                     )
                 }
             }
+    }
 }

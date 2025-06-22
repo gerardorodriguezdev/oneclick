@@ -35,9 +35,7 @@ internal class HomesListViewModel(
         viewModelScope.launch {
             homesRepository.homesEntry.collect { homes ->
                 homesListViewModelState.value = homesListViewModelState.value.copy(
-                    pageIndex = homes?.pageIndex ?: 0,
                     homes = homes?.homes ?: emptyList(),
-                    canRequestMore = homes?.canRequestMore ?: true,
                 )
             }
         }
@@ -66,7 +64,9 @@ internal class HomesListViewModel(
                 }
                 .collect { homesResult ->
                     when (homesResult) {
-                        is HomesResult.Success -> Unit // Observed at the start
+                        is HomesResult.Success,
+                        is HomesResult.NotChanged -> Unit // Observed at the start
+
                         is HomesResult.Error -> handleUnknownError()
                     }
                 }
@@ -74,15 +74,11 @@ internal class HomesListViewModel(
     }
 
     private fun handleEndReached() {
-        if (!homesListViewModelState.value.canRequestMore) return
-
         requestHomesJob?.cancel()
 
         requestHomesJob = viewModelScope.launch {
             homesRepository
-                .requestMoreHomes(
-                    currentPageIndex = homesListViewModelState.value.pageIndex
-                )
+                .requestMoreHomes()
                 .onStart {
                     homesListViewModelState.value = homesListViewModelState.value.copy(isPaginationLoading = true)
                 }
@@ -91,7 +87,9 @@ internal class HomesListViewModel(
                 }
                 .collect { homesResult ->
                     when (homesResult) {
-                        is HomesResult.Success -> Unit // Observed at the start
+                        is HomesResult.Success,
+                        is HomesResult.NotChanged -> Unit // Observed at the start
+
                         is HomesResult.Error -> handleUnknownError()
                     }
                 }
@@ -114,8 +112,6 @@ internal class HomesListViewModel(
 
     data class HomesListViewModelState(
         val homes: List<Home> = emptyList(),
-        val pageIndex: Int = 0,
-        val canRequestMore: Boolean = true,
         val isFullPageLoading: Boolean = false,
         val isPaginationLoading: Boolean = false,
     )

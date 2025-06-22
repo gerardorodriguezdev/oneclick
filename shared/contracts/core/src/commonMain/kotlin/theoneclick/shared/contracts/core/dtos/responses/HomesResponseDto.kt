@@ -7,13 +7,19 @@ import theoneclick.shared.contracts.core.dtos.PositiveLongDto
 
 @Serializable
 data class HomesResponseDto(
-    val data: Data?,
+    val data: DataDto?,
 ) {
-    @Serializable
-    data class Data(
-        val lastModified: PositiveLongDto,
-        val value: List<HomeDto>,
-        val pageIndex: NonNegativeIntDto,
-        val canRequestMore: Boolean,
-    )
+    sealed interface DataDto {
+
+        @Serializable
+        data object NotChanged : DataDto
+
+        @Serializable
+        data class Success(
+            val lastModified: PositiveLongDto,
+            val value: List<HomeDto>,
+            val pageIndex: NonNegativeIntDto,
+            val canRequestMore: Boolean,
+        ) : DataDto
+    }
 }

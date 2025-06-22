@@ -8,6 +8,7 @@ import theoneclick.server.app.extensions.defaultAuthentication
 import theoneclick.server.app.extensions.requireToken
 import theoneclick.server.app.repositories.HomesRepository
 import theoneclick.server.app.repositories.UsersRepository
+import theoneclick.shared.contracts.core.dtos.PositiveLongDto
 import theoneclick.shared.contracts.core.dtos.requests.HomesRequestDto
 import theoneclick.shared.contracts.core.dtos.responses.HomesResponseDto
 import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
@@ -29,18 +30,29 @@ fun Routing.homesListEndpoint(
                     currentPageIndex = homesRequestDto.pageIndex
                 )
 
-                call.respond(
-                    HomesResponseDto(
-                        data = homesEntry?.let {
-                            HomesResponseDto.Data(
-                                lastModified = homesEntry.value.lastModified,
+                if (homesEntry == null) {
+                    call.respond(HomesResponseDto(data = null))
+                } else {
+                    val requestLastModified = homesRequestDto.lastModified?.value
+                    val homesEntryLastModified = homesEntry.value.lastModified.value
+
+                    if (requestLastModified != null && homesEntryLastModified <= requestLastModified) {
+                        call.respond(
+                            HomesResponseDto(
+                                data = HomesResponseDto.DataDto.NotChanged
+                            )
+                        )
+                    } else {
+                        HomesResponseDto(
+                            data = HomesResponseDto.DataDto.Success(
+                                lastModified = PositiveLongDto.unsafe(homesEntryLastModified),
                                 value = homesEntry.value.homes,
                                 pageIndex = homesEntry.pageIndex,
                                 canRequestMore = homesEntry.pageIndex.value < homesEntry.totalPages.value,
                             )
-                        }
-                    )
-                )
+                        )
+                    }
+                }
             }
         }
     }
