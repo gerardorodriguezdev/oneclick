@@ -17,7 +17,7 @@ kotlin {
             dependencies {
                 implementation(libs.kmp.kotlin.inject)
                 implementation(libs.kmp.kotlin.inject.kmp)
-                implementation(libs.kmp.ktor.client.core)
+                implementation(ktorLibs.client.core)
                 implementation(projects.shared.dispatchers)
                 implementation(projects.shared.timeProvider)
                 implementation(projects.client.shared.network)

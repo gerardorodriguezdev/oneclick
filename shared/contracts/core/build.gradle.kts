@@ -20,7 +20,7 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.kmp.ktor.serialization.kotlinx.json)
+                implementation(ktorLibs.serialization.kotlinx.json)
             }
         }
     }

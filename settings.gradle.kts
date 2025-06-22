@@ -18,6 +18,12 @@ dependencyResolutionManagement {
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/ktor/eap")
     }
+
+    versionCatalogs {
+        create("ktorLibs") {
+            from("io.ktor:ktor-version-catalog:3.2.0")
+        }
+    }
 }
 
 include(

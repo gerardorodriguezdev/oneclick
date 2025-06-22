@@ -64,13 +64,13 @@ kotlin {
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
                 implementation(libs.kmp.coroutines)
-                implementation(libs.kmp.ktor.client.auth)
+                implementation(ktorLibs.client.auth)
                 implementation(libs.kmp.navigation)
                 implementation(libs.kmp.viewModel)
-                implementation(libs.kmp.ktor.serialization.kotlinx.json)
-                implementation(libs.kmp.ktor.client.core)
-                implementation(libs.kmp.ktor.client.content.negotiation)
-                implementation(libs.kmp.ktor.client.logging)
+                implementation(ktorLibs.serialization.kotlinx.json)
+                implementation(ktorLibs.client.core)
+                implementation(ktorLibs.client.contentNegotiation)
+                implementation(ktorLibs.client.logging)
                 implementation(libs.kmp.datetime)
                 implementation(libs.kmp.immutable)
                 implementation(libs.kmp.kotlin.inject)
@@ -101,7 +101,7 @@ kotlin {
             dependencies {
                 implementation(libs.kmp.test)
                 implementation(compose.uiTest)
-                implementation(libs.kmp.test.ktor.client.mock)
+                implementation(ktorLibs.client.mock)
                 implementation(libs.kmp.test.turbine)
             }
         }
@@ -110,7 +110,7 @@ kotlin {
             dependencies {
                 implementation(libs.android.activity)
                 implementation(libs.android.datastore)
-                implementation(libs.jvm.ktor.client.okhttp)
+                implementation(ktorLibs.client.okhttp)
             }
         }
 
