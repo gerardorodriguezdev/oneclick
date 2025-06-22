@@ -8,7 +8,6 @@ import theoneclick.server.app.extensions.defaultAuthentication
 import theoneclick.server.app.extensions.requireToken
 import theoneclick.server.app.repositories.HomesRepository
 import theoneclick.server.app.repositories.UsersRepository
-import theoneclick.shared.contracts.core.dtos.PaginationResultDto
 import theoneclick.shared.contracts.core.dtos.requests.HomesRequestDto
 import theoneclick.shared.contracts.core.dtos.responses.HomesResponseDto
 import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
@@ -24,26 +23,28 @@ fun Routing.homesListEndpoint(
             if (user == null) {
                 call.respond(HttpStatusCode.BadRequest)
             } else {
-                val currentPagination = homesRepository.homesEntry(
+                val pagination = homesRepository.homesEntry(
                     userId = user.userId,
                     pageSize = homesRequestDto.pageSize,
                     currentPageIndex = homesRequestDto.pageIndex
                 )
 
-                val newPagination = currentPagination?.let {
-                    PaginationResultDto(
-                        lastModified = currentPagination.lastModified,
-                        value = currentPagination.value.homes,
-                        pageIndex = currentPagination.pageIndex,
-                        totalPages = currentPagination.totalPages,
+                if (pagination == null) {
+                    call.respond(
+                        HomesResponseDto(data = null)
+                    )
+                } else {
+                    call.respond(
+                        HomesResponseDto(
+                            data = HomesResponseDto.Data(
+                                lastModified = pagination.value.lastModified,
+                                value = pagination.value.homes,
+                                pageIndex = pagination.pageIndex,
+                                canRequestMore = pagination.pageIndex.value < pagination.totalPages.value,
+                            )
+                        )
                     )
                 }
-
-                call.respond(
-                    HomesResponseDto(
-                        paginationResultDto = newPagination,
-                    )
-                )
             }
         }
     }

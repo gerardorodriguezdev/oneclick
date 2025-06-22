@@ -48,7 +48,6 @@ abstract class HomesDataSource {
         return PaginationResultDto(
             value = newHomesEntry,
             pageIndex = NonNegativeIntDto.unsafe(newPageIndex),
-            lastModified = newHomesEntry.lastModified,
             totalPages = NonNegativeIntDto.unsafe(homesEntry.homes.size),
         )
     }
