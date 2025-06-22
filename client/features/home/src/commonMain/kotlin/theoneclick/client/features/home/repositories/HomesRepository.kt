@@ -33,54 +33,59 @@ internal class DefaultHomesRepository(
         remoteHomesDataSource
             .homes(
                 request = HomesRequestDto(
-                    lastModified = mutableHomesEntry.value?.lastModified?.let {
-                        PositiveLongDto.unsafe(it)
-                    },
+                    lastModified = lastModifiedOrNull(),
                     pageSize = defaultPageSize,
                     pageIndex = NonNegativeIntDto.zero,
                 )
             )
-            .onEach { homesResult ->
-                if (homesResult is HomesResult.Success) {
-                    mutableHomesEntry.emit(homesResult.homesEntry)
-                }
-            }
+            .refreshCacheIfSuccess()
 
-    override fun requestMoreHomes(): Flow<HomesResult> {
-        val currentHomesEntry = mutableHomesEntry.value
-        if (currentHomesEntry != null && !currentHomesEntry.canRequestMore) {
-            return flow { emit(HomesResult.Success(homesEntry = null)) }
+    private fun Flow<HomesResult>.refreshCacheIfSuccess(): Flow<HomesResult> =
+        onEach { homesResult ->
+            if (homesResult is HomesResult.Success) {
+                mutableHomesEntry.emit(homesResult.homesEntry)
+            }
         }
 
-        val pageIndex = currentHomesEntry?.pageIndex
-
-        return remoteHomesDataSource
+    override fun requestMoreHomes(): Flow<HomesResult> =
+        remoteHomesDataSource
             .homes(
                 request = HomesRequestDto(
-                    lastModified = mutableHomesEntry.value?.lastModified?.let {
-                        PositiveLongDto.unsafe(it)
-                    },
+                    lastModified = lastModifiedOrNull(),
                     pageSize = defaultPageSize,
-                    pageIndex = if (pageIndex != null) {
-                        NonNegativeIntDto.unsafe(pageIndex)
-                    } else {
-                        NonNegativeIntDto.zero
-                    }
+                    pageIndex = pageIndex(),
                 )
             )
-            .onEach { homesResult ->
-                if (homesResult is HomesResult.Success && homesResult.homesEntry != null) {
-                    val currentHomes = mutableHomesEntry.value?.homes ?: emptyList()
-                    val newHomesEntry = homesResult.homesEntry
-                    mutableHomesEntry.emit(
-                        HomesEntry(
-                            lastModified = newHomesEntry.lastModified,
-                            homes = currentHomes + newHomesEntry.homes,
-                            pageIndex = newHomesEntry.pageIndex,
-                            canRequestMore = newHomesEntry.canRequestMore,
-                        )
+            .appendToCacheIfAvailable()
+
+    private fun Flow<HomesResult>.appendToCacheIfAvailable(): Flow<HomesResult> =
+        onEach { homesResult ->
+            if (homesResult is HomesResult.Success && homesResult.homesEntry != null) {
+                val currentHomes = mutableHomesEntry.value?.homes ?: emptyList()
+                val newHomesEntry = homesResult.homesEntry
+                mutableHomesEntry.emit(
+                    HomesEntry(
+                        lastModified = newHomesEntry.lastModified,
+                        homes = currentHomes + newHomesEntry.homes,
+                        pageIndex = newHomesEntry.pageIndex,
+                        canRequestMore = newHomesEntry.canRequestMore,
                     )
-                }
+                )
             }
+        }
+
+    private fun pageIndex(): NonNegativeIntDto {
+        val currentPageIndex = mutableHomesEntry.value?.pageIndex
+
+        return if (currentPageIndex != null) {
+            NonNegativeIntDto.unsafe(currentPageIndex)
+        } else {
+            NonNegativeIntDto.zero
+        }
     }
+
+    private fun lastModifiedOrNull(): PositiveLongDto? =
+        mutableHomesEntry.value?.lastModified?.let {
+            PositiveLongDto.unsafe(it)
+        }
 }

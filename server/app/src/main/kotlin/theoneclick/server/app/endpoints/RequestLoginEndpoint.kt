@@ -89,7 +89,7 @@ private suspend fun RoutingContext.handleSuccess(token: TokenDto) {
         Agent.MOBILE -> {
             call.respond(
                 RequestLoginResponseDto(
-                    token = TokenDto.unsafe(token.value)
+                    token = token
                 )
             )
         }
