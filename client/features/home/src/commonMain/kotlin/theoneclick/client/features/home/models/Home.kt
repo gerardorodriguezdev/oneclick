@@ -1,24 +1,72 @@
 package theoneclick.client.features.home.models
 
-data class Home(
+import theoneclick.client.features.home.models.Home.Room.Companion.toRoom
+import theoneclick.client.features.home.models.Home.Room.Device.Companion.toDevice
+import theoneclick.client.features.home.models.Home.Room.Device.WaterSensor.Companion.toWaterSensor
+import theoneclick.shared.contracts.core.dtos.DeviceDto
+import theoneclick.shared.contracts.core.dtos.HomeDto
+import theoneclick.shared.contracts.core.dtos.RoomDto
+
+internal class Home private constructor(
     val name: String,
     val rooms: List<Room>,
 ) {
-    data class Room(
+
+    companion object {
+        fun HomeDto.toHome(): Home =
+            Home(
+                name = name.value,
+                rooms = rooms.toRooms(),
+            )
+
+        private fun List<RoomDto>.toRooms(): List<Room> = map { it.toRoom() }
+    }
+
+    class Room private constructor(
         val name: String,
         val devices: List<Device>,
     ) {
+
+        companion object {
+            fun RoomDto.toRoom(): Room =
+                Room(
+                    name = name.value,
+                    devices = devices.toDevices()
+                )
+
+            private fun List<DeviceDto>.toDevices(): List<Device> = map { it.toDevice() }
+        }
+
         sealed interface Device {
             val id: String
             val name: String
 
-            data class WaterSensor(
+            class WaterSensor private constructor(
                 override val id: String,
                 override val name: String,
                 val from: Int,
                 val to: Int,
                 val level: Int,
-            ) : Device
+            ) : Device {
+
+                companion object {
+                    fun DeviceDto.WaterSensorDto.toWaterSensor(): WaterSensor =
+                        WaterSensor(
+                            id = id.value,
+                            name = name.value,
+                            from = range.start.value,
+                            to = range.end.value,
+                            level = level.value,
+                        )
+                }
+            }
+
+            companion object {
+                fun DeviceDto.toDevice(): Device =
+                    when (this) {
+                        is DeviceDto.WaterSensorDto -> toWaterSensor()
+                    }
+            }
         }
     }
 }

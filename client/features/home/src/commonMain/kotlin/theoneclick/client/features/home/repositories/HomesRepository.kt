@@ -64,12 +64,7 @@ internal class DefaultHomesRepository(
                 val currentHomes = mutableHomesEntry.value?.homes ?: emptyList()
                 val newHomesEntry = homesResult.homesEntry
                 mutableHomesEntry.emit(
-                    HomesEntry(
-                        lastModified = newHomesEntry.lastModified,
-                        homes = currentHomes + newHomesEntry.homes,
-                        pageIndex = newHomesEntry.pageIndex,
-                        canRequestMore = newHomesEntry.canRequestMore,
-                    )
+                    newHomesEntry.prepend(currentHomes)
                 )
             }
         }
