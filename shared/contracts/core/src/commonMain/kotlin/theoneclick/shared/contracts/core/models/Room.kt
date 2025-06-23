@@ -12,13 +12,13 @@ class Room private constructor(
         require(isValid(devices)) { ERROR_MESSAGE }
     }
 
-    companion object Companion {
+    companion object {
         private const val ERROR_MESSAGE = "Duplicated device id"
 
         fun isValid(devices: List<Device>): Boolean =
-            devices.containsDuplicatesBy { deviceDto -> deviceDto.id }
+            devices.containsDuplicatesBy { it.id }
 
-        fun roomDto(name: RoomName, devices: List<Device>): Room? =
+        fun room(name: RoomName, devices: List<Device>): Room? =
             if (isValid(devices)) {
                 Room(
                     name = name,

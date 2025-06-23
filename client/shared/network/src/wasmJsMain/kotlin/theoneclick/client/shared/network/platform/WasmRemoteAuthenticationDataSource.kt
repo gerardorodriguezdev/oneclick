@@ -36,8 +36,8 @@ class WasmRemoteAuthenticationDataSource(
 
     private fun UserLoggedResponse.toUserLoggedResult(): UserLoggedResult =
         when (this) {
-            is UserLoggedResponse.LoggedDto -> UserLoggedResult.Logged
-            is UserLoggedResponse.NotLoggedDto -> UserLoggedResult.NotLogged
+            is UserLoggedResponse.Logged -> UserLoggedResult.Logged
+            is UserLoggedResponse.NotLogged -> UserLoggedResult.NotLogged
         }
 
     override fun login(request: RequestLoginRequest): Flow<RequestLoginResult> =

@@ -12,11 +12,10 @@ class Home private constructor(
         require(isValid(rooms)) { ERROR_MESSAGE }
     }
 
-    companion object Companion {
+    companion object {
         private const val ERROR_MESSAGE = "Duplicated room name"
 
-        fun isValid(rooms: List<Room>): Boolean =
-            rooms.containsDuplicatesBy { roomDto -> roomDto.name }
+        fun isValid(rooms: List<Room>): Boolean = rooms.containsDuplicatesBy { it.name }
 
         fun home(name: HomeName, rooms: List<Room>): Home? =
             if (isValid(rooms)) {

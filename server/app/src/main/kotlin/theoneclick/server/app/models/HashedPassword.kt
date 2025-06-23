@@ -6,7 +6,7 @@ import theoneclick.server.app.security.Encryptor
 @Serializable
 @JvmInline
 value class HashedPassword(val value: String) {
-    companion object Companion {
+    companion object {
         fun Encryptor.create(value: String): HashedPassword = HashedPassword(value)
     }
 }

@@ -14,9 +14,9 @@ fun Routing.isUserLoggedEndpoint() {
             val token = call.principal<Token>()
 
             if (token == null) {
-                call.respond<UserLoggedResponse>(UserLoggedResponse.NotLoggedDto)
+                call.respond<UserLoggedResponse>(UserLoggedResponse.NotLogged)
             } else {
-                call.respond<UserLoggedResponse>(UserLoggedResponse.LoggedDto)
+                call.respond<UserLoggedResponse>(UserLoggedResponse.Logged)
             }
         }
     }

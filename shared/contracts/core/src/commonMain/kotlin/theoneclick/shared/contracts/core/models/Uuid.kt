@@ -15,7 +15,7 @@ class Uuid private constructor(val value: String) {
 
     override fun toString(): String = value
 
-    companion object Companion {
+    companion object {
         private const val ERROR_MESSAGE = "Invalid uuid"
 
         private val REGEX = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$".toRegex()

@@ -10,16 +10,15 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import theoneclick.server.mock.utils.mockHomes
 import theoneclick.server.shared.extensions.agent
-import theoneclick.shared.contracts.core.models.agents.Agent
 import theoneclick.shared.contracts.core.models.NonNegativeInt
-import theoneclick.shared.contracts.core.models.PaginationResult
 import theoneclick.shared.contracts.core.models.PositiveLong
 import theoneclick.shared.contracts.core.models.Token
+import theoneclick.shared.contracts.core.models.agents.Agent
+import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.contracts.core.models.requests.RequestLoginRequest
 import theoneclick.shared.contracts.core.models.responses.HomesResponse
 import theoneclick.shared.contracts.core.models.responses.RequestLoginResponse
 import theoneclick.shared.contracts.core.models.responses.UserLoggedResponse
-import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 fun server(): EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration> =
     embeddedServer(
@@ -40,7 +39,7 @@ private fun Application.configureContentNegotiation() {
 private fun Application.configureRouting() {
     routing {
         get(ClientEndpoint.IS_USER_LOGGED.route) {
-            call.respond<UserLoggedResponse>(UserLoggedResponse.LoggedDto)
+            call.respond<UserLoggedResponse>(UserLoggedResponse.Logged)
         }
 
         post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
@@ -53,11 +52,11 @@ private fun Application.configureRouting() {
         get(ClientEndpoint.HOMES.route) {
             call.respond(
                 HomesResponse(
-                    paginationResultDto = PaginationResult(
+                    data = HomesResponse.Data.Success(
                         lastModified = PositiveLong.unsafe(1),
                         value = mockHomes(5),
                         pageIndex = NonNegativeInt.unsafe(5),
-                        totalPages = NonNegativeInt.unsafe(10),
+                        canRequestMore = true,
                     )
                 )
             )

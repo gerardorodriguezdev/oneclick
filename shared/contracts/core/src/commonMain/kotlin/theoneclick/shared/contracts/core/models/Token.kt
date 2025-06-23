@@ -11,7 +11,7 @@ value class Token private constructor(val value: String) {
         require(isValid(value)) { ERROR_MESSAGE }
     }
 
-    companion object Companion {
+    companion object {
         private const val ERROR_MESSAGE = "Invalid token"
 
         private val REGEX = "^[A-Za-z0-9+/]+={0,2}$".toRegex()

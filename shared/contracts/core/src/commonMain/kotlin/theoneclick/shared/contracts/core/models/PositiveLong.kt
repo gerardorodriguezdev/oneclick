@@ -13,12 +13,12 @@ value class PositiveLong private constructor(val value: Long) : Comparable<Posit
 
     override fun compareTo(other: PositiveLong): Int = value.compareTo(other.value)
 
-    companion object Companion {
+    companion object {
         private const val ERROR_MESSAGE = "Value must be non-negative"
 
         fun isValid(value: Long): Boolean = value >= 0
 
-        fun Long.toPositiveLongDto(): PositiveLong? = if (isValid(this)) PositiveLong(this) else null
+        fun Long.toPositiveLong(): PositiveLong? = if (isValid(this)) PositiveLong(this) else null
 
         fun unsafe(value: Long): PositiveLong = PositiveLong(value)
     }

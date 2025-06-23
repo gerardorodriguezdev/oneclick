@@ -1,29 +1,12 @@
 package theoneclick.client.features.home.models
 
-import theoneclick.client.features.home.mappers.toHomes
-import theoneclick.shared.contracts.core.models.responses.HomesResponse
+import theoneclick.shared.contracts.core.models.Home
+import theoneclick.shared.contracts.core.models.NonNegativeInt
+import theoneclick.shared.contracts.core.models.PositiveLong
 
-internal class HomesEntry private constructor(
-    val lastModified: Long,
-    val homes: List<Home>,
-    val pageIndex: Int,
+data class HomesEntry(
+    val lastModified: PositiveLong,
+    val homes: List<Home>, //TODO: Replace for unique list
+    val pageIndex: NonNegativeInt,
     val canRequestMore: Boolean,
-) {
-    fun prepend(previousHomes: List<Home>): HomesEntry =
-        HomesEntry(
-            lastModified = lastModified,
-            homes = previousHomes + homes,
-            pageIndex = pageIndex,
-            canRequestMore = canRequestMore,
-        )
-
-    companion object {
-        fun HomesResponse.Data.Success.toHomesEntry(): HomesEntry =
-            HomesEntry(
-                lastModified = lastModified.value,
-                homes = value.toHomes(),
-                pageIndex = pageIndex.value,
-                canRequestMore = canRequestMore,
-            )
-    }
-}
+)

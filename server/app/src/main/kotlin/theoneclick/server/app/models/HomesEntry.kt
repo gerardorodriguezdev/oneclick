@@ -10,17 +10,17 @@ import theoneclick.shared.contracts.core.models.Uuid
 class HomesEntry private constructor(
     val userId: Uuid,
     val lastModified: PositiveLong,
-    val homes: List<Home>,
+    val homes: List<Home>, //TODO: Replace for unique list
 ) {
     init {
         require(isValid(homes)) { ERROR_MESSAGE }
     }
 
-    companion object Companion {
+    companion object {
         private const val ERROR_MESSAGE = "Duplicated homes name"
 
         fun isValid(homes: List<Home>): Boolean =
-            homes.containsDuplicatesBy { homeDto -> homeDto.name }
+            homes.containsDuplicatesBy { it.name }
 
         fun homesEntry(
             userId: Uuid,

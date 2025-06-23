@@ -13,14 +13,14 @@ value class NonNegativeInt private constructor(val value: Int) : Comparable<NonN
 
     override fun compareTo(other: NonNegativeInt): Int = value.compareTo(other.value)
 
-    companion object Companion {
+    companion object {
         private const val ERROR_MESSAGE = "Value must be non-negative"
 
         val zero = NonNegativeInt(0)
 
         fun isValid(value: Int): Boolean = value >= 0
 
-        fun Int.toNonNegativeIntDto(): NonNegativeInt? = if (isValid(this)) NonNegativeInt(this) else null
+        fun Int.toNonNegativeInt(): NonNegativeInt? = if (isValid(this)) NonNegativeInt(this) else null
 
         fun unsafe(value: Int): NonNegativeInt = NonNegativeInt(value)
     }

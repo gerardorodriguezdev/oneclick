@@ -13,12 +13,12 @@ class PositiveIntRange private constructor(
 
     fun inRange(value: NonNegativeInt): Boolean = value in start..end
 
-    companion object Companion {
+    companion object {
         private const val ERROR_MESSAGE = "End was bigger than start"
 
         private fun isValid(start: NonNegativeInt, end: NonNegativeInt): Boolean = start <= end
 
-        fun positiveIntRangeDto(start: NonNegativeInt, end: NonNegativeInt): PositiveIntRange? =
+        fun positiveIntRange(start: NonNegativeInt, end: NonNegativeInt): PositiveIntRange? =
             if (isValid(start = start, end = end)) {
                 PositiveIntRange(start = start, end = end)
             } else {

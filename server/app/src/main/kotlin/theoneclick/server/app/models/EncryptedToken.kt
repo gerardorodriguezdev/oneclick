@@ -9,7 +9,7 @@ class EncryptedToken private constructor(
     val token: Token,
     val creationTimeInMillis: Long,
 ) {
-    companion object Companion {
+    companion object {
         fun Encryptor.create(
             token: String,
             creationTimeInMillis: Long,

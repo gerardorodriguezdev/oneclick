@@ -19,7 +19,7 @@ sealed interface Device {
             require(isValid(level = level, range = range)) { ERROR_MESSAGE }
         }
 
-        companion object Companion {
+        companion object {
             private const val ERROR_MESSAGE = "Level not in range"
 
             private fun isValid(level: NonNegativeInt, range: PositiveIntRange): Boolean = range.inRange(level)

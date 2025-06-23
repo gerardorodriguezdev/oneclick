@@ -11,7 +11,7 @@ value class Password private constructor(val value: String) {
         require(isValid(value)) { ERROR_MESSAGE }
     }
 
-    companion object Companion {
+    companion object {
         private const val ERROR_MESSAGE = "Invalid password"
 
         private val REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=!])(?=\\S+$).{8,20}$".toRegex()

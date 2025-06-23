@@ -6,8 +6,8 @@ import kotlinx.serialization.Serializable
 sealed interface UserLoggedResponse {
 
     @Serializable
-    data object LoggedDto : UserLoggedResponse
+    data object Logged : UserLoggedResponse
 
     @Serializable
-    data object NotLoggedDto : UserLoggedResponse
+    data object NotLogged : UserLoggedResponse
 }
