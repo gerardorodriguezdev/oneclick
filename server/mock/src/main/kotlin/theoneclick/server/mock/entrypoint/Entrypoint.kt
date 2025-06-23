@@ -10,16 +10,16 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import theoneclick.server.mock.utils.mockHomes
 import theoneclick.server.shared.extensions.agent
-import theoneclick.shared.contracts.core.agents.Agent
-import theoneclick.shared.contracts.core.dtos.NonNegativeIntDto
-import theoneclick.shared.contracts.core.dtos.PaginationResultDto
-import theoneclick.shared.contracts.core.dtos.PositiveLongDto
-import theoneclick.shared.contracts.core.dtos.TokenDto
-import theoneclick.shared.contracts.core.dtos.requests.RequestLoginRequestDto
-import theoneclick.shared.contracts.core.dtos.responses.HomesResponseDto
-import theoneclick.shared.contracts.core.dtos.responses.RequestLoginResponseDto
-import theoneclick.shared.contracts.core.dtos.responses.UserLoggedResponseDto
-import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
+import theoneclick.shared.contracts.core.models.agents.Agent
+import theoneclick.shared.contracts.core.models.NonNegativeInt
+import theoneclick.shared.contracts.core.models.PaginationResult
+import theoneclick.shared.contracts.core.models.PositiveLong
+import theoneclick.shared.contracts.core.models.Token
+import theoneclick.shared.contracts.core.models.requests.RequestLoginRequestDto
+import theoneclick.shared.contracts.core.models.responses.HomesResponseDto
+import theoneclick.shared.contracts.core.models.responses.RequestLoginResponseDto
+import theoneclick.shared.contracts.core.models.responses.UserLoggedResponseDto
+import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 fun server(): EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration> =
     embeddedServer(
@@ -45,7 +45,7 @@ private fun Application.configureRouting() {
 
         post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequestDto: RequestLoginRequestDto ->
             when (call.request.agent) {
-                Agent.MOBILE -> call.respond(RequestLoginResponseDto(token = TokenDto.unsafe("token")))
+                Agent.MOBILE -> call.respond(RequestLoginResponseDto(token = Token.unsafe("token")))
                 Agent.BROWSER -> call.respond(HttpStatusCode.OK)
             }
         }
@@ -53,11 +53,11 @@ private fun Application.configureRouting() {
         get(ClientEndpoint.HOMES.route) {
             call.respond(
                 HomesResponseDto(
-                    paginationResultDto = PaginationResultDto(
-                        lastModified = PositiveLongDto.unsafe(1),
+                    paginationResultDto = PaginationResult(
+                        lastModified = PositiveLong.unsafe(1),
                         value = mockHomes(5),
-                        pageIndex = NonNegativeIntDto.unsafe(5),
-                        totalPages = NonNegativeIntDto.unsafe(10),
+                        pageIndex = NonNegativeInt.unsafe(5),
+                        totalPages = NonNegativeInt.unsafe(10),
                     )
                 )
             )

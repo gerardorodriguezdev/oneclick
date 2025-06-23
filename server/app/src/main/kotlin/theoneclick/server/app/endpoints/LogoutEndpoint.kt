@@ -7,7 +7,7 @@ import theoneclick.server.app.dataSources.base.UsersDataSource
 import theoneclick.server.app.extensions.defaultAuthentication
 import theoneclick.server.app.extensions.requireToken
 import theoneclick.server.app.repositories.UsersRepository
-import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
+import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 fun Routing.logoutEndpoint(usersRepository: UsersRepository) {
     defaultAuthentication {

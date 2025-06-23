@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.flowOn
 import theoneclick.client.shared.network.models.LogoutResult
 import theoneclick.client.shared.network.models.RequestLoginResult
 import theoneclick.client.shared.network.models.UserLoggedResult
-import theoneclick.shared.contracts.core.dtos.requests.RequestLoginRequestDto
-import theoneclick.shared.contracts.core.dtos.responses.UserLoggedResponseDto
-import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
+import theoneclick.shared.contracts.core.models.requests.RequestLoginRequestDto
+import theoneclick.shared.contracts.core.models.responses.UserLoggedResponseDto
+import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.logging.AppLogger
 

@@ -1,17 +1,17 @@
 package theoneclick.server.app.dataSources.base
 
-import theoneclick.server.app.models.dtos.UserDto
-import theoneclick.shared.contracts.core.dtos.TokenDto
-import theoneclick.shared.contracts.core.dtos.UsernameDto
-import theoneclick.shared.contracts.core.dtos.UuidDto
+import theoneclick.server.app.models.User
+import theoneclick.shared.contracts.core.models.Token
+import theoneclick.shared.contracts.core.models.Username
+import theoneclick.shared.contracts.core.models.Uuid
 
 interface UsersDataSource {
-    fun user(findable: Findable): UserDto?
-    fun saveUser(user: UserDto)
+    fun user(findable: Findable): User?
+    fun saveUser(user: User)
 
     sealed interface Findable {
-        data class ByUserId(val userId: UuidDto) : Findable
-        data class ByToken(val token: TokenDto) : Findable
-        data class ByUsername(val username: UsernameDto) : Findable
+        data class ByUserId(val userId: Uuid) : Findable
+        data class ByToken(val token: Token) : Findable
+        data class ByUsername(val username: Username) : Findable
     }
 }

@@ -3,7 +3,7 @@ package theoneclick.server.app.extensions
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 import theoneclick.server.app.plugins.authentication.AuthenticationConstants
-import theoneclick.shared.contracts.core.dtos.TokenDto
+import theoneclick.shared.contracts.core.models.Token
 
 fun Routing.defaultAuthentication(
     optional: Boolean = false,
@@ -18,4 +18,4 @@ fun Routing.defaultAuthentication(
         build = block,
     )
 
-fun RoutingContext.requireToken(): TokenDto = requireNotNull(call.principal<TokenDto>())
+fun RoutingContext.requireToken(): Token = requireNotNull(call.principal<Token>())

@@ -3,9 +3,7 @@ package theoneclick.client.features.home.models
 import theoneclick.client.features.home.models.Home.Room.Companion.toRoom
 import theoneclick.client.features.home.models.Home.Room.Device.Companion.toDevice
 import theoneclick.client.features.home.models.Home.Room.Device.WaterSensor.Companion.toWaterSensor
-import theoneclick.shared.contracts.core.dtos.DeviceDto
-import theoneclick.shared.contracts.core.dtos.HomeDto
-import theoneclick.shared.contracts.core.dtos.RoomDto
+import theoneclick.shared.contracts.core.models.Home
 
 internal class Home private constructor(
     val name: String,
@@ -13,13 +11,13 @@ internal class Home private constructor(
 ) {
 
     companion object {
-        fun HomeDto.toHome(): Home =
+        fun Home.toHome(): Home =
             Home(
                 name = name.value,
                 rooms = rooms.toRooms(),
             )
 
-        private fun List<RoomDto>.toRooms(): List<Room> = map { it.toRoom() }
+        private fun List<theoneclick.shared.contracts.core.models.Room>.toRooms(): List<Room> = map { it.toRoom() }
     }
 
     class Room private constructor(
@@ -28,13 +26,13 @@ internal class Home private constructor(
     ) {
 
         companion object {
-            fun RoomDto.toRoom(): Room =
+            fun theoneclick.shared.contracts.core.models.Room.toRoom(): Room =
                 Room(
                     name = name.value,
                     devices = devices.toDevices()
                 )
 
-            private fun List<DeviceDto>.toDevices(): List<Device> = map { it.toDevice() }
+            private fun List<theoneclick.shared.contracts.core.models.Device>.toDevices(): List<Device> = map { it.toDevice() }
         }
 
         sealed interface Device {
@@ -50,7 +48,7 @@ internal class Home private constructor(
             ) : Device {
 
                 companion object {
-                    fun DeviceDto.WaterSensorDto.toWaterSensor(): WaterSensor =
+                    fun theoneclick.shared.contracts.core.dtos.DeviceDto.WaterSensor.toWaterSensor(): WaterSensor =
                         WaterSensor(
                             id = id.value,
                             name = name.value,
@@ -62,9 +60,9 @@ internal class Home private constructor(
             }
 
             companion object {
-                fun DeviceDto.toDevice(): Device =
+                fun theoneclick.shared.contracts.core.models.Device.toDevice(): Device =
                     when (this) {
-                        is DeviceDto.WaterSensorDto -> toWaterSensor()
+                        is theoneclick.shared.contracts.core.dtos.DeviceDto.WaterSensor -> toWaterSensor()
                     }
             }
         }

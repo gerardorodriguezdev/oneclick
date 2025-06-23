@@ -7,7 +7,7 @@ import io.ktor.server.response.*
 import theoneclick.server.app.dataSources.AuthenticationDataSource
 import theoneclick.server.app.plugins.authentication.AuthenticationConstants.SESSION_AUTHENTICATION
 import theoneclick.server.app.plugins.authentication.AuthenticationConstants.TOKEN_AUTHENTICATION
-import theoneclick.shared.contracts.core.dtos.TokenDto
+import theoneclick.shared.contracts.core.models.Token
 
 fun Application.configureAuthentication(authenticationDataSource: AuthenticationDataSource) {
     install(Authentication) {
@@ -17,7 +17,7 @@ fun Application.configureAuthentication(authenticationDataSource: Authentication
 }
 
 private fun AuthenticationConfig.registerSessionAuthentication(authenticationDataSource: AuthenticationDataSource) {
-    session<TokenDto>(SESSION_AUTHENTICATION) {
+    session<Token>(SESSION_AUTHENTICATION) {
         validate { token ->
             if (authenticationDataSource.isUserSessionValid(token)) token else null
         }
@@ -34,7 +34,7 @@ private fun AuthenticationConfig.registerTokenAuthentication(authenticationDataS
 
         authenticate { tokenCredential ->
             if (authenticationDataSource.isUserSessionValid(tokenCredential.token)) {
-                TokenDto.unsafe(tokenCredential.token)
+                Token.unsafe(tokenCredential.token)
             } else {
                 null
             }

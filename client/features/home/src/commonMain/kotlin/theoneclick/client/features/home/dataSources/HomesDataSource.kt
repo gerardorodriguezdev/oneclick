@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.flowOn
 import me.tatarka.inject.annotations.Inject
 import theoneclick.client.features.home.models.HomesEntry.Companion.toHomesEntry
 import theoneclick.client.features.home.models.HomesResult
-import theoneclick.shared.contracts.core.dtos.requests.HomesRequestDto
-import theoneclick.shared.contracts.core.dtos.responses.HomesResponseDto
-import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
+import theoneclick.shared.contracts.core.models.requests.HomesRequestDto
+import theoneclick.shared.contracts.core.models.responses.HomesResponseDto
+import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.logging.AppLogger
 

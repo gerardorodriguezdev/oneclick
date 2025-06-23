@@ -1,15 +1,18 @@
 package theoneclick.server.app.repositories
 
 import theoneclick.server.app.dataSources.base.HomesDataSource
-import theoneclick.server.app.models.dtos.HomesEntryDto
-import theoneclick.shared.contracts.core.dtos.*
+import theoneclick.server.app.models.HomesEntry
+import theoneclick.shared.contracts.core.models.NonNegativeInt
+import theoneclick.shared.contracts.core.models.PaginationResult
+import theoneclick.shared.contracts.core.models.PositiveInt
+import theoneclick.shared.contracts.core.models.Uuid
 
 interface HomesRepository {
     fun homesEntry(
-        userId: UuidDto,
-        pageSize: PositiveIntDto,
-        currentPageIndex: NonNegativeIntDto,
-    ): PaginationResultDto<HomesEntryDto>?
+        userId: Uuid,
+        pageSize: PositiveInt,
+        currentPageIndex: NonNegativeInt,
+    ): PaginationResult<HomesEntry>?
 }
 
 class DefaultHomesRepository(
@@ -18,10 +21,10 @@ class DefaultHomesRepository(
 ) : HomesRepository {
 
     override fun homesEntry(
-        userId: UuidDto,
-        pageSize: PositiveIntDto,
-        currentPageIndex: NonNegativeIntDto,
-    ): PaginationResultDto<HomesEntryDto>? {
+        userId: Uuid,
+        pageSize: PositiveInt,
+        currentPageIndex: NonNegativeInt,
+    ): PaginationResult<HomesEntry>? {
         val memoryHomes = memoryHomesDataSource.homesEntry(userId, pageSize, currentPageIndex)
         if (memoryHomes != null) return memoryHomes
 

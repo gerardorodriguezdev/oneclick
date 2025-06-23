@@ -6,16 +6,16 @@ import io.ktor.server.routing.*
 import theoneclick.server.app.dataSources.base.UsersDataSource
 import theoneclick.server.app.extensions.defaultAuthentication
 import theoneclick.server.app.extensions.requireToken
-import theoneclick.server.app.models.dtos.HomesEntryDto
-import theoneclick.server.app.models.dtos.UserDto
+import theoneclick.server.app.models.HomesEntry
+import theoneclick.server.app.models.User
 import theoneclick.server.app.repositories.HomesRepository
 import theoneclick.server.app.repositories.UsersRepository
-import theoneclick.shared.contracts.core.dtos.PaginationResultDto
-import theoneclick.shared.contracts.core.dtos.PositiveLongDto
-import theoneclick.shared.contracts.core.dtos.requests.HomesRequestDto
-import theoneclick.shared.contracts.core.dtos.responses.HomesResponseDto
-import theoneclick.shared.contracts.core.dtos.responses.HomesResponseDto.DataDto
-import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
+import theoneclick.shared.contracts.core.models.PaginationResult
+import theoneclick.shared.contracts.core.models.PositiveLong
+import theoneclick.shared.contracts.core.models.requests.HomesRequestDto
+import theoneclick.shared.contracts.core.models.responses.HomesResponseDto
+import theoneclick.shared.contracts.core.models.responses.HomesResponseDto.DataDto
+import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 fun Routing.homesListEndpoint(
     usersRepository: UsersRepository,
@@ -39,7 +39,7 @@ fun Routing.homesListEndpoint(
 }
 
 private suspend fun RoutingContext.handleUserAvailable(
-    user: UserDto,
+    user: User,
     homesRepository: HomesRepository,
     homesRequestDto: HomesRequestDto
 ) {
@@ -75,11 +75,11 @@ private suspend fun RoutingContext.handleNotChanged() {
     )
 }
 
-private suspend fun RoutingContext.handleSuccess(homesEntry: PaginationResultDto<HomesEntryDto>) {
+private suspend fun RoutingContext.handleSuccess(homesEntry: PaginationResult<HomesEntry>) {
     call.respond(
         HomesResponseDto(
             data = DataDto.Success(
-                lastModified = PositiveLongDto.unsafe(homesEntry.value.lastModified.value),
+                lastModified = PositiveLong.unsafe(homesEntry.value.lastModified.value),
                 value = homesEntry.value.homes,
                 pageIndex = homesEntry.pageIndex,
                 canRequestMore = homesEntry.pageIndex.value < homesEntry.totalPages.value,

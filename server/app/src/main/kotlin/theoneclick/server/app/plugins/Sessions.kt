@@ -8,7 +8,7 @@ import theoneclick.server.app.di.Environment
 import theoneclick.server.app.plugins.authentication.AuthenticationConstants.COOKIE_SESSION_DURATION_IN_SECONDS
 import theoneclick.server.app.plugins.authentication.AuthenticationConstants.USER_SESSION
 import theoneclick.server.app.security.IvGenerator
-import theoneclick.shared.contracts.core.dtos.TokenDto
+import theoneclick.shared.contracts.core.models.Token
 
 fun Application.configureSessions(
     environment: Environment,
@@ -17,7 +17,7 @@ fun Application.configureSessions(
     val sessionTransformer = sessionTransformer(environment, ivGenerator)
 
     install(Sessions) {
-        cookie<TokenDto>(USER_SESSION) {
+        cookie<Token>(USER_SESSION) {
             cookie.path = "/"
             cookie.maxAgeInSeconds = COOKIE_SESSION_DURATION_IN_SECONDS
             cookie.secure = true

@@ -3,12 +3,12 @@ package theoneclick.server.app.dataSources
 import io.ktor.util.logging.Logger
 import kotlinx.serialization.json.Json
 import theoneclick.server.app.dataSources.base.HomesDataSource
-import theoneclick.server.app.models.dtos.HomesEntryDto
+import theoneclick.server.app.models.HomesEntry
 import theoneclick.server.app.security.Encryptor
-import theoneclick.shared.contracts.core.dtos.NonNegativeIntDto
-import theoneclick.shared.contracts.core.dtos.PaginationResultDto
-import theoneclick.shared.contracts.core.dtos.PositiveIntDto
-import theoneclick.shared.contracts.core.dtos.UuidDto
+import theoneclick.shared.contracts.core.models.NonNegativeInt
+import theoneclick.shared.contracts.core.models.PaginationResult
+import theoneclick.shared.contracts.core.models.PositiveInt
+import theoneclick.shared.contracts.core.models.Uuid
 import java.io.File
 import kotlin.collections.forEach
 
@@ -19,10 +19,10 @@ class DiskHomesDataSource(
 ) : HomesDataSource() {
 
     override fun homesEntry(
-        userId: UuidDto,
-        pageSize: PositiveIntDto,
-        currentPageIndex: NonNegativeIntDto
-    ): PaginationResultDto<HomesEntryDto>? {
+        userId: Uuid,
+        pageSize: PositiveInt,
+        currentPageIndex: NonNegativeInt
+    ): PaginationResult<HomesEntry>? {
         val homesEntry = findHomesEntry { homes -> homes.userId == userId } ?: return null
         return paginateHomesEntry(
             homesEntry = homesEntry,
@@ -31,13 +31,13 @@ class DiskHomesDataSource(
         )
     }
 
-    private fun findHomesEntry(predicate: (homesEntry: HomesEntryDto) -> Boolean): HomesEntryDto? =
+    private fun findHomesEntry(predicate: (homesEntry: HomesEntry) -> Boolean): HomesEntry? =
         try {
             val homesEntriesFiles = homesEntriesFiles()
             homesEntriesFiles.forEach { homesEntryFile ->
                 val encryptedHomesEntryBytes = homesEntryFile.readBytes()
                 val homesEntryString = encryptor.decrypt(input = encryptedHomesEntryBytes).getOrThrow()
-                val homesEntry = Json.Default.decodeFromString<HomesEntryDto>(homesEntryString)
+                val homesEntry = Json.Default.decodeFromString<HomesEntry>(homesEntryString)
                 if (predicate(homesEntry)) return homesEntry
             }
             null
@@ -46,7 +46,7 @@ class DiskHomesDataSource(
             null
         }
 
-    private fun homesEntryFile(userId: UuidDto): File = File(homesEntriesDirectory, homesEntryFileName(userId))
+    private fun homesEntryFile(userId: Uuid): File = File(homesEntriesDirectory, homesEntryFileName(userId))
 
     private fun homesEntriesFiles(): Array<File> =
         homesEntriesDirectory.listFiles { file ->
@@ -56,7 +56,7 @@ class DiskHomesDataSource(
     companion object {
         private const val HOMES_ENTRIES_DIRECTORY_NAME = "homes"
         private const val HOMES_ENTRY_FILE_NAME_SUFFIX = "homes.txt"
-        private fun homesEntryFileName(userId: UuidDto): String = "${userId.value}.$HOMES_ENTRY_FILE_NAME_SUFFIX"
+        private fun homesEntryFileName(userId: Uuid): String = "${userId.value}.$HOMES_ENTRY_FILE_NAME_SUFFIX"
         fun homesEntriesDirectory(storageDirectory: String): File =
             File(storageDirectory, HOMES_ENTRIES_DIRECTORY_NAME).apply {
                 if (!exists()) {

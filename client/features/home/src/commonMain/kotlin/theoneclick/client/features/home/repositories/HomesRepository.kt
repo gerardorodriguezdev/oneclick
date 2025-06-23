@@ -6,10 +6,10 @@ import theoneclick.client.features.home.dataSources.HomesDataSource
 import theoneclick.client.features.home.models.HomesEntry
 import theoneclick.client.features.home.models.HomesResult
 import theoneclick.client.features.home.repositories.HomesRepository.Companion.defaultPageSize
-import theoneclick.shared.contracts.core.dtos.NonNegativeIntDto
-import theoneclick.shared.contracts.core.dtos.PositiveIntDto
-import theoneclick.shared.contracts.core.dtos.PositiveLongDto
-import theoneclick.shared.contracts.core.dtos.requests.HomesRequestDto
+import theoneclick.shared.contracts.core.models.NonNegativeInt
+import theoneclick.shared.contracts.core.models.PositiveInt
+import theoneclick.shared.contracts.core.models.PositiveLong
+import theoneclick.shared.contracts.core.models.requests.HomesRequestDto
 
 internal interface HomesRepository {
     val homesEntry: SharedFlow<HomesEntry?>
@@ -18,7 +18,7 @@ internal interface HomesRepository {
     fun requestMoreHomes(): Flow<HomesResult>
 
     companion object {
-        val defaultPageSize = PositiveIntDto.unsafe(10)
+        val defaultPageSize = PositiveInt.unsafe(10)
     }
 }
 
@@ -35,7 +35,7 @@ internal class DefaultHomesRepository(
                 request = HomesRequestDto(
                     lastModified = lastModifiedOrNull(),
                     pageSize = defaultPageSize,
-                    pageIndex = NonNegativeIntDto.zero,
+                    pageIndex = NonNegativeInt.zero,
                 )
             )
             .refreshCacheIfSuccess()
@@ -69,18 +69,18 @@ internal class DefaultHomesRepository(
             }
         }
 
-    private fun pageIndex(): NonNegativeIntDto {
+    private fun pageIndex(): NonNegativeInt {
         val currentPageIndex = mutableHomesEntry.value?.pageIndex
 
         return if (currentPageIndex != null) {
-            NonNegativeIntDto.unsafe(currentPageIndex)
+            NonNegativeInt.unsafe(currentPageIndex)
         } else {
-            NonNegativeIntDto.zero
+            NonNegativeInt.zero
         }
     }
 
-    private fun lastModifiedOrNull(): PositiveLongDto? =
+    private fun lastModifiedOrNull(): PositiveLong? =
         mutableHomesEntry.value?.lastModified?.let {
-            PositiveLongDto.unsafe(it)
+            PositiveLong.unsafe(it)
         }
 }

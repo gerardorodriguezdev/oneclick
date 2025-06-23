@@ -1,7 +1,7 @@
 package theoneclick.client.features.home.models
 
 import theoneclick.client.features.home.mappers.toHomes
-import theoneclick.shared.contracts.core.dtos.responses.HomesResponseDto
+import theoneclick.shared.contracts.core.models.responses.HomesResponseDto
 
 internal class HomesEntry private constructor(
     val lastModified: Long,

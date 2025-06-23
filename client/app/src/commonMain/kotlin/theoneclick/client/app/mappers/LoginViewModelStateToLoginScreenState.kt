@@ -3,12 +3,12 @@ package theoneclick.client.app.mappers
 import theoneclick.client.app.ui.screens.LoginScreenState
 import theoneclick.client.app.viewModels.LoginViewModel
 import theoneclick.client.shared.ui.models.Field
-import theoneclick.shared.contracts.core.dtos.PasswordDto
-import theoneclick.shared.contracts.core.dtos.UsernameDto
+import theoneclick.shared.contracts.core.models.Password
+import theoneclick.shared.contracts.core.models.Username
 
 fun LoginViewModel.LoginViewModelState.toLoginScreenState(): LoginScreenState {
-    val isUsernameValid = UsernameDto.isValid(username ?: "")
-    val isPasswordValid = PasswordDto.isValid(password ?: "")
+    val isUsernameValid = Username.isValid(username ?: "")
+    val isPasswordValid = Password.isValid(password ?: "")
 
     return LoginScreenState(
         username = Field(

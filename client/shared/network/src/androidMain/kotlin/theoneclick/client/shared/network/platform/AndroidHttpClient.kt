@@ -11,7 +11,7 @@ import io.ktor.serialization.kotlinx.json.*
 import theoneclick.client.shared.network.dataSources.TokenDataSource
 import theoneclick.client.shared.network.plugins.LogoutProxy
 import theoneclick.client.shared.network.plugins.TokenProxy
-import theoneclick.shared.contracts.core.agents.Agent
+import theoneclick.shared.contracts.core.models.agents.Agent
 import theoneclick.shared.logging.AppLogger
 
 fun androidHttpClient(

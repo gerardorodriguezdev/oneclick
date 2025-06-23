@@ -5,17 +5,17 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import theoneclick.server.app.dataSources.base.UsersDataSource
-import theoneclick.server.app.models.dtos.UserDto
+import theoneclick.server.app.models.User
 import theoneclick.server.app.repositories.UsersRepository
 import theoneclick.server.app.security.Encryptor
 import theoneclick.server.app.security.UuidProvider
 import theoneclick.server.shared.extensions.agent
-import theoneclick.shared.contracts.core.agents.Agent
-import theoneclick.shared.contracts.core.dtos.TokenDto
-import theoneclick.shared.contracts.core.dtos.UsernameDto
-import theoneclick.shared.contracts.core.dtos.requests.RequestLoginRequestDto
-import theoneclick.shared.contracts.core.dtos.responses.RequestLoginResponseDto
-import theoneclick.shared.contracts.core.endpoints.ClientEndpoint
+import theoneclick.shared.contracts.core.models.agents.Agent
+import theoneclick.shared.contracts.core.models.Token
+import theoneclick.shared.contracts.core.models.Username
+import theoneclick.shared.contracts.core.models.requests.RequestLoginRequestDto
+import theoneclick.shared.contracts.core.models.responses.RequestLoginResponseDto
+import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 fun Routing.requestLoginEndpoint(
     usersRepository: UsersRepository,
@@ -51,13 +51,13 @@ fun Routing.requestLoginEndpoint(
 }
 
 private suspend fun RoutingContext.registerUser(
-    username: UsernameDto,
+    username: Username,
     password: String,
     encryptor: Encryptor,
     uuidProvider: UuidProvider,
     usersRepository: UsersRepository,
 ) {
-    val newUser = UserDto(
+    val newUser = User(
         userId = uuidProvider.uuid(),
         username = username,
         hashedPassword = encryptor.hashPassword(password),
@@ -72,7 +72,7 @@ private suspend fun RoutingContext.registerUser(
 }
 
 private suspend fun RoutingContext.handleSuccess(
-    user: UserDto,
+    user: User,
     encryptor: Encryptor,
     usersRepository: UsersRepository,
 ) {
@@ -84,7 +84,7 @@ private suspend fun RoutingContext.handleSuccess(
     handleSuccess(sessionToken.token)
 }
 
-private suspend fun RoutingContext.handleSuccess(token: TokenDto) {
+private suspend fun RoutingContext.handleSuccess(token: Token) {
     when (call.request.agent) {
         Agent.MOBILE -> {
             call.respond(

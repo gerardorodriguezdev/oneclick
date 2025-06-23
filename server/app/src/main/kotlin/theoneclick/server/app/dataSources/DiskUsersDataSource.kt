@@ -3,9 +3,9 @@ package theoneclick.server.app.dataSources
 import io.ktor.util.logging.Logger
 import kotlinx.serialization.json.Json
 import theoneclick.server.app.dataSources.base.UsersDataSource
-import theoneclick.server.app.models.dtos.UserDto
+import theoneclick.server.app.models.User
 import theoneclick.server.app.security.Encryptor
-import theoneclick.shared.contracts.core.dtos.UuidDto
+import theoneclick.shared.contracts.core.models.Uuid
 import java.io.File
 import kotlin.collections.forEach
 
@@ -15,7 +15,7 @@ class DiskUsersDataSource(
     private val logger: Logger,
 ) : UsersDataSource {
 
-    override fun user(findable: UsersDataSource.Findable): UserDto? =
+    override fun user(findable: UsersDataSource.Findable): User? =
         when (findable) {
             is UsersDataSource.Findable.ByUserId -> findUser { user -> user.userId.value == findable.userId.value }
 
@@ -26,7 +26,7 @@ class DiskUsersDataSource(
                 findUser { user -> user.username.value == findable.username.value }
         }
 
-    override fun saveUser(user: UserDto) {
+    override fun saveUser(user: User) {
         try {
             val userString = Json.Default.encodeToString(user)
             val encryptedUserBytes = encryptor.encrypt(input = userString).getOrThrow()
@@ -37,13 +37,13 @@ class DiskUsersDataSource(
         }
     }
 
-    private fun findUser(predicate: (user: UserDto) -> Boolean): UserDto? =
+    private fun findUser(predicate: (user: User) -> Boolean): User? =
         try {
             val userFiles = userFiles()
             userFiles.forEach { userFile ->
                 val encryptedUserBytes = userFile.readBytes()
                 val userString = encryptor.decrypt(input = encryptedUserBytes).getOrThrow()
-                val user = Json.Default.decodeFromString<UserDto>(userString)
+                val user = Json.Default.decodeFromString<User>(userString)
                 if (predicate(user)) return user
             }
             null
@@ -52,7 +52,7 @@ class DiskUsersDataSource(
             null
         }
 
-    private fun userFile(userId: UuidDto): File = File(usersDirectory, userFileName(userId))
+    private fun userFile(userId: Uuid): File = File(usersDirectory, userFileName(userId))
 
     private fun userFiles(): Array<File> =
         usersDirectory.listFiles { file ->
@@ -62,7 +62,7 @@ class DiskUsersDataSource(
     companion object {
         private const val USERS_DIRECTORY_NAME = "users"
         private const val USER_FILE_NAME_SUFFIX = "user.txt"
-        private fun userFileName(userId: UuidDto): String = "${userId.value}.$USER_FILE_NAME_SUFFIX"
+        private fun userFileName(userId: Uuid): String = "${userId.value}.$USER_FILE_NAME_SUFFIX"
         fun usersDirectory(storageDirectory: String): File =
             File(storageDirectory, USERS_DIRECTORY_NAME).apply {
                 if (!exists()) {

@@ -1,11 +1,11 @@
 package theoneclick.server.app.repositories
 
 import theoneclick.server.app.dataSources.base.UsersDataSource
-import theoneclick.server.app.models.dtos.UserDto
+import theoneclick.server.app.models.User
 
 interface UsersRepository {
-    fun user(findable: UsersDataSource.Findable): UserDto?
-    fun saveUser(user: UserDto)
+    fun user(findable: UsersDataSource.Findable): User?
+    fun saveUser(user: User)
 }
 
 class DefaultUsersRepository(
@@ -13,7 +13,7 @@ class DefaultUsersRepository(
     private val memoryUsersDataSource: UsersDataSource,
 ) : UsersRepository {
 
-    override fun user(findable: UsersDataSource.Findable): UserDto? {
+    override fun user(findable: UsersDataSource.Findable): User? {
         val memoryUser = memoryUsersDataSource.user(findable)
         if (memoryUser != null) return memoryUser
 
@@ -26,7 +26,7 @@ class DefaultUsersRepository(
         }
     }
 
-    override fun saveUser(user: UserDto) {
+    override fun saveUser(user: User) {
         memoryUsersDataSource.saveUser(user)
         diskUsersDataSource.saveUser(user)
     }

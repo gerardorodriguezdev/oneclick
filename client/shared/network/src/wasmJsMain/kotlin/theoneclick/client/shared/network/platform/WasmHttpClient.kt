@@ -8,7 +8,7 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import theoneclick.client.shared.network.plugins.LogoutProxy
-import theoneclick.shared.contracts.core.agents.Agent
+import theoneclick.shared.contracts.core.models.agents.Agent
 
 fun wasmHttpClient(
     httpClientEngine: HttpClientEngine,

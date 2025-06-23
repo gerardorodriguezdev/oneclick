@@ -19,9 +19,9 @@ import theoneclick.client.shared.navigation.popUpToInclusive
 import theoneclick.client.shared.network.models.RequestLoginResult
 import theoneclick.client.shared.network.platform.AuthenticationDataSource
 import theoneclick.client.shared.notifications.NotificationsController
-import theoneclick.shared.contracts.core.dtos.PasswordDto.Companion.toPassword
-import theoneclick.shared.contracts.core.dtos.UsernameDto.Companion.toUsername
-import theoneclick.shared.contracts.core.dtos.requests.RequestLoginRequestDto
+import theoneclick.shared.contracts.core.models.Password.Companion.toPassword
+import theoneclick.shared.contracts.core.models.Username.Companion.toUsername
+import theoneclick.shared.contracts.core.models.requests.RequestLoginRequestDto
 
 @Inject
 class LoginViewModel(

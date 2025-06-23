@@ -1,14 +1,14 @@
 package theoneclick.server.app.security
 
-import theoneclick.shared.contracts.core.dtos.UuidDto
+import theoneclick.shared.contracts.core.models.Uuid
 import java.util.*
 import kotlin.uuid.ExperimentalUuidApi
 
 interface UuidProvider {
-    fun uuid(): UuidDto
+    fun uuid(): Uuid
 }
 
 class DefaultUuidProvider : UuidProvider {
     @OptIn(ExperimentalUuidApi::class)
-    override fun uuid(): UuidDto = UuidDto.unsafe(value = UUID.randomUUID().toString())
+    override fun uuid(): Uuid = Uuid.unsafe(value = UUID.randomUUID().toString())
 }

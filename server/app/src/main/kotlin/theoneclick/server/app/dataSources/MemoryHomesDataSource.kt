@@ -1,20 +1,20 @@
 package theoneclick.server.app.dataSources
 
 import theoneclick.server.app.dataSources.base.HomesDataSource
-import theoneclick.server.app.models.dtos.HomesEntryDto
-import theoneclick.shared.contracts.core.dtos.NonNegativeIntDto
-import theoneclick.shared.contracts.core.dtos.PaginationResultDto
-import theoneclick.shared.contracts.core.dtos.PositiveIntDto
-import theoneclick.shared.contracts.core.dtos.UuidDto
+import theoneclick.server.app.models.HomesEntry
+import theoneclick.shared.contracts.core.models.NonNegativeInt
+import theoneclick.shared.contracts.core.models.PaginationResult
+import theoneclick.shared.contracts.core.models.PositiveInt
+import theoneclick.shared.contracts.core.models.Uuid
 
 class MemoryHomesDataSource : HomesDataSource() {
-    private val homesEntries = linkedMapOf<UuidDto, HomesEntryDto>()
+    private val homesEntries = linkedMapOf<Uuid, HomesEntry>()
 
     override fun homesEntry(
-        userId: UuidDto,
-        pageSize: PositiveIntDto,
-        currentPageIndex: NonNegativeIntDto
-    ): PaginationResultDto<HomesEntryDto>? {
+        userId: Uuid,
+        pageSize: PositiveInt,
+        currentPageIndex: NonNegativeInt
+    ): PaginationResult<HomesEntry>? {
         val homesEntry = homesEntries[userId] ?: return null
 
         return paginateHomesEntry(

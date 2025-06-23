@@ -1,24 +1,24 @@
 package theoneclick.server.app.dataSources.base
 
-import theoneclick.server.app.models.dtos.HomesEntryDto
-import theoneclick.shared.contracts.core.dtos.NonNegativeIntDto
-import theoneclick.shared.contracts.core.dtos.PaginationResultDto
-import theoneclick.shared.contracts.core.dtos.PositiveIntDto
-import theoneclick.shared.contracts.core.dtos.UuidDto
+import theoneclick.server.app.models.HomesEntry
+import theoneclick.shared.contracts.core.models.NonNegativeInt
+import theoneclick.shared.contracts.core.models.PaginationResult
+import theoneclick.shared.contracts.core.models.PositiveInt
+import theoneclick.shared.contracts.core.models.Uuid
 
 abstract class HomesDataSource {
 
     abstract fun homesEntry(
-        userId: UuidDto,
-        pageSize: PositiveIntDto,
-        currentPageIndex: NonNegativeIntDto
-    ): PaginationResultDto<HomesEntryDto>?
+        userId: Uuid,
+        pageSize: PositiveInt,
+        currentPageIndex: NonNegativeInt
+    ): PaginationResult<HomesEntry>?
 
     protected fun paginateHomesEntry(
-        homesEntry: HomesEntryDto,
-        pageSize: PositiveIntDto,
-        currentPageIndex: NonNegativeIntDto
-    ): PaginationResultDto<HomesEntryDto>? {
+        homesEntry: HomesEntry,
+        pageSize: PositiveInt,
+        currentPageIndex: NonNegativeInt
+    ): PaginationResult<HomesEntry>? {
         val firstPageIndex = currentPageIndex.value + 1
         val lastPageIndex = firstPageIndex + pageSize.value
 
@@ -36,16 +36,16 @@ abstract class HomesDataSource {
         }
         if (newHomes.isEmpty()) return null
 
-        val newHomesEntry = HomesEntryDto.unsafe(
+        val newHomesEntry = HomesEntry.unsafe(
             userId = homesEntry.userId,
             lastModified = homesEntry.lastModified,
             homes = newHomes,
         )
 
-        return PaginationResultDto(
+        return PaginationResult(
             value = newHomesEntry,
-            pageIndex = NonNegativeIntDto.unsafe(newPageIndex),
-            totalPages = NonNegativeIntDto.unsafe(homesEntry.homes.size),
+            pageIndex = NonNegativeInt.unsafe(newPageIndex),
+            totalPages = NonNegativeInt.unsafe(homesEntry.homes.size),
         )
     }
 }
