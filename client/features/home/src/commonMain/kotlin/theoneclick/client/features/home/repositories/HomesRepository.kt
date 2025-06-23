@@ -9,7 +9,7 @@ import theoneclick.client.features.home.repositories.HomesRepository.Companion.d
 import theoneclick.shared.contracts.core.models.NonNegativeInt
 import theoneclick.shared.contracts.core.models.PositiveInt
 import theoneclick.shared.contracts.core.models.PositiveLong
-import theoneclick.shared.contracts.core.models.requests.HomesRequestDto
+import theoneclick.shared.contracts.core.models.requests.HomesRequest
 
 internal interface HomesRepository {
     val homesEntry: SharedFlow<HomesEntry?>
@@ -32,7 +32,7 @@ internal class DefaultHomesRepository(
     override fun refreshHomes(): Flow<HomesResult> =
         remoteHomesDataSource
             .homes(
-                request = HomesRequestDto(
+                request = HomesRequest(
                     lastModified = lastModifiedOrNull(),
                     pageSize = defaultPageSize,
                     pageIndex = NonNegativeInt.zero,
@@ -50,7 +50,7 @@ internal class DefaultHomesRepository(
     override fun requestMoreHomes(): Flow<HomesResult> =
         remoteHomesDataSource
             .homes(
-                request = HomesRequestDto(
+                request = HomesRequest(
                     lastModified = lastModifiedOrNull(),
                     pageSize = defaultPageSize,
                     pageIndex = pageIndex(),

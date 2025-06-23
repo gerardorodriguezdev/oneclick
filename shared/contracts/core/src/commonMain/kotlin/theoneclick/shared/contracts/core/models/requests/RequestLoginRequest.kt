@@ -5,7 +5,7 @@ import theoneclick.shared.contracts.core.models.Password
 import theoneclick.shared.contracts.core.models.Username
 
 @Serializable
-data class RequestLoginRequestDto(
+data class RequestLoginRequest(
     val username: Username,
     val password: Password,
 )

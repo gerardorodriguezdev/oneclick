@@ -6,13 +6,13 @@ import theoneclick.shared.contracts.core.models.NonNegativeInt
 import theoneclick.shared.contracts.core.models.PositiveLong
 
 @Serializable
-data class HomesResponseDto(
-    val data: DataDto?,
+data class HomesResponse(
+    val data: Data?,
 ) {
-    sealed interface DataDto {
+    sealed interface Data {
 
         @Serializable
-        data object NotChanged : DataDto
+        data object NotChanged : Data
 
         @Serializable
         data class Success(
@@ -20,6 +20,6 @@ data class HomesResponseDto(
             val value: List<Home>,
             val pageIndex: NonNegativeInt,
             val canRequestMore: Boolean,
-        ) : DataDto
+        ) : Data
     }
 }

@@ -11,14 +11,14 @@ import kotlinx.coroutines.flow.flowOn
 import me.tatarka.inject.annotations.Inject
 import theoneclick.client.features.home.models.HomesEntry.Companion.toHomesEntry
 import theoneclick.client.features.home.models.HomesResult
-import theoneclick.shared.contracts.core.models.requests.HomesRequestDto
-import theoneclick.shared.contracts.core.models.responses.HomesResponseDto
+import theoneclick.shared.contracts.core.models.requests.HomesRequest
+import theoneclick.shared.contracts.core.models.responses.HomesResponse
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.logging.AppLogger
 
 internal interface HomesDataSource {
-    fun homes(request: HomesRequestDto): Flow<HomesResult>
+    fun homes(request: HomesRequest): Flow<HomesResult>
 }
 
 @Inject
@@ -28,7 +28,7 @@ internal class RemoteHomesDataSource(
     private val appLogger: AppLogger,
 ) : HomesDataSource {
 
-    override fun homes(request: HomesRequestDto): Flow<HomesResult> =
+    override fun homes(request: HomesRequest): Flow<HomesResult> =
         flow {
             val response = httpClient.post(ClientEndpoint.HOMES.route) {
                 setBody(request)
@@ -36,12 +36,12 @@ internal class RemoteHomesDataSource(
 
             when (response.status) {
                 HttpStatusCode.OK -> {
-                    val homesResponse = response.body<HomesResponseDto>()
+                    val homesResponse = response.body<HomesResponse>()
                     val homesResult =
                         when (val data = homesResponse.data) {
                             null -> HomesResult.Success(homesEntry = null)
-                            is HomesResponseDto.DataDto.Success -> HomesResult.Success(data.toHomesEntry())
-                            is HomesResponseDto.DataDto.NotChanged -> HomesResult.NotChanged
+                            is HomesResponse.Data.Success -> HomesResult.Success(data.toHomesEntry())
+                            is HomesResponse.Data.NotChanged -> HomesResult.NotChanged
                         }
                     emit(homesResult)
                 }

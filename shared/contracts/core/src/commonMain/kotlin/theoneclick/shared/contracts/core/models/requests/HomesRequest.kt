@@ -6,7 +6,7 @@ import theoneclick.shared.contracts.core.models.PositiveInt
 import theoneclick.shared.contracts.core.models.PositiveLong
 
 @Serializable
-data class HomesRequestDto(
+data class HomesRequest(
     val lastModified: PositiveLong?,
     val pageSize: PositiveInt,
     val pageIndex: NonNegativeInt,

@@ -3,11 +3,11 @@ package theoneclick.shared.contracts.core.models.responses
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed interface UserLoggedResponseDto {
+sealed interface UserLoggedResponse {
 
     @Serializable
-    data object LoggedDto : UserLoggedResponseDto
+    data object LoggedDto : UserLoggedResponse
 
     @Serializable
-    data object NotLoggedDto : UserLoggedResponseDto
+    data object NotLoggedDto : UserLoggedResponse
 }

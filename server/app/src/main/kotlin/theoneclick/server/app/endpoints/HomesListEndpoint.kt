@@ -12,9 +12,9 @@ import theoneclick.server.app.repositories.HomesRepository
 import theoneclick.server.app.repositories.UsersRepository
 import theoneclick.shared.contracts.core.models.PaginationResult
 import theoneclick.shared.contracts.core.models.PositiveLong
-import theoneclick.shared.contracts.core.models.requests.HomesRequestDto
-import theoneclick.shared.contracts.core.models.responses.HomesResponseDto
-import theoneclick.shared.contracts.core.models.responses.HomesResponseDto.DataDto
+import theoneclick.shared.contracts.core.models.requests.HomesRequest
+import theoneclick.shared.contracts.core.models.responses.HomesResponse
+import theoneclick.shared.contracts.core.models.responses.HomesResponse.Data
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 fun Routing.homesListEndpoint(
@@ -22,7 +22,7 @@ fun Routing.homesListEndpoint(
     homesRepository: HomesRepository,
 ) {
     defaultAuthentication {
-        post(ClientEndpoint.HOMES.route) { homesRequestDto: HomesRequestDto ->
+        post(ClientEndpoint.HOMES.route) { homesRequest: HomesRequest ->
             val token = requireToken()
             val user = usersRepository.user(UsersDataSource.Findable.ByToken(token))
             if (user == null) {
@@ -31,7 +31,7 @@ fun Routing.homesListEndpoint(
                 handleUserAvailable(
                     user = user,
                     homesRepository = homesRepository,
-                    homesRequestDto = homesRequestDto,
+                    homesRequest = homesRequest,
                 )
             }
         }
@@ -41,18 +41,18 @@ fun Routing.homesListEndpoint(
 private suspend fun RoutingContext.handleUserAvailable(
     user: User,
     homesRepository: HomesRepository,
-    homesRequestDto: HomesRequestDto
+    homesRequest: HomesRequest
 ) {
     val homesEntry = homesRepository.homesEntry(
         userId = user.userId,
-        pageSize = homesRequestDto.pageSize,
-        currentPageIndex = homesRequestDto.pageIndex
+        pageSize = homesRequest.pageSize,
+        currentPageIndex = homesRequest.pageIndex
     )
 
     if (homesEntry == null) {
         handleNoHomesEntry()
     } else {
-        val requestLastModified = homesRequestDto.lastModified?.value
+        val requestLastModified = homesRequest.lastModified?.value
         val homesEntryLastModified = homesEntry.value.lastModified.value
 
         if (requestLastModified != null && homesEntryLastModified <= requestLastModified) {
@@ -64,21 +64,21 @@ private suspend fun RoutingContext.handleUserAvailable(
 }
 
 private suspend fun RoutingContext.handleNoHomesEntry() {
-    call.respond(HomesResponseDto(data = null))
+    call.respond(HomesResponse(data = null))
 }
 
 private suspend fun RoutingContext.handleNotChanged() {
     call.respond(
-        HomesResponseDto(
-            data = DataDto.NotChanged
+        HomesResponse(
+            data = Data.NotChanged
         )
     )
 }
 
 private suspend fun RoutingContext.handleSuccess(homesEntry: PaginationResult<HomesEntry>) {
     call.respond(
-        HomesResponseDto(
-            data = DataDto.Success(
+        HomesResponse(
+            data = Data.Success(
                 lastModified = PositiveLong.unsafe(homesEntry.value.lastModified.value),
                 value = homesEntry.value.homes,
                 pageIndex = homesEntry.pageIndex,

@@ -15,10 +15,10 @@ import theoneclick.shared.contracts.core.models.NonNegativeInt
 import theoneclick.shared.contracts.core.models.PaginationResult
 import theoneclick.shared.contracts.core.models.PositiveLong
 import theoneclick.shared.contracts.core.models.Token
-import theoneclick.shared.contracts.core.models.requests.RequestLoginRequestDto
-import theoneclick.shared.contracts.core.models.responses.HomesResponseDto
-import theoneclick.shared.contracts.core.models.responses.RequestLoginResponseDto
-import theoneclick.shared.contracts.core.models.responses.UserLoggedResponseDto
+import theoneclick.shared.contracts.core.models.requests.RequestLoginRequest
+import theoneclick.shared.contracts.core.models.responses.HomesResponse
+import theoneclick.shared.contracts.core.models.responses.RequestLoginResponse
+import theoneclick.shared.contracts.core.models.responses.UserLoggedResponse
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 fun server(): EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration> =
@@ -40,19 +40,19 @@ private fun Application.configureContentNegotiation() {
 private fun Application.configureRouting() {
     routing {
         get(ClientEndpoint.IS_USER_LOGGED.route) {
-            call.respond<UserLoggedResponseDto>(UserLoggedResponseDto.LoggedDto)
+            call.respond<UserLoggedResponse>(UserLoggedResponse.LoggedDto)
         }
 
-        post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequestDto: RequestLoginRequestDto ->
+        post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
             when (call.request.agent) {
-                Agent.MOBILE -> call.respond(RequestLoginResponseDto(token = Token.unsafe("token")))
+                Agent.MOBILE -> call.respond(RequestLoginResponse(token = Token.unsafe("token")))
                 Agent.BROWSER -> call.respond(HttpStatusCode.OK)
             }
         }
 
         get(ClientEndpoint.HOMES.route) {
             call.respond(
-                HomesResponseDto(
+                HomesResponse(
                     paginationResultDto = PaginationResult(
                         lastModified = PositiveLong.unsafe(1),
                         value = mockHomes(5),

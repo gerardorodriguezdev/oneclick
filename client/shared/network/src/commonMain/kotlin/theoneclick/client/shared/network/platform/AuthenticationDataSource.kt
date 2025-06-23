@@ -4,10 +4,10 @@ import kotlinx.coroutines.flow.Flow
 import theoneclick.client.shared.network.models.LogoutResult
 import theoneclick.client.shared.network.models.RequestLoginResult
 import theoneclick.client.shared.network.models.UserLoggedResult
-import theoneclick.shared.contracts.core.models.requests.RequestLoginRequestDto
+import theoneclick.shared.contracts.core.models.requests.RequestLoginRequest
 
 interface AuthenticationDataSource {
     fun isUserLogged(): Flow<UserLoggedResult>
-    fun login(request: RequestLoginRequestDto): Flow<RequestLoginResult>
+    fun login(request: RequestLoginRequest): Flow<RequestLoginResult>
     fun logout(): Flow<LogoutResult>
 }

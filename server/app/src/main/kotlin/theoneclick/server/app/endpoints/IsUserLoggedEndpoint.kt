@@ -5,7 +5,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import theoneclick.server.app.extensions.defaultAuthentication
 import theoneclick.shared.contracts.core.models.Token
-import theoneclick.shared.contracts.core.models.responses.UserLoggedResponseDto
+import theoneclick.shared.contracts.core.models.responses.UserLoggedResponse
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 fun Routing.isUserLoggedEndpoint() {
@@ -14,9 +14,9 @@ fun Routing.isUserLoggedEndpoint() {
             val token = call.principal<Token>()
 
             if (token == null) {
-                call.respond<UserLoggedResponseDto>(UserLoggedResponseDto.NotLoggedDto)
+                call.respond<UserLoggedResponse>(UserLoggedResponse.NotLoggedDto)
             } else {
-                call.respond<UserLoggedResponseDto>(UserLoggedResponseDto.LoggedDto)
+                call.respond<UserLoggedResponse>(UserLoggedResponse.LoggedDto)
             }
         }
     }

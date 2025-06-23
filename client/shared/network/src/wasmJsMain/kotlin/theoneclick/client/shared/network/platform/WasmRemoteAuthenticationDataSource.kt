@@ -11,8 +11,8 @@ import kotlinx.coroutines.flow.flowOn
 import theoneclick.client.shared.network.models.LogoutResult
 import theoneclick.client.shared.network.models.RequestLoginResult
 import theoneclick.client.shared.network.models.UserLoggedResult
-import theoneclick.shared.contracts.core.models.requests.RequestLoginRequestDto
-import theoneclick.shared.contracts.core.models.responses.UserLoggedResponseDto
+import theoneclick.shared.contracts.core.models.requests.RequestLoginRequest
+import theoneclick.shared.contracts.core.models.responses.UserLoggedResponse
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.logging.AppLogger
@@ -25,7 +25,7 @@ class WasmRemoteAuthenticationDataSource(
 
     override fun isUserLogged(): Flow<UserLoggedResult> =
         flow {
-            val response: UserLoggedResponseDto = httpClient.get(ClientEndpoint.IS_USER_LOGGED.route).body()
+            val response: UserLoggedResponse = httpClient.get(ClientEndpoint.IS_USER_LOGGED.route).body()
             emit(response.toUserLoggedResult())
         }
             .catch { exception ->
@@ -34,13 +34,13 @@ class WasmRemoteAuthenticationDataSource(
             }
             .flowOn(dispatchersProvider.io())
 
-    private fun UserLoggedResponseDto.toUserLoggedResult(): UserLoggedResult =
+    private fun UserLoggedResponse.toUserLoggedResult(): UserLoggedResult =
         when (this) {
-            is UserLoggedResponseDto.LoggedDto -> UserLoggedResult.Logged
-            is UserLoggedResponseDto.NotLoggedDto -> UserLoggedResult.NotLogged
+            is UserLoggedResponse.LoggedDto -> UserLoggedResult.Logged
+            is UserLoggedResponse.NotLoggedDto -> UserLoggedResult.NotLogged
         }
 
-    override fun login(request: RequestLoginRequestDto): Flow<RequestLoginResult> =
+    override fun login(request: RequestLoginRequest): Flow<RequestLoginResult> =
         flow {
             val response = httpClient.post(ClientEndpoint.REQUEST_LOGIN.route) {
                 setBody(request)

@@ -21,7 +21,7 @@ import theoneclick.client.shared.network.platform.AuthenticationDataSource
 import theoneclick.client.shared.notifications.NotificationsController
 import theoneclick.shared.contracts.core.models.Password.Companion.toPassword
 import theoneclick.shared.contracts.core.models.Username.Companion.toUsername
-import theoneclick.shared.contracts.core.models.requests.RequestLoginRequestDto
+import theoneclick.shared.contracts.core.models.requests.RequestLoginRequest
 
 @Inject
 class LoginViewModel(
@@ -65,7 +65,7 @@ class LoginViewModel(
         requestLoginJob = viewModelScope.launch {
             authenticationDataSource
                 .login(
-                    request = RequestLoginRequestDto(
+                    request = RequestLoginRequest(
                         username = requireNotNull(loginViewModelState.value.username?.toUsername()),
                         password = requireNotNull(loginViewModelState.value.password?.toPassword()),
                     )

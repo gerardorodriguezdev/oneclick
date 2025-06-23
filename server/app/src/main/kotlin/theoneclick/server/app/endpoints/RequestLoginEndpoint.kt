@@ -13,8 +13,8 @@ import theoneclick.server.shared.extensions.agent
 import theoneclick.shared.contracts.core.models.agents.Agent
 import theoneclick.shared.contracts.core.models.Token
 import theoneclick.shared.contracts.core.models.Username
-import theoneclick.shared.contracts.core.models.requests.RequestLoginRequestDto
-import theoneclick.shared.contracts.core.models.responses.RequestLoginResponseDto
+import theoneclick.shared.contracts.core.models.requests.RequestLoginRequest
+import theoneclick.shared.contracts.core.models.responses.RequestLoginResponse
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 fun Routing.requestLoginEndpoint(
@@ -22,9 +22,9 @@ fun Routing.requestLoginEndpoint(
     encryptor: Encryptor,
     uuidProvider: UuidProvider,
 ) {
-    post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequestDto: RequestLoginRequestDto ->
-        val username = requestLoginRequestDto.username
-        val password = requestLoginRequestDto.password.value
+    post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
+        val username = requestLoginRequest.username
+        val password = requestLoginRequest.password.value
         val user = usersRepository.user(UsersDataSource.Findable.ByUsername(username))
 
         when {
@@ -88,7 +88,7 @@ private suspend fun RoutingContext.handleSuccess(token: Token) {
     when (call.request.agent) {
         Agent.MOBILE -> {
             call.respond(
-                RequestLoginResponseDto(
+                RequestLoginResponse(
                     token = token
                 )
             )
