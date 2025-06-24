@@ -3,8 +3,8 @@ package theoneclick.server.app.dataSources
 import io.ktor.util.logging.Logger
 import kotlinx.serialization.json.Json
 import theoneclick.server.app.dataSources.base.UsersDataSource
-import theoneclick.server.app.models.User
-import theoneclick.server.app.security.Encryptor
+import theoneclick.server.shared.models.User
+import theoneclick.server.shared.security.Encryptor
 import theoneclick.shared.contracts.core.models.Uuid
 import java.io.File
 import kotlin.collections.forEach

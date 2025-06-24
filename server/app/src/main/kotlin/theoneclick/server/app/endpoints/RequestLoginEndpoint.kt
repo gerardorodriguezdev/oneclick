@@ -5,10 +5,10 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import theoneclick.server.app.dataSources.base.UsersDataSource
-import theoneclick.server.app.models.User
+import theoneclick.server.shared.models.User
 import theoneclick.server.app.repositories.UsersRepository
-import theoneclick.server.app.security.Encryptor
-import theoneclick.server.app.security.UuidProvider
+import theoneclick.server.shared.security.Encryptor
+import theoneclick.server.shared.security.UuidProvider
 import theoneclick.server.shared.extensions.agent
 import theoneclick.shared.contracts.core.models.agents.Agent
 import theoneclick.shared.contracts.core.models.Token

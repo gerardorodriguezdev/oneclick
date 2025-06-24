@@ -6,7 +6,7 @@ import io.ktor.server.netty.*
 import theoneclick.server.app.di.AppComponent
 import theoneclick.server.app.plugins.*
 import theoneclick.server.app.plugins.authentication.configureAuthentication
-import theoneclick.server.app.plugins.callid.configureCallId
+import theoneclick.server.app.plugins.configureCallId
 
 fun server(appComponent: AppComponent): EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration> =
     embeddedServer(

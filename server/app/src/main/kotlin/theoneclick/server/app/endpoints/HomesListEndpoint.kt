@@ -6,8 +6,8 @@ import io.ktor.server.routing.*
 import theoneclick.server.app.dataSources.base.UsersDataSource
 import theoneclick.server.app.extensions.defaultAuthentication
 import theoneclick.server.app.extensions.requireToken
-import theoneclick.server.app.models.HomesEntry
-import theoneclick.server.app.models.User
+import theoneclick.server.shared.models.HomesEntry
+import theoneclick.server.shared.models.User
 import theoneclick.server.app.repositories.HomesRepository
 import theoneclick.server.app.repositories.UsersRepository
 import theoneclick.shared.contracts.core.models.PaginationResult

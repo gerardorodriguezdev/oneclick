@@ -1,4 +1,4 @@
-package theoneclick.server.app.security
+package theoneclick.server.shared.security
 
 import theoneclick.shared.contracts.core.models.Uuid
 import java.util.*

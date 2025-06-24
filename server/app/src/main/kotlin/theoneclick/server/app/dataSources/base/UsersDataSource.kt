@@ -1,6 +1,6 @@
 package theoneclick.server.app.dataSources.base
 
-import theoneclick.server.app.models.User
+import theoneclick.server.shared.models.User
 import theoneclick.shared.contracts.core.models.Token
 import theoneclick.shared.contracts.core.models.Username
 import theoneclick.shared.contracts.core.models.Uuid

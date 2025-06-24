@@ -1,4 +1,4 @@
-package theoneclick.server.app.models.endpoints
+package theoneclick.server.shared.models.endpoints
 
 import theoneclick.shared.contracts.core.models.endpoints.base.Endpoint
 

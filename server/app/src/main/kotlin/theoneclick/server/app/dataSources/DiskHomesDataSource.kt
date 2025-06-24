@@ -3,8 +3,8 @@ package theoneclick.server.app.dataSources
 import io.ktor.util.logging.Logger
 import kotlinx.serialization.json.Json
 import theoneclick.server.app.dataSources.base.HomesDataSource
-import theoneclick.server.app.models.HomesEntry
-import theoneclick.server.app.security.Encryptor
+import theoneclick.server.shared.models.HomesEntry
+import theoneclick.server.shared.security.Encryptor
 import theoneclick.shared.contracts.core.models.NonNegativeInt
 import theoneclick.shared.contracts.core.models.PaginationResult
 import theoneclick.shared.contracts.core.models.PositiveInt

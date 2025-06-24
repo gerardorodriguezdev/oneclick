@@ -25,15 +25,16 @@ class DefaultAuthenticationDataSource(
 
     override fun isUserSessionValid(token: Token): Boolean {
         val user = usersRepository.user(UsersDataSource.Findable.ByToken(token))
+        val sessionToken = user?.sessionToken
 
         return when {
             user == null -> false
-            user.sessionToken == null -> false
+            sessionToken == null -> false
 
-            timeProvider.currentTimeMillis() > user.sessionToken.creationTimeInMillis +
+            timeProvider.currentTimeMillis() > sessionToken.creationTimeInMillis +
                     USER_SESSION_TOKEN_EXPIRATION_IN_MILLIS -> false
 
-            user.sessionToken.token.value != token.value -> false
+            sessionToken.token.value != token.value -> false
             else -> true
         }
     }

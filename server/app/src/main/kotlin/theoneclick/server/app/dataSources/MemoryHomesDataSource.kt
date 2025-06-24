@@ -1,7 +1,7 @@
 package theoneclick.server.app.dataSources
 
 import theoneclick.server.app.dataSources.base.HomesDataSource
-import theoneclick.server.app.models.HomesEntry
+import theoneclick.server.shared.models.HomesEntry
 import theoneclick.shared.contracts.core.models.NonNegativeInt
 import theoneclick.shared.contracts.core.models.PaginationResult
 import theoneclick.shared.contracts.core.models.PositiveInt

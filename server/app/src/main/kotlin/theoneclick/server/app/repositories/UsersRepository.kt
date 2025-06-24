@@ -1,7 +1,7 @@
 package theoneclick.server.app.repositories
 
 import theoneclick.server.app.dataSources.base.UsersDataSource
-import theoneclick.server.app.models.User
+import theoneclick.server.shared.models.User
 
 interface UsersRepository {
     fun user(findable: UsersDataSource.Findable): User?

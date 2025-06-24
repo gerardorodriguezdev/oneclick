@@ -1,4 +1,4 @@
-package theoneclick.server.app.models
+package theoneclick.server.shared.models
 
 import kotlinx.serialization.Serializable
 import theoneclick.shared.contracts.core.models.Username

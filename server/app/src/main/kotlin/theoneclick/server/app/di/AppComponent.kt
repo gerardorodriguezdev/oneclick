@@ -8,10 +8,10 @@ import theoneclick.server.app.dataSources.AuthenticationDataSource
 import theoneclick.server.app.dataSources.DefaultAuthenticationDataSource
 import theoneclick.server.app.repositories.HomesRepository
 import theoneclick.server.app.repositories.UsersRepository
-import theoneclick.server.app.security.DefaultUuidProvider
-import theoneclick.server.app.security.Encryptor
-import theoneclick.server.app.security.IvGenerator
-import theoneclick.server.app.security.UuidProvider
+import theoneclick.server.shared.security.DefaultUuidProvider
+import theoneclick.server.shared.security.Encryptor
+import theoneclick.server.shared.security.IvGenerator
+import theoneclick.server.shared.security.UuidProvider
 import theoneclick.shared.timeProvider.TimeProvider
 
 @AppScope

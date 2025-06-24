@@ -7,7 +7,7 @@ import kotlinx.serialization.json.Json
 import theoneclick.server.app.di.Environment
 import theoneclick.server.app.plugins.authentication.AuthenticationConstants.COOKIE_SESSION_DURATION_IN_SECONDS
 import theoneclick.server.app.plugins.authentication.AuthenticationConstants.USER_SESSION
-import theoneclick.server.app.security.IvGenerator
+import theoneclick.server.shared.security.IvGenerator
 import theoneclick.shared.contracts.core.models.Token
 
 fun Application.configureSessions(

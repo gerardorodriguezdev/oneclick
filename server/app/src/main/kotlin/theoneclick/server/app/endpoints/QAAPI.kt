@@ -4,8 +4,8 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import theoneclick.server.app.models.User
-import theoneclick.server.app.models.endpoints.ServerEndpoint
+import theoneclick.server.shared.models.User
+import theoneclick.server.shared.models.endpoints.ServerEndpoint
 import theoneclick.server.app.repositories.UsersRepository
 import theoneclick.shared.contracts.core.models.Token
 

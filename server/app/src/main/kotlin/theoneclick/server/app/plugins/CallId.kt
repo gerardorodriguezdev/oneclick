@@ -1,4 +1,4 @@
-package theoneclick.server.app.plugins.callid
+package theoneclick.server.app.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.plugins.callid.*

@@ -6,8 +6,8 @@ import theoneclick.server.app.di.Environment
 import theoneclick.server.app.endpoints.*
 import theoneclick.server.app.repositories.HomesRepository
 import theoneclick.server.app.repositories.UsersRepository
-import theoneclick.server.app.security.Encryptor
-import theoneclick.server.app.security.UuidProvider
+import theoneclick.server.shared.security.Encryptor
+import theoneclick.server.shared.security.UuidProvider
 
 fun Application.configureRouting(
     environment: Environment,

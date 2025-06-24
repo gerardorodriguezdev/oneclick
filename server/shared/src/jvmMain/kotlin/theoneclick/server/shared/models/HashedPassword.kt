@@ -1,7 +1,7 @@
-package theoneclick.server.app.models
+package theoneclick.server.shared.models
 
 import kotlinx.serialization.Serializable
-import theoneclick.server.app.security.Encryptor
+import theoneclick.server.shared.security.Encryptor
 
 @Serializable
 @JvmInline

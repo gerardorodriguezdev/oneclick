@@ -11,9 +11,9 @@ import theoneclick.server.app.di.create
 import theoneclick.server.app.entrypoint.server
 import theoneclick.server.app.repositories.DefaultHomesRepository
 import theoneclick.server.app.repositories.DefaultUsersRepository
-import theoneclick.server.app.security.DefaultEncryptor
-import theoneclick.server.app.security.DefaultIvGenerator
-import theoneclick.server.app.security.DefaultSecureRandomProvider
+import theoneclick.server.shared.security.DefaultEncryptor
+import theoneclick.server.shared.security.DefaultIvGenerator
+import theoneclick.server.shared.security.DefaultSecureRandomProvider
 import theoneclick.shared.timeProvider.SystemTimeProvider
 
 fun main() {

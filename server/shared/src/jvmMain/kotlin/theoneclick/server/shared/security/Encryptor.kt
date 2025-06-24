@@ -1,17 +1,17 @@
-package theoneclick.server.app.security
+package theoneclick.server.shared.security
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import io.ktor.util.hex
-import theoneclick.server.app.models.EncryptedToken
-import theoneclick.server.app.models.HashedPassword
+import theoneclick.server.shared.models.EncryptedToken
+import theoneclick.server.shared.models.HashedPassword
 import theoneclick.shared.timeProvider.TimeProvider
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import kotlin.text.toCharArray
-import theoneclick.server.app.models.EncryptedToken.Companion.create as createEncryptedToken
-import theoneclick.server.app.models.HashedPassword.Companion.create as createHashedPassword
+import theoneclick.server.shared.models.EncryptedToken.Companion.create as createEncryptedToken
+import theoneclick.server.shared.models.HashedPassword.Companion.create as createHashedPassword
 
 interface Encryptor {
     fun encrypt(input: String): Result<ByteArray>

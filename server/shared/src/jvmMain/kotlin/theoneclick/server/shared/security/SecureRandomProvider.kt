@@ -1,4 +1,4 @@
-package theoneclick.server.app.security
+package theoneclick.server.shared.security
 
 import java.security.SecureRandom
 
