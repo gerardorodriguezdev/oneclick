@@ -3,7 +3,7 @@ package theoneclick.server.app.endpoints
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import theoneclick.server.app.extensions.defaultAuthentication
+import theoneclick.server.shared.extensions.defaultAuthentication
 import theoneclick.shared.contracts.core.models.Token
 import theoneclick.shared.contracts.core.models.responses.UserLoggedResponse
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint

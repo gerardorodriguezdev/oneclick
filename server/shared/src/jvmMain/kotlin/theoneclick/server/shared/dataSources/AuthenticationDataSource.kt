@@ -1,8 +1,8 @@
-package theoneclick.server.app.dataSources
+package theoneclick.server.shared.dataSources
 
 import me.tatarka.inject.annotations.Inject
-import theoneclick.server.app.dataSources.base.UsersDataSource
-import theoneclick.server.app.repositories.UsersRepository
+import theoneclick.server.shared.dataSources.base.UsersDataSource
+import theoneclick.server.shared.repositories.UsersRepository
 import theoneclick.shared.contracts.core.models.Token
 import theoneclick.shared.contracts.core.models.Token.Companion.toToken
 import theoneclick.shared.timeProvider.TimeProvider

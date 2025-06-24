@@ -4,8 +4,8 @@ import io.ktor.server.application.*
 import io.ktor.server.routing.*
 import theoneclick.server.shared.di.Environment
 import theoneclick.server.app.endpoints.*
-import theoneclick.server.app.repositories.HomesRepository
-import theoneclick.server.app.repositories.UsersRepository
+import theoneclick.server.shared.repositories.HomesRepository
+import theoneclick.server.shared.repositories.UsersRepository
 import theoneclick.server.shared.security.Encryptor
 import theoneclick.server.shared.security.UuidProvider
 

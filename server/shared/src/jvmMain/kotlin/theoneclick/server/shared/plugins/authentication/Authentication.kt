@@ -1,12 +1,10 @@
-package theoneclick.server.app.plugins.authentication
+package theoneclick.server.shared.plugins.authentication
 
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
-import theoneclick.server.app.dataSources.AuthenticationDataSource
-import theoneclick.server.app.plugins.authentication.AuthenticationConstants.SESSION_AUTHENTICATION
-import theoneclick.server.app.plugins.authentication.AuthenticationConstants.TOKEN_AUTHENTICATION
+import theoneclick.server.shared.dataSources.AuthenticationDataSource
 import theoneclick.shared.contracts.core.models.Token
 
 fun Application.configureAuthentication(authenticationDataSource: AuthenticationDataSource) {
@@ -17,7 +15,7 @@ fun Application.configureAuthentication(authenticationDataSource: Authentication
 }
 
 private fun AuthenticationConfig.registerSessionAuthentication(authenticationDataSource: AuthenticationDataSource) {
-    session<Token>(SESSION_AUTHENTICATION) {
+    session<Token>(AuthenticationConstants.SESSION_AUTHENTICATION) {
         validate { token ->
             if (authenticationDataSource.isUserSessionValid(token)) token else null
         }
@@ -29,7 +27,7 @@ private fun AuthenticationConfig.registerSessionAuthentication(authenticationDat
 }
 
 private fun AuthenticationConfig.registerTokenAuthentication(authenticationDataSource: AuthenticationDataSource) {
-    bearer(TOKEN_AUTHENTICATION) {
+    bearer(AuthenticationConstants.TOKEN_AUTHENTICATION) {
         realm = "Access to the '/' path"
 
         authenticate { tokenCredential ->

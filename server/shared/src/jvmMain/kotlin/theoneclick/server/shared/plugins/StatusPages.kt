@@ -1,4 +1,4 @@
-package theoneclick.server.app.plugins
+package theoneclick.server.shared.plugins
 
 import io.ktor.http.*
 import io.ktor.server.application.*

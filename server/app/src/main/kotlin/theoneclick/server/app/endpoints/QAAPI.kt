@@ -6,7 +6,7 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import theoneclick.server.shared.models.User
 import theoneclick.server.shared.models.endpoints.ServerEndpoint
-import theoneclick.server.app.repositories.UsersRepository
+import theoneclick.server.shared.repositories.UsersRepository
 import theoneclick.shared.contracts.core.models.Token
 
 fun Routing.qaapi(usersRepository: UsersRepository) {

@@ -1,8 +1,8 @@
-package theoneclick.server.app.dataSources
+package theoneclick.server.shared.dataSources
 
-import io.ktor.util.logging.Logger
+import io.ktor.util.logging.*
 import kotlinx.serialization.json.Json
-import theoneclick.server.app.dataSources.base.HomesDataSource
+import theoneclick.server.shared.dataSources.base.HomesDataSource
 import theoneclick.server.shared.models.HomesEntry
 import theoneclick.server.shared.security.Encryptor
 import theoneclick.shared.contracts.core.models.NonNegativeInt
@@ -10,7 +10,6 @@ import theoneclick.shared.contracts.core.models.PaginationResult
 import theoneclick.shared.contracts.core.models.PositiveInt
 import theoneclick.shared.contracts.core.models.Uuid
 import java.io.File
-import kotlin.collections.forEach
 
 class DiskHomesDataSource(
     private val homesEntriesDirectory: File,

@@ -1,4 +1,4 @@
-package theoneclick.server.app.plugins
+package theoneclick.server.shared.plugins
 
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*

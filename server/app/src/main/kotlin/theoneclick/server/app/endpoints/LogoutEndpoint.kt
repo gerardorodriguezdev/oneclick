@@ -3,10 +3,10 @@ package theoneclick.server.app.endpoints
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import theoneclick.server.app.dataSources.base.UsersDataSource
-import theoneclick.server.app.extensions.defaultAuthentication
-import theoneclick.server.app.extensions.requireToken
-import theoneclick.server.app.repositories.UsersRepository
+import theoneclick.server.shared.dataSources.base.UsersDataSource
+import theoneclick.server.shared.extensions.defaultAuthentication
+import theoneclick.server.shared.extensions.requireToken
+import theoneclick.server.shared.repositories.UsersRepository
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 fun Routing.logoutEndpoint(usersRepository: UsersRepository) {

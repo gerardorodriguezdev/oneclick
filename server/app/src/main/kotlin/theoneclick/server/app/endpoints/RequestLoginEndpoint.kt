@@ -4,9 +4,9 @@ import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import theoneclick.server.app.dataSources.base.UsersDataSource
+import theoneclick.server.shared.dataSources.base.UsersDataSource
 import theoneclick.server.shared.models.User
-import theoneclick.server.app.repositories.UsersRepository
+import theoneclick.server.shared.repositories.UsersRepository
 import theoneclick.server.shared.security.Encryptor
 import theoneclick.server.shared.security.UuidProvider
 import theoneclick.server.shared.extensions.agent

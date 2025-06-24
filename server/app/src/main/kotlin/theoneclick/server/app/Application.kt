@@ -1,16 +1,16 @@
 package theoneclick.server.app
 
 import io.ktor.util.logging.*
-import theoneclick.server.app.dataSources.DiskHomesDataSource
-import theoneclick.server.app.dataSources.DiskUsersDataSource
-import theoneclick.server.app.dataSources.MemoryHomesDataSource
-import theoneclick.server.app.dataSources.MemoryUsersDataSource
+import theoneclick.server.shared.dataSources.DiskHomesDataSource
+import theoneclick.server.shared.dataSources.DiskUsersDataSource
+import theoneclick.server.shared.dataSources.MemoryHomesDataSource
+import theoneclick.server.shared.dataSources.MemoryUsersDataSource
 import theoneclick.server.app.di.AppComponent
 import theoneclick.server.shared.di.Environment
 import theoneclick.server.app.di.create
 import theoneclick.server.app.entrypoint.server
-import theoneclick.server.app.repositories.DefaultHomesRepository
-import theoneclick.server.app.repositories.DefaultUsersRepository
+import theoneclick.server.shared.repositories.DefaultHomesRepository
+import theoneclick.server.shared.repositories.DefaultUsersRepository
 import theoneclick.server.shared.security.DefaultEncryptor
 import theoneclick.server.shared.security.DefaultIvGenerator
 import theoneclick.server.shared.security.DefaultSecureRandomProvider

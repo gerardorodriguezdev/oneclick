@@ -1,13 +1,12 @@
-package theoneclick.server.app.dataSources
+package theoneclick.server.shared.dataSources
 
-import io.ktor.util.logging.Logger
+import io.ktor.util.logging.*
 import kotlinx.serialization.json.Json
-import theoneclick.server.app.dataSources.base.UsersDataSource
+import theoneclick.server.shared.dataSources.base.UsersDataSource
 import theoneclick.server.shared.models.User
 import theoneclick.server.shared.security.Encryptor
 import theoneclick.shared.contracts.core.models.Uuid
 import java.io.File
-import kotlin.collections.forEach
 
 class DiskUsersDataSource(
     private val usersDirectory: File,

@@ -1,8 +1,8 @@
-package theoneclick.server.app.extensions
+package theoneclick.server.shared.extensions
 
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*
-import theoneclick.server.app.plugins.authentication.AuthenticationConstants
+import theoneclick.server.shared.plugins.authentication.AuthenticationConstants
 import theoneclick.shared.contracts.core.models.Token
 
 fun Routing.defaultAuthentication(

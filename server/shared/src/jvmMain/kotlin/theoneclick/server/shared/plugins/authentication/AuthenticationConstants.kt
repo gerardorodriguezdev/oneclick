@@ -1,4 +1,4 @@
-package theoneclick.server.app.plugins.authentication
+package theoneclick.server.shared.plugins.authentication
 
 object AuthenticationConstants {
     const val SESSION_AUTHENTICATION = "session_authentication"

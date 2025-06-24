@@ -1,12 +1,11 @@
-package theoneclick.server.app.plugins
+package theoneclick.server.shared.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
 import io.ktor.util.*
 import kotlinx.serialization.json.Json
 import theoneclick.server.shared.di.Environment
-import theoneclick.server.app.plugins.authentication.AuthenticationConstants.COOKIE_SESSION_DURATION_IN_SECONDS
-import theoneclick.server.app.plugins.authentication.AuthenticationConstants.USER_SESSION
+import theoneclick.server.shared.plugins.authentication.AuthenticationConstants
 import theoneclick.server.shared.security.IvGenerator
 import theoneclick.shared.contracts.core.models.Token
 
@@ -17,9 +16,9 @@ fun Application.configureSessions(
     val sessionTransformer = sessionTransformer(environment, ivGenerator)
 
     install(Sessions) {
-        cookie<Token>(USER_SESSION) {
+        cookie<Token>(AuthenticationConstants.USER_SESSION) {
             cookie.path = "/"
-            cookie.maxAgeInSeconds = COOKIE_SESSION_DURATION_IN_SECONDS
+            cookie.maxAgeInSeconds = AuthenticationConstants.COOKIE_SESSION_DURATION_IN_SECONDS
             cookie.secure = true
             cookie.httpOnly = true
             serializer = sessionSerializer()

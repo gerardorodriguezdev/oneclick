@@ -1,4 +1,4 @@
-package theoneclick.server.app.dataSources.base
+package theoneclick.server.shared.dataSources.base
 
 import theoneclick.server.shared.models.User
 import theoneclick.shared.contracts.core.models.Token
