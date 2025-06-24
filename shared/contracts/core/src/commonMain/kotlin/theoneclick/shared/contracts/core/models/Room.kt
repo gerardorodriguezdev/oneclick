@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import theoneclick.shared.contracts.core.models.UniqueList.KeyProvider
 
 @Serializable
-class Room private constructor(
+class Room(
     val name: RoomName,
     val devices: UniqueList<Device>,
 ) : KeyProvider {
