@@ -2,7 +2,7 @@ package theoneclick.server.app.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.plugins.ratelimit.*
-import theoneclick.server.app.di.Environment
+import theoneclick.server.shared.di.Environment
 import theoneclick.shared.timeProvider.TimeProvider
 import kotlin.time.Duration.Companion.seconds
 

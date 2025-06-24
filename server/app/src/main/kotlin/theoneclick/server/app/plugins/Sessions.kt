@@ -4,7 +4,7 @@ import io.ktor.server.application.*
 import io.ktor.server.sessions.*
 import io.ktor.util.*
 import kotlinx.serialization.json.Json
-import theoneclick.server.app.di.Environment
+import theoneclick.server.shared.di.Environment
 import theoneclick.server.app.plugins.authentication.AuthenticationConstants.COOKIE_SESSION_DURATION_IN_SECONDS
 import theoneclick.server.app.plugins.authentication.AuthenticationConstants.USER_SESSION
 import theoneclick.server.shared.security.IvGenerator

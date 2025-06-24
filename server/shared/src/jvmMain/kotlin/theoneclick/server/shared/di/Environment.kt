@@ -1,4 +1,4 @@
-package theoneclick.server.app.di
+package theoneclick.server.shared.di
 
 data class Environment(
     val secretSignKey: String,

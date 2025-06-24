@@ -6,7 +6,7 @@ import theoneclick.server.app.dataSources.DiskUsersDataSource
 import theoneclick.server.app.dataSources.MemoryHomesDataSource
 import theoneclick.server.app.dataSources.MemoryUsersDataSource
 import theoneclick.server.app.di.AppComponent
-import theoneclick.server.app.di.Environment
+import theoneclick.server.shared.di.Environment
 import theoneclick.server.app.di.create
 import theoneclick.server.app.entrypoint.server
 import theoneclick.server.app.repositories.DefaultHomesRepository

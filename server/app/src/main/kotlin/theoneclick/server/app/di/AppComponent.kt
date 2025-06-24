@@ -8,6 +8,7 @@ import theoneclick.server.app.dataSources.AuthenticationDataSource
 import theoneclick.server.app.dataSources.DefaultAuthenticationDataSource
 import theoneclick.server.app.repositories.HomesRepository
 import theoneclick.server.app.repositories.UsersRepository
+import theoneclick.server.shared.di.Environment
 import theoneclick.server.shared.security.DefaultUuidProvider
 import theoneclick.server.shared.security.Encryptor
 import theoneclick.server.shared.security.IvGenerator

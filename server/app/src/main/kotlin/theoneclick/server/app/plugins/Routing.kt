@@ -2,7 +2,7 @@ package theoneclick.server.app.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
-import theoneclick.server.app.di.Environment
+import theoneclick.server.shared.di.Environment
 import theoneclick.server.app.endpoints.*
 import theoneclick.server.app.repositories.HomesRepository
 import theoneclick.server.app.repositories.UsersRepository
