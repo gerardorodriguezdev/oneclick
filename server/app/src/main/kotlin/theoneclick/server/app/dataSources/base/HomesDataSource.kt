@@ -4,6 +4,7 @@ import theoneclick.server.app.models.HomesEntry
 import theoneclick.shared.contracts.core.models.NonNegativeInt
 import theoneclick.shared.contracts.core.models.PaginationResult
 import theoneclick.shared.contracts.core.models.PositiveInt
+import theoneclick.shared.contracts.core.models.UniqueList
 import theoneclick.shared.contracts.core.models.Uuid
 
 abstract class HomesDataSource {
@@ -36,10 +37,10 @@ abstract class HomesDataSource {
         }
         if (newHomes.isEmpty()) return null
 
-        val newHomesEntry = HomesEntry.unsafe(
+        val newHomesEntry = HomesEntry(
             userId = homesEntry.userId,
             lastModified = homesEntry.lastModified,
-            homes = newHomes,
+            homes = UniqueList.unsafe(newHomes),
         )
 
         return PaginationResult(

@@ -54,7 +54,7 @@ private fun Application.configureRouting() {
                 HomesResponse(
                     data = HomesResponse.Data.Success(
                         lastModified = PositiveLong.unsafe(1),
-                        value = mockHomes(5),
+                        homes = mockHomes(5),
                         pageIndex = NonNegativeInt.unsafe(5),
                         canRequestMore = true,
                     )

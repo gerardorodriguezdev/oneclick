@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import theoneclick.shared.contracts.core.models.Home
 import theoneclick.shared.contracts.core.models.NonNegativeInt
 import theoneclick.shared.contracts.core.models.PositiveLong
+import theoneclick.shared.contracts.core.models.UniqueList
 
 @Serializable
 data class HomesResponse(
@@ -17,7 +18,7 @@ data class HomesResponse(
         @Serializable
         data class Success(
             val lastModified: PositiveLong,
-            val value: List<Home>,
+            val homes: UniqueList<Home>,
             val pageIndex: NonNegativeInt,
             val canRequestMore: Boolean,
         ) : Data

@@ -1,11 +1,14 @@
 package theoneclick.shared.contracts.core.models
 
 import kotlinx.serialization.Serializable
+import theoneclick.shared.contracts.core.models.UniqueList.KeyProvider
 
 @Serializable
-sealed interface Device {
-    val id: Uuid
-    val name: DeviceName
+sealed class Device : KeyProvider<Uuid> {
+    abstract val id: Uuid
+    abstract val name: DeviceName
+
+    override val key: Uuid = id
 
     @Serializable
     class WaterSensor private constructor(
@@ -13,7 +16,7 @@ sealed interface Device {
         override val name: DeviceName,
         val range: PositiveIntRange,
         val level: NonNegativeInt,
-    ) : Device {
+    ) : Device() {
 
         init {
             require(isValid(level = level, range = range)) { ERROR_MESSAGE }
