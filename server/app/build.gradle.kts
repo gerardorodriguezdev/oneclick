@@ -1,7 +1,6 @@
 plugins {
     id("theoneclick.jvm.server")
     alias(libs.plugins.kmp.serialization)
-    alias(libs.plugins.kmp.atomicfu)
     alias(libs.plugins.ksp)
 }
 
@@ -21,18 +20,9 @@ jvmServer {
 dependencies {
     implementation(ktorLibs.server.core)
     implementation(ktorLibs.server.netty)
-    implementation(ktorLibs.server.contentNegotiation)
-    implementation(ktorLibs.server.callLogging)
-    implementation(ktorLibs.server.requestValidation)
-    implementation(ktorLibs.server.statusPages)
-    implementation(ktorLibs.server.rateLimit)
-    implementation(ktorLibs.server.callId)
-    implementation(ktorLibs.server.compression)
-    implementation(ktorLibs.server.auth)
     implementation(ktorLibs.serialization.kotlinx.json)
-    implementation(libs.kmp.datetime)
     implementation(libs.kmp.kotlin.inject)
-    implementation(libs.jvm.bcrypt)
+    implementation(ktorLibs.server.auth)
     implementation(libs.jvm.logback.classic)
     implementation(projects.shared.logging)
     implementation(projects.shared.contracts.core)
