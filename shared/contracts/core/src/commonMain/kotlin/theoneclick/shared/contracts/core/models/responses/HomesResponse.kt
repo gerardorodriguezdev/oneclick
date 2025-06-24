@@ -10,17 +10,11 @@ import theoneclick.shared.contracts.core.models.UniqueList
 data class HomesResponse(
     val data: Data?,
 ) {
-    sealed interface Data {
-
-        @Serializable
-        data object NotChanged : Data
-
-        @Serializable
-        data class Success(
-            val lastModified: PositiveLong,
-            val homes: UniqueList<Home>,
-            val pageIndex: NonNegativeInt,
-            val canRequestMore: Boolean,
-        ) : Data
-    }
+    @Serializable
+    data class Data(
+        val lastModified: PositiveLong,
+        val homes: UniqueList<Home>,
+        val pageIndex: NonNegativeInt,
+        val canRequestMore: Boolean,
+    )
 }

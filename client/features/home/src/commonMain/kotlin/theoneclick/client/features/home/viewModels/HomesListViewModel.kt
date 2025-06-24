@@ -67,9 +67,7 @@ internal class HomesListViewModel(
                 }
                 .collect { homesResult ->
                     when (homesResult) {
-                        is HomesResult.Success,
-                        is HomesResult.NotChanged -> Unit // Observed at the start
-
+                        is HomesResult.Success -> Unit // Observed at the start
                         is HomesResult.Error -> handleUnknownError()
                     }
                 }
@@ -92,9 +90,7 @@ internal class HomesListViewModel(
                 }
                 .collect { homesResult ->
                     when (homesResult) {
-                        is HomesResult.Success,
-                        is HomesResult.NotChanged -> Unit // Observed at the start
-
+                        is HomesResult.Success -> Unit // Observed at the start
                         is HomesResult.Error -> handleUnknownError()
                     }
                 }

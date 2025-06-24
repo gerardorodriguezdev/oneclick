@@ -12,10 +12,10 @@ import theoneclick.server.app.repositories.HomesRepository
 import theoneclick.server.app.repositories.UsersRepository
 import theoneclick.shared.contracts.core.models.PaginationResult
 import theoneclick.shared.contracts.core.models.PositiveLong
+import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.contracts.core.models.requests.HomesRequest
 import theoneclick.shared.contracts.core.models.responses.HomesResponse
 import theoneclick.shared.contracts.core.models.responses.HomesResponse.Data
-import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 fun Routing.homesListEndpoint(
     usersRepository: UsersRepository,
@@ -52,14 +52,7 @@ private suspend fun RoutingContext.handleUserAvailable(
     if (homesEntry == null) {
         handleNoHomesEntry()
     } else {
-        val requestLastModified = homesRequest.lastModified?.value
-        val homesEntryLastModified = homesEntry.value.lastModified.value
-
-        if (requestLastModified != null && homesEntryLastModified <= requestLastModified) {
-            handleNotChanged()
-        } else {
-            handleSuccess(homesEntry)
-        }
+        handleSuccess(homesEntry)
     }
 }
 
@@ -67,18 +60,10 @@ private suspend fun RoutingContext.handleNoHomesEntry() {
     call.respond(HomesResponse(data = null))
 }
 
-private suspend fun RoutingContext.handleNotChanged() {
-    call.respond(
-        HomesResponse(
-            data = Data.NotChanged
-        )
-    )
-}
-
 private suspend fun RoutingContext.handleSuccess(homesEntry: PaginationResult<HomesEntry>) {
     call.respond(
         HomesResponse(
-            data = Data.Success(
+            data = Data(
                 lastModified = PositiveLong.unsafe(homesEntry.value.lastModified.value),
                 homes = homesEntry.value.homes,
                 pageIndex = homesEntry.pageIndex,

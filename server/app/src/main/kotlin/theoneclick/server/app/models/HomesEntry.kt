@@ -11,6 +11,6 @@ class HomesEntry(
     val userId: Uuid,
     val lastModified: PositiveLong,
     val homes: UniqueList<Home>,
-) : UniqueList.KeyProvider<String> {
+) : UniqueList.KeyProvider {
     override val key: String = userId.value
 }

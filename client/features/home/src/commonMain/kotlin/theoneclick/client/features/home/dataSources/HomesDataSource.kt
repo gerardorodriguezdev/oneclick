@@ -37,20 +37,17 @@ internal class RemoteHomesDataSource(
             when (response.status) {
                 HttpStatusCode.OK -> {
                     val homesResponse = response.body<HomesResponse>()
-                    val homesResult =
-                        when (val data = homesResponse.data) {
-                            null -> HomesResult.Success(homesEntry = null)
-                            is HomesResponse.Data.Success -> HomesResult.Success(
-                                homesEntry = HomesEntry(
-                                    lastModified = data.lastModified,
-                                    homes = data.homes,
-                                    pageIndex = data.pageIndex,
-                                    canRequestMore = data.canRequestMore,
-                                )
+                    val data = homesResponse.data
+                    val homesResult = HomesResult.Success(
+                        homesEntry = data?.let {
+                            HomesEntry(
+                                lastModified = data.lastModified,
+                                homes = data.homes,
+                                pageIndex = data.pageIndex,
+                                canRequestMore = data.canRequestMore,
                             )
-
-                            is HomesResponse.Data.NotChanged -> HomesResult.NotChanged
                         }
+                    )
                     emit(homesResult)
                 }
 

@@ -52,7 +52,7 @@ private fun Application.configureRouting() {
         get(ClientEndpoint.HOMES.route) {
             call.respond(
                 HomesResponse(
-                    data = HomesResponse.Data.Success(
+                    data = HomesResponse.Data(
                         lastModified = PositiveLong.unsafe(1),
                         homes = mockHomes(5),
                         pageIndex = NonNegativeInt.unsafe(5),
