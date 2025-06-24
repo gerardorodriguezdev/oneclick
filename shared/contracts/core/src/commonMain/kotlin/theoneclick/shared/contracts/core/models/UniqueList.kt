@@ -4,27 +4,32 @@ import kotlinx.serialization.Serializable
 import theoneclick.shared.contracts.core.models.UniqueList.KeyProvider
 
 @Serializable
-class UniqueList<T> private constructor(val elements: List<KeyProvider<T>>) : List<KeyProvider<T>> by elements {
+class UniqueList<T : KeyProvider> private constructor(val elements: List<T>) : List<T> by elements {
 
     init {
         require(isValid(elements)) { ERROR_MESSAGE }
     }
 
-    interface KeyProvider<T> {
-        val key: T
+    interface KeyProvider {
+        val key: String
     }
 
     companion object {
         private const val ERROR_MESSAGE = "Duplicated elements"
 
-        fun <T> isValid(elements: List<KeyProvider<T>>): Boolean = !elements.containsDuplicates()
+        fun <T : KeyProvider> isValid(elements: List<T>): Boolean = !elements.containsDuplicates()
 
-        fun <T> List<KeyProvider<T>>.toUniqueList(): UniqueList<T>? =
+        fun <T : KeyProvider> List<T>.toUniqueList(): UniqueList<T>? =
             if (isValid(this)) UniqueList(this) else null
 
-        fun <T> unsafe(elements: List<KeyProvider<T>>): UniqueList<T> = UniqueList(elements)
+        fun <T : KeyProvider> emptyUniqueList(): UniqueList<T> = UniqueList(emptyList())
 
-        private fun <T> List<KeyProvider<T>>.containsDuplicates(): Boolean {
+        fun <T : KeyProvider> unsafe(elements: List<T>): UniqueList<T> = UniqueList(elements)
+
+        operator fun <T : KeyProvider> UniqueList<T>.plus(other: UniqueList<T>): UniqueList<T> =
+            UniqueList(this.elements + other.elements)
+
+        private fun <T : KeyProvider> List<T>.containsDuplicates(): Boolean {
             val distinct = distinctBy { it.key }
             return size == distinct.size
         }

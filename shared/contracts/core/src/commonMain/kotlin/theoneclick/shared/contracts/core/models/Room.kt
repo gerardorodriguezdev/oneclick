@@ -7,6 +7,6 @@ import theoneclick.shared.contracts.core.models.UniqueList.KeyProvider
 class Room private constructor(
     val name: RoomName,
     val devices: UniqueList<Device>,
-) : KeyProvider<String> {
+) : KeyProvider {
     override val key: String = name.value
 }

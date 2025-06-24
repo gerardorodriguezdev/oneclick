@@ -8,7 +8,8 @@ import theoneclick.client.features.home.models.HomesResult
 import theoneclick.client.features.home.repositories.HomesRepository.Companion.defaultPageSize
 import theoneclick.shared.contracts.core.models.NonNegativeInt
 import theoneclick.shared.contracts.core.models.PositiveInt
-import theoneclick.shared.contracts.core.models.PositiveLong
+import theoneclick.shared.contracts.core.models.UniqueList
+import theoneclick.shared.contracts.core.models.UniqueList.Companion.plus
 import theoneclick.shared.contracts.core.models.requests.HomesRequest
 
 internal interface HomesRepository {
@@ -33,7 +34,7 @@ internal class DefaultHomesRepository(
         remoteHomesDataSource
             .homes(
                 request = HomesRequest(
-                    lastModified = lastModifiedOrNull(),
+                    lastModified = mutableHomesEntry.value?.lastModified,
                     pageSize = defaultPageSize,
                     pageIndex = NonNegativeInt.zero,
                 )
@@ -51,9 +52,9 @@ internal class DefaultHomesRepository(
         remoteHomesDataSource
             .homes(
                 request = HomesRequest(
-                    lastModified = lastModifiedOrNull(),
+                    lastModified = mutableHomesEntry.value?.lastModified,
                     pageSize = defaultPageSize,
-                    pageIndex = pageIndex(),
+                    pageIndex = mutableHomesEntry.value?.pageIndex ?: NonNegativeInt.zero,
                 )
             )
             .appendToCacheIfAvailable()
@@ -61,26 +62,16 @@ internal class DefaultHomesRepository(
     private fun Flow<HomesResult>.appendToCacheIfAvailable(): Flow<HomesResult> =
         onEach { homesResult ->
             if (homesResult is HomesResult.Success && homesResult.homesEntry != null) {
-                val currentHomes = mutableHomesEntry.value?.homes ?: emptyList()
+                val currentHomes = mutableHomesEntry.value?.homes ?: UniqueList.emptyUniqueList()
                 val newHomesEntry = homesResult.homesEntry
                 mutableHomesEntry.emit(
-                    newHomesEntry.prepend(currentHomes)
+                    HomesEntry(
+                        lastModified = newHomesEntry.lastModified,
+                        homes = currentHomes + newHomesEntry.homes,
+                        pageIndex = newHomesEntry.pageIndex,
+                        canRequestMore = newHomesEntry.canRequestMore,
+                    )
                 )
             }
-        }
-
-    private fun pageIndex(): NonNegativeInt {
-        val currentPageIndex = mutableHomesEntry.value?.pageIndex
-
-        return if (currentPageIndex != null) {
-            NonNegativeInt.unsafe(currentPageIndex)
-        } else {
-            NonNegativeInt.zero
-        }
-    }
-
-    private fun lastModifiedOrNull(): PositiveLong? =
-        mutableHomesEntry.value?.lastModified?.let {
-            PositiveLong.unsafe(it)
         }
 }

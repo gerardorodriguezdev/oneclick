@@ -12,6 +12,7 @@ import theoneclick.client.features.home.viewModels.HomesListViewModel
 import theoneclick.shared.contracts.core.models.Device
 import theoneclick.shared.contracts.core.models.Home
 import theoneclick.shared.contracts.core.models.Room
+import theoneclick.shared.contracts.core.models.UniqueList
 
 internal fun HomesListViewModel.HomesListViewModelState.toHomesListScreenState(): HomesListScreenState =
     HomesListScreenState(
@@ -20,19 +21,19 @@ internal fun HomesListViewModel.HomesListViewModelState.toHomesListScreenState()
         isPaginationLoading = isPaginationLoading,
     )
 
-private fun List<Home>.toUiHomes(): ImmutableList<UiHome> =
+private fun UniqueList<Home>.toUiHomes(): ImmutableList<UiHome> =
     map { it.toUiHome() }.toPersistentList()
 
 private fun Home.toUiHome(): UiHome =
     UiHome(name = name.value, rooms = rooms.toUiRooms())
 
-private fun List<Room>.toUiRooms(): ImmutableList<UiRoom> =
+private fun UniqueList<Room>.toUiRooms(): ImmutableList<UiRoom> =
     map { it.toUiRoom() }.toPersistentList()
 
 private fun Room.toUiRoom(): UiRoom =
     UiRoom(name = name.value, devices = devices.toUiDevices())
 
-private fun List<Device>.toUiDevices(): ImmutableList<UiDevice> =
+private fun UniqueList<Device>.toUiDevices(): ImmutableList<UiDevice> =
     map { it.toUiDevice() }.toImmutableList()
 
 private fun Device.toUiDevice(): UiDevice =

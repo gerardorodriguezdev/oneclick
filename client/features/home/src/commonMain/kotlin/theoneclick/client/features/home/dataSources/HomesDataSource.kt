@@ -9,10 +9,11 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOn
 import me.tatarka.inject.annotations.Inject
+import theoneclick.client.features.home.models.HomesEntry
 import theoneclick.client.features.home.models.HomesResult
+import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.contracts.core.models.requests.HomesRequest
 import theoneclick.shared.contracts.core.models.responses.HomesResponse
-import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.logging.AppLogger
 
@@ -39,7 +40,15 @@ internal class RemoteHomesDataSource(
                     val homesResult =
                         when (val data = homesResponse.data) {
                             null -> HomesResult.Success(homesEntry = null)
-                            is HomesResponse.Data.Success -> HomesResult.Success()
+                            is HomesResponse.Data.Success -> HomesResult.Success(
+                                homesEntry = HomesEntry(
+                                    lastModified = data.lastModified,
+                                    homes = data.homes,
+                                    pageIndex = data.pageIndex,
+                                    canRequestMore = data.canRequestMore,
+                                )
+                            )
+
                             is HomesResponse.Data.NotChanged -> HomesResult.NotChanged
                         }
                     emit(homesResult)

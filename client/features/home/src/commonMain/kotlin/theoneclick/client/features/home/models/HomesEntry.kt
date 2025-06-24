@@ -7,7 +7,7 @@ import theoneclick.shared.contracts.core.models.UniqueList
 
 data class HomesEntry(
     val lastModified: PositiveLong,
-    val homes: UniqueList<String, Home>,
+    val homes: UniqueList<Home>,
     val pageIndex: NonNegativeInt,
     val canRequestMore: Boolean,
 )

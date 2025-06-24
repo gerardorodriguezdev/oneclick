@@ -4,11 +4,11 @@ import kotlinx.serialization.Serializable
 import theoneclick.shared.contracts.core.models.UniqueList.KeyProvider
 
 @Serializable
-sealed class Device : KeyProvider<Uuid> {
+sealed class Device : KeyProvider {
     abstract val id: Uuid
     abstract val name: DeviceName
 
-    override val key: Uuid = id
+    override val key: String = id.value
 
     @Serializable
     class WaterSensor private constructor(

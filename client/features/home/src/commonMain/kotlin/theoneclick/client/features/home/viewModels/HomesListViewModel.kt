@@ -16,6 +16,8 @@ import theoneclick.client.features.home.ui.screens.HomesListEvent
 import theoneclick.client.features.home.ui.screens.HomesListScreenState
 import theoneclick.client.shared.notifications.NotificationsController
 import theoneclick.shared.contracts.core.models.Home
+import theoneclick.shared.contracts.core.models.UniqueList
+import theoneclick.shared.contracts.core.models.UniqueList.Companion.emptyUniqueList
 
 @Inject
 internal class HomesListViewModel(
@@ -35,7 +37,7 @@ internal class HomesListViewModel(
         viewModelScope.launch {
             homesRepository.homesEntry.collect { homeEntry ->
                 homesListViewModelState.value = homesListViewModelState.value.copy(
-                    homes = homeEntry?.homes ?: emptyList(),
+                    homes = homeEntry?.homes ?: emptyUniqueList(),
                     canRequestMore = homeEntry?.canRequestMore ?: true,
                 )
             }
@@ -114,7 +116,7 @@ internal class HomesListViewModel(
     }
 
     data class HomesListViewModelState(
-        val homes: List<Home> = emptyList(),
+        val homes: UniqueList<Home> = emptyUniqueList(),
         val canRequestMore: Boolean = true,
         val isFullPageLoading: Boolean = false,
         val isPaginationLoading: Boolean = false,
