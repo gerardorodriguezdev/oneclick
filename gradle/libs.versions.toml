@@ -1,6 +1,6 @@
 [versions]
 android-activity = "1.10.1"
-android-gradle-plugin = "8.7.3"
+android-gradle-plugin = "8.10.0"
 android-api = "35"
 android-datastore = "1.1.4"
 android-test-junit = "1.8.2"
@@ -26,6 +26,7 @@ kmp-immutable = "0.3.8"
 kmp-window-classes = "0.5.0"
 kmp-serialization = "1.8.1"
 kmp-kotlin-inject = "0.8.0"
+kmp-sqldelight = "2.1.0"
 ksp = "2.1.21-2.0.1"
 chamaleon = "1.0.15"
 
@@ -63,6 +64,7 @@ kmp-test-turbine = { module = "app.cash.turbine:turbine", version.ref = "kmp-tes
 ksp-kotlin-inject = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kmp-kotlin-inject" }
 kmp-kotlin-inject = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kmp-kotlin-inject" }
 kmp-kotlin-inject-kmp = { module = "me.tatarka.inject:kotlin-inject-runtime-kmp", version.ref = "kmp-kotlin-inject" }
+kmp-sqldelight = { module = "app.cash.sqldelight:jdbc-driver", version.ref = "kmp-sqldelight" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
@@ -75,4 +77,5 @@ kmp-compose-jetbrains = { id = "org.jetbrains.compose", version.ref = "kmp-compo
 kmp-kotlin = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kmp-kotlin-api" }
 kmp-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kmp-kotlin-api" }
 kmp-build-config = { id = "com.codingfeline.buildkonfig", version.ref = "kmp-buildconfig" }
+kmp-sqldelight = { id = "app.cash.sqldelight", version.ref = "kmp-sqldelight" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
