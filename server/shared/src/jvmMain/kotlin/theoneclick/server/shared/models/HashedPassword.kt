@@ -5,8 +5,10 @@ import theoneclick.server.shared.security.Encryptor
 
 @Serializable
 @JvmInline
-value class HashedPassword(val value: String) {
+value class HashedPassword private constructor(val value: String) {
     companion object {
         fun Encryptor.create(value: String): HashedPassword = HashedPassword(value)
+
+        fun unsafe(value: String): HashedPassword = HashedPassword(value)
     }
 }

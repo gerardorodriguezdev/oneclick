@@ -12,6 +12,7 @@ detekt-formatting = "1.23.8"
 jvm-api = "21"
 jvm-bcrypt = "0.10.2"
 jvm-logback = "1.5.16"
+jvm-hiraki = "6.3.0"
 kmp-kotlin-api = "2.1.21"
 kmp-atomicfu = "0.27.0"
 kmp-compose = "1.8.0"
@@ -50,6 +51,7 @@ gradle-jvm-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:chama
 gradle-kmp-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kmp-serialization" }
 jvm-bcrypt = { module = "at.favre.lib:bcrypt", version.ref = "jvm-bcrypt" }
 jvm-logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "jvm-logback" }
+jvm-hiraki = { module = "com.zaxxer:HikariCP", version.ref = "jvm-hiraki" }
 jvm-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kmp-kotlin-api" }
 kmp-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kmp-coroutines" }
 kmp-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kmp-atomicfu" }

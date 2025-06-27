@@ -6,9 +6,13 @@ data class Environment(
     val protocol: String,
     val host: String,
     val storageDirectory: String,
+    val jdbcUrl: String,
+    val dbUsername: String,
+    val dbPassword: String,
     // Optional
     val enableQAAPI: Boolean,
     val disableRateLimit: Boolean,
+    val useMemoryDatabases: Boolean,
 ) {
     val baseUrl: String = "$protocol://$host"
 }

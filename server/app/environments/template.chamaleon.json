@@ -50,6 +50,22 @@
     {
       "name": "DISABLE_RATE_LIMIT",
       "propertyType": "Boolean"
+    },
+    {
+      "name": "USE_MEMORY_DATABASES",
+      "propertyType": "Boolean"
+    },
+    {
+      "name": "JDBC_URL",
+      "propertyType": "String"
+    },
+    {
+      "name": "DB_USERNAME",
+      "propertyType": "String"
+    },
+    {
+      "name": "DB_PASSWORD",
+      "propertyType": "String"
     }
   ]
 }

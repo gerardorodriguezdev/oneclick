@@ -18,6 +18,8 @@ value class Username private constructor(val value: String) {
 
         fun isValid(value: String): Boolean = REGEX.matches(value)
 
+        fun unsafe(value: String): Username = Username(value)
+
         fun String.toUsername(): Username? =
             if (isValid(this)) Username(this) else null
     }

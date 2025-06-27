@@ -45,6 +45,22 @@
       {
         "name": "DISABLE_RATE_LIMIT",
         "value": true
+      },
+      {
+        "name": "USE_MEMORY_DATABASES",
+        "value": true
+      },
+      {
+        "name": "JDBC_URL",
+        "value": "jdbc:postgresql://localhost:5432/users"
+      },
+      {
+        "name": "DB_USERNAME",
+        "value": "Username"
+      },
+      {
+        "name": "DB_PASSWORD",
+        "value": "Password"
       }
     ]
   }
