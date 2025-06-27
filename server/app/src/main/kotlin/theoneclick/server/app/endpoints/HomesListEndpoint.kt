@@ -3,33 +3,33 @@ package theoneclick.server.app.endpoints
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import theoneclick.server.shared.dataSources.base.UsersDataSource
+import theoneclick.server.shared.dataSources.base.SessionsDataSource
 import theoneclick.server.shared.extensions.defaultAuthentication
 import theoneclick.server.shared.extensions.requireToken
 import theoneclick.server.shared.models.HomesEntry
-import theoneclick.server.shared.models.User
 import theoneclick.server.shared.repositories.HomesRepository
-import theoneclick.server.shared.repositories.UsersRepository
+import theoneclick.server.shared.repositories.SessionsRepository
 import theoneclick.shared.contracts.core.models.PaginationResult
 import theoneclick.shared.contracts.core.models.PositiveLong
+import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.contracts.core.models.requests.HomesRequest
 import theoneclick.shared.contracts.core.models.responses.HomesResponse
 import theoneclick.shared.contracts.core.models.responses.HomesResponse.Data
 
 fun Routing.homesListEndpoint(
-    usersRepository: UsersRepository,
+    sessionsRepository: SessionsRepository,
     homesRepository: HomesRepository,
 ) {
     defaultAuthentication {
         post(ClientEndpoint.HOMES.route) { homesRequest: HomesRequest ->
             val token = requireToken()
-            val user = usersRepository.user(UsersDataSource.Findable.ByToken(token))
-            if (user == null) {
+            val userId = sessionsRepository.session(SessionsDataSource.Findable.ByToken(token))?.userId
+            if (userId == null) {
                 call.respond(HttpStatusCode.BadRequest)
             } else {
                 handleUserAvailable(
-                    user = user,
+                    userId = userId,
                     homesRepository = homesRepository,
                     homesRequest = homesRequest,
                 )
@@ -39,12 +39,12 @@ fun Routing.homesListEndpoint(
 }
 
 private suspend fun RoutingContext.handleUserAvailable(
-    user: User,
+    userId: Uuid,
     homesRepository: HomesRepository,
     homesRequest: HomesRequest
 ) {
     val homesEntry = homesRepository.homesEntry(
-        userId = user.userId,
+        userId = userId,
         pageSize = homesRequest.pageSize,
         currentPageIndex = homesRequest.pageIndex
     )

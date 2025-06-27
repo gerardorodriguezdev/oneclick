@@ -1,15 +1,13 @@
 package theoneclick.server.app
 
 import io.ktor.util.logging.*
-import theoneclick.server.shared.dataSources.DiskHomesDataSource
-import theoneclick.server.shared.dataSources.DiskUsersDataSource
-import theoneclick.server.shared.dataSources.MemoryHomesDataSource
-import theoneclick.server.shared.dataSources.MemoryUsersDataSource
 import theoneclick.server.app.di.AppComponent
-import theoneclick.server.shared.di.Environment
 import theoneclick.server.app.di.create
 import theoneclick.server.app.entrypoint.server
+import theoneclick.server.shared.dataSources.*
+import theoneclick.server.shared.di.Environment
 import theoneclick.server.shared.repositories.DefaultHomesRepository
+import theoneclick.server.shared.repositories.DefaultSessionsRepository
 import theoneclick.server.shared.repositories.DefaultUsersRepository
 import theoneclick.server.shared.security.DefaultEncryptor
 import theoneclick.server.shared.security.DefaultIvGenerator
@@ -45,6 +43,10 @@ fun main() {
         diskUsersDataSource = diskUsersDataSource,
         memoryUsersDataSource = memoryUsersDataSource,
     )
+    val sessionsRepository = DefaultSessionsRepository(
+        memorySessionsDataSource = MemorySessionsDataSource(),
+        diskSessionsDataSource = MemorySessionsDataSource(),
+    )
     val diskHomesDataSource = DiskHomesDataSource(
         homesEntriesDirectory = DiskHomesDataSource.homesEntriesDirectory(environment.storageDirectory),
         encryptor = encryptor,
@@ -62,6 +64,7 @@ fun main() {
         timeProvider = timeProvider,
         logger = logger,
         usersRepository = usersRepository,
+        sessionsRepository = sessionsRepository,
         homesRepository = homesRepository,
     )
     server(appComponent).start(wait = true)

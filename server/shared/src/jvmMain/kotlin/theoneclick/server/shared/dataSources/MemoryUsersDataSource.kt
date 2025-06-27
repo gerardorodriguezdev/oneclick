@@ -12,9 +12,6 @@ class MemoryUsersDataSource : UsersDataSource {
         when (findable) {
             is UsersDataSource.Findable.ByUserId -> users[findable.userId]
 
-            is UsersDataSource.Findable.ByToken ->
-                users.values.firstOrNull { user -> user.sessionToken?.token?.value == findable.token.value }
-
             is UsersDataSource.Findable.ByUsername ->
                 users.values.firstOrNull { user -> user.username.value == findable.username.value }
         }

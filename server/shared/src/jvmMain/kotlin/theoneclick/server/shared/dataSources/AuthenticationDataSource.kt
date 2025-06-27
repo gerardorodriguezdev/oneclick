@@ -1,8 +1,8 @@
 package theoneclick.server.shared.dataSources
 
 import me.tatarka.inject.annotations.Inject
-import theoneclick.server.shared.dataSources.base.UsersDataSource
-import theoneclick.server.shared.repositories.UsersRepository
+import theoneclick.server.shared.dataSources.base.SessionsDataSource.Findable
+import theoneclick.server.shared.repositories.SessionsRepository
 import theoneclick.shared.contracts.core.models.Token
 import theoneclick.shared.contracts.core.models.Token.Companion.toToken
 import theoneclick.shared.timeProvider.TimeProvider
@@ -14,7 +14,7 @@ interface AuthenticationDataSource {
 
 @Inject
 class DefaultAuthenticationDataSource(
-    private val usersRepository: UsersRepository,
+    private val sessionsRepository: SessionsRepository,
     private val timeProvider: TimeProvider,
 ) : AuthenticationDataSource {
 
@@ -24,14 +24,13 @@ class DefaultAuthenticationDataSource(
     }
 
     override fun isUserSessionValid(token: Token): Boolean {
-        val user = usersRepository.user(UsersDataSource.Findable.ByToken(token))
-        val sessionToken = user?.sessionToken
+        val session = sessionsRepository.session(Findable.ByToken(token))
+        val sessionToken = session?.encryptedToken
 
         return when {
-            user == null -> false
             sessionToken == null -> false
 
-            timeProvider.currentTimeMillis() > sessionToken.creationTimeInMillis +
+            timeProvider.currentTimeMillis() > sessionToken.creationTimeInMillis.value +
                     USER_SESSION_TOKEN_EXPIRATION_IN_MILLIS -> false
 
             sessionToken.token.value != token.value -> false

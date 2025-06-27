@@ -5,20 +5,23 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import theoneclick.server.shared.dataSources.base.UsersDataSource
+import theoneclick.server.shared.extensions.agent
 import theoneclick.server.shared.models.User
+import theoneclick.server.shared.repositories.SessionsRepository
 import theoneclick.server.shared.repositories.UsersRepository
 import theoneclick.server.shared.security.Encryptor
 import theoneclick.server.shared.security.UuidProvider
-import theoneclick.server.shared.extensions.agent
-import theoneclick.shared.contracts.core.models.agents.Agent
 import theoneclick.shared.contracts.core.models.Token
 import theoneclick.shared.contracts.core.models.Username
+import theoneclick.shared.contracts.core.models.Uuid
+import theoneclick.shared.contracts.core.models.agents.Agent
+import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.contracts.core.models.requests.RequestLoginRequest
 import theoneclick.shared.contracts.core.models.responses.RequestLoginResponse
-import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 fun Routing.requestLoginEndpoint(
     usersRepository: UsersRepository,
+    sessionsRepository: SessionsRepository,
     encryptor: Encryptor,
     uuidProvider: UuidProvider,
 ) {
@@ -34,6 +37,7 @@ fun Routing.requestLoginEndpoint(
                 encryptor = encryptor,
                 uuidProvider = uuidProvider,
                 usersRepository = usersRepository,
+                sessionsRepository = sessionsRepository,
             )
 
             !encryptor.verifyPassword(
@@ -41,10 +45,10 @@ fun Routing.requestLoginEndpoint(
                 hashedPassword = user.hashedPassword
             ) -> handleError()
 
-            else -> handleSuccess(
-                user = user,
+            else -> saveSession(
+                userId = user.userId,
                 encryptor = encryptor,
-                usersRepository = usersRepository,
+                sessionsRepository = sessionsRepository,
             )
         }
     }
@@ -56,35 +60,34 @@ private suspend fun RoutingContext.registerUser(
     encryptor: Encryptor,
     uuidProvider: UuidProvider,
     usersRepository: UsersRepository,
+    sessionsRepository: SessionsRepository,
 ) {
     val newUser = User(
         userId = uuidProvider.uuid(),
         username = username,
         hashedPassword = encryptor.hashPassword(password),
-        sessionToken = null,
     )
+    usersRepository.saveUser(newUser)
 
-    handleSuccess(
-        user = newUser,
+    saveSession(
+        userId = newUser.userId,
         encryptor = encryptor,
-        usersRepository = usersRepository,
+        sessionsRepository = sessionsRepository,
     )
 }
 
-private suspend fun RoutingContext.handleSuccess(
-    user: User,
+private suspend fun RoutingContext.saveSession(
+    userId: Uuid,
     encryptor: Encryptor,
-    usersRepository: UsersRepository,
+    sessionsRepository: SessionsRepository,
 ) {
     val sessionToken = encryptor.encryptedToken()
-    usersRepository.saveUser(
-        user.copy(sessionToken = sessionToken)
-    )
+    sessionsRepository.saveSession(userId, sessionToken)
 
-    handleSuccess(sessionToken.token)
+    respondToken(sessionToken.token)
 }
 
-private suspend fun RoutingContext.handleSuccess(token: Token) {
+private suspend fun RoutingContext.respondToken(token: Token) {
     when (call.request.agent) {
         Agent.MOBILE -> {
             call.respond(

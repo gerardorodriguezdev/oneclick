@@ -18,9 +18,6 @@ class DiskUsersDataSource(
         when (findable) {
             is UsersDataSource.Findable.ByUserId -> findUser { user -> user.userId.value == findable.userId.value }
 
-            is UsersDataSource.Findable.ByToken ->
-                findUser { user -> user.sessionToken?.token?.value == findable.token.value }
-
             is UsersDataSource.Findable.ByUsername ->
                 findUser { user -> user.username.value == findable.username.value }
         }

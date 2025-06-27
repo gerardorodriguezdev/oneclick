@@ -1,0 +1,12 @@
+CREATE TABLE sessions (
+    user_id CHAR(36) REFERENCES users(user_id) ON DELETE CASCADE,
+    session_token VARCHAR(60) NOT NULL,
+    creation_time BIGINT NOT NULL
+);
+
+insertSession:
+INSERT INTO sessions(user_id, session_token, creation_time)
+VALUES ?;
+
+sessionByUserId:
+SELECT * FROM sessions WHERE user_id = ?;

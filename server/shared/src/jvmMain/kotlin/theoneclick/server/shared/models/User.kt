@@ -9,5 +9,4 @@ data class User(
     val userId: Uuid,
     val username: Username,
     val hashedPassword: HashedPassword,
-    val sessionToken: EncryptedToken?,
 )

@@ -6,9 +6,10 @@ import me.tatarka.inject.annotations.Provides
 import me.tatarka.inject.annotations.Scope
 import theoneclick.server.shared.dataSources.AuthenticationDataSource
 import theoneclick.server.shared.dataSources.DefaultAuthenticationDataSource
-import theoneclick.server.shared.repositories.HomesRepository
-import theoneclick.server.shared.repositories.UsersRepository
 import theoneclick.server.shared.di.Environment
+import theoneclick.server.shared.repositories.HomesRepository
+import theoneclick.server.shared.repositories.SessionsRepository
+import theoneclick.server.shared.repositories.UsersRepository
 import theoneclick.server.shared.security.DefaultUuidProvider
 import theoneclick.server.shared.security.Encryptor
 import theoneclick.server.shared.security.IvGenerator
@@ -30,6 +31,8 @@ abstract class AppComponent(
     val logger: Logger,
     @get:Provides
     val usersRepository: UsersRepository,
+    @get:Provides
+    val sessionsRepository: SessionsRepository,
     @get:Provides
     val homesRepository: HomesRepository,
     @get:Provides

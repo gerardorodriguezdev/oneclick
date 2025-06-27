@@ -4,17 +4,9 @@ import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
 import theoneclick.server.app.di.AppComponent
-import theoneclick.server.app.plugins.*
+import theoneclick.server.app.plugins.configureRouting
+import theoneclick.server.shared.plugins.*
 import theoneclick.server.shared.plugins.authentication.configureAuthentication
-import theoneclick.server.shared.plugins.configureCallId
-import theoneclick.server.shared.plugins.configureCallLogging
-import theoneclick.server.shared.plugins.configureCompression
-import theoneclick.server.shared.plugins.configureRateLimit
-import theoneclick.server.shared.plugins.configureRequestBodyLimit
-import theoneclick.server.shared.plugins.configureRequestValidation
-import theoneclick.server.shared.plugins.configureSerialization
-import theoneclick.server.shared.plugins.configureSessions
-import theoneclick.server.shared.plugins.configureStatusPages
 
 fun server(appComponent: AppComponent): EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration> =
     embeddedServer(
@@ -36,6 +28,7 @@ private fun Application.configureModules(appComponent: AppComponent) {
         encryptor = appComponent.encryptor,
         uuidProvider = appComponent.uuidProvider,
         homesRepository = appComponent.homesRepository,
+        sessionsRepository = appComponent.sessionsRepository,
     )
     configureStatusPages(appComponent.logger)
     configureRequestValidation()

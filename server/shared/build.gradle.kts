@@ -1,6 +1,7 @@
 plugins {
     id("theoneclick.jvm.library")
     alias(libs.plugins.kmp.atomicfu)
+    alias(libs.plugins.kmp.sqldelight)
     alias(libs.plugins.ksp)
 }
 
@@ -19,12 +20,23 @@ kotlin {
                 implementation(ktorLibs.server.callId)
                 implementation(ktorLibs.server.compression)
                 implementation(libs.kmp.kotlin.inject)
+                implementation(libs.kmp.sqldelight)
                 implementation(libs.jvm.bcrypt)
                 implementation(projects.shared.contracts.core)
                 implementation(projects.shared.timeProvider)
 
                 project.dependencies.ksp(libs.ksp.kotlin.inject)
             }
+        }
+    }
+}
+
+//TODO: Separate
+sqldelight {
+    databases {
+        create("UsersDatabase") {
+            packageName.set("theoneclick.server.shared.postgresql")
+            dialect("app.cash.sqldelight:postgresql-dialect:2.1.0")
         }
     }
 }
