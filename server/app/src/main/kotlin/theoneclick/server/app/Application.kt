@@ -16,6 +16,7 @@ import theoneclick.server.shared.repositories.DefaultUsersRepository
 import theoneclick.server.shared.security.DefaultEncryptor
 import theoneclick.server.shared.security.DefaultIvGenerator
 import theoneclick.server.shared.security.DefaultSecureRandomProvider
+import theoneclick.shared.dispatchers.platform.dispatchersProvider
 import theoneclick.shared.timeProvider.SystemTimeProvider
 
 fun main() {
@@ -24,7 +25,6 @@ fun main() {
         secretEncryptionKey = System.getenv("SECRET_ENCRYPTION_KEY"),
         protocol = System.getenv("PROTOCOL"),
         host = System.getenv("HOST"),
-        storageDirectory = System.getenv("STORAGE_DIRECTORY"),
         jdbcUrl = System.getenv("JDBC_URL"),
         dbUsername = System.getenv("DB_USERNAME"),
         dbPassword = System.getenv("DB_PASSWORD"),
@@ -32,6 +32,7 @@ fun main() {
         disableRateLimit = System.getenv("DISABLE_RATE_LIMIT") == "true",
         useMemoryDatabases = System.getenv("USE_MEMORY_DATABASES") == "true",
     )
+
     val jvmSecureRandomProvider = DefaultSecureRandomProvider()
     val timeProvider = SystemTimeProvider()
     val encryptor = DefaultEncryptor(
@@ -41,41 +42,56 @@ fun main() {
     )
     val ivGenerator = DefaultIvGenerator(jvmSecureRandomProvider)
     val logger = KtorSimpleLogger("theoneclick.defaultlogger")
-    val memoryUsersDataSource = MemoryUsersDataSource()
+    val dispatchersProvider = dispatchersProvider()
 
+    val hikariConfig = HikariConfig().apply {
+        jdbcUrl = environment.jdbcUrl
+        username = environment.dbUsername
+        password = environment.dbPassword
+        validate()
+    }
+    val hikariDataSource = HikariDataSource(hikariConfig)
+    val driver = hikariDataSource.asJdbcDriver()
+    val usersDatabase = UsersDatabase(driver)
+
+    val memoryUsersDataSource = MemoryUsersDataSource()
     val diskUsersDataSource = if (environment.useMemoryDatabases) {
         memoryUsersDataSource
     } else {
-        val hikariConfig = HikariConfig().apply {
-            jdbcUrl = environment.jdbcUrl
-            username = environment.dbUsername
-            password = environment.dbPassword
-            validate()
-        }
-        val hikariDataSource = HikariDataSource(hikariConfig)
-        val driver = hikariDataSource.asJdbcDriver()
-        val usersDatabase = UsersDatabase(driver)
-        PostgresUsersDataSource(usersDatabase)
+        PostgresUsersDataSource(database = usersDatabase, dispatchersProvider = dispatchersProvider, logger = logger)
     }
-
     val usersRepository = DefaultUsersRepository(
         diskUsersDataSource = diskUsersDataSource,
         memoryUsersDataSource = memoryUsersDataSource,
     )
+
+    val memorySessionsDataSource = MemorySessionsDataSource()
+    val diskSessionsDataSource = if (environment.useMemoryDatabases) {
+        memorySessionsDataSource
+    } else {
+        //TODO: Finish
+        memorySessionsDataSource
+    }
     val sessionsRepository = DefaultSessionsRepository(
-        memorySessionsDataSource = MemorySessionsDataSource(),
-        diskSessionsDataSource = MemorySessionsDataSource(),
+        memorySessionsDataSource = memorySessionsDataSource,
+        diskSessionsDataSource = diskSessionsDataSource,
     )
-    val diskHomesDataSource = DiskHomesDataSource(
-        homesEntriesDirectory = DiskHomesDataSource.homesEntriesDirectory(environment.storageDirectory),
-        encryptor = encryptor,
-        logger = logger,
-    )
+
     val memoryHomesDataSource = MemoryHomesDataSource()
+    val diskHomesDataSource = if (environment.useMemoryDatabases) {
+        memoryHomesDataSource
+    } else {
+        PostgresHomesDataSource(
+            database = usersDatabase,
+            dispatchersProvider = dispatchersProvider,
+            logger = logger,
+        )
+    }
     val homesRepository = DefaultHomesRepository(
         memoryHomesDataSource = memoryHomesDataSource,
         diskHomesDataSource = diskHomesDataSource,
     )
+
     val appComponent = AppComponent::class.create(
         environment = environment,
         ivGenerator = ivGenerator,

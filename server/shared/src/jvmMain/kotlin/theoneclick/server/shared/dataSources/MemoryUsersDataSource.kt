@@ -8,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap
 class MemoryUsersDataSource : UsersDataSource {
     private val users = ConcurrentHashMap<Uuid, User>()
 
-    override fun user(findable: UsersDataSource.Findable): User? =
+    override suspend fun user(findable: UsersDataSource.Findable): User? =
         when (findable) {
             is UsersDataSource.Findable.ByUserId -> users[findable.userId]
 
@@ -16,7 +16,7 @@ class MemoryUsersDataSource : UsersDataSource {
                 users.values.firstOrNull { user -> user.username.value == findable.username.value }
         }
 
-    override fun saveUser(user: User) {
+    override suspend fun saveUser(user: User): Boolean {
         val currentSize = users.size
 
         if (currentSize > CLEAN_UP_LIMIT) {
@@ -24,6 +24,7 @@ class MemoryUsersDataSource : UsersDataSource {
         }
 
         users[user.userId] = user
+        return true
     }
 
     private companion object {

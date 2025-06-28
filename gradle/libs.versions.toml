@@ -1,6 +1,6 @@
 [versions]
 android-activity = "1.10.1"
-android-gradle-plugin = "8.10.0"
+android-gradle-plugin = "8.10.1"
 android-api = "35"
 android-datastore = "1.1.4"
 android-test-junit = "1.8.2"
@@ -67,6 +67,7 @@ ksp-kotlin-inject = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", v
 kmp-kotlin-inject = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kmp-kotlin-inject" }
 kmp-kotlin-inject-kmp = { module = "me.tatarka.inject:kotlin-inject-runtime-kmp", version.ref = "kmp-kotlin-inject" }
 kmp-sqldelight = { module = "app.cash.sqldelight:jdbc-driver", version.ref = "kmp-sqldelight" }
+kmp-sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "kmp-sqldelight" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }

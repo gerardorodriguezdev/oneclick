@@ -11,7 +11,6 @@ import io.ktor.server.routing.*
 import theoneclick.server.mock.utils.mockHomes
 import theoneclick.server.shared.extensions.agent
 import theoneclick.shared.contracts.core.models.NonNegativeInt
-import theoneclick.shared.contracts.core.models.PositiveLong
 import theoneclick.shared.contracts.core.models.Token
 import theoneclick.shared.contracts.core.models.agents.Agent
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
@@ -53,7 +52,6 @@ private fun Application.configureRouting() {
             call.respond(
                 HomesResponse(
                     data = HomesResponse.Data(
-                        lastModified = PositiveLong.unsafe(1),
                         homes = mockHomes(5),
                         pageIndex = NonNegativeInt.unsafe(5),
                         canRequestMore = true,

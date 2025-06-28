@@ -1,0 +1,7 @@
+CREATE TABLE rooms (
+    home_name VARCHAR(20) REFERENCES homes(home_name) ON DELETE CASCADE,
+    room_name VARCHAR(20) PRIMARY KEY
+);
+
+roomsByHomeName:
+SELECT * FROM rooms WHERE home_name = ?;

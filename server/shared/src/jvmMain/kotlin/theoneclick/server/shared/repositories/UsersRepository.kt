@@ -4,8 +4,8 @@ import theoneclick.server.shared.dataSources.base.UsersDataSource
 import theoneclick.server.shared.models.User
 
 interface UsersRepository {
-    fun user(findable: UsersDataSource.Findable): User?
-    fun saveUser(user: User)
+    suspend fun user(findable: UsersDataSource.Findable): User?
+    suspend fun saveUser(user: User): Boolean
 }
 
 class DefaultUsersRepository(
@@ -13,7 +13,7 @@ class DefaultUsersRepository(
     private val memoryUsersDataSource: UsersDataSource,
 ) : UsersRepository {
 
-    override fun user(findable: UsersDataSource.Findable): User? {
+    override suspend fun user(findable: UsersDataSource.Findable): User? {
         val memoryUser = memoryUsersDataSource.user(findable)
         if (memoryUser != null) return memoryUser
 
@@ -26,8 +26,8 @@ class DefaultUsersRepository(
         }
     }
 
-    override fun saveUser(user: User) {
+    override suspend fun saveUser(user: User): Boolean {
         memoryUsersDataSource.saveUser(user)
-        diskUsersDataSource.saveUser(user)
+        return diskUsersDataSource.saveUser(user)
     }
 }

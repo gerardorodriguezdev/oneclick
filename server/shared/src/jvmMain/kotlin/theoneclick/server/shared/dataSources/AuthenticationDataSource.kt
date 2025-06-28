@@ -8,8 +8,8 @@ import theoneclick.shared.contracts.core.models.Token.Companion.toToken
 import theoneclick.shared.timeProvider.TimeProvider
 
 interface AuthenticationDataSource {
-    fun isUserSessionValid(token: Token): Boolean
-    fun isUserSessionValid(token: String): Boolean
+    suspend fun isUserSessionValid(token: Token): Boolean
+    suspend fun isUserSessionValid(token: String): Boolean
 }
 
 @Inject
@@ -18,12 +18,12 @@ class DefaultAuthenticationDataSource(
     private val timeProvider: TimeProvider,
 ) : AuthenticationDataSource {
 
-    override fun isUserSessionValid(token: String): Boolean {
+    override suspend fun isUserSessionValid(token: String): Boolean {
         val token = token.toToken() ?: return false
         return isUserSessionValid(token)
     }
 
-    override fun isUserSessionValid(token: Token): Boolean {
+    override suspend fun isUserSessionValid(token: Token): Boolean {
         val session = sessionsRepository.session(Findable.ByToken(token))
         val sessionToken = session?.encryptedToken
 

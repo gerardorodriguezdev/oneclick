@@ -41,7 +41,6 @@ internal class RemoteHomesDataSource(
                     val homesResult = HomesResult.Success(
                         homesEntry = data?.let {
                             HomesEntry(
-                                lastModified = data.lastModified,
                                 homes = data.homes,
                                 pageIndex = data.pageIndex,
                                 canRequestMore = data.canRequestMore,

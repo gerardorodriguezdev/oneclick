@@ -5,7 +5,6 @@ data class Environment(
     val secretEncryptionKey: String,
     val protocol: String,
     val host: String,
-    val storageDirectory: String,
     val jdbcUrl: String,
     val dbUsername: String,
     val dbPassword: String,

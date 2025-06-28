@@ -5,9 +5,9 @@ import theoneclick.shared.contracts.core.models.Token
 import theoneclick.shared.contracts.core.models.Uuid
 
 interface SessionsDataSource {
-    fun session(findable: Findable): SessionEntry?
-    fun saveSession(sessionEntry: SessionEntry)
-    fun deleteSession(token: Token)
+    suspend fun session(findable: Findable): SessionEntry?
+    suspend fun saveSession(sessionEntry: SessionEntry): Boolean
+    suspend fun deleteSession(token: Token): Boolean
 
     sealed interface Findable {
         data class ByUserId(val userId: Uuid) : Findable

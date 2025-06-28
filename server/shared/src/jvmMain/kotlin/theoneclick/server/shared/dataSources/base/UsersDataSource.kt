@@ -5,8 +5,8 @@ import theoneclick.shared.contracts.core.models.Username
 import theoneclick.shared.contracts.core.models.Uuid
 
 interface UsersDataSource {
-    fun user(findable: Findable): User?
-    fun saveUser(user: User)
+    suspend fun user(findable: Findable): User?
+    suspend fun saveUser(user: User): Boolean
 
     sealed interface Findable {
         data class ByUserId(val userId: Uuid) : Findable

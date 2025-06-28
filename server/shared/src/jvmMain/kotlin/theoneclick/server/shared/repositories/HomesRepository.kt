@@ -8,7 +8,7 @@ import theoneclick.shared.contracts.core.models.PositiveInt
 import theoneclick.shared.contracts.core.models.Uuid
 
 interface HomesRepository {
-    fun homesEntry(
+    suspend fun homesEntry(
         userId: Uuid,
         pageSize: PositiveInt,
         currentPageIndex: NonNegativeInt,
@@ -20,7 +20,7 @@ class DefaultHomesRepository(
     private val memoryHomesDataSource: HomesDataSource,
 ) : HomesRepository {
 
-    override fun homesEntry(
+    override suspend fun homesEntry(
         userId: Uuid,
         pageSize: PositiveInt,
         currentPageIndex: NonNegativeInt,

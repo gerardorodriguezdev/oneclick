@@ -34,7 +34,6 @@ internal class DefaultHomesRepository(
         remoteHomesDataSource
             .homes(
                 request = HomesRequest(
-                    lastModified = mutableHomesEntry.value?.lastModified,
                     pageSize = defaultPageSize,
                     pageIndex = NonNegativeInt.zero,
                 )
@@ -52,7 +51,6 @@ internal class DefaultHomesRepository(
         remoteHomesDataSource
             .homes(
                 request = HomesRequest(
-                    lastModified = mutableHomesEntry.value?.lastModified,
                     pageSize = defaultPageSize,
                     pageIndex = mutableHomesEntry.value?.pageIndex ?: NonNegativeInt.zero,
                 )
@@ -66,7 +64,6 @@ internal class DefaultHomesRepository(
                 val newHomesEntry = homesResult.homesEntry
                 mutableHomesEntry.emit(
                     HomesEntry(
-                        lastModified = newHomesEntry.lastModified,
                         homes = currentHomes + newHomesEntry.homes,
                         pageIndex = newHomesEntry.pageIndex,
                         canRequestMore = newHomesEntry.canRequestMore,

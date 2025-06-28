@@ -21,9 +21,11 @@ kotlin {
                 implementation(ktorLibs.server.compression)
                 implementation(libs.kmp.kotlin.inject)
                 implementation(libs.kmp.sqldelight)
+                implementation(libs.kmp.sqldelight.coroutines)
                 implementation(libs.jvm.bcrypt)
                 implementation(projects.shared.contracts.core)
                 implementation(projects.shared.timeProvider)
+                implementation(projects.shared.dispatchers)
 
                 project.dependencies.ksp(libs.ksp.kotlin.inject)
             }

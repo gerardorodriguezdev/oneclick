@@ -10,7 +10,6 @@ import theoneclick.server.shared.models.HomesEntry
 import theoneclick.server.shared.repositories.HomesRepository
 import theoneclick.server.shared.repositories.SessionsRepository
 import theoneclick.shared.contracts.core.models.PaginationResult
-import theoneclick.shared.contracts.core.models.PositiveLong
 import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.contracts.core.models.requests.HomesRequest
@@ -64,7 +63,6 @@ private suspend fun RoutingContext.handleSuccess(homesEntry: PaginationResult<Ho
     call.respond(
         HomesResponse(
             data = Data(
-                lastModified = PositiveLong.unsafe(homesEntry.value.lastModified.value),
                 homes = homesEntry.value.homes,
                 pageIndex = homesEntry.pageIndex,
                 canRequestMore = homesEntry.pageIndex.value < homesEntry.totalPages.value,

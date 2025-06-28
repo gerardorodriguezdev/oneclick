@@ -8,9 +8,9 @@ import theoneclick.shared.contracts.core.models.Token
 import theoneclick.shared.contracts.core.models.Uuid
 
 interface SessionsRepository {
-    fun session(findable: Findable): SessionEntry?
-    fun deleteSession(token: Token)
-    fun saveSession(userId: Uuid, encryptedToken: EncryptedToken)
+    suspend fun session(findable: Findable): SessionEntry?
+    suspend fun deleteSession(token: Token): Boolean
+    suspend fun saveSession(userId: Uuid, encryptedToken: EncryptedToken): Boolean
 }
 
 class DefaultSessionsRepository(
@@ -18,7 +18,7 @@ class DefaultSessionsRepository(
     private val diskSessionsDataSource: SessionsDataSource,
 ) : SessionsRepository {
 
-    override fun session(findable: Findable): SessionEntry? {
+    override suspend fun session(findable: Findable): SessionEntry? {
         val memorySession = memorySessionsDataSource.session(findable)
         if (memorySession != null) return memorySession
 
@@ -29,17 +29,17 @@ class DefaultSessionsRepository(
         } else null
     }
 
-    override fun deleteSession(token: Token) {
+    override suspend fun deleteSession(token: Token): Boolean {
         memorySessionsDataSource.deleteSession(token)
-        diskSessionsDataSource.deleteSession(token)
+        return diskSessionsDataSource.deleteSession(token)
     }
 
-    override fun saveSession(
+    override suspend fun saveSession(
         userId: Uuid,
         encryptedToken: EncryptedToken
-    ) {
+    ): Boolean {
         val session = SessionEntry(userId, encryptedToken)
         memorySessionsDataSource.saveSession(session)
-        diskSessionsDataSource.saveSession(session)
+        return diskSessionsDataSource.saveSession(session)
     }
 }

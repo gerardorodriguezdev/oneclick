@@ -1,0 +1,8 @@
+CREATE TABLE devices (
+    room_name VARCHAR(20) REFERENCES rooms(room_name) ON DELETE CASCADE,
+    device_id CHAR(36) PRIMARY KEY,
+    device JSON NOT NULL
+);
+
+deviceByRoomName:
+SELECT * FROM devices WHERE room_name = ?;
