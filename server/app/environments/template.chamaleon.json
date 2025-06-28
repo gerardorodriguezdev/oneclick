@@ -56,11 +56,23 @@
       "propertyType": "String"
     },
     {
-      "name": "DB_USERNAME",
+      "name": "POSTGRES_USERNAME",
       "propertyType": "String"
     },
     {
-      "name": "DB_PASSWORD",
+      "name": "POSTGRES_PASSWORD",
+      "propertyType": "String"
+    },
+    {
+      "name": "REDIS_URL",
+      "propertyType": "String"
+    },
+    {
+      "name": "REDIS_USERNAME",
+      "propertyType": "String"
+    },
+    {
+      "name": "REDIS_PASSWORD",
       "propertyType": "String"
     }
   ]

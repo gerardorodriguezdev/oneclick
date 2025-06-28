@@ -1,5 +1,6 @@
 package theoneclick.server.app.di
 
+import io.ktor.server.application.*
 import io.ktor.util.logging.*
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.Provides
@@ -37,6 +38,7 @@ abstract class AppComponent(
     val homesRepository: HomesRepository,
     @get:Provides
     val uuidProvider: UuidProvider = DefaultUuidProvider(),
+    val onShutdown: (application: Application) -> Unit,
 ) {
     abstract val authenticationDataSource: AuthenticationDataSource
 

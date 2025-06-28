@@ -51,11 +51,23 @@
         "value": "jdbc:postgresql://localhost:5432/users"
       },
       {
-        "name": "DB_USERNAME",
+        "name": "POSTGRES_USERNAME",
         "value": "Username"
       },
       {
-        "name": "DB_PASSWORD",
+        "name": "POSTGRES_PASSWORD",
+        "value": "Password"
+      },
+      {
+        "name": "REDIS_URL",
+        "value": "redis://localhost:6379"
+      },
+      {
+        "name": "REDIS_USERNAME",
+        "value": "Username"
+      },
+      {
+        "name": "REDIS_PASSWORD",
         "value": "Password"
       }
     ]

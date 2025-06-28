@@ -26,6 +26,7 @@ dependencies {
     implementation(libs.kmp.sqldelight)
     implementation(libs.jvm.logback.classic)
     implementation(libs.jvm.hiraki)
+    implementation(libs.jvm.redis)
     implementation(projects.shared.logging)
     implementation(projects.shared.contracts.core)
     implementation(projects.shared.timeProvider)
