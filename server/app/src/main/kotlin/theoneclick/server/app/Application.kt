@@ -10,12 +10,11 @@ import theoneclick.server.app.entrypoint.server
 import theoneclick.server.shared.dataSources.*
 import theoneclick.server.shared.di.Environment
 import theoneclick.server.shared.postgresql.UsersDatabase
-import theoneclick.server.shared.repositories.DefaultHomesRepository
-import theoneclick.server.shared.repositories.DefaultSessionsRepository
-import theoneclick.server.shared.repositories.DefaultUsersRepository
+import theoneclick.server.shared.repositories.*
 import theoneclick.server.shared.security.DefaultEncryptor
 import theoneclick.server.shared.security.DefaultIvGenerator
 import theoneclick.server.shared.security.DefaultSecureRandomProvider
+import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.dispatchers.platform.dispatchersProvider
 import theoneclick.shared.timeProvider.SystemTimeProvider
 
@@ -43,7 +42,56 @@ fun main() {
     val ivGenerator = DefaultIvGenerator(jvmSecureRandomProvider)
     val logger = KtorSimpleLogger("theoneclick.defaultlogger")
     val dispatchersProvider = dispatchersProvider()
+    val repository = if (environment.useMemoryDatabases) {
+        memoryRepositories()
+    } else {
+        databaseRepositories(environment, logger, dispatchersProvider)
+    }
 
+    val appComponent = AppComponent::class.create(
+        environment = environment,
+        ivGenerator = ivGenerator,
+        encryptor = encryptor,
+        timeProvider = timeProvider,
+        logger = logger,
+        usersRepository = repository.usersRepository,
+        sessionsRepository = repository.sessionsRepository,
+        homesRepository = repository.homesRepository,
+    )
+    server(appComponent).start(wait = true)
+}
+
+private fun memoryRepositories(): Repositories {
+    val memoryUsersDataSource = MemoryUsersDataSource()
+    val usersRepository = DefaultUsersRepository(
+        diskUsersDataSource = memoryUsersDataSource,
+        memoryUsersDataSource = memoryUsersDataSource,
+    )
+
+    val memorySessionsDataSource = MemorySessionsDataSource()
+    val sessionsRepository = DefaultSessionsRepository(
+        memorySessionsDataSource = memorySessionsDataSource,
+        diskSessionsDataSource = memorySessionsDataSource,
+    )
+
+    val memoryHomesDataSource = MemoryHomesDataSource()
+    val homesRepository = DefaultHomesRepository(
+        memoryHomesDataSource = memoryHomesDataSource,
+        diskHomesDataSource = memoryHomesDataSource,
+    )
+
+    return Repositories(
+        usersRepository = usersRepository,
+        sessionsRepository = sessionsRepository,
+        homesRepository = homesRepository,
+    )
+}
+
+private fun databaseRepositories(
+    environment: Environment,
+    logger: Logger,
+    dispatchersProvider: DispatchersProvider,
+): Repositories {
     val hikariConfig = HikariConfig().apply {
         jdbcUrl = environment.jdbcUrl
         username = environment.dbUsername
@@ -55,52 +103,35 @@ fun main() {
     val usersDatabase = UsersDatabase(driver)
 
     val memoryUsersDataSource = MemoryUsersDataSource()
-    val diskUsersDataSource = if (environment.useMemoryDatabases) {
-        memoryUsersDataSource
-    } else {
-        PostgresUsersDataSource(database = usersDatabase, dispatchersProvider = dispatchersProvider, logger = logger)
-    }
+    val diskUsersDataSource = PostgresUsersDataSource(usersDatabase, dispatchersProvider, logger)
     val usersRepository = DefaultUsersRepository(
         diskUsersDataSource = diskUsersDataSource,
         memoryUsersDataSource = memoryUsersDataSource,
     )
 
     val memorySessionsDataSource = MemorySessionsDataSource()
-    val diskSessionsDataSource = if (environment.useMemoryDatabases) {
-        memorySessionsDataSource
-    } else {
-        //TODO: Finish
-        memorySessionsDataSource
-    }
+    val diskSessionsDataSource = PostgresSessionsDataSource(usersDatabase, dispatchersProvider, logger)
     val sessionsRepository = DefaultSessionsRepository(
         memorySessionsDataSource = memorySessionsDataSource,
         diskSessionsDataSource = diskSessionsDataSource,
     )
 
     val memoryHomesDataSource = MemoryHomesDataSource()
-    val diskHomesDataSource = if (environment.useMemoryDatabases) {
-        memoryHomesDataSource
-    } else {
-        PostgresHomesDataSource(
-            database = usersDatabase,
-            dispatchersProvider = dispatchersProvider,
-            logger = logger,
-        )
-    }
+    val diskHomesDataSource = PostgresHomesDataSource(usersDatabase, dispatchersProvider, logger)
     val homesRepository = DefaultHomesRepository(
         memoryHomesDataSource = memoryHomesDataSource,
         diskHomesDataSource = diskHomesDataSource,
     )
 
-    val appComponent = AppComponent::class.create(
-        environment = environment,
-        ivGenerator = ivGenerator,
-        encryptor = encryptor,
-        timeProvider = timeProvider,
-        logger = logger,
+    return Repositories(
         usersRepository = usersRepository,
         sessionsRepository = sessionsRepository,
         homesRepository = homesRepository,
     )
-    server(appComponent).start(wait = true)
 }
+
+private class Repositories(
+    val usersRepository: UsersRepository,
+    val sessionsRepository: SessionsRepository,
+    val homesRepository: HomesRepository,
+)

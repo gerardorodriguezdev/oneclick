@@ -10,3 +10,9 @@ VALUES ?;
 
 sessionByUserId:
 SELECT * FROM sessions WHERE user_id = ?;
+
+sessionBySessionToken:
+SELECT * FROM sessions WHERE session_token = ?;
+
+deleteBySessionToken:
+DELETE FROM sessions WHERE session_token = ?;

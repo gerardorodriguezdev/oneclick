@@ -6,7 +6,7 @@ import theoneclick.shared.contracts.core.models.NonNegativeLong
 import theoneclick.shared.contracts.core.models.Token
 
 @Serializable
-class EncryptedToken private constructor(
+class EncryptedToken(
     val token: Token,
     val creationTimeInMillis: NonNegativeLong,
 ) {
