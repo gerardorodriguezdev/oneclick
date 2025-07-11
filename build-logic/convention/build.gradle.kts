@@ -51,6 +51,11 @@ gradlePlugin {
             implementationClass = "buildLogic.convention.plugins.AndroidAppPlugin"
         }
 
+        register("ios-app") {
+            id = "theoneclick.ios.app"
+            implementationClass = "buildLogic.convention.plugins.IOSAppPlugin"
+        }
+
         register("jvm-library") {
             id = "theoneclick.jvm.library"
             implementationClass = "buildLogic.convention.plugins.JvmLibraryPlugin"
@@ -64,6 +69,11 @@ gradlePlugin {
         register("android-library") {
             id = "theoneclick.android.library"
             implementationClass = "buildLogic.convention.plugins.AndroidLibraryPlugin"
+        }
+
+        register("ios-library") {
+            id = "theoneclick.ios.library"
+            implementationClass = "buildLogic.convention.plugins.IOSLibraryPlugin"
         }
     }
 }

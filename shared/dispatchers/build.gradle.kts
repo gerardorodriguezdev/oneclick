@@ -2,6 +2,7 @@ plugins {
     id("theoneclick.android.library")
     id("theoneclick.jvm.library")
     id("theoneclick.wasm.library")
+    id("theoneclick.ios.library")
 }
 
 androidLibrary {

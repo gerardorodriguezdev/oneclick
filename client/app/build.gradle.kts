@@ -5,6 +5,7 @@ import org.jetbrains.compose.ExperimentalComposeLibrary
 plugins {
     id("theoneclick.wasm.website")
     id("theoneclick.android.app")
+    id("theoneclick.ios.app")
     alias(libs.plugins.kmp.compose.compiler)
     alias(libs.plugins.kmp.compose.jetbrains)
     alias(libs.plugins.kmp.serialization)
