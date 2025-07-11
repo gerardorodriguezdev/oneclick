@@ -45,7 +45,6 @@ kotlin {
                 implementation(projects.client.shared.notifications)
 
                 project.dependencies {
-                    kspCommonMainMetadata(libs.ksp.kotlin.inject)
                     kspAndroid(libs.ksp.kotlin.inject)
                     kspWasmJs(libs.ksp.kotlin.inject)
                     kspIosX64(libs.ksp.kotlin.inject)

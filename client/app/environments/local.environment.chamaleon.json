@@ -8,11 +8,11 @@
       },
       {
         "name": "KEY_ALIAS",
-        "value": "alias"
+        "value": "key0"
       },
       {
         "name": "KEY_PASSWORD",
-        "value": "alias"
+        "value": "alias123"
       },
       {
         "name": "PROTOCOL",
