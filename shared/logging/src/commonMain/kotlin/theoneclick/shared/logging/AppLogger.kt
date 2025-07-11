@@ -5,6 +5,10 @@ interface AppLogger {
     fun i(tag: String, message: String)
     fun e(message: String)
     fun e(tag: String, message: String)
+
+    companion object {
+        const val TAG = "[AppLogger]"
+    }
 }
 
 class EmptyAppLogger : AppLogger {

@@ -48,6 +48,9 @@ kotlin {
                     kspCommonMainMetadata(libs.ksp.kotlin.inject)
                     kspAndroid(libs.ksp.kotlin.inject)
                     kspWasmJs(libs.ksp.kotlin.inject)
+                    kspIosX64(libs.ksp.kotlin.inject)
+                    kspIosArm64(libs.ksp.kotlin.inject)
+                    kspIosSimulatorArm64(libs.ksp.kotlin.inject)
                 }
             }
         }

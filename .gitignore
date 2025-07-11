@@ -5,8 +5,15 @@
 **/local
 **/.kotlin
 **/release
-
-# Files
 .DS_Store
 local.properties
 production.environment.chamaleon.json
+
+# iOS
+xcuserdata
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings

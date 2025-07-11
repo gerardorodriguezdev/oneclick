@@ -8,7 +8,8 @@ sealed class Device : KeyProvider {
     abstract val id: Uuid
     abstract val name: DeviceName
 
-    override val key: String = id.value
+    override val key: String
+        get() = id.value
 
     @Serializable
     class WaterSensor private constructor(

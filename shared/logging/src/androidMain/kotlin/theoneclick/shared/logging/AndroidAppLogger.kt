@@ -1,10 +1,11 @@
 package theoneclick.shared.logging
 
 import android.util.Log
+import theoneclick.shared.logging.AppLogger.Companion.TAG
 
 class AndroidAppLogger : AppLogger {
     override fun i(message: String) {
-        Log.i("AppLogger", message)
+        Log.i(TAG, message)
     }
 
     override fun i(tag: String, message: String) {
@@ -12,7 +13,7 @@ class AndroidAppLogger : AppLogger {
     }
 
     override fun e(message: String) {
-        Log.e("AppLogger", message)
+        Log.e(TAG, message)
     }
 
     override fun e(tag: String, message: String) {
