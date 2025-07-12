@@ -148,6 +148,17 @@ buildkonfig {
     }
 
     targetConfigs {
+        create("wasmJs") {
+            buildConfigField(FieldSpec.Type.STRING, name = "PROTOCOL", value = null, nullable = true)
+            buildConfigField(FieldSpec.Type.STRING, name = "HOST", value = null, nullable = true)
+            buildConfigField(FieldSpec.Type.INT, name = "PORT", value = null, nullable = true)
+            buildConfigField(
+                FieldSpec.Type.BOOLEAN,
+                name = "IS_DEBUG",
+                value = chamaleon.selectedEnvironment().wasmPlatform.propertyBooleanValue("IS_DEBUG").toString()
+            )
+        }
+
         create("android") {
             buildConfigField(
                 FieldSpec.Type.STRING,
