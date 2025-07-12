@@ -28,13 +28,13 @@ kotlin {
                 implementation(projects.shared.timeProvider)
                 implementation(projects.shared.dispatchers)
 
-                project.dependencies.ksp(libs.ksp.kotlin.inject)
+                project.dependencies.kspJvm(libs.ksp.kotlin.inject)
             }
         }
     }
 }
 
-//TODO: Separate
+// TODO: Separate
 sqldelight {
     databases {
         create("UsersDatabase") {

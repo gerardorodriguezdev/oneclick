@@ -6,8 +6,8 @@ import me.tatarka.inject.annotations.Provides
 import me.tatarka.inject.annotations.Scope
 import theoneclick.client.features.home.dataSources.HomesDataSource
 import theoneclick.client.features.home.dataSources.RemoteHomesDataSource
-import theoneclick.client.features.home.repositories.HomesRepository
 import theoneclick.client.features.home.repositories.DefaultHomesRepository
+import theoneclick.client.features.home.repositories.HomesRepository
 import theoneclick.client.features.home.viewModels.HomesListViewModel
 import theoneclick.client.features.home.viewModels.UserSettingsViewModel
 import theoneclick.client.shared.di.CoreComponent

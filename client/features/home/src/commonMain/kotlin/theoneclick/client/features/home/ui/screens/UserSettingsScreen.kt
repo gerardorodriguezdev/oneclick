@@ -42,7 +42,6 @@ internal sealed interface UserSettingsEvent {
     data object LogoutClicked : UserSettingsEvent
 }
 
-
 @Composable
 internal fun UserSettingsScreenPreview(previewModel: PreviewModel<UserSettingsScreenState>) {
     ScreenPreviewComposable(previewModel) {

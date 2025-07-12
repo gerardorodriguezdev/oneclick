@@ -14,4 +14,3 @@ interface HomesDataSource {
         currentPageIndex: NonNegativeInt
     ): PaginationResult<HomesEntry>?
 }
-

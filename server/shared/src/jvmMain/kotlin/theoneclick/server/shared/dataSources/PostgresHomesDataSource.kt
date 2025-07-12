@@ -58,7 +58,6 @@ class PostgresHomesDataSource(
             }
         )
 
-
     private fun List<Rooms>.toRooms(): UniqueList<Room> =
         if (isEmpty()) {
             UniqueList.emptyUniqueList()
@@ -76,7 +75,6 @@ class PostgresHomesDataSource(
                 }
             )
         }
-
 
     private fun List<Devices>.toDevices(): UniqueList<Device> =
         if (isEmpty()) {

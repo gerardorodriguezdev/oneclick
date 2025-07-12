@@ -33,4 +33,3 @@ fun wasmHttpClient(
             gzip()
         }
     }
-

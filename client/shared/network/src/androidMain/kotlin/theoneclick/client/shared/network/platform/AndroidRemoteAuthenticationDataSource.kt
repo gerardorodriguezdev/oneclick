@@ -12,10 +12,10 @@ import theoneclick.client.shared.network.dataSources.TokenDataSource
 import theoneclick.client.shared.network.models.LogoutResult
 import theoneclick.client.shared.network.models.RequestLoginResult
 import theoneclick.client.shared.network.models.UserLoggedResult
+import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.contracts.core.models.requests.RequestLoginRequest
 import theoneclick.shared.contracts.core.models.responses.RequestLoginResponse
 import theoneclick.shared.contracts.core.models.responses.UserLoggedResponse
-import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.logging.AppLogger
 
@@ -75,7 +75,7 @@ class AndroidRemoteAuthenticationDataSource(
             .catch { exception ->
                 appLogger.e(
                     "Exception catched '${exception.stackTraceToString()}' " +
-                            "while requesting logging user '${request.username.value}'"
+                        "while requesting logging user '${request.username.value}'"
                 )
                 emit(RequestLoginResult.Error)
             }

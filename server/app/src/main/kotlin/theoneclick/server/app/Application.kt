@@ -125,14 +125,14 @@ private fun databaseRepositories(
         memoryUsersDataSource = memoryUsersDataSource,
     )
 
-    val memorySessionsDataSource = MemorySessionsDataSource() //TODO: Redis
+    val memorySessionsDataSource = MemorySessionsDataSource() // TODO: Redis
     val diskSessionsDataSource = PostgresSessionsDataSource(usersDatabase, dispatchersProvider, logger)
     val sessionsRepository = DefaultSessionsRepository(
         memorySessionsDataSource = memorySessionsDataSource,
         diskSessionsDataSource = diskSessionsDataSource,
     )
 
-    val memoryHomesDataSource = MemoryHomesDataSource() //TODO: Redis
+    val memoryHomesDataSource = MemoryHomesDataSource() // TODO: Redis
     val diskHomesDataSource = PostgresHomesDataSource(usersDatabase, dispatchersProvider, logger)
     val homesRepository = DefaultHomesRepository(
         memoryHomesDataSource = memoryHomesDataSource,

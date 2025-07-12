@@ -72,7 +72,8 @@ class DefaultEncryptor(
 
     override fun verifyPassword(password: String, hashedPassword: HashedPassword): Boolean =
         BCrypt.verifyer().verify(
-            password.toCharArray(), hashedPassword.value.toCharArray()
+            password.toCharArray(),
+            hashedPassword.value.toCharArray()
         ).verified
 
     override fun encryptedToken(): EncryptedToken {

@@ -43,7 +43,6 @@ include(
     "shared:contracts:core",
 )
 
-
 include(
     "server:app",
     "server:mock",

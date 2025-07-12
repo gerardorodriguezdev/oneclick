@@ -32,7 +32,7 @@ class IOSAppPlugin : Plugin<Project> {
                 iosSimulatorArm64()
             ).forEach { iosTarget ->
                 iosTarget.binaries.framework {
-                    baseName = "ComposeApp" //TODO: Check
+                    baseName = "ComposeApp" // TODO: Check
                     isStatic = true
                 }
             }

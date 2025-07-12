@@ -26,7 +26,9 @@ class DefaultSessionsRepository(
         return if (diskSession != null) {
             memorySessionsDataSource.saveSession(diskSession)
             diskSession
-        } else null
+        } else {
+            null
+        }
     }
 
     override suspend fun deleteSession(token: Token): Boolean {
