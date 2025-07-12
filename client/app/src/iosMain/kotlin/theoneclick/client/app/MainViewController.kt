@@ -14,6 +14,6 @@ fun MainViewController(): UIViewController = ComposeUIViewController { App() }
 @Composable
 private fun App() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = "Text")
+        Text(text = "Hey")
     }
 }
