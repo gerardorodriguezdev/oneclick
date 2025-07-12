@@ -1,10 +1,3 @@
-//
-//  iosAppApp.swift
-//  iosApp
-//
-//  Created by Gerardo Rodriguez on 12/07/2025.
-//
-
 import SwiftUI
 
 @main
