@@ -33,19 +33,19 @@
     ]
   },
   {
-    "platformType": "wasm",
+    "platformType": "native",
     "properties": [
       {
         "name": "PROTOCOL",
-        "value": null
+        "value": "http"
       },
       {
         "name": "HOST",
-        "value": null
+        "value": "10.0.2.2"
       },
       {
         "name": "PORT",
-        "value": null
+        "value": "8080"
       },
       {
         "name": "IS_DEBUG",

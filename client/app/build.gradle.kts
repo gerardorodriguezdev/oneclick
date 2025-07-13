@@ -93,6 +93,9 @@ kotlin {
                     kspCommonMainMetadata(libs.ksp.kotlin.inject)
                     kspAndroid(libs.ksp.kotlin.inject)
                     kspWasmJs(libs.ksp.kotlin.inject)
+                    kspIosX64(libs.ksp.kotlin.inject)
+                    kspIosArm64(libs.ksp.kotlin.inject)
+                    kspIosSimulatorArm64(libs.ksp.kotlin.inject)
                 }
             }
         }
@@ -148,17 +151,6 @@ buildkonfig {
     }
 
     targetConfigs {
-        create("wasmJs") {
-            buildConfigField(FieldSpec.Type.STRING, name = "PROTOCOL", value = null, nullable = true)
-            buildConfigField(FieldSpec.Type.STRING, name = "HOST", value = null, nullable = true)
-            buildConfigField(FieldSpec.Type.INT, name = "PORT", value = null, nullable = true)
-            buildConfigField(
-                FieldSpec.Type.BOOLEAN,
-                name = "IS_DEBUG",
-                value = chamaleon.selectedEnvironment().wasmPlatform.propertyBooleanValue("IS_DEBUG").toString()
-            )
-        }
-
         create("android") {
             buildConfigField(
                 FieldSpec.Type.STRING,
@@ -184,8 +176,37 @@ buildkonfig {
                 value = chamaleon.selectedEnvironment().androidPlatform.propertyBooleanValue("IS_DEBUG").toString()
             )
         }
+
+        create("native") {
+            buildConfigField(
+                FieldSpec.Type.STRING,
+                name = "PROTOCOL",
+                value = iosStringProvider("PROTOCOL").get(),
+                nullable = true
+            )
+            buildConfigField(
+                FieldSpec.Type.STRING,
+                name = "HOST",
+                value = iosStringProvider("HOST").get(),
+                nullable = true
+            )
+            buildConfigField(
+                FieldSpec.Type.INT,
+                name = "PORT",
+                value = iosStringProvider("PORT").get(),
+                nullable = true
+            )
+            buildConfigField(
+                FieldSpec.Type.BOOLEAN,
+                name = "IS_DEBUG",
+                value = chamaleon.selectedEnvironment().nativePlatform.propertyBooleanValue("IS_DEBUG").toString()
+            )
+        }
     }
 }
 
 fun androidStringProvider(name: String): Provider<String> =
     provider { chamaleon.selectedEnvironment().androidPlatform.propertyStringValue(name) }
+
+fun iosStringProvider(name: String): Provider<String> =
+    provider { chamaleon.selectedEnvironment().nativePlatform.propertyStringValue(name) }

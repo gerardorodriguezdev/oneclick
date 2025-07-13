@@ -6,8 +6,7 @@ import android.os.StrictMode.ThreadPolicy
 import android.os.StrictMode.VmPolicy
 import io.ktor.http.*
 import theoneclick.client.app.buildkonfig.BuildKonfig
-import theoneclick.client.app.di.AppComponent
-import theoneclick.client.app.di.create
+import theoneclick.client.app.di.createAppComponent
 import theoneclick.client.app.entrypoints.AppEntrypoint
 import theoneclick.client.app.mappers.urlProtocol
 import theoneclick.client.shared.di.androidCoreComponent
@@ -60,7 +59,7 @@ class TheOneClickApplication : Application() {
             ),
             notificationsController = DefaultNotificationsController(),
         )
-        val appComponent = AppComponent::class.create(coreComponent)
+        val appComponent = createAppComponent(coreComponent)
         appEntrypoint = AppEntrypoint(appComponent = appComponent, coreComponent = coreComponent)
     }
 
