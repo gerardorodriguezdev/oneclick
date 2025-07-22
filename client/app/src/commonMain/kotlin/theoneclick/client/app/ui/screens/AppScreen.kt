@@ -29,7 +29,7 @@ import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
 import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
 import theoneclick.client.shared.ui.theme.Tokens
 
-//TODO: Update nav thing
+// TODO: Update nav thing
 @Composable
 fun AppScreen(
     state: AppScreenState,

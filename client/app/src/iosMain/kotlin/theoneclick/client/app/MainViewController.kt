@@ -9,11 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.window.ComposeUIViewController
 import platform.UIKit.UIViewController
 
+// TODO: Update
 fun MainViewController(): UIViewController = ComposeUIViewController { App() }
 
 @Composable
 private fun App() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = "Hey")
+        Text(text = "Stuff")
     }
 }
