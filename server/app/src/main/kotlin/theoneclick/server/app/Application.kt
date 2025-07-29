@@ -128,7 +128,11 @@ private fun databaseRepositories(
         memoryUsersDataSource = memoryUsersDataSource,
     )
 
-    val memorySessionsDataSource = MemorySessionsDataSource()
+    val memorySessionsDataSource = RedisSessionsDataSource(
+        syncCommands = redisConnection.coroutines(),
+        dispatchersProvider = dispatchersProvider,
+        logger = logger,
+    )
     val diskSessionsDataSource = PostgresSessionsDataSource(usersDatabase, dispatchersProvider, logger)
     val sessionsRepository = DefaultSessionsRepository(
         memorySessionsDataSource = memorySessionsDataSource,

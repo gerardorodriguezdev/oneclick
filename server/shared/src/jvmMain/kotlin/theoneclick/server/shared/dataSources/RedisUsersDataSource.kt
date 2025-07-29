@@ -4,9 +4,12 @@ import io.ktor.util.logging.*
 import io.lettuce.core.ExperimentalLettuceCoroutinesApi
 import io.lettuce.core.api.coroutines.RedisCoroutinesCommands
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import theoneclick.server.shared.dataSources.base.UsersDataSource
 import theoneclick.server.shared.models.User
+import theoneclick.shared.contracts.core.models.Username
+import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import kotlin.coroutines.coroutineContext
 
@@ -17,32 +20,20 @@ class RedisUsersDataSource(
     private val logger: Logger,
 ) : UsersDataSource {
 
-    // TODO: Safe syncCommands usage
-    // TODO: Clear if decoded error
     override suspend fun user(findable: UsersDataSource.Findable): User? =
         try {
             val parentContext = coroutineContext
             withContext(dispatchersProvider.io()) {
-                when (findable) {
-                    is UsersDataSource.Findable.ByUserId -> {
-                        val userJson = syncCommands.get(userIdKey(findable.userId.value))
-                            ?: return@withContext null
-                        val user = Json.decodeFromString<User>(userJson)
-                        withContext(parentContext) {
-                            user
-                        }
-                    }
-
-                    is UsersDataSource.Findable.ByUsername -> {
-                        val userJson = syncCommands.get(userIdKey(findable.username.value))
-                            ?: return@withContext null
-                        val user = Json.decodeFromString<User>(userJson)
-                        withContext(parentContext) {
-                            user
-                        }
-                    }
+                val userJson = syncCommands.getUser(findable) ?: return@withContext null
+                val user = Json.decodeFromString<User>(userJson)
+                withContext(parentContext) {
+                    user
                 }
             }
+        } catch (e: SerializationException) {
+            logger.error("Error decoding user", e)
+            syncCommands.deleteUser(findable)
+            null
         } catch (e: Exception) {
             logger.error("Error trying to find user", e)
             null
@@ -53,8 +44,7 @@ class RedisUsersDataSource(
             val parentContext = coroutineContext
             withContext(dispatchersProvider.io()) {
                 val userJson = Json.encodeToString(user)
-                syncCommands.set(userIdKey(user.userId.value), userJson)
-                syncCommands.set(usernameKey(user.username.value), userJson)
+                syncCommands.setUser(user, userJson)
                 withContext(parentContext) {
                     true
                 }
@@ -68,7 +58,25 @@ class RedisUsersDataSource(
         const val USER_BY_ID_PREFIX = "user:id:"
         const val USER_BY_USERNAME_PREFIX = "user:username:"
 
-        fun userIdKey(userId: String): String = USER_BY_ID_PREFIX + userId
-        fun usernameKey(userId: String): String = USER_BY_USERNAME_PREFIX + userId
+        fun Uuid.toKey(): String = USER_BY_ID_PREFIX + value
+        fun Username.toKey(): String = USER_BY_USERNAME_PREFIX + value
+
+        fun UsersDataSource.Findable.toKey(): String =
+            when (this) {
+                is UsersDataSource.Findable.ByUserId -> userId.toKey()
+                is UsersDataSource.Findable.ByUsername -> username.toKey()
+            }
+
+        suspend fun RedisCoroutinesCommands<String, String>.getUser(findable: UsersDataSource.Findable): String? =
+            get(findable.toKey())
+
+        suspend fun RedisCoroutinesCommands<String, String>.setUser(user: User, userJson: String) {
+            set(user.userId.toKey(), userJson)
+            set(user.username.toKey(), userJson)
+        }
+
+        suspend fun RedisCoroutinesCommands<String, String>.deleteUser(findable: UsersDataSource.Findable) {
+            del(findable.toKey())
+        }
     }
 }
