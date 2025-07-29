@@ -11,7 +11,6 @@ import theoneclick.shared.contracts.core.models.Username
 import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
-// TODO: Maybe encrypt?
 class PostgresUsersDataSource(
     private val database: UsersDatabase,
     private val dispatchersProvider: DispatchersProvider,

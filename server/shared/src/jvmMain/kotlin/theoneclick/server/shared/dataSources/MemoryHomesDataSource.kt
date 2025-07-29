@@ -54,8 +54,4 @@ class MemoryHomesDataSource : HomesDataSource {
             totalPages = NonNegativeInt.unsafe(homesEntry.homes.size),
         )
     }
-
-    private companion object {
-        const val CLEAN_UP_LIMIT = 10_000
-    }
 }

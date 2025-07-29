@@ -49,7 +49,7 @@ fun main() {
     val ivGenerator = DefaultIvGenerator(jvmSecureRandomProvider)
     val logger = KtorSimpleLogger("theoneclick.defaultlogger")
     val dispatchersProvider = dispatchersProvider()
-    val repository = if (environment.useMemoryDatabases) {
+    val repositories = if (environment.useMemoryDatabases) {
         memoryRepositories()
     } else {
         databaseRepositories(environment, logger, dispatchersProvider)
@@ -61,9 +61,12 @@ fun main() {
         encryptor = encryptor,
         timeProvider = timeProvider,
         logger = logger,
-        usersRepository = repository.usersRepository,
-        sessionsRepository = repository.sessionsRepository,
-        homesRepository = repository.homesRepository,
+        usersRepository = repositories.usersRepository,
+        sessionsRepository = repositories.sessionsRepository,
+        homesRepository = repositories.homesRepository,
+        onShutdown = { application ->
+            repositories.onShutdown(application)
+        }
     )
     server(appComponent).start(wait = true)
 }
@@ -125,14 +128,14 @@ private fun databaseRepositories(
         memoryUsersDataSource = memoryUsersDataSource,
     )
 
-    val memorySessionsDataSource = MemorySessionsDataSource() // TODO: Redis
+    val memorySessionsDataSource = MemorySessionsDataSource()
     val diskSessionsDataSource = PostgresSessionsDataSource(usersDatabase, dispatchersProvider, logger)
     val sessionsRepository = DefaultSessionsRepository(
         memorySessionsDataSource = memorySessionsDataSource,
         diskSessionsDataSource = diskSessionsDataSource,
     )
 
-    val memoryHomesDataSource = MemoryHomesDataSource() // TODO: Redis
+    val memoryHomesDataSource = MemoryHomesDataSource()
     val diskHomesDataSource = PostgresHomesDataSource(usersDatabase, dispatchersProvider, logger)
     val homesRepository = DefaultHomesRepository(
         memoryHomesDataSource = memoryHomesDataSource,
