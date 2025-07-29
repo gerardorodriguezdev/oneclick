@@ -8,6 +8,7 @@ import kotlinx.serialization.json.Json
 import theoneclick.server.shared.dataSources.base.UsersDataSource
 import theoneclick.server.shared.models.User
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
+import kotlin.coroutines.coroutineContext
 
 @OptIn(ExperimentalLettuceCoroutinesApi::class)
 class RedisUsersDataSource(
@@ -16,20 +17,29 @@ class RedisUsersDataSource(
     private val logger: Logger,
 ) : UsersDataSource {
 
+    // TODO: Safe syncCommands usage
+    // TODO: Clear if decoded error
     override suspend fun user(findable: UsersDataSource.Findable): User? =
         try {
+            val parentContext = coroutineContext
             withContext(dispatchersProvider.io()) {
                 when (findable) {
                     is UsersDataSource.Findable.ByUserId -> {
                         val userJson = syncCommands.get(userIdKey(findable.userId.value))
                             ?: return@withContext null
-                        Json.decodeFromString(userJson)
+                        val user = Json.decodeFromString<User>(userJson)
+                        withContext(parentContext) {
+                            user
+                        }
                     }
 
                     is UsersDataSource.Findable.ByUsername -> {
                         val userJson = syncCommands.get(userIdKey(findable.username.value))
                             ?: return@withContext null
-                        Json.decodeFromString(userJson)
+                        val user = Json.decodeFromString<User>(userJson)
+                        withContext(parentContext) {
+                            user
+                        }
                     }
                 }
             }
@@ -40,11 +50,14 @@ class RedisUsersDataSource(
 
     override suspend fun saveUser(user: User): Boolean =
         try {
+            val parentContext = coroutineContext
             withContext(dispatchersProvider.io()) {
                 val userJson = Json.encodeToString(user)
                 syncCommands.set(userIdKey(user.userId.value), userJson)
                 syncCommands.set(usernameKey(user.username.value), userJson)
-                true
+                withContext(parentContext) {
+                    true
+                }
             }
         } catch (e: Exception) {
             logger.error("Error trying to save user", e)

@@ -10,6 +10,7 @@ import theoneclick.shared.contracts.core.models.NonNegativeLong
 import theoneclick.shared.contracts.core.models.Token
 import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
+import kotlin.coroutines.coroutineContext
 
 class PostgresSessionsDataSource(
     private val database: UsersDatabase,
@@ -19,12 +20,16 @@ class PostgresSessionsDataSource(
 
     override suspend fun session(findable: SessionsDataSource.Findable): SessionsDataSource.SessionEntry? =
         try {
+            val parentContext = coroutineContext
             withContext(dispatchersProvider.io()) {
                 when (findable) {
                     is SessionsDataSource.Findable.ByUserId -> {
                         val dbSession = database.sessionsQueries.sessionByUserId(findable.userId.value)
                             .executeAsOneOrNull()
-                        dbSession?.toSessionEntry()
+                        val sessionEntry = dbSession?.toSessionEntry()
+                        withContext(parentContext) {
+                            sessionEntry
+                        }
                     }
 
                     is SessionsDataSource.Findable.ByToken -> {
@@ -32,6 +37,10 @@ class PostgresSessionsDataSource(
                             .sessionBySessionToken(findable.token.value)
                             .executeAsOneOrNull()
                         dbSession?.toSessionEntry()
+                        val sessionEntry = dbSession?.toSessionEntry()
+                        withContext(parentContext) {
+                            sessionEntry
+                        }
                     }
                 }
             }
@@ -51,8 +60,14 @@ class PostgresSessionsDataSource(
 
     override suspend fun saveSession(sessionEntry: SessionsDataSource.SessionEntry): Boolean =
         try {
-            database.sessionsQueries.insertSession(sessionEntry.toSessions())
-            true
+            val parentContext = coroutineContext
+            withContext(dispatchersProvider.io()) {
+                database.sessionsQueries.insertSession(sessionEntry.toSessions())
+
+                withContext(parentContext) {
+                    true
+                }
+            }
         } catch (e: Exception) {
             logger.error("Error trying to save session", e)
             false
@@ -67,8 +82,13 @@ class PostgresSessionsDataSource(
 
     override suspend fun deleteSession(token: Token): Boolean =
         try {
-            database.sessionsQueries.deleteBySessionToken(token.value)
-            true
+            val parentContext = coroutineContext
+            withContext(dispatchersProvider.io()) {
+                database.sessionsQueries.deleteBySessionToken(token.value)
+                withContext(parentContext) {
+                    true
+                }
+            }
         } catch (e: Exception) {
             logger.error("Error trying to delete session", e)
             false
