@@ -1,5 +1,5 @@
 CREATE TABLE rooms (
-    home_id VARCHAR(20) REFERENCES homes(home_id) ON DELETE CASCADE,
+    home_id CHAR(36) REFERENCES homes(home_id) ON DELETE CASCADE,
     room_id CHAR(36) PRIMARY KEY,
     room_name VARCHAR(20) NOT NULL
 );

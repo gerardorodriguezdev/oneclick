@@ -1,5 +1,5 @@
 CREATE TABLE devices (
-    room_id VARCHAR(20) REFERENCES rooms(room_id) ON DELETE CASCADE,
+    room_id CHAR(36) REFERENCES rooms(room_id) ON DELETE CASCADE,
     device_id CHAR(36) PRIMARY KEY,
     device JSON NOT NULL
 );
