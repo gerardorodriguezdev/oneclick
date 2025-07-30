@@ -12,7 +12,6 @@ import theoneclick.server.shared.postgresql.UsersDatabase
 import theoneclick.shared.contracts.core.models.*
 import theoneclick.shared.contracts.core.models.NonNegativeInt.Companion.toNonNegativeInt
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
-import kotlin.coroutines.coroutineContext
 
 class PostgresHomesDataSource(
     private val database: UsersDatabase,
@@ -26,7 +25,6 @@ class PostgresHomesDataSource(
         currentPageIndex: NonNegativeInt
     ): PaginationResult<HomesEntry>? =
         try {
-            val parentContext = coroutineContext
             withContext(dispatchersProvider.io()) {
                 val homes = database.homesQueries.homesByUserId(
                     user_id = userId.value,
@@ -34,7 +32,7 @@ class PostgresHomesDataSource(
                     value__ = currentPageIndex.value.toLong()
                 ).executeAsList()
 
-                val paginationResult = PaginationResult(
+                PaginationResult(
                     value = HomesEntry(
                         userId = userId,
                         homes = homes.toHomes(),
@@ -42,9 +40,6 @@ class PostgresHomesDataSource(
                     pageIndex = NonNegativeInt.unsafe(currentPageIndex.value + 1),
                     totalPages = totalHomes()
                 )
-                withContext(parentContext) {
-                    paginationResult
-                }
             }
         } catch (e: Exception) {
             logger.error("Error getting homes", e)

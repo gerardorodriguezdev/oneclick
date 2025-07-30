@@ -12,7 +12,6 @@ import theoneclick.server.shared.dataSources.base.HomesDataSource
 import theoneclick.server.shared.models.HomesEntry
 import theoneclick.shared.contracts.core.models.*
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
-import kotlin.coroutines.coroutineContext
 
 @OptIn(ExperimentalLettuceCoroutinesApi::class)
 class RedisHomesDataSource(
@@ -27,10 +26,9 @@ class RedisHomesDataSource(
         currentPageIndex: NonNegativeInt
     ): PaginationResult<HomesEntry>? =
         try {
-            val parentContext = coroutineContext
             withContext(dispatchersProvider.io()) {
                 val homes = homes(userId, pageSize, currentPageIndex)
-                val paginationResult = PaginationResult(
+                PaginationResult(
                     value = HomesEntry(
                         userId = userId,
                         homes = homes,
@@ -38,9 +36,6 @@ class RedisHomesDataSource(
                     pageIndex = NonNegativeInt.unsafe(currentPageIndex.value + homes.size),
                     totalPages = syncCommands.totalHomes(userId),
                 )
-                withContext(parentContext) {
-                    paginationResult
-                }
             }
         } catch (e: SerializationException) {
             logger.error("Error decoding homes", e)

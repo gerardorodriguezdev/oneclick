@@ -11,7 +11,6 @@ import theoneclick.server.shared.models.User
 import theoneclick.shared.contracts.core.models.Username
 import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
-import kotlin.coroutines.coroutineContext
 
 @OptIn(ExperimentalLettuceCoroutinesApi::class)
 class RedisUsersDataSource(
@@ -22,13 +21,9 @@ class RedisUsersDataSource(
 
     override suspend fun user(findable: UsersDataSource.Findable): User? =
         try {
-            val parentContext = coroutineContext
             withContext(dispatchersProvider.io()) {
                 val userJson = syncCommands.getUser(findable) ?: return@withContext null
-                val user = Json.decodeFromString<User>(userJson)
-                withContext(parentContext) {
-                    user
-                }
+                Json.decodeFromString<User>(userJson)
             }
         } catch (e: SerializationException) {
             logger.error("Error decoding user", e)
@@ -41,13 +36,10 @@ class RedisUsersDataSource(
 
     override suspend fun saveUser(user: User): Boolean =
         try {
-            val parentContext = coroutineContext
             withContext(dispatchersProvider.io()) {
                 val userJson = Json.encodeToString(user)
                 syncCommands.setUser(user, userJson)
-                withContext(parentContext) {
-                    true
-                }
+                true
             }
         } catch (e: Exception) {
             logger.error("Error trying to save user", e)

@@ -10,7 +10,6 @@ import theoneclick.shared.contracts.core.models.NonNegativeLong
 import theoneclick.shared.contracts.core.models.Token
 import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
-import kotlin.coroutines.coroutineContext
 
 class PostgresSessionsDataSource(
     private val database: UsersDatabase,
@@ -20,29 +19,21 @@ class PostgresSessionsDataSource(
 
     override suspend fun session(findable: SessionsDataSource.Findable): SessionsDataSource.SessionEntry? =
         try {
-            val parentContext = coroutineContext
             withContext(dispatchersProvider.io()) {
-                when (findable) {
+                val dbSession = when (findable) {
                     is SessionsDataSource.Findable.ByUserId -> {
-                        val dbSession = database.sessionsQueries.sessionByUserId(findable.userId.value)
+                        database.sessionsQueries.sessionByUserId(findable.userId.value)
                             .executeAsOneOrNull()
-                        val sessionEntry = dbSession?.toSessionEntry()
-                        withContext(parentContext) {
-                            sessionEntry
-                        }
                     }
 
                     is SessionsDataSource.Findable.ByToken -> {
-                        val dbSession = database.sessionsQueries
+                        database.sessionsQueries
                             .sessionBySessionToken(findable.token.value)
                             .executeAsOneOrNull()
-                        dbSession?.toSessionEntry()
-                        val sessionEntry = dbSession?.toSessionEntry()
-                        withContext(parentContext) {
-                            sessionEntry
-                        }
                     }
                 }
+
+                dbSession?.toSessionEntry()
             }
         } catch (e: Exception) {
             logger.error("Error trying to find session", e)
@@ -60,13 +51,9 @@ class PostgresSessionsDataSource(
 
     override suspend fun saveSession(sessionEntry: SessionsDataSource.SessionEntry): Boolean =
         try {
-            val parentContext = coroutineContext
             withContext(dispatchersProvider.io()) {
                 database.sessionsQueries.insertSession(sessionEntry.toSessions())
-
-                withContext(parentContext) {
-                    true
-                }
+                true
             }
         } catch (e: Exception) {
             logger.error("Error trying to save session", e)
@@ -82,12 +69,9 @@ class PostgresSessionsDataSource(
 
     override suspend fun deleteSession(token: Token): Boolean =
         try {
-            val parentContext = coroutineContext
             withContext(dispatchersProvider.io()) {
                 database.sessionsQueries.deleteBySessionToken(token.value)
-                withContext(parentContext) {
-                    true
-                }
+                true
             }
         } catch (e: Exception) {
             logger.error("Error trying to delete session", e)

@@ -12,7 +12,6 @@ import theoneclick.server.shared.dataSources.base.SessionsDataSource.SessionEntr
 import theoneclick.shared.contracts.core.models.Token
 import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
-import kotlin.coroutines.coroutineContext
 
 @OptIn(ExperimentalLettuceCoroutinesApi::class)
 class RedisSessionsDataSource(
@@ -23,13 +22,9 @@ class RedisSessionsDataSource(
 
     override suspend fun session(findable: Findable): SessionEntry? =
         try {
-            val parentContext = coroutineContext
             withContext(dispatchersProvider.io()) {
                 val sessionJson = syncCommands.getSession(findable) ?: return@withContext null
-                val session = Json.decodeFromString<SessionEntry>(sessionJson)
-                withContext(parentContext) {
-                    session
-                }
+                Json.decodeFromString<SessionEntry>(sessionJson)
             }
         } catch (e: SerializationException) {
             logger.error("Error decoding session", e)
@@ -42,13 +37,10 @@ class RedisSessionsDataSource(
 
     override suspend fun saveSession(sessionEntry: SessionEntry): Boolean =
         try {
-            val parentContext = coroutineContext
             withContext(dispatchersProvider.io()) {
                 val sessionJson = Json.encodeToString(sessionEntry)
                 syncCommands.setSession(sessionEntry, sessionJson)
-                withContext(parentContext) {
-                    true
-                }
+                true
             }
         } catch (e: Exception) {
             logger.error("Error trying to save session", e)
@@ -57,12 +49,9 @@ class RedisSessionsDataSource(
 
     override suspend fun deleteSession(token: Token): Boolean =
         try {
-            val parentContext = coroutineContext
             withContext(dispatchersProvider.io()) {
                 syncCommands.deleteSession(Findable.ByToken(token))
-                withContext(parentContext) {
-                    true
-                }
+                true
             }
         } catch (e: Exception) {
             logger.error("Error trying to delete session", e)
