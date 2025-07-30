@@ -5,6 +5,7 @@ import theoneclick.shared.contracts.core.models.UniqueList.KeyProvider
 
 @Serializable
 class Room(
+    val id: Uuid,
     val name: RoomName,
     val devices: UniqueList<Device>,
 ) : KeyProvider {

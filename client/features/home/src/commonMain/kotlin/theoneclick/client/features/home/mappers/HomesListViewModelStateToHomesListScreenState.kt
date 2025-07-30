@@ -25,13 +25,13 @@ private fun UniqueList<Home>.toUiHomes(): ImmutableList<UiHome> =
     map { it.toUiHome() }.toPersistentList()
 
 private fun Home.toUiHome(): UiHome =
-    UiHome(name = name.value, rooms = rooms.toUiRooms())
+    UiHome(id = id.value, name = name.value, rooms = rooms.toUiRooms())
 
 private fun UniqueList<Room>.toUiRooms(): ImmutableList<UiRoom> =
     map { it.toUiRoom() }.toPersistentList()
 
 private fun Room.toUiRoom(): UiRoom =
-    UiRoom(name = name.value, devices = devices.toUiDevices())
+    UiRoom(id = id.value, name = name.value, devices = devices.toUiDevices())
 
 private fun UniqueList<Device>.toUiDevices(): ImmutableList<UiDevice> =
     map { it.toUiDevice() }.toImmutableList()

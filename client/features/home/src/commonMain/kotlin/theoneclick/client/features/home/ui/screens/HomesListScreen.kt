@@ -56,10 +56,10 @@ internal fun HomesListScreen(
                 modifier = Modifier.fillMaxSize(),
             ) {
                 state.homes.forEachIndexed { homeIndex, home ->
-                    homeName(homeName = home.name)
+                    homeName(homeId = home.id, homeName = home.name)
 
                     home.rooms.forEachIndexed { roomIndex, room ->
-                        roomName(roomName = room.name)
+                        roomName(roomId = room.id, roomName = room.name)
 
                         itemsIndexed(
                             items = room.devices,
@@ -81,8 +81,8 @@ internal fun HomesListScreen(
     }
 }
 
-private fun LazyGridScope.homeName(homeName: String) {
-    stickyHeader(key = homeName, contentType = HomesListContentType.HOME_NAME) {
+private fun LazyGridScope.homeName(homeId: String, homeName: String) {
+    stickyHeader(key = homeId, contentType = HomesListContentType.HOME_NAME) {
         Title(
             text = stringResource(Res.string.homesListScreen_homeName_home, homeName),
             modifier = Modifier.background(color = MaterialTheme.colorScheme.background)
@@ -90,8 +90,8 @@ private fun LazyGridScope.homeName(homeName: String) {
     }
 }
 
-private fun LazyGridScope.roomName(roomName: String) {
-    stickyHeader(key = roomName, contentType = HomesListContentType.ROOM_NAME) {
+private fun LazyGridScope.roomName(roomId: String, roomName: String) {
+    stickyHeader(key = roomId, contentType = HomesListContentType.ROOM_NAME) {
         Title(
             text = stringResource(
                 Res.string.homesListScreen_roomName_room,
@@ -179,10 +179,12 @@ internal data class HomesListScreenState(
     val isPaginationLoading: Boolean = false,
 ) {
     data class UiHome(
+        val id: String,
         val name: String,
         val rooms: ImmutableList<UiRoom> = persistentListOf(),
     ) {
         data class UiRoom(
+            val id: String,
             val name: String,
             val devices: ImmutableList<UiDevice> = persistentListOf(),
         ) {

@@ -54,9 +54,10 @@ class PostgresHomesDataSource(
     private fun List<Homes>.toHomes(): UniqueList<Home> =
         UniqueList.unsafe(
             map { home ->
-                val rooms = database.roomsQueries.roomsByHomeName(home.home_name).executeAsList()
+                val rooms = database.roomsQueries.roomsByHomeId(home.home_id).executeAsList()
 
                 Home(
+                    id = Uuid.unsafe(home.home_id),
                     name = HomeName.unsafe(home.home_name),
                     rooms = rooms.toRooms()
                 )
@@ -70,10 +71,11 @@ class PostgresHomesDataSource(
             UniqueList.unsafe(
                 map { room ->
                     val devices =
-                        database.devicesQueries.deviceByRoomName(room.room_name)
+                        database.devicesQueries.deviceByRoomId(room.room_id)
                             .executeAsList()
 
                     Room(
+                        id = Uuid.unsafe(room.room_id),
                         name = RoomName.unsafe(room.room_name),
                         devices = devices.toDevices()
                     )

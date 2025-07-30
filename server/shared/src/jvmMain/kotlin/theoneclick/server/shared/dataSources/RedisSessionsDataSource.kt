@@ -70,10 +70,10 @@ class RedisSessionsDataSource(
         }
 
     private companion object {
-        const val SESSION_BY_ID_PREFIX = "session:id:"
+        const val SESSION_BY_USER_ID_PREFIX = "session:userId:"
         const val SESSION_BY_TOKEN_PREFIX = "session:token:"
 
-        fun Uuid.toKey(): String = SESSION_BY_ID_PREFIX + value
+        fun Uuid.toKey(): String = SESSION_BY_USER_ID_PREFIX + value
         fun Token.toKey(): String = SESSION_BY_TOKEN_PREFIX + value
 
         fun Findable.toKey(): String =

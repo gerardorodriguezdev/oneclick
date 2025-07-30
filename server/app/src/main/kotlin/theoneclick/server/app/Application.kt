@@ -139,7 +139,11 @@ private fun databaseRepositories(
         diskSessionsDataSource = diskSessionsDataSource,
     )
 
-    val memoryHomesDataSource = MemoryHomesDataSource()
+    val memoryHomesDataSource = RedisHomesDataSource(
+        syncCommands = redisConnection.coroutines(),
+        dispatchersProvider = dispatchersProvider,
+        logger = logger,
+    )
     val diskHomesDataSource = PostgresHomesDataSource(usersDatabase, dispatchersProvider, logger)
     val homesRepository = DefaultHomesRepository(
         memoryHomesDataSource = memoryHomesDataSource,
