@@ -65,34 +65,26 @@ class PostgresHomesDataSource(
         )
 
     private fun List<Rooms>.toRooms(): UniqueList<Room> =
-        if (isEmpty()) {
-            UniqueList.emptyUniqueList()
-        } else {
-            UniqueList.unsafe(
-                map { room ->
-                    val devices =
-                        database.devicesQueries.deviceByRoomId(room.room_id)
-                            .executeAsList()
+        UniqueList.unsafe(
+            map { room ->
+                val devices =
+                    database.devicesQueries.deviceByRoomId(room.room_id)
+                        .executeAsList()
 
-                    Room(
-                        id = Uuid.unsafe(room.room_id),
-                        name = RoomName.unsafe(room.room_name),
-                        devices = devices.toDevices()
-                    )
-                }
-            )
-        }
+                Room(
+                    id = Uuid.unsafe(room.room_id),
+                    name = RoomName.unsafe(room.room_name),
+                    devices = devices.toDevices()
+                )
+            }
+        )
 
     private fun List<Devices>.toDevices(): UniqueList<Device> =
-        if (isEmpty()) {
-            UniqueList.emptyUniqueList()
-        } else {
-            UniqueList.unsafe(
-                map { device ->
-                    Json.decodeFromString<Device>(device.device)
-                }
-            )
-        }
+        UniqueList.unsafe(
+            map { device ->
+                Json.decodeFromString<Device>(device.device)
+            }
+        )
 
     private fun totalHomes(): NonNegativeInt =
         database

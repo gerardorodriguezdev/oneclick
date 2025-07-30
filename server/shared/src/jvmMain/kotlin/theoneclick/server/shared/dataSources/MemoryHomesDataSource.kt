@@ -41,7 +41,6 @@ class MemoryHomesDataSource : HomesDataSource {
                 }
             }
         }
-        if (newHomes.isEmpty()) return null
 
         val newHomesEntry = HomesEntry(
             userId = homesEntry.userId,
