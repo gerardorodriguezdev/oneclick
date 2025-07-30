@@ -22,7 +22,8 @@ class PostgresSessionsDataSource(
             withContext(dispatchersProvider.io()) {
                 val dbSession = when (findable) {
                     is SessionsDataSource.Findable.ByUserId -> {
-                        database.sessionsQueries.sessionByUserId(findable.userId.value)
+                        database.sessionsQueries
+                            .sessionByUserId(findable.userId.value)
                             .executeAsOneOrNull()
                     }
 

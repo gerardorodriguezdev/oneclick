@@ -3,6 +3,3 @@ CREATE TABLE rooms (
     room_id CHAR(36) PRIMARY KEY,
     room_name VARCHAR(20) NOT NULL
 );
-
-roomsByHomeId:
-SELECT * FROM rooms WHERE home_id = ?;

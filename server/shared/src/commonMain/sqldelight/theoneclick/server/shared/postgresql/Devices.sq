@@ -3,6 +3,3 @@ CREATE TABLE devices (
     device_id CHAR(36) PRIMARY KEY,
     device JSON NOT NULL
 );
-
-deviceByRoomId:
-SELECT * FROM devices WHERE room_id = ?;

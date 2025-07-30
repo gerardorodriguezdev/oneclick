@@ -5,10 +5,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import theoneclick.server.shared.dataSources.base.HomesDataSource
 import theoneclick.server.shared.models.HomesEntry
-import theoneclick.server.shared.postgresql.Devices
-import theoneclick.server.shared.postgresql.Homes
-import theoneclick.server.shared.postgresql.Rooms
-import theoneclick.server.shared.postgresql.UsersDatabase
+import theoneclick.server.shared.postgresql.*
 import theoneclick.shared.contracts.core.models.*
 import theoneclick.shared.contracts.core.models.NonNegativeInt.Companion.toNonNegativeInt
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
@@ -26,16 +23,17 @@ class PostgresHomesDataSource(
     ): PaginationResult<HomesEntry>? =
         try {
             withContext(dispatchersProvider.io()) {
-                val homes = database.homesQueries.homesByUserId(
+                val entries = database.homesQueries.homesByUserId(
                     user_id = userId.value,
                     value_ = pageSize.value.toLong(),
                     value__ = currentPageIndex.value.toLong()
                 ).executeAsList()
 
+                val (homes, rooms, devices) = entries.normalizeData()
                 PaginationResult(
                     value = HomesEntry(
                         userId = userId,
-                        homes = homes.toHomes(),
+                        homes = homes.toHomes(rooms, devices),
                     ),
                     pageIndex = NonNegativeInt.unsafe(currentPageIndex.value + 1),
                     totalPages = totalHomes()
@@ -46,26 +44,55 @@ class PostgresHomesDataSource(
             null
         }
 
-    private fun List<Homes>.toHomes(): UniqueList<Home> =
+    private fun List<HomesByUserId>.normalizeData(): NormalizedData {
+        val homes = hashSetOf<Homes>()
+        val rooms = hashSetOf<Rooms>()
+        val devices = hashSetOf<Devices>()
+        forEach { entry ->
+            homes.add(
+                Homes(
+                    user_id = entry.user_id,
+                    home_id = entry.home_id,
+                    home_name = entry.home_name
+                )
+            )
+
+            rooms.add(
+                Rooms(
+                    home_id = entry.home_id,
+                    room_id = entry.room_id,
+                    room_name = entry.room_name,
+                )
+            )
+
+            devices.add(
+                Devices(
+                    room_id = entry.room_id,
+                    device_id = entry.device_id,
+                    device = entry.device,
+                )
+            )
+        }
+
+        return NormalizedData(homes, rooms, devices)
+    }
+
+    private fun HashSet<Homes>.toHomes(rooms: HashSet<Rooms>, devices: HashSet<Devices>): UniqueList<Home> =
         UniqueList.unsafe(
             map { home ->
-                val rooms = database.roomsQueries.roomsByHomeId(home.home_id).executeAsList()
-
+                val rooms = rooms.filter { room -> room.home_id == home.home_id }
                 Home(
                     id = Uuid.unsafe(home.home_id),
                     name = HomeName.unsafe(home.home_name),
-                    rooms = rooms.toRooms()
+                    rooms = rooms.toRooms(devices)
                 )
             }
         )
 
-    private fun List<Rooms>.toRooms(): UniqueList<Room> =
+    private fun List<Rooms>.toRooms(devices: HashSet<Devices>): UniqueList<Room> =
         UniqueList.unsafe(
             map { room ->
-                val devices =
-                    database.devicesQueries.deviceByRoomId(room.room_id)
-                        .executeAsList()
-
+                val devices = devices.filter { device -> device.room_id == room.room_id }
                 Room(
                     id = Uuid.unsafe(room.room_id),
                     name = RoomName.unsafe(room.room_name),
@@ -89,4 +116,10 @@ class PostgresHomesDataSource(
             ?.toInt()
             ?.toNonNegativeInt()
             ?: NonNegativeInt.zero
+
+    private data class NormalizedData(
+        val homes: HashSet<Homes>,
+        val rooms: HashSet<Rooms>,
+        val devices: HashSet<Devices>,
+    )
 }

@@ -20,18 +20,19 @@ class PostgresUsersDataSource(
     override suspend fun user(findable: UsersDataSource.Findable): User? =
         try {
             withContext(dispatchersProvider.io()) {
-                when (findable) {
+                val dbUser = when (findable) {
                     is UsersDataSource.Findable.ByUserId -> {
-                        val dbUser = database.usersQueries.userByUserId(findable.userId.value).executeAsOneOrNull()
-                        dbUser?.toUser()
+                        database.usersQueries.userByUserId(findable.userId.value)
+                            .executeAsOneOrNull()
                     }
 
                     is UsersDataSource.Findable.ByUsername -> {
-                        val dbUser = database.usersQueries.userByUsername(findable.username.value)
+                        database.usersQueries.userByUsername(findable.username.value)
                             .executeAsOneOrNull()
-                        dbUser?.toUser()
                     }
                 }
+
+                dbUser?.toUser()
             }
         } catch (e: Exception) {
             logger.error("Error trying to find user", e)

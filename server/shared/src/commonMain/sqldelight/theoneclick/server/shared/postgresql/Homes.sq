@@ -5,7 +5,11 @@ CREATE TABLE homes (
 );
 
 homesByUserId:
-SELECT * FROM homes WHERE user_id = ? LIMIT ? OFFSET ?;
+SELECT *
+FROM homes
+JOIN rooms ON homes.home_id = rooms.home_id
+JOIN devices ON rooms.room_id = devices.room_id
+WHERE homes.user_id = ? LIMIT ? OFFSET ?;
 
 totalHomes:
 SELECT COUNT(*) FROM homes;
