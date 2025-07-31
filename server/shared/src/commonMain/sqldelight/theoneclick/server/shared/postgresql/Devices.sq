@@ -3,3 +3,5 @@ CREATE TABLE devices (
     device_id CHAR(36) PRIMARY KEY,
     device JSON NOT NULL
 );
+
+CREATE INDEX IF NOT EXISTS devices_room_id_idx ON devices(room_id);
