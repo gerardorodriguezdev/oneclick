@@ -38,8 +38,7 @@ sqldelight {
     databases {
         create("SharedDatabase") {
             packageName.set("theoneclick.server.shared.postgresql")
-            val dialect = libs.kmp.sqldelight.postgresql.get()
-            dialect("${dialect.module}:${dialect.version}")
+            dialect(libs.kmp.sqldelight.postgresql)
             deriveSchemaFromMigrations.set(true)
         }
     }
