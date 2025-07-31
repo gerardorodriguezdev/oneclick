@@ -13,7 +13,7 @@ import theoneclick.server.app.di.create
 import theoneclick.server.app.entrypoint.server
 import theoneclick.server.shared.dataSources.*
 import theoneclick.server.shared.di.Environment
-import theoneclick.server.shared.postgresql.UsersDatabase
+import theoneclick.server.shared.postgresql.SharedDatabase
 import theoneclick.server.shared.repositories.*
 import theoneclick.server.shared.security.DefaultEncryptor
 import theoneclick.server.shared.security.DefaultIvGenerator
@@ -112,7 +112,7 @@ private fun databaseRepositories(
     }
     val hikariDataSource = HikariDataSource(hikariConfig)
     val driver = hikariDataSource.asJdbcDriver()
-    val usersDatabase = UsersDatabase(driver)
+    val sharedDatabase = SharedDatabase(driver)
 
     val redisClient = RedisClient.create(environment.redisUrl)
     val redisConnection = redisClient.connect()
@@ -122,7 +122,7 @@ private fun databaseRepositories(
         dispatchersProvider = dispatchersProvider,
         logger = logger,
     )
-    val diskUsersDataSource = PostgresUsersDataSource(usersDatabase, dispatchersProvider, logger)
+    val diskUsersDataSource = PostgresUsersDataSource(sharedDatabase, dispatchersProvider, logger)
     val usersRepository = DefaultUsersRepository(
         diskUsersDataSource = diskUsersDataSource,
         memoryUsersDataSource = memoryUsersDataSource,
@@ -133,7 +133,7 @@ private fun databaseRepositories(
         dispatchersProvider = dispatchersProvider,
         logger = logger,
     )
-    val diskSessionsDataSource = PostgresSessionsDataSource(usersDatabase, dispatchersProvider, logger)
+    val diskSessionsDataSource = PostgresSessionsDataSource(sharedDatabase, dispatchersProvider, logger)
     val sessionsRepository = DefaultSessionsRepository(
         memorySessionsDataSource = memorySessionsDataSource,
         diskSessionsDataSource = diskSessionsDataSource,
@@ -144,7 +144,7 @@ private fun databaseRepositories(
         dispatchersProvider = dispatchersProvider,
         logger = logger,
     )
-    val diskHomesDataSource = PostgresHomesDataSource(usersDatabase, dispatchersProvider, logger)
+    val diskHomesDataSource = PostgresHomesDataSource(sharedDatabase, dispatchersProvider, logger)
     val homesRepository = DefaultHomesRepository(
         memoryHomesDataSource = memoryHomesDataSource,
         diskHomesDataSource = diskHomesDataSource,

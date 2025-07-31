@@ -1,11 +1,3 @@
-CREATE TABLE homes (
-    user_id CHAR(36) REFERENCES users(user_id) ON DELETE CASCADE,
-    home_id CHAR(36) PRIMARY KEY,
-    home_name VARCHAR(20) NOT NULL
-);
-
-CREATE INDEX IF NOT EXISTS homes_user_id_idx ON homes(user_id);
-
 homesByUserId:
 SELECT *
 FROM homes

@@ -6,6 +6,9 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
+import migrations.Devices
+import migrations.Homes
+import migrations.Rooms
 import theoneclick.server.shared.dataSources.base.HomesDataSource
 import theoneclick.server.shared.models.HomesEntry
 import theoneclick.server.shared.postgresql.*
@@ -14,7 +17,7 @@ import theoneclick.shared.contracts.core.models.NonNegativeInt.Companion.toNonNe
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
 class PostgresHomesDataSource(
-    private val database: UsersDatabase,
+    private val database: SharedDatabase,
     private val dispatchersProvider: DispatchersProvider,
     private val logger: Logger,
 ) : HomesDataSource {

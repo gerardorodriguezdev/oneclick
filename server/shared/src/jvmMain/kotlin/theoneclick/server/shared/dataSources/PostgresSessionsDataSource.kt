@@ -2,17 +2,17 @@ package theoneclick.server.shared.dataSources
 
 import io.ktor.util.logging.*
 import kotlinx.coroutines.withContext
+import migrations.Sessions
 import theoneclick.server.shared.dataSources.base.SessionsDataSource
 import theoneclick.server.shared.models.EncryptedToken
-import theoneclick.server.shared.postgresql.Sessions
-import theoneclick.server.shared.postgresql.UsersDatabase
+import theoneclick.server.shared.postgresql.SharedDatabase
 import theoneclick.shared.contracts.core.models.NonNegativeLong
 import theoneclick.shared.contracts.core.models.Token
 import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
 class PostgresSessionsDataSource(
-    private val database: UsersDatabase,
+    private val database: SharedDatabase,
     private val dispatchersProvider: DispatchersProvider,
     private val logger: Logger,
 ) : SessionsDataSource {

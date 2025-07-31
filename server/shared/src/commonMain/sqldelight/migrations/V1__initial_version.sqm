@@ -1,0 +1,40 @@
+CREATE TABLE users (
+    user_id CHAR(36) PRIMARY KEY,
+    username VARCHAR(20) UNIQUE NOT NULL,
+    hashed_password VARCHAR(60) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS users_username_idx ON users(username);
+
+CREATE TABLE sessions (
+    user_id CHAR(36) REFERENCES users(user_id) ON DELETE CASCADE,
+    session_token VARCHAR(60) NOT NULL,
+    creation_time BIGINT NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS sessions_user_id_idx ON sessions(user_id);
+CREATE INDEX IF NOT EXISTS sessions_session_token_idx ON sessions(session_token);
+
+CREATE TABLE homes (
+    user_id CHAR(36) REFERENCES users(user_id) ON DELETE CASCADE,
+    home_id CHAR(36) PRIMARY KEY,
+    home_name VARCHAR(20) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS homes_user_id_idx ON homes(user_id);
+
+CREATE TABLE rooms (
+    home_id CHAR(36) REFERENCES homes(home_id) ON DELETE CASCADE,
+    room_id CHAR(36) PRIMARY KEY,
+    room_name VARCHAR(20) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS rooms_home_id_idx ON rooms(home_id);
+
+CREATE TABLE devices (
+    room_id CHAR(36) REFERENCES rooms(room_id) ON DELETE CASCADE,
+    device_id CHAR(36) PRIMARY KEY,
+    device JSON NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS devices_room_id_idx ON devices(room_id);
