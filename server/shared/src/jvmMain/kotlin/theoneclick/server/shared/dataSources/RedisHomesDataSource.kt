@@ -74,7 +74,13 @@ class RedisHomesDataSource(
     private suspend fun CoroutineScope.rooms(homeId: String): UniqueList<Room> {
         val roomsStrings = syncCommands.getRooms(homeId)
         val roomsValues = roomsStrings.map { roomValue ->
-            async { Json.decodeFromString<RoomValue>(roomValue) }
+            async {
+                try {
+                    Json.decodeFromString<RoomValue>(roomValue)
+                } finally {
+                    syncCommands.deleteRooms(homeId)
+                }
+            }
         }.awaitAll()
         val rooms = roomsValues.map { (roomId, roomName) ->
             async {
@@ -90,9 +96,15 @@ class RedisHomesDataSource(
     }
 
     private suspend fun CoroutineScope.devices(roomId: String): UniqueList<Device> {
-        val devicesStrings = syncCommands.getDevices(roomId)
+        val devicesStrings = syncCommands.getDevice(roomId)
         val devicesValues = devicesStrings.map { deviceValue ->
-            async { Json.decodeFromString<DeviceValue>(deviceValue) }
+            async {
+                try {
+                    Json.decodeFromString<DeviceValue>(deviceValue)
+                } finally {
+                    syncCommands.deleteDevice(roomId)
+                }
+            }
         }.awaitAll()
         val devices = devicesValues.map { (deviceString) -> Json.decodeFromString<Device>(deviceString) }
         return UniqueList.unsafe(devices)
@@ -146,7 +158,15 @@ class RedisHomesDataSource(
         suspend fun RedisCoroutinesCommands<String, String>.getRooms(homeId: String): List<String> =
             smembers(roomKey(homeId)).toList()
 
-        suspend fun RedisCoroutinesCommands<String, String>.getDevices(roomId: String): List<String> =
+        suspend fun RedisCoroutinesCommands<String, String>.deleteRooms(homeId: String) {
+            del(roomKey(homeId))
+        }
+
+        suspend fun RedisCoroutinesCommands<String, String>.getDevice(roomId: String): List<String> =
             smembers(deviceKey(roomId)).toList()
+
+        suspend fun RedisCoroutinesCommands<String, String>.deleteDevice(roomId: String) {
+            del(deviceKey(roomId))
+        }
     }
 }
