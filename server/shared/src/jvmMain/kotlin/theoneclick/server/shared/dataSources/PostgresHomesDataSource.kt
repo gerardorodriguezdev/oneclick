@@ -1,6 +1,9 @@
 package theoneclick.server.shared.dataSources
 
 import io.ktor.util.logging.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import theoneclick.server.shared.dataSources.base.HomesDataSource
@@ -33,7 +36,7 @@ class PostgresHomesDataSource(
                 PaginationResult(
                     value = HomesEntry(
                         userId = userId,
-                        homes = homes.toHomes(rooms, devices),
+                        homes = toHomes(homes, rooms, devices),
                     ),
                     pageIndex = NonNegativeInt.unsafe(currentPageIndex.value + 1),
                     totalPages = totalHomes()
@@ -77,35 +80,43 @@ class PostgresHomesDataSource(
         return NormalizedData(homes, rooms, devices)
     }
 
-    private fun HashSet<Homes>.toHomes(rooms: HashSet<Rooms>, devices: HashSet<Devices>): UniqueList<Home> =
+    private suspend fun CoroutineScope.toHomes(
+        homes: HashSet<Homes>,
+        rooms: HashSet<Rooms>,
+        devices: HashSet<Devices>
+    ): UniqueList<Home> =
         UniqueList.unsafe(
-            map { home ->
-                val rooms = rooms.filter { room -> room.home_id == home.home_id }
-                Home(
-                    id = Uuid.unsafe(home.home_id),
-                    name = HomeName.unsafe(home.home_name),
-                    rooms = rooms.toRooms(devices)
-                )
-            }
+            homes.map { home ->
+                async {
+                    val rooms = rooms.filter { room -> room.home_id == home.home_id }
+                    Home(
+                        id = Uuid.unsafe(home.home_id),
+                        name = HomeName.unsafe(home.home_name),
+                        rooms = toRooms(rooms, devices)
+                    )
+                }
+            }.awaitAll()
         )
 
-    private fun List<Rooms>.toRooms(devices: HashSet<Devices>): UniqueList<Room> =
+    private suspend fun CoroutineScope.toRooms(rooms: List<Rooms>, devices: HashSet<Devices>): UniqueList<Room> =
         UniqueList.unsafe(
-            map { room ->
-                val devices = devices.filter { device -> device.room_id == room.room_id }
-                Room(
-                    id = Uuid.unsafe(room.room_id),
-                    name = RoomName.unsafe(room.room_name),
-                    devices = devices.toDevices()
-                )
-            }
+            rooms.map { room ->
+                async {
+                    val devices = devices.filter { device -> device.room_id == room.room_id }
+                    Room(
+                        id = Uuid.unsafe(room.room_id),
+                        name = RoomName.unsafe(room.room_name),
+                        devices = toDevices(devices)
+                    )
+                }
+            }.awaitAll()
         )
 
-    private fun List<Devices>.toDevices(): UniqueList<Device> =
+    private suspend fun CoroutineScope.toDevices(devices: List<Devices>): UniqueList<Device> =
         UniqueList.unsafe(
-            map { device ->
-                Json.decodeFromString<Device>(device.device)
-            }
+            devices.map { device ->
+                async { Json.decodeFromString<Device>(device.device) }
+            }.awaitAll()
         )
 
     private fun totalHomes(): NonNegativeInt =

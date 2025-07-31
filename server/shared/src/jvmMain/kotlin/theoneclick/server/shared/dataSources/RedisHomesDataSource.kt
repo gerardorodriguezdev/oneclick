@@ -3,6 +3,9 @@ package theoneclick.server.shared.dataSources
 import io.ktor.util.logging.*
 import io.lettuce.core.ExperimentalLettuceCoroutinesApi
 import io.lettuce.core.api.coroutines.RedisCoroutinesCommands
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
@@ -46,37 +49,51 @@ class RedisHomesDataSource(
             null
         }
 
-    private suspend fun homes(userId: Uuid, pageSize: PositiveInt, currentPageIndex: NonNegativeInt): UniqueList<Home> {
+    private suspend fun CoroutineScope.homes(
+        userId: Uuid,
+        pageSize: PositiveInt,
+        currentPageIndex: NonNegativeInt
+    ): UniqueList<Home> {
         val homesStrings = syncCommands.getHomes(userId, pageSize, currentPageIndex)
-        val homesValues = homesStrings.map { homeValue -> Json.decodeFromString<HomeValue>(homeValue) }
+        val homesValues = homesStrings.map { homeValue ->
+            async { Json.decodeFromString<HomeValue>(homeValue) }
+        }.awaitAll()
         val homes = homesValues.map { (homeId, homeName) ->
-            val rooms = rooms(homeId)
-            Home(
-                id = Uuid.unsafe(homeId),
-                name = HomeName.unsafe(homeName),
-                rooms = rooms,
-            )
-        }
+            async {
+                val rooms = rooms(homeId)
+                Home(
+                    id = Uuid.unsafe(homeId),
+                    name = HomeName.unsafe(homeName),
+                    rooms = rooms,
+                )
+            }
+        }.awaitAll()
         return UniqueList.unsafe(homes)
     }
 
-    private suspend fun rooms(homeId: String): UniqueList<Room> {
+    private suspend fun CoroutineScope.rooms(homeId: String): UniqueList<Room> {
         val roomsStrings = syncCommands.getRooms(homeId)
-        val roomsValues = roomsStrings.map { roomValue -> Json.decodeFromString<RoomValue>(roomValue) }
+        val roomsValues = roomsStrings.map { roomValue ->
+            async { Json.decodeFromString<RoomValue>(roomValue) }
+        }.awaitAll()
         val rooms = roomsValues.map { (roomId, roomName) ->
-            val devices = devices(roomId)
-            Room(
-                id = Uuid.unsafe(roomId),
-                name = RoomName.unsafe(roomName),
-                devices = devices,
-            )
-        }
+            async {
+                val devices = devices(roomId)
+                Room(
+                    id = Uuid.unsafe(roomId),
+                    name = RoomName.unsafe(roomName),
+                    devices = devices,
+                )
+            }
+        }.awaitAll()
         return UniqueList.unsafe(rooms)
     }
 
-    private suspend fun devices(roomId: String): UniqueList<Device> {
+    private suspend fun CoroutineScope.devices(roomId: String): UniqueList<Device> {
         val devicesStrings = syncCommands.getDevices(roomId)
-        val devicesValues = devicesStrings.map { deviceValue -> Json.decodeFromString<DeviceValue>(deviceValue) }
+        val devicesValues = devicesStrings.map { deviceValue ->
+            async { Json.decodeFromString<DeviceValue>(deviceValue) }
+        }.awaitAll()
         val devices = devicesValues.map { (deviceString) -> Json.decodeFromString<Device>(deviceString) }
         return UniqueList.unsafe(devices)
     }
