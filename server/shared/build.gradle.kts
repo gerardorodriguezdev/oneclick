@@ -34,12 +34,12 @@ kotlin {
     }
 }
 
-// TODO: Separate
 sqldelight {
     databases {
-        create("UsersDatabase") {
+        create("SharedDatabase") {
             packageName.set("theoneclick.server.shared.postgresql")
-            dialect("app.cash.sqldelight:postgresql-dialect:2.1.0")
+            val dialect = libs.kmp.sqldelight.postgresql.get()
+            dialect("${dialect.module}:${dialect.version}")
         }
     }
 }

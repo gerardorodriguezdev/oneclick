@@ -70,6 +70,7 @@ kmp-kotlin-inject = { module = "me.tatarka.inject:kotlin-inject-runtime", versio
 kmp-kotlin-inject-kmp = { module = "me.tatarka.inject:kotlin-inject-runtime-kmp", version.ref = "kmp-kotlin-inject" }
 kmp-sqldelight = { module = "app.cash.sqldelight:jdbc-driver", version.ref = "kmp-sqldelight" }
 kmp-sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "kmp-sqldelight" }
+kmp-sqldelight-postgresql = { module = "app.cash.sqldelight:postgresql-dialect", version.ref = "kmp-sqldelight" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
