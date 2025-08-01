@@ -97,16 +97,15 @@ class RedisHomesDataSource(
 
     private suspend fun CoroutineScope.devices(roomId: String): UniqueList<Device> {
         val devicesStrings = syncCommands.getDevice(roomId)
-        val devicesValues = devicesStrings.map { deviceValue ->
+        val devices = devicesStrings.map { deviceString ->
             async {
                 try {
-                    Json.decodeFromString<DeviceValue>(deviceValue)
+                    Json.decodeFromString<Device>(deviceString)
                 } finally {
                     syncCommands.deleteDevice(roomId)
                 }
             }
         }.awaitAll()
-        val devices = devicesValues.map { (deviceString) -> Json.decodeFromString<Device>(deviceString) }
         return UniqueList.unsafe(devices)
     }
 
@@ -120,11 +119,6 @@ class RedisHomesDataSource(
     private data class RoomValue(
         val roomId: String,
         val roomName: String
-    )
-
-    @Serializable
-    private data class DeviceValue(
-        val deviceString: String
     )
 
     private companion object {
