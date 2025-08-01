@@ -28,15 +28,12 @@ class InitViewModel(
 
         isSignedRequestJob =
             viewModelScope.launch {
-                authenticationDataSource
-                    .isUserLogged()
-                    .collect { userLoggedResult ->
-                        when (userLoggedResult) {
-                            is UserLoggedResult.Logged -> handleUserLogged()
-                            is UserLoggedResult.NotLogged -> handleUserNotLogged()
-                            is UserLoggedResult.UnknownError -> handleUserNotLogged()
-                        }
-                    }
+                val userLoggedResult = authenticationDataSource.isUserLogged()
+                when (userLoggedResult) {
+                    is UserLoggedResult.Logged -> handleUserLogged()
+                    is UserLoggedResult.NotLogged -> handleUserNotLogged()
+                    is UserLoggedResult.UnknownError -> handleUserNotLogged()
+                }
             }
     }
 

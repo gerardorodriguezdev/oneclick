@@ -40,29 +40,24 @@ internal class UserSettingsViewModel(
         logoutJob?.cancel()
 
         logoutJob = viewModelScope.launch {
-            authenticationDataSource
-                .logout()
-                .onStart {
-                    isLoading.value = true
-                }
-                .onCompletion {
-                    isLoading.value = false
-                }
-                .collect { logoutResult ->
-                    when (logoutResult) {
-                        is LogoutResult.Success -> {
-                            notificationsController.showSuccessNotification(
-                                getString(Res.string.userSettingsScreen_snackbar_logout),
-                            )
-                        }
+            isLoading.value = true
 
-                        is LogoutResult.Error -> {
-                            notificationsController.showErrorNotification(
-                                getString(Res.string.userSettingsScreen_snackbar_unknownError),
-                            )
-                        }
-                    }
+            val logoutResult = authenticationDataSource.logout()
+            when (logoutResult) {
+                is LogoutResult.Success -> {
+                    notificationsController.showSuccessNotification(
+                        getString(Res.string.userSettingsScreen_snackbar_logout),
+                    )
                 }
+
+                is LogoutResult.Error -> {
+                    notificationsController.showErrorNotification(
+                        getString(Res.string.userSettingsScreen_snackbar_unknownError),
+                    )
+                }
+            }
+
+            isLoading.value = false
         }
     }
 

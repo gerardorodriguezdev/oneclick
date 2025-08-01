@@ -4,10 +4,7 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import me.tatarka.inject.annotations.Inject
 import theoneclick.client.features.home.models.HomesEntry
 import theoneclick.client.features.home.models.HomesResult
@@ -18,7 +15,7 @@ import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.logging.AppLogger
 
 internal interface HomesDataSource {
-    fun homes(request: HomesRequest): Flow<HomesResult>
+    suspend fun homes(request: HomesRequest): HomesResult
 }
 
 @Inject
@@ -28,34 +25,34 @@ internal class RemoteHomesDataSource(
     private val appLogger: AppLogger,
 ) : HomesDataSource {
 
-    override fun homes(request: HomesRequest): Flow<HomesResult> =
-        flow {
-            val response = httpClient.post(ClientEndpoint.HOMES.route) {
-                setBody(request)
-            }
-
-            when (response.status) {
-                HttpStatusCode.OK -> {
-                    val homesResponse = response.body<HomesResponse>()
-                    val data = homesResponse.data
-                    val homesResult = HomesResult.Success(
-                        homesEntry = data?.let {
-                            HomesEntry(
-                                homes = data.homes,
-                                pageIndex = data.pageIndex,
-                                canRequestMore = data.canRequestMore,
-                            )
-                        }
-                    )
-                    emit(homesResult)
+    override suspend fun homes(request: HomesRequest): HomesResult =
+        withContext(dispatchersProvider.io()) {
+            try {
+                val response = httpClient.post(ClientEndpoint.HOMES.route) {
+                    setBody(request)
                 }
 
-                else -> emit(HomesResult.Error)
+                when (response.status) {
+                    HttpStatusCode.OK -> {
+                        val homesResponse = response.body<HomesResponse>()
+                        val data = homesResponse.data
+                        val homesResult = HomesResult.Success(
+                            homesEntry = data?.let {
+                                HomesEntry(
+                                    homes = data.homes,
+                                    pageIndex = data.pageIndex,
+                                    canRequestMore = data.canRequestMore,
+                                )
+                            }
+                        )
+                        homesResult
+                    }
+
+                    else -> HomesResult.Error
+                }
+            } catch (e: Exception) {
+                appLogger.e("Exception catched '${e.stackTraceToString()}' while getting homes")
+                HomesResult.Error
             }
         }
-            .catch { exception ->
-                appLogger.e("Exception catched '${exception.stackTraceToString()}' while getting homes")
-                emit(HomesResult.Error)
-            }
-            .flowOn(dispatchersProvider.io())
 }

@@ -1,6 +1,8 @@
 package theoneclick.client.features.home.repositories
 
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.StateFlow
 import me.tatarka.inject.annotations.Inject
 import theoneclick.client.features.home.dataSources.HomesDataSource
 import theoneclick.client.features.home.models.HomesEntry
@@ -15,8 +17,8 @@ import theoneclick.shared.contracts.core.models.requests.HomesRequest
 internal interface HomesRepository {
     val homesEntry: SharedFlow<HomesEntry?>
 
-    fun refreshHomes(): Flow<HomesResult>
-    fun requestMoreHomes(): Flow<HomesResult>
+    suspend fun refreshHomes(): HomesResult
+    suspend fun requestMoreHomes(): HomesResult
 
     companion object {
         val defaultPageSize = PositiveInt.unsafe(10)
@@ -30,45 +32,42 @@ internal class DefaultHomesRepository(
     private val mutableHomesEntry = MutableStateFlow<HomesEntry?>(null)
     override val homesEntry: StateFlow<HomesEntry?> = mutableHomesEntry
 
-    override fun refreshHomes(): Flow<HomesResult> =
-        remoteHomesDataSource
-            .homes(
-                request = HomesRequest(
-                    pageSize = defaultPageSize,
-                    pageIndex = NonNegativeInt.zero,
-                )
+    override suspend fun refreshHomes(): HomesResult {
+        val homesResult = remoteHomesDataSource.homes(
+            request = HomesRequest(
+                pageSize = defaultPageSize,
+                pageIndex = NonNegativeInt.zero,
             )
-            .refreshCacheIfSuccess()
+        )
 
-    private fun Flow<HomesResult>.refreshCacheIfSuccess(): Flow<HomesResult> =
-        onEach { homesResult ->
-            if (homesResult is HomesResult.Success) {
-                mutableHomesEntry.emit(homesResult.homesEntry)
-            }
+        if (homesResult is HomesResult.Success) {
+            mutableHomesEntry.emit(homesResult.homesEntry)
         }
 
-    override fun requestMoreHomes(): Flow<HomesResult> =
-        remoteHomesDataSource
+        return homesResult
+    }
+
+    override suspend fun requestMoreHomes(): HomesResult {
+        val homesResult = remoteHomesDataSource
             .homes(
                 request = HomesRequest(
                     pageSize = defaultPageSize,
                     pageIndex = mutableHomesEntry.value?.pageIndex ?: NonNegativeInt.zero,
                 )
             )
-            .appendToCacheIfAvailable()
 
-    private fun Flow<HomesResult>.appendToCacheIfAvailable(): Flow<HomesResult> =
-        onEach { homesResult ->
-            if (homesResult is HomesResult.Success && homesResult.homesEntry != null) {
-                val currentHomes = mutableHomesEntry.value?.homes ?: UniqueList.emptyUniqueList()
-                val newHomesEntry = homesResult.homesEntry
-                mutableHomesEntry.emit(
-                    HomesEntry(
-                        homes = currentHomes + newHomesEntry.homes,
-                        pageIndex = newHomesEntry.pageIndex,
-                        canRequestMore = newHomesEntry.canRequestMore,
-                    )
+        if (homesResult is HomesResult.Success && homesResult.homesEntry != null) {
+            val currentHomes = mutableHomesEntry.value?.homes ?: UniqueList.emptyUniqueList()
+            val newHomesEntry = homesResult.homesEntry
+            mutableHomesEntry.emit(
+                HomesEntry(
+                    homes = currentHomes + newHomesEntry.homes,
+                    pageIndex = newHomesEntry.pageIndex,
+                    canRequestMore = newHomesEntry.canRequestMore,
                 )
-            }
+            )
         }
+
+        return homesResult
+    }
 }

@@ -4,10 +4,7 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
+import kotlinx.coroutines.withContext
 import theoneclick.client.shared.network.dataSources.TokenDataSource
 import theoneclick.client.shared.network.models.LogoutResult
 import theoneclick.client.shared.network.models.RequestLoginResult
@@ -26,29 +23,28 @@ class AndroidRemoteAuthenticationDataSource(
     private val appLogger: AppLogger,
 ) : AuthenticationDataSource {
 
-    override fun isUserLogged(): Flow<UserLoggedResult> =
-        flow {
-            val token = tokenDataSource.token()
-            if (token == null) {
-                emit(UserLoggedResult.NotLogged)
-                return@flow
-            }
-
-            val response = httpClient.get(ClientEndpoint.IS_USER_LOGGED.route)
-            when (response.status) {
-                HttpStatusCode.OK -> {
-                    val isUserLoggedResponse: UserLoggedResponse = response.body()
-                    emit(isUserLoggedResponse.toUserLoggedResult())
+    override suspend fun isUserLogged(): UserLoggedResult =
+        withContext(dispatchersProvider.io()) {
+            try {
+                val token = tokenDataSource.token()
+                if (token == null) {
+                    return@withContext UserLoggedResult.NotLogged
                 }
 
-                else -> emit(UserLoggedResult.UnknownError)
+                val response = httpClient.get(ClientEndpoint.IS_USER_LOGGED.route)
+                when (response.status) {
+                    HttpStatusCode.OK -> {
+                        val isUserLoggedResponse: UserLoggedResponse = response.body()
+                        isUserLoggedResponse.toUserLoggedResult()
+                    }
+
+                    else -> UserLoggedResult.UnknownError
+                }
+            } catch (e: Exception) {
+                appLogger.e("Exception catched '${e.stackTraceToString()}' while checking if user is logged")
+                UserLoggedResult.UnknownError
             }
         }
-            .catch { exception ->
-                appLogger.e("Exception catched '${exception.stackTraceToString()}' while checking if user is logged")
-                emit(UserLoggedResult.UnknownError)
-            }
-            .flowOn(dispatchersProvider.io())
 
     private fun UserLoggedResponse.toUserLoggedResult(): UserLoggedResult =
         when (this) {
@@ -56,44 +52,44 @@ class AndroidRemoteAuthenticationDataSource(
             is UserLoggedResponse.NotLogged -> UserLoggedResult.NotLogged
         }
 
-    override fun login(request: RequestLoginRequest): Flow<RequestLoginResult> =
-        flow {
-            val response = httpClient.post(ClientEndpoint.REQUEST_LOGIN.route) {
-                setBody(request)
-            }
-
-            when (response.status) {
-                HttpStatusCode.OK -> {
-                    val requestLoginResponse: RequestLoginResponse = response.body()
-                    tokenDataSource.set(requestLoginResponse.token.value)
-                    emit(RequestLoginResult.ValidLogin)
+    override suspend fun login(request: RequestLoginRequest): RequestLoginResult =
+        withContext(dispatchersProvider.io()) {
+            try {
+                val response = httpClient.post(ClientEndpoint.REQUEST_LOGIN.route) {
+                    setBody(request)
                 }
 
-                else -> emit(RequestLoginResult.Error)
-            }
-        }
-            .catch { exception ->
+                when (response.status) {
+                    HttpStatusCode.OK -> {
+                        val requestLoginResponse: RequestLoginResponse = response.body()
+                        tokenDataSource.set(requestLoginResponse.token.value)
+                        RequestLoginResult.ValidLogin
+                    }
+
+                    else -> RequestLoginResult.Error
+                }
+            } catch (e: Exception) {
                 appLogger.e(
-                    "Exception catched '${exception.stackTraceToString()}' " +
-                        "while requesting logging user '${request.username.value}'"
+                    "Exception catched '${e.stackTraceToString()}' " +
+                            "while requesting logging user '${request.username.value}'"
                 )
-                emit(RequestLoginResult.Error)
-            }
-            .flowOn(dispatchersProvider.io())
-
-    override fun logout(): Flow<LogoutResult> =
-        flow {
-            val response = httpClient.get(ClientEndpoint.LOGOUT.route)
-
-            when (response.status) {
-                HttpStatusCode.OK -> emit(LogoutResult.Success)
-                else -> emit(LogoutResult.Error)
+                RequestLoginResult.Error
             }
         }
-            .catch { exception ->
-                appLogger.e("Exception catched '${exception.stackTraceToString()}' while logging out")
 
-                emit(LogoutResult.Error)
+    override suspend fun logout(): LogoutResult =
+        withContext(dispatchersProvider.io()) {
+            try {
+                val response = httpClient.get(ClientEndpoint.LOGOUT.route)
+
+                when (response.status) {
+                    HttpStatusCode.OK -> LogoutResult.Success
+                    else -> LogoutResult.Error
+                }
+            } catch (e: Exception) {
+                appLogger.e("Exception catched '${e.stackTraceToString()}' while logging out")
+
+                LogoutResult.Error
             }
-            .flowOn(dispatchersProvider.io())
+        }
 }

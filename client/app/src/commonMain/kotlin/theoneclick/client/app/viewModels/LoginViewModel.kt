@@ -63,30 +63,27 @@ class LoginViewModel(
         requestLoginJob?.cancel()
 
         requestLoginJob = viewModelScope.launch {
-            authenticationDataSource
+            loginViewModelState.value = loginViewModelState.value.copy(isLoading = true)
+
+            val requestLoginResult = authenticationDataSource
                 .login(
                     request = RequestLoginRequest(
                         username = requireNotNull(loginViewModelState.value.username?.toUsername()),
                         password = requireNotNull(loginViewModelState.value.password?.toPassword()),
                     )
                 )
-                .onStart {
-                    loginViewModelState.value = loginViewModelState.value.copy(isLoading = true)
-                }
-                .onCompletion {
-                    loginViewModelState.value = loginViewModelState.value.copy(isLoading = false)
-                }
-                .collect { result ->
-                    when (result) {
-                        is RequestLoginResult.ValidLogin -> navigateToHome()
 
-                        is RequestLoginResult.Error -> {
-                            notificationsController.showErrorNotification(
-                                getString(Res.string.loginScreen_snackbar_unknownError)
-                            )
-                        }
-                    }
+            when (requestLoginResult) {
+                is RequestLoginResult.ValidLogin -> navigateToHome()
+
+                is RequestLoginResult.Error -> {
+                    notificationsController.showErrorNotification(
+                        getString(Res.string.loginScreen_snackbar_unknownError)
+                    )
                 }
+            }
+
+            loginViewModelState.value = loginViewModelState.value.copy(isLoading = false)
         }
     }
 

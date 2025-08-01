@@ -57,20 +57,15 @@ internal class HomesListViewModel(
         requestHomesJob?.cancel()
 
         requestHomesJob = viewModelScope.launch {
-            homesRepository
-                .refreshHomes()
-                .onStart {
-                    homesListViewModelState.value = homesListViewModelState.value.copy(isFullPageLoading = true)
-                }
-                .onCompletion {
-                    homesListViewModelState.value = homesListViewModelState.value.copy(isFullPageLoading = false)
-                }
-                .collect { homesResult ->
-                    when (homesResult) {
-                        is HomesResult.Success -> Unit // Observed at the start
-                        is HomesResult.Error -> handleUnknownError()
-                    }
-                }
+            homesListViewModelState.value = homesListViewModelState.value.copy(isFullPageLoading = true)
+
+            val homesResult = homesRepository.refreshHomes()
+            when (homesResult) {
+                is HomesResult.Success -> Unit // Observed at the start
+                is HomesResult.Error -> handleUnknownError()
+            }
+
+            homesListViewModelState.value = homesListViewModelState.value.copy(isFullPageLoading = false)
         }
     }
 
@@ -80,20 +75,15 @@ internal class HomesListViewModel(
         requestHomesJob?.cancel()
 
         requestHomesJob = viewModelScope.launch {
-            homesRepository
-                .requestMoreHomes()
-                .onStart {
-                    homesListViewModelState.value = homesListViewModelState.value.copy(isPaginationLoading = true)
-                }
-                .onCompletion {
-                    homesListViewModelState.value = homesListViewModelState.value.copy(isPaginationLoading = false)
-                }
-                .collect { homesResult ->
-                    when (homesResult) {
-                        is HomesResult.Success -> Unit // Observed at the start
-                        is HomesResult.Error -> handleUnknownError()
-                    }
-                }
+            homesListViewModelState.value = homesListViewModelState.value.copy(isPaginationLoading = true)
+
+            val homesResult = homesRepository.requestMoreHomes()
+            when (homesResult) {
+                is HomesResult.Success -> Unit // Observed at the start
+                is HomesResult.Error -> handleUnknownError()
+            }
+
+            homesListViewModelState.value = homesListViewModelState.value.copy(isPaginationLoading = false)
         }
     }
 
