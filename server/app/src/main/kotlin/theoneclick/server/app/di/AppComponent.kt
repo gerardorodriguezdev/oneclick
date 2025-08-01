@@ -10,7 +10,6 @@ import theoneclick.server.shared.repositories.HomesRepository
 import theoneclick.server.shared.repositories.UsersRepository
 import theoneclick.server.shared.security.DefaultUuidProvider
 import theoneclick.server.shared.security.Encryptor
-import theoneclick.server.shared.security.IvGenerator
 import theoneclick.server.shared.security.UuidProvider
 import theoneclick.shared.timeProvider.TimeProvider
 
@@ -19,8 +18,6 @@ import theoneclick.shared.timeProvider.TimeProvider
 abstract class AppComponent(
     @get:Provides
     val environment: Environment,
-    @get:Provides
-    val ivGenerator: IvGenerator,
     @get:Provides
     val encryptor: Encryptor,
     @get:Provides

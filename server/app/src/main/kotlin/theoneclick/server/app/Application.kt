@@ -19,7 +19,6 @@ import theoneclick.server.shared.repositories.DefaultUsersRepository
 import theoneclick.server.shared.repositories.HomesRepository
 import theoneclick.server.shared.repositories.UsersRepository
 import theoneclick.server.shared.security.DefaultEncryptor
-import theoneclick.server.shared.security.DefaultIvGenerator
 import theoneclick.server.shared.security.DefaultSecureRandomProvider
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.dispatchers.platform.dispatchersProvider
@@ -55,7 +54,6 @@ fun main() {
         secureRandomProvider = jvmSecureRandomProvider,
         timeProvider = timeProvider,
     )
-    val ivGenerator = DefaultIvGenerator(jvmSecureRandomProvider)
     val logger = KtorSimpleLogger("theoneclick.defaultlogger")
     val dispatchersProvider = dispatchersProvider()
     val repositories = if (environment.useMemoryDatabases) {
@@ -66,7 +64,6 @@ fun main() {
 
     val appComponent = AppComponent::class.create(
         environment = environment,
-        ivGenerator = ivGenerator,
         encryptor = encryptor,
         timeProvider = timeProvider,
         logger = logger,
