@@ -14,7 +14,10 @@ import theoneclick.server.app.entrypoint.server
 import theoneclick.server.shared.dataSources.*
 import theoneclick.server.shared.di.Environment
 import theoneclick.server.shared.postgresql.SharedDatabase
-import theoneclick.server.shared.repositories.*
+import theoneclick.server.shared.repositories.DefaultHomesRepository
+import theoneclick.server.shared.repositories.DefaultUsersRepository
+import theoneclick.server.shared.repositories.HomesRepository
+import theoneclick.server.shared.repositories.UsersRepository
 import theoneclick.server.shared.security.DefaultEncryptor
 import theoneclick.server.shared.security.DefaultIvGenerator
 import theoneclick.server.shared.security.DefaultSecureRandomProvider
@@ -24,8 +27,11 @@ import theoneclick.shared.timeProvider.SystemTimeProvider
 
 fun main() {
     val environment = Environment(
-        secretSignKey = System.getenv("SECRET_SIGN_KEY"),
-        secretEncryptionKey = System.getenv("SECRET_ENCRYPTION_KEY"),
+        jwtSignKey = System.getenv("JWT_SECRET_SIGN_KEY"),
+        jwtEncryptionKey = System.getenv("JWT_SECRET_ENCRYPTION_KEY"),
+        jwtRealm = System.getenv("JWT_REALM"),
+        jwtAudience = System.getenv("JWT_AUDIENCE"),
+        jwtIssuer = System.getenv("JWT_ISSUER"),
         protocol = System.getenv("PROTOCOL"),
         host = System.getenv("HOST"),
         jdbcUrl = System.getenv("JDBC_URL"),
@@ -42,7 +48,10 @@ fun main() {
     val jvmSecureRandomProvider = DefaultSecureRandomProvider()
     val timeProvider = SystemTimeProvider()
     val encryptor = DefaultEncryptor(
-        secretEncryptionKey = environment.secretEncryptionKey,
+        jwtIssuer = environment.jwtIssuer,
+        jwtAudience = environment.jwtAudience,
+        secretSignKey = environment.jwtSignKey,
+        secretEncryptionKey = environment.jwtEncryptionKey,
         secureRandomProvider = jvmSecureRandomProvider,
         timeProvider = timeProvider,
     )
@@ -62,7 +71,6 @@ fun main() {
         timeProvider = timeProvider,
         logger = logger,
         usersRepository = repositories.usersRepository,
-        sessionsRepository = repositories.sessionsRepository,
         homesRepository = repositories.homesRepository,
         onShutdown = { application ->
             repositories.onShutdown(application)
@@ -78,12 +86,6 @@ private fun memoryRepositories(): Repositories {
         memoryUsersDataSource = memoryUsersDataSource,
     )
 
-    val memorySessionsDataSource = MemorySessionsDataSource()
-    val sessionsRepository = DefaultSessionsRepository(
-        memorySessionsDataSource = memorySessionsDataSource,
-        diskSessionsDataSource = memorySessionsDataSource,
-    )
-
     val memoryHomesDataSource = MemoryHomesDataSource()
     val homesRepository = DefaultHomesRepository(
         memoryHomesDataSource = memoryHomesDataSource,
@@ -92,7 +94,6 @@ private fun memoryRepositories(): Repositories {
 
     return Repositories(
         usersRepository = usersRepository,
-        sessionsRepository = sessionsRepository,
         homesRepository = homesRepository,
         onShutdown = {},
     )
@@ -128,17 +129,6 @@ private fun databaseRepositories(
         memoryUsersDataSource = memoryUsersDataSource,
     )
 
-    val memorySessionsDataSource = RedisSessionsDataSource(
-        syncCommands = redisConnection.coroutines(),
-        dispatchersProvider = dispatchersProvider,
-        logger = logger,
-    )
-    val diskSessionsDataSource = PostgresSessionsDataSource(sharedDatabase, dispatchersProvider, logger)
-    val sessionsRepository = DefaultSessionsRepository(
-        memorySessionsDataSource = memorySessionsDataSource,
-        diskSessionsDataSource = diskSessionsDataSource,
-    )
-
     val memoryHomesDataSource = RedisHomesDataSource(
         syncCommands = redisConnection.coroutines(),
         dispatchersProvider = dispatchersProvider,
@@ -152,7 +142,6 @@ private fun databaseRepositories(
 
     return Repositories(
         usersRepository = usersRepository,
-        sessionsRepository = sessionsRepository,
         homesRepository = homesRepository,
         onShutdown = {
             driver.close()
@@ -164,7 +153,6 @@ private fun databaseRepositories(
 
 private class Repositories(
     val usersRepository: UsersRepository,
-    val sessionsRepository: SessionsRepository,
     val homesRepository: HomesRepository,
     val onShutdown: (application: Application) -> Unit,
 )

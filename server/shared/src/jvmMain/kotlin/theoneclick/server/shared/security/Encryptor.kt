@@ -2,10 +2,10 @@ package theoneclick.server.shared.security
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import com.auth0.jwt.JWT
+import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.util.hex
 import kotlinx.serialization.json.Json
-import theoneclick.server.shared.di.Environment
 import theoneclick.server.shared.models.HashedPassword
 import theoneclick.server.shared.models.HashedPassword.Companion.create
 import theoneclick.server.shared.models.JwtPayload
@@ -24,12 +24,16 @@ interface Encryptor {
     fun hashPassword(password: String): HashedPassword
     fun verifyPassword(password: String, hashedPassword: HashedPassword): Boolean
     fun jwt(jwtPayload: JwtPayload): Jwt
+    fun jwtPayload(jwtPayloadString: String): Result<JwtPayload>
+    fun jwtVerifier(): JWTVerifier
 }
 
 class DefaultEncryptor(
+    private val jwtAudience: String,
+    private val jwtIssuer: String,
+    private val secretSignKey: String,
     private val secretEncryptionKey: String,
     private val secureRandomProvider: SecureRandomProvider,
-    private val environment: Environment,
     private val timeProvider: TimeProvider,
 ) : Encryptor {
 
@@ -90,16 +94,30 @@ class DefaultEncryptor(
         val encodedJwtPayloadString = Base64.getEncoder().encodeToString(encryptedJwtPayloadString)
         return Jwt.unsafe(
             JWT.create()
-                .withAudience(environment.jwtAudience)
-                .withIssuer(environment.jwtIssuer)
+                .withAudience(jwtAudience)
+                .withIssuer(jwtIssuer)
                 .withExpiresAt(jwtExpiration)
                 .withClaim(
                     AuthenticationConstants.JWT_PAYLOAD_CLAIM_NAME,
                     encodedJwtPayloadString,
                 )
-                .sign(Algorithm.HMAC256(environment.jwtSignKey))
+                .sign(Algorithm.HMAC256(secretSignKey))
         )
     }
+
+    override fun jwtPayload(jwtPayloadString: String): Result<JwtPayload> =
+        runCatching {
+            val decodedJwtPayloadString = Base64.getDecoder().decode(jwtPayloadString)
+            val decryptedJwtPayloadString = decrypt(decodedJwtPayloadString).getOrThrow()
+            Json.decodeFromString<JwtPayload>(decryptedJwtPayloadString)
+        }
+
+    override fun jwtVerifier(): JWTVerifier = JWT
+        .require(Algorithm.HMAC256(secretSignKey))
+        .withAudience(jwtAudience)
+        .withIssuer(jwtIssuer)
+        .withClaimPresence(AuthenticationConstants.JWT_PAYLOAD_CLAIM_NAME)
+        .build()
 
     private fun cipher(): Cipher = Cipher.getInstance(ALGORITHM)
 

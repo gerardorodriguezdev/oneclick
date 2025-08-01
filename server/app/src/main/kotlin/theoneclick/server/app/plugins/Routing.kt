@@ -18,7 +18,7 @@ fun Application.configureRouting(
 ) {
     routing {
         healthzEndpoint()
-        requestLoginEndpoint(usersRepository, encryptor, uuidProvider, environment)
+        requestLoginEndpoint(usersRepository, encryptor, uuidProvider)
         isUserLoggedEndpoint()
         logoutEndpoint()
         homesListEndpoint(homesRepository)
