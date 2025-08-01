@@ -2,13 +2,8 @@ package theoneclick.server.shared.security
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import io.ktor.util.hex
-import theoneclick.server.shared.models.EncryptedToken
 import theoneclick.server.shared.models.HashedPassword
 import theoneclick.server.shared.models.HashedPassword.Companion.create
-import theoneclick.shared.contracts.core.models.NonNegativeLong
-import theoneclick.shared.contracts.core.models.Token
-import theoneclick.shared.timeProvider.TimeProvider
-import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
@@ -19,13 +14,11 @@ interface Encryptor {
     fun decrypt(input: ByteArray): Result<String>
     fun hashPassword(password: String): HashedPassword
     fun verifyPassword(password: String, hashedPassword: HashedPassword): Boolean
-    fun encryptedToken(): EncryptedToken
 }
 
 class DefaultEncryptor(
     private val secretEncryptionKey: String,
     private val secureRandomProvider: SecureRandomProvider,
-    private val timeProvider: TimeProvider,
 ) : Encryptor {
 
     private val secretEncryptionKeySpec by lazy {
@@ -77,26 +70,10 @@ class DefaultEncryptor(
             hashedPassword.value.toCharArray()
         ).verified
 
-    override fun encryptedToken(): EncryptedToken {
-        val secureRandom = secureRandomProvider.secureRandom()
-
-        val bytes = ByteArray(TOKEN_SIZE)
-        secureRandom.nextBytes(bytes)
-
-        val plainToken = bytes.decodeToString()
-        val encryptedToken = encrypt(plainToken).getOrThrow()
-        val encryptedTokenValue = Base64.getEncoder().encodeToString(encryptedToken)
-        return EncryptedToken(
-            token = Token.unsafe(encryptedTokenValue),
-            creationTimeInMillis = NonNegativeLong.unsafe(timeProvider.currentTimeMillis()),
-        )
-    }
-
     private fun cipher(): Cipher = Cipher.getInstance(ALGORITHM)
 
     private companion object {
         const val ALGORITHM = "AES/CBC/PKCS5Padding"
-        const val TOKEN_SIZE = 32
         const val PASSWORD_VERIFICATION_COST = 12
     }
 }

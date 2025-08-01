@@ -7,7 +7,7 @@ import io.ktor.server.sessions.*
 import theoneclick.server.shared.models.User
 import theoneclick.server.shared.models.endpoints.ServerEndpoint
 import theoneclick.server.shared.repositories.UsersRepository
-import theoneclick.shared.contracts.core.models.Token
+import theoneclick.shared.contracts.core.models.Jwt
 
 fun Routing.qaapi(usersRepository: UsersRepository) {
     post(ServerEndpoint.ADD_USER_DATA.route) { user: User ->
@@ -15,8 +15,8 @@ fun Routing.qaapi(usersRepository: UsersRepository) {
         call.respond(HttpStatusCode.OK)
     }
 
-    post(ServerEndpoint.ADD_USER_SESSION.route) { token: Token ->
-        call.sessions.set(token)
+    post(ServerEndpoint.ADD_USER_SESSION.route) { jwt: Jwt ->
+        call.sessions.set(jwt)
         call.respond(HttpStatusCode.OK)
     }
 }

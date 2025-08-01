@@ -1,7 +1,7 @@
 package theoneclick.shared.contracts.core.models.responses
 
 import kotlinx.serialization.Serializable
-import theoneclick.shared.contracts.core.models.Token
+import theoneclick.shared.contracts.core.models.Jwt
 
 @Serializable
-data class RequestLoginResponse(val token: Token)
+data class RequestLoginResponse(val jwt: Jwt)

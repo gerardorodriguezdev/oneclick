@@ -1,8 +1,8 @@
 package theoneclick.server.shared.plugins.authentication
 
 object AuthenticationConstants {
-    const val SESSION_AUTHENTICATION = "session_authentication"
-    const val TOKEN_AUTHENTICATION = "token_authentication"
-    const val USER_SESSION = "user_session"
-    const val COOKIE_SESSION_DURATION_IN_SECONDS = 60L
+    const val JWT_AUTHENTICATION = "jwt_authentication"
+    const val JWT_PAYLOAD_CLAIM_NAME = "payload"
+    const val JWT_SESSION_NAME = "user_session"
+    const val JWT_EXPIRATION_IN_MILLIS = 3_000L
 }

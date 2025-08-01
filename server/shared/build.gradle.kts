@@ -20,6 +20,7 @@ kotlin {
                 implementation(ktorLibs.server.rateLimit)
                 implementation(ktorLibs.server.callId)
                 implementation(ktorLibs.server.compression)
+                implementation(ktorLibs.server.auth.jwt)
                 implementation(libs.kmp.kotlin.inject)
                 implementation(libs.kmp.sqldelight)
                 implementation(libs.kmp.sqldelight.coroutines)

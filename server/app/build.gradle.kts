@@ -22,6 +22,7 @@ dependencies {
     implementation(ktorLibs.server.netty)
     implementation(ktorLibs.serialization.kotlinx.json)
     implementation(ktorLibs.server.auth)
+    implementation(ktorLibs.server.auth.jwt)
     implementation(libs.kmp.kotlin.inject)
     implementation(libs.kmp.sqldelight)
     implementation(libs.jvm.logback.classic)

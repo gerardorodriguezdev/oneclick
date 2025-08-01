@@ -20,15 +20,13 @@ fun server(appComponent: AppComponent): EmbeddedServer<NettyApplicationEngine, N
 private fun Application.configureModules(appComponent: AppComponent) {
     configureCallLogging(appComponent.logger, appComponent.timeProvider)
     configureSerialization()
-    configureAuthentication(appComponent.authenticationDataSource)
-    configureSessions(appComponent.environment, appComponent.ivGenerator)
+    configureAuthentication(appComponent.environment)
     configureRouting(
         environment = appComponent.environment,
         usersRepository = appComponent.usersRepository,
         encryptor = appComponent.encryptor,
         uuidProvider = appComponent.uuidProvider,
         homesRepository = appComponent.homesRepository,
-        sessionsRepository = appComponent.sessionsRepository,
     )
     configureStatusPages(appComponent.logger)
     configureRequestValidation()

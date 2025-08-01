@@ -2,8 +2,8 @@ package theoneclick.server.shared.extensions
 
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*
+import theoneclick.server.shared.models.JwtPayload
 import theoneclick.server.shared.plugins.authentication.AuthenticationConstants
-import theoneclick.shared.contracts.core.models.Token
 
 fun Routing.defaultAuthentication(
     optional: Boolean = false,
@@ -11,11 +11,11 @@ fun Routing.defaultAuthentication(
 ): Route =
     authenticate(
         configurations = arrayOf(
-            AuthenticationConstants.SESSION_AUTHENTICATION,
-            AuthenticationConstants.TOKEN_AUTHENTICATION,
+            AuthenticationConstants.JWT_AUTHENTICATION,
         ),
         optional = optional,
         build = block,
     )
 
-fun RoutingContext.requireToken(): Token = requireNotNull(call.principal<Token>())
+fun RoutingContext.requireJwtPayload(): JwtPayload =
+    requireNotNull(call.principal<JwtPayload>())

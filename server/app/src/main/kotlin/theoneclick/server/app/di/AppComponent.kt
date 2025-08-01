@@ -5,11 +5,8 @@ import io.ktor.util.logging.*
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.Provides
 import me.tatarka.inject.annotations.Scope
-import theoneclick.server.shared.dataSources.AuthenticationDataSource
-import theoneclick.server.shared.dataSources.DefaultAuthenticationDataSource
 import theoneclick.server.shared.di.Environment
 import theoneclick.server.shared.repositories.HomesRepository
-import theoneclick.server.shared.repositories.SessionsRepository
 import theoneclick.server.shared.repositories.UsersRepository
 import theoneclick.server.shared.security.DefaultUuidProvider
 import theoneclick.server.shared.security.Encryptor
@@ -33,18 +30,11 @@ abstract class AppComponent(
     @get:Provides
     val usersRepository: UsersRepository,
     @get:Provides
-    val sessionsRepository: SessionsRepository,
-    @get:Provides
     val homesRepository: HomesRepository,
     @get:Provides
     val uuidProvider: UuidProvider = DefaultUuidProvider(),
     val onShutdown: (application: Application) -> Unit,
-) {
-    abstract val authenticationDataSource: AuthenticationDataSource
-
-    protected val DefaultAuthenticationDataSource.bind: AuthenticationDataSource
-        @Provides get() = this
-}
+)
 
 @Scope
 @Target(AnnotationTarget.CLASS, AnnotationTarget.FUNCTION, AnnotationTarget.PROPERTY_GETTER)

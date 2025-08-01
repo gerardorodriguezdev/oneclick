@@ -1,8 +1,11 @@
 package theoneclick.server.shared.di
 
 data class Environment(
-    val secretSignKey: String,
-    val secretEncryptionKey: String,
+    val jwtSignKey: String,
+    val jwtEncryptionKey: String,
+    val jwtRealm: String,
+    val jwtAudience: String,
+    val jwtIssuer: String,
     val protocol: String,
     val host: String,
     val jdbcUrl: String,

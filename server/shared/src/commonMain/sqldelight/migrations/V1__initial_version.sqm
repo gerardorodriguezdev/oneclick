@@ -6,15 +6,6 @@ CREATE TABLE IF NOT EXISTS users (
 
 CREATE INDEX IF NOT EXISTS users_username_idx ON users(username);
 
-CREATE TABLE IF NOT EXISTS sessions (
-    user_id CHAR(36) REFERENCES users(user_id) ON DELETE CASCADE,
-    session_token VARCHAR(60) NOT NULL,
-    creation_time BIGINT NOT NULL
-);
-
-CREATE INDEX IF NOT EXISTS sessions_user_id_idx ON sessions(user_id);
-CREATE INDEX IF NOT EXISTS sessions_session_token_idx ON sessions(session_token);
-
 CREATE TABLE IF NOT EXISTS homes (
     user_id CHAR(36) REFERENCES users(user_id) ON DELETE CASCADE,
     home_id CHAR(36) PRIMARY KEY,
