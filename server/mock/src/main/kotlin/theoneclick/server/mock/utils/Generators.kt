@@ -22,6 +22,7 @@ private fun mockHome(
     rooms: UniqueList<Room> = mockRooms(name.value, 5),
 ): Home =
     Home(
+        id = mockUuid(),
         name = name,
         rooms = rooms,
     )
@@ -44,6 +45,7 @@ private fun mockRoom(
     devices: UniqueList<Device> = mockDevices(name.value, 5),
 ): Room =
     Room(
+        id = mockUuid(),
         name = name,
         devices = devices,
     )
@@ -63,7 +65,7 @@ private fun mockDevices(parentName: String, number: Int): UniqueList<Device> =
 
 private fun mockDevice(
     name: DeviceName = DeviceName.unsafe("DeviceName"),
-    id: theoneclick.shared.contracts.core.models.Uuid = mockUuid()
+    id: Uuid = mockUuid()
 ): Device =
     Device.WaterSensor.unsafe(
         id = id,
