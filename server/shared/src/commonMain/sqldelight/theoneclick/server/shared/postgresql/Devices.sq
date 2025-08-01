@@ -1,0 +1,2 @@
+deleteByDeviceId:
+DELETE FROM devices WHERE device_id = ?;

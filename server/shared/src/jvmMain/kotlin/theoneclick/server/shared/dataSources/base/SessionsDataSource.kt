@@ -1,5 +1,6 @@
 package theoneclick.server.shared.dataSources.base
 
+import kotlinx.serialization.Serializable
 import theoneclick.server.shared.models.EncryptedToken
 import theoneclick.shared.contracts.core.models.Token
 import theoneclick.shared.contracts.core.models.Uuid
@@ -14,6 +15,7 @@ interface SessionsDataSource {
         data class ByToken(val token: Token) : Findable
     }
 
+    @Serializable
     data class SessionEntry(
         val userId: Uuid,
         val encryptedToken: EncryptedToken,

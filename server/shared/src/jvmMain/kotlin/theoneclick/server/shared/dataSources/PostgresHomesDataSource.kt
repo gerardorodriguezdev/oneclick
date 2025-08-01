@@ -5,13 +5,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import migrations.Devices
 import migrations.Homes
 import migrations.Rooms
 import theoneclick.server.shared.dataSources.base.HomesDataSource
 import theoneclick.server.shared.models.HomesEntry
-import theoneclick.server.shared.postgresql.*
+import theoneclick.server.shared.postgresql.HomesByUserId
+import theoneclick.server.shared.postgresql.SharedDatabase
 import theoneclick.shared.contracts.core.models.*
 import theoneclick.shared.contracts.core.models.NonNegativeInt.Companion.toNonNegativeInt
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
@@ -54,6 +56,7 @@ class PostgresHomesDataSource(
         val homes = hashSetOf<Homes>()
         val rooms = hashSetOf<Rooms>()
         val devices = hashSetOf<Devices>()
+
         forEach { entry ->
             homes.add(
                 Homes(
@@ -118,8 +121,16 @@ class PostgresHomesDataSource(
     private suspend fun CoroutineScope.toDevices(devices: List<Devices>): UniqueList<Device> =
         UniqueList.unsafe(
             devices.map { device ->
-                async { Json.decodeFromString<Device>(device.device) }
-            }.awaitAll()
+                async {
+                    try {
+                        Json.decodeFromString<Device>(device.device)
+                    } catch (e: SerializationException) {
+                        logger.error("Error deserializing device", e)
+                        database.devicesQueries.deleteByDeviceId(device.device_id)
+                        null
+                    }
+                }
+            }.awaitAll().filterNotNull()
         )
 
     private fun totalHomes(): NonNegativeInt =
