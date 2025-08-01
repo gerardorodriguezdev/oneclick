@@ -62,7 +62,7 @@ class AndroidRemoteAuthenticationDataSource(
                 when (response.status) {
                     HttpStatusCode.OK -> {
                         val requestLoginResponse: RequestLoginResponse = response.body()
-                        tokenDataSource.set(requestLoginResponse.token.value)
+                        tokenDataSource.set(requestLoginResponse.jwt.value)
                         RequestLoginResult.ValidLogin
                     }
 
