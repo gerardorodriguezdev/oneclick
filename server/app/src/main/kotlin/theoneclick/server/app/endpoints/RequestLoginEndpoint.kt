@@ -6,12 +6,12 @@ import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import theoneclick.server.shared.dataSources.base.UsersDataSource
 import theoneclick.server.shared.extensions.agent
+import theoneclick.server.shared.models.JwtPayload
 import theoneclick.server.shared.models.User
-import theoneclick.server.shared.repositories.SessionsRepository
 import theoneclick.server.shared.repositories.UsersRepository
 import theoneclick.server.shared.security.Encryptor
 import theoneclick.server.shared.security.UuidProvider
-import theoneclick.shared.contracts.core.models.Token
+import theoneclick.shared.contracts.core.models.Jwt
 import theoneclick.shared.contracts.core.models.Username
 import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.contracts.core.models.agents.Agent
@@ -21,7 +21,6 @@ import theoneclick.shared.contracts.core.models.responses.RequestLoginResponse
 
 fun Routing.requestLoginEndpoint(
     usersRepository: UsersRepository,
-    sessionsRepository: SessionsRepository,
     encryptor: Encryptor,
     uuidProvider: UuidProvider,
 ) {
@@ -37,7 +36,6 @@ fun Routing.requestLoginEndpoint(
                 encryptor = encryptor,
                 uuidProvider = uuidProvider,
                 usersRepository = usersRepository,
-                sessionsRepository = sessionsRepository,
             )
 
             !encryptor.verifyPassword(
@@ -45,10 +43,9 @@ fun Routing.requestLoginEndpoint(
                 hashedPassword = user.hashedPassword
             ) -> handleError()
 
-            else -> saveSession(
+            else -> createJwt(
                 userId = user.userId,
                 encryptor = encryptor,
-                sessionsRepository = sessionsRepository,
             )
         }
     }
@@ -60,7 +57,6 @@ private suspend fun RoutingContext.registerUser(
     encryptor: Encryptor,
     uuidProvider: UuidProvider,
     usersRepository: UsersRepository,
-    sessionsRepository: SessionsRepository,
 ) {
     val newUser = User(
         userId = uuidProvider.uuid(),
@@ -69,36 +65,31 @@ private suspend fun RoutingContext.registerUser(
     )
     usersRepository.saveUser(newUser)
 
-    saveSession(
+    createJwt(
         userId = newUser.userId,
         encryptor = encryptor,
-        sessionsRepository = sessionsRepository,
     )
 }
 
-private suspend fun RoutingContext.saveSession(
+private suspend fun RoutingContext.createJwt(
     userId: Uuid,
     encryptor: Encryptor,
-    sessionsRepository: SessionsRepository,
 ) {
-    val sessionToken = encryptor.encryptedToken()
-    sessionsRepository.saveSession(userId, sessionToken)
-
-    respondToken(sessionToken.token)
+    val jwtPayload = JwtPayload(userId)
+    val jwt = encryptor.jwt(jwtPayload)
+    respondJwt(jwt)
 }
 
-private suspend fun RoutingContext.respondToken(token: Token) {
+private suspend fun RoutingContext.respondJwt(jwt: Jwt) {
     when (call.request.agent) {
         Agent.MOBILE -> {
             call.respond(
-                RequestLoginResponse(
-                    token = token
-                )
+                RequestLoginResponse(jwt = jwt)
             )
         }
 
         Agent.BROWSER -> {
-            call.sessions.set(token)
+            call.sessions.set(jwt)
             call.respond(HttpStatusCode.OK)
         }
     }

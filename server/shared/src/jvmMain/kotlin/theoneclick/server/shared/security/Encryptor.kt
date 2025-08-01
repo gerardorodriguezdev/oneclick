@@ -1,9 +1,18 @@
 package theoneclick.server.shared.security
 
 import at.favre.lib.crypto.bcrypt.BCrypt
+import com.auth0.jwt.JWT
+import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.util.hex
+import kotlinx.serialization.json.Json
+import theoneclick.server.shared.di.Environment
 import theoneclick.server.shared.models.HashedPassword
 import theoneclick.server.shared.models.HashedPassword.Companion.create
+import theoneclick.server.shared.models.JwtPayload
+import theoneclick.server.shared.plugins.authentication.AuthenticationConstants
+import theoneclick.shared.contracts.core.models.Jwt
+import theoneclick.shared.timeProvider.TimeProvider
+import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
@@ -14,11 +23,14 @@ interface Encryptor {
     fun decrypt(input: ByteArray): Result<String>
     fun hashPassword(password: String): HashedPassword
     fun verifyPassword(password: String, hashedPassword: HashedPassword): Boolean
+    fun jwt(jwtPayload: JwtPayload): Jwt
 }
 
 class DefaultEncryptor(
     private val secretEncryptionKey: String,
     private val secureRandomProvider: SecureRandomProvider,
+    private val environment: Environment,
+    private val timeProvider: TimeProvider,
 ) : Encryptor {
 
     private val secretEncryptionKeySpec by lazy {
@@ -69,6 +81,25 @@ class DefaultEncryptor(
             password.toCharArray(),
             hashedPassword.value.toCharArray()
         ).verified
+
+    override fun jwt(jwtPayload: JwtPayload): Jwt {
+        val currentTime = timeProvider.currentTimeMillis()
+        val jwtExpiration = Date(currentTime + AuthenticationConstants.JWT_EXPIRATION_IN_MILLIS)
+        val jwtPayloadString = Json.encodeToString(jwtPayload)
+        val encryptedJwtPayloadString = encrypt(jwtPayloadString).getOrThrow()
+        val encodedJwtPayloadString = Base64.getEncoder().encodeToString(encryptedJwtPayloadString)
+        return Jwt.unsafe(
+            JWT.create()
+                .withAudience(environment.jwtAudience)
+                .withIssuer(environment.jwtIssuer)
+                .withExpiresAt(jwtExpiration)
+                .withClaim(
+                    AuthenticationConstants.JWT_PAYLOAD_CLAIM_NAME,
+                    encodedJwtPayloadString,
+                )
+                .sign(Algorithm.HMAC256(environment.jwtSignKey))
+        )
+    }
 
     private fun cipher(): Cipher = Cipher.getInstance(ALGORITHM)
 
