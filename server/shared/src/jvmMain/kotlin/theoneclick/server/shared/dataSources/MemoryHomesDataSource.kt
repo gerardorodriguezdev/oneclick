@@ -4,8 +4,9 @@ import theoneclick.server.shared.dataSources.base.HomesDataSource
 import theoneclick.server.shared.models.HomesEntry
 import theoneclick.shared.contracts.core.models.*
 
-class MemoryHomesDataSource : HomesDataSource {
-    private val homesEntries = linkedMapOf<Uuid, HomesEntry>()
+class MemoryHomesDataSource(
+    private val homesEntries: LinkedHashMap<Uuid, HomesEntry> = linkedMapOf(),
+) : HomesDataSource {
 
     override suspend fun homesEntry(
         userId: Uuid,

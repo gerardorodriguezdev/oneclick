@@ -7,7 +7,6 @@ import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.util.hex
 import kotlinx.serialization.json.Json
 import theoneclick.server.shared.models.HashedPassword
-import theoneclick.server.shared.models.HashedPassword.Companion.create
 import theoneclick.server.shared.models.JwtPayload
 import theoneclick.server.shared.plugins.authentication.AuthenticationConstants
 import theoneclick.shared.contracts.core.models.Jwt
@@ -75,7 +74,7 @@ class DefaultEncryptor(
         }
 
     override fun hashPassword(password: String): HashedPassword =
-        create(
+        HashedPassword.unsafe(
             BCrypt.with(secureRandomProvider.secureRandom())
                 .hashToString(PASSWORD_VERIFICATION_COST, password.toCharArray())
         )

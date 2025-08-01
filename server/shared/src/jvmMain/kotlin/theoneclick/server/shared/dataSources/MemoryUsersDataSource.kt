@@ -5,8 +5,9 @@ import theoneclick.server.shared.models.User
 import theoneclick.shared.contracts.core.models.Uuid
 import java.util.concurrent.ConcurrentHashMap
 
-class MemoryUsersDataSource : UsersDataSource {
-    private val users = ConcurrentHashMap<Uuid, User>()
+class MemoryUsersDataSource(
+    private val users: ConcurrentHashMap<Uuid, User> = ConcurrentHashMap(),
+) : UsersDataSource {
 
     override suspend fun user(findable: UsersDataSource.Findable): User? =
         when (findable) {
