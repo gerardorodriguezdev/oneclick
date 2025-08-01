@@ -65,7 +65,7 @@ private suspend fun RoutingContext.handleSuccess(homesEntry: PaginationResult<Ho
             data = Data(
                 homes = homesEntry.value.homes,
                 pageIndex = homesEntry.pageIndex,
-                canRequestMore = homesEntry.pageIndex.value < homesEntry.totalPages.value,
+                canRequestMore = homesEntry.pageIndex < homesEntry.totalPages,
             )
         )
     )

@@ -13,7 +13,7 @@ class MemoryUsersDataSource : UsersDataSource {
             is UsersDataSource.Findable.ByUserId -> users[findable.userId]
 
             is UsersDataSource.Findable.ByUsername ->
-                users.values.firstOrNull { user -> user.username.value == findable.username.value }
+                users.values.firstOrNull { user -> user.username == findable.username }
         }
 
     override suspend fun saveUser(user: User): Boolean {

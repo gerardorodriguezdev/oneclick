@@ -31,9 +31,9 @@ class DefaultAuthenticationDataSource(
             sessionToken == null -> false
 
             timeProvider.currentTimeMillis() > sessionToken.creationTimeInMillis.value +
-                USER_SESSION_TOKEN_EXPIRATION_IN_MILLIS -> false
+                    USER_SESSION_TOKEN_EXPIRATION_IN_MILLIS -> false
 
-            sessionToken.token.value != token.value -> false
+            sessionToken.token != token -> false
             else -> true
         }
     }

@@ -13,7 +13,7 @@ class MemorySessionsDataSource : SessionsDataSource {
         when (findable) {
             is SessionsDataSource.Findable.ByUserId -> sessionEntries[findable.userId]
             is SessionsDataSource.Findable.ByToken -> sessionEntries.values.firstOrNull { session ->
-                session.encryptedToken.token.value == findable.token.value
+                session.encryptedToken.token == findable.token
             }
         }
 
@@ -31,7 +31,7 @@ class MemorySessionsDataSource : SessionsDataSource {
 
     override suspend fun deleteSession(token: Token): Boolean {
         val userId = sessionEntries.values.firstOrNull { sessionEntry ->
-            sessionEntry.encryptedToken.token.value == token.value
+            sessionEntry.encryptedToken.token == token
         }?.userId
 
         if (userId != null) {
