@@ -6,7 +6,7 @@ import theoneclick.shared.contracts.core.models.UniqueList
 import theoneclick.shared.contracts.core.models.Uuid
 
 @Serializable
-class HomesEntry(
+data class HomesEntry(
     val userId: Uuid,
     val homes: UniqueList<Home>,
 ) : UniqueList.KeyProvider {

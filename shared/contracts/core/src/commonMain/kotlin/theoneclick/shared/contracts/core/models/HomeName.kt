@@ -1,11 +1,12 @@
 package theoneclick.shared.contracts.core.models
 
+import dev.drewhamilton.poko.Poko
 import kotlinx.serialization.Serializable
 import kotlin.jvm.JvmInline
 
-@JvmInline
+@Poko
 @Serializable
-value class HomeName private constructor(val value: String) {
+class HomeName private constructor(val value: String) {
 
     init {
         require(isValid(value)) { ERROR_MESSAGE }

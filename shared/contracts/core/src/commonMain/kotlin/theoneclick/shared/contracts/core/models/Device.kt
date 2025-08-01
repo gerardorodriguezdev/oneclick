@@ -1,5 +1,6 @@
 package theoneclick.shared.contracts.core.models
 
+import dev.drewhamilton.poko.Poko
 import kotlinx.serialization.Serializable
 import theoneclick.shared.contracts.core.models.UniqueList.KeyProvider
 
@@ -11,6 +12,7 @@ sealed class Device : KeyProvider {
     override val key: String
         get() = id.value
 
+    @Poko
     @Serializable
     class WaterSensor private constructor(
         override val id: Uuid,

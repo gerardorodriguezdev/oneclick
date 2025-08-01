@@ -1,8 +1,10 @@
 package theoneclick.shared.contracts.core.models
 
+import dev.drewhamilton.poko.Poko
 import kotlinx.serialization.Serializable
 import theoneclick.shared.contracts.core.models.UniqueList.KeyProvider
 
+@Poko
 @Serializable
 class UniqueList<T : KeyProvider> private constructor(val elements: List<T>) : List<T> by elements {
 

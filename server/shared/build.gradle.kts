@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.kmp.atomicfu)
     alias(libs.plugins.kmp.sqldelight)
     alias(libs.plugins.ksp)
+    alias(libs.plugins.kmp.poko)
 }
 
 kotlin {
@@ -27,6 +28,7 @@ kotlin {
                 implementation(projects.shared.contracts.core)
                 implementation(projects.shared.timeProvider)
                 implementation(projects.shared.dispatchers)
+                runtimeOnly(libs.kmp.poko)
 
                 project.dependencies.kspJvm(libs.ksp.kotlin.inject)
             }

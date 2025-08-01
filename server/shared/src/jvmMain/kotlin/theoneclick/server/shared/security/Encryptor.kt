@@ -4,14 +4,15 @@ import at.favre.lib.crypto.bcrypt.BCrypt
 import io.ktor.util.hex
 import theoneclick.server.shared.models.EncryptedToken
 import theoneclick.server.shared.models.HashedPassword
+import theoneclick.server.shared.models.HashedPassword.Companion.create
+import theoneclick.shared.contracts.core.models.NonNegativeLong
+import theoneclick.shared.contracts.core.models.Token
 import theoneclick.shared.timeProvider.TimeProvider
 import java.util.*
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
 import kotlin.text.toCharArray
-import theoneclick.server.shared.models.EncryptedToken.Companion.create as createEncryptedToken
-import theoneclick.server.shared.models.HashedPassword.Companion.create as createHashedPassword
 
 interface Encryptor {
     fun encrypt(input: String): Result<ByteArray>
@@ -65,7 +66,7 @@ class DefaultEncryptor(
         }
 
     override fun hashPassword(password: String): HashedPassword =
-        createHashedPassword(
+        create(
             BCrypt.with(secureRandomProvider.secureRandom())
                 .hashToString(PASSWORD_VERIFICATION_COST, password.toCharArray())
         )
@@ -85,9 +86,9 @@ class DefaultEncryptor(
         val plainToken = bytes.decodeToString()
         val encryptedToken = encrypt(plainToken).getOrThrow()
         val encryptedTokenValue = Base64.getEncoder().encodeToString(encryptedToken)
-        return createEncryptedToken(
-            token = encryptedTokenValue,
-            creationTimeInMillis = timeProvider.currentTimeMillis(),
+        return EncryptedToken(
+            token = Token.unsafe(encryptedTokenValue),
+            creationTimeInMillis = NonNegativeLong.unsafe(timeProvider.currentTimeMillis()),
         )
     }
 

@@ -8,6 +8,7 @@ plugins {
     id("theoneclick.wasm.library")
     id("theoneclick.ios.library")
     alias(libs.plugins.kmp.serialization)
+    alias(libs.plugins.kmp.poko)
 }
 
 androidLibrary {
@@ -22,6 +23,7 @@ kotlin {
         commonMain {
             dependencies {
                 implementation(ktorLibs.serialization.kotlinx.json)
+                runtimeOnly(libs.kmp.poko)
             }
         }
     }

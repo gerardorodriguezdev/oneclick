@@ -1,11 +1,11 @@
 package theoneclick.shared.contracts.core.models
 
+import dev.drewhamilton.poko.Poko
 import kotlinx.serialization.Serializable
-import kotlin.jvm.JvmInline
 
-@JvmInline
+@Poko
 @Serializable
-value class NonNegativeInt private constructor(val value: Int) : Comparable<NonNegativeInt> {
+class NonNegativeInt private constructor(val value: Int) : Comparable<NonNegativeInt> {
 
     init {
         require(isValid(value)) { ERROR_MESSAGE }

@@ -1,11 +1,12 @@
 package theoneclick.server.shared.models
 
+import dev.drewhamilton.poko.Poko
 import kotlinx.serialization.Serializable
 import theoneclick.server.shared.security.Encryptor
 
 @Serializable
-@JvmInline
-value class HashedPassword private constructor(val value: String) {
+@Poko
+class HashedPassword private constructor(val value: String) {
     companion object {
         fun Encryptor.create(value: String): HashedPassword = HashedPassword(value)
 

@@ -1,19 +1,15 @@
 package theoneclick.shared.contracts.core.models
 
+import dev.drewhamilton.poko.Poko
 import kotlinx.serialization.Serializable
 
+@Poko
 @Serializable
 class Uuid private constructor(val value: String) {
 
     init {
         require(isValid(value)) { ERROR_MESSAGE }
     }
-
-    override fun equals(other: Any?): Boolean = other is Uuid && other.value == value
-
-    override fun hashCode(): Int = value.hashCode()
-
-    override fun toString(): String = value
 
     companion object {
         private const val ERROR_MESSAGE = "Invalid uuid"

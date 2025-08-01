@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import theoneclick.shared.contracts.core.models.UniqueList.KeyProvider
 
 @Serializable
-class Room(
+data class Room(
     val id: Uuid,
     val name: RoomName,
     val devices: UniqueList<Device>,

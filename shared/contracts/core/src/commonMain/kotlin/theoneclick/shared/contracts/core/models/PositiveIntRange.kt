@@ -1,7 +1,9 @@
 package theoneclick.shared.contracts.core.models
 
+import dev.drewhamilton.poko.Poko
 import kotlinx.serialization.Serializable
 
+@Poko
 @Serializable
 class PositiveIntRange private constructor(
     val start: NonNegativeInt,

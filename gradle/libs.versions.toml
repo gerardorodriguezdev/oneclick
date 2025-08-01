@@ -29,6 +29,7 @@ kmp-window-classes = "0.5.0"
 kmp-serialization = "1.8.1"
 kmp-kotlin-inject = "0.8.0"
 kmp-sqldelight = "2.1.0"
+kmp-poko = "0.18.7"
 ksp = "2.1.21-2.0.1"
 chamaleon = "1.0.15"
 
@@ -71,6 +72,7 @@ kmp-kotlin-inject-kmp = { module = "me.tatarka.inject:kotlin-inject-runtime-kmp"
 kmp-sqldelight = { module = "app.cash.sqldelight:jdbc-driver", version.ref = "kmp-sqldelight" }
 kmp-sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "kmp-sqldelight" }
 kmp-sqldelight-postgresql = { module = "app.cash.sqldelight:postgresql-dialect", version.ref = "kmp-sqldelight" }
+kmp-poko = { module = "dev.drewhamilton.poko:poko-annotations", version.ref = "kmp-poko" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
@@ -84,4 +86,5 @@ kmp-kotlin = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kmp-kot
 kmp-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kmp-kotlin-api" }
 kmp-build-config = { id = "com.codingfeline.buildkonfig", version.ref = "kmp-buildconfig" }
 kmp-sqldelight = { id = "app.cash.sqldelight", version.ref = "kmp-sqldelight" }
+kmp-poko = { id = "dev.drewhamilton.poko", version.ref = "kmp-poko" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
