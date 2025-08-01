@@ -2,6 +2,7 @@ plugins {
     id("theoneclick.jvm.library")
     alias(libs.plugins.kmp.atomicfu)
     alias(libs.plugins.kmp.sqldelight)
+    alias(libs.plugins.kmp.serialization)
     alias(libs.plugins.ksp)
     alias(libs.plugins.kmp.poko)
 }
