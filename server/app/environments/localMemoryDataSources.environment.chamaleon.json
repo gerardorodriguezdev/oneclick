@@ -40,27 +40,27 @@
       },
       {
         "name": "JDBC_URL",
-        "value": "jdbc:postgresql://localhost:5432/users"
+        "value": "jdbc:postgresql://db:5432/SharedDatabase"
       },
       {
         "name": "POSTGRES_USERNAME",
-        "value": "Username"
+        "value": "postgres"
       },
       {
         "name": "POSTGRES_PASSWORD",
-        "value": "Password"
+        "value": null
       },
       {
         "name": "REDIS_URL",
-        "value": "redis://localhost:6379"
+        "value": "redis://redis:6379"
       },
       {
         "name": "REDIS_USERNAME",
-        "value": "Username"
+        "value": null
       },
       {
         "name": "REDIS_PASSWORD",
-        "value": "Password"
+        "value": null
       },
       {
         "name": "JWT_SECRET_SIGN_KEY",

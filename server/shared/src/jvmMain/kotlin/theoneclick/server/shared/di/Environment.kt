@@ -10,10 +10,10 @@ data class Environment(
     val host: String,
     val jdbcUrl: String,
     val postgresUsername: String,
-    val postgresPassword: String,
+    val postgresPassword: String?,
     val redisUrl: String,
-    val redisUsername: String,
-    val redisPassword: String,
+    val redisUsername: String?,
+    val redisPassword: String?,
     // Optional
     val enableQAAPI: Boolean,
     val disableRateLimit: Boolean,

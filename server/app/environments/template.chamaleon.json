@@ -53,7 +53,8 @@
     },
     {
       "name": "POSTGRES_PASSWORD",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "REDIS_URL",
@@ -61,11 +62,13 @@
     },
     {
       "name": "REDIS_USERNAME",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "REDIS_PASSWORD",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "JWT_SECRET_SIGN_KEY",
