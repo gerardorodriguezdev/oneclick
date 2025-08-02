@@ -41,7 +41,7 @@ fun main() {
         redisPassword = System.getenv("REDIS_PASSWORD"),
         enableQAAPI = System.getenv("ENABLE_QAAPI") == "true",
         disableRateLimit = System.getenv("DISABLE_RATE_LIMIT") == "true",
-        useMemoryDatabases = System.getenv("USE_MEMORY_DATABASES") == "true",
+        useMemoryDatabases = System.getenv("USE_MEMORY_DATA_SOURCES") == "true",
     )
 
     val jvmSecureRandomProvider = DefaultSecureRandomProvider()

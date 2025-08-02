@@ -35,8 +35,8 @@
         "value": true
       },
       {
-        "name": "USE_MEMORY_DATABASES",
-        "value": true
+        "name": "USE_MEMORY_DATA_SOURCES",
+        "value": false
       },
       {
         "name": "JDBC_URL",

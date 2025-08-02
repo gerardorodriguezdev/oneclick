@@ -40,7 +40,7 @@
       "propertyType": "Boolean"
     },
     {
-      "name": "USE_MEMORY_DATABASES",
+      "name": "USE_MEMORY_DATA_SOURCES",
       "propertyType": "Boolean"
     },
     {
