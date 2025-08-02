@@ -18,13 +18,14 @@ import javax.crypto.spec.SecretKeySpec
 import kotlin.text.toCharArray
 
 interface Encryptor {
+    val jwtVerifier: JWTVerifier
+
     fun encrypt(input: String): Result<ByteArray>
     fun decrypt(input: ByteArray): Result<String>
     fun hashPassword(password: String): HashedPassword
     fun verifyPassword(password: String, hashedPassword: HashedPassword): Boolean
     fun jwt(jwtPayload: JwtPayload): Jwt
     fun jwtPayload(jwtPayloadString: String): Result<JwtPayload>
-    fun jwtVerifier(): JWTVerifier
 }
 
 class DefaultEncryptor(
@@ -39,6 +40,13 @@ class DefaultEncryptor(
     private val secretEncryptionKeySpec by lazy {
         SecretKeySpec(hex(secretEncryptionKey), "AES")
     }
+
+    override val jwtVerifier: JWTVerifier = JWT
+        .require(Algorithm.HMAC256(secretSignKey))
+        .withAudience(jwtAudience)
+        .withIssuer(jwtIssuer)
+        .withClaimPresence(AuthenticationConstants.JWT_PAYLOAD_CLAIM_NAME)
+        .build()
 
     override fun encrypt(input: String): Result<ByteArray> =
         runCatching {
@@ -110,13 +118,6 @@ class DefaultEncryptor(
             val decryptedJwtPayloadString = decrypt(decodedJwtPayloadString).getOrThrow()
             Json.decodeFromString<JwtPayload>(decryptedJwtPayloadString)
         }
-
-    override fun jwtVerifier(): JWTVerifier = JWT
-        .require(Algorithm.HMAC256(secretSignKey))
-        .withAudience(jwtAudience)
-        .withIssuer(jwtIssuer)
-        .withClaimPresence(AuthenticationConstants.JWT_PAYLOAD_CLAIM_NAME)
-        .build()
 
     private fun cipher(): Cipher = Cipher.getInstance(ALGORITHM)
 

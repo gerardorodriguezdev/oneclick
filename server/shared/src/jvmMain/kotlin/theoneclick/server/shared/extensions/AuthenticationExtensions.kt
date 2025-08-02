@@ -11,6 +11,7 @@ fun Routing.defaultAuthentication(
 ): Route =
     authenticate(
         configurations = arrayOf(
+            AuthenticationConstants.JWT_SESSION_AUTHENTICATION,
             AuthenticationConstants.JWT_AUTHENTICATION,
         ),
         optional = optional,
