@@ -11,7 +11,6 @@ jvm-bcrypt = "0.10.2"
 jvm-logback = "1.5.16"
 jvm-hiraki = "6.3.0"
 jvm-redis = "6.7.1.RELEASE"
-jvm-jib = "3.4.0"
 kmp-kotlin-api = "2.1.21"
 kmp-atomicfu = "0.27.0"
 kmp-compose = "1.8.0"
@@ -33,6 +32,7 @@ gradle-detekt-compose = "0.4.22"
 gradle-detekt-formatting = "1.23.8"
 gradle-ksp = "2.1.21-2.0.1"
 gradle-chamaleon = "1.0.15"
+gradle-docker-compose = "0.17.12"
 
 [libraries]
 android-activity = { module = "androidx.activity:activity-compose", version.ref = "android-activity" }
@@ -45,7 +45,6 @@ jvm-bcrypt = { module = "at.favre.lib:bcrypt", version.ref = "jvm-bcrypt" }
 jvm-logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "jvm-logback" }
 jvm-hiraki = { module = "com.zaxxer:HikariCP", version.ref = "jvm-hiraki" }
 jvm-redis = { module = "io.lettuce:lettuce-core", version.ref = "jvm-redis" }
-jvm-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kmp-kotlin-api" }
 kmp-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kmp-coroutines" }
 kmp-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kmp-atomicfu" }
 kmp-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kmp-date-time" }
@@ -54,7 +53,6 @@ kmp-viewModel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel
 kmp-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kmp-immutable" }
 kmp-window-classes = { module = "dev.chrisbanes.material3:material3-window-size-class-multiplatform", version.ref = "kmp-window-classes" }
 kmp-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kmp-kotlin-api" }
-kmp-test-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "kmp-coroutines" }
 kmp-test-turbine = { module = "app.cash.turbine:turbine", version.ref = "kmp-test-turbine" }
 ksp-kotlin-inject = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kmp-kotlin-inject" }
 kmp-kotlin-inject = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kmp-kotlin-inject" }
@@ -89,4 +87,4 @@ kmp-poko = { id = "dev.drewhamilton.poko", version.ref = "kmp-poko" }
 gradle-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "gradle-detekt" }
 gradle-chamaleon = { id = "io.github.gerardorodriguezdev.chamaleon", version.ref = "gradle-chamaleon" }
 gradle-ksp = { id = "com.google.devtools.ksp", version.ref = "gradle-ksp" }
-gradle-jvm-jib = { id = "com.google.cloud.tools.jib", version.ref = "jvm-jib" }
+gradle-docker-compose = { id = "com.avast.gradle.docker-compose", version.ref = "gradle-docker-compose" }
