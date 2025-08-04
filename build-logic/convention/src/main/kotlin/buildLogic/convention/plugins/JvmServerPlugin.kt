@@ -3,18 +3,25 @@ package buildLogic.convention.plugins
 import buildLogic.convention.extensions.plugins.JvmServerExtension
 import buildLogic.convention.extensions.toJavaLanguageVersion
 import buildLogic.convention.extensions.toJavaVersion
+import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput
+import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput.App
+import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigTask
+import com.avast.gradle.dockercompose.ComposeExtension
+import com.avast.gradle.dockercompose.DockerComposePlugin
 import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.ChamaleonGradlePlugin
 import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.extensions.ChamaleonExtension
 import io.ktor.plugin.*
 import io.ktor.plugin.features.*
 import org.gradle.api.Plugin
 import org.gradle.api.Project
+import org.gradle.api.file.RegularFile
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.plugins.JavaApplication
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.named
+import org.gradle.kotlin.dsl.register
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
 
@@ -28,7 +35,8 @@ class JvmServerPlugin : Plugin<Project> {
             configureJavaApplicationExtension(jvmServerExtension)
             configureKtorExtension(chamaleonExtension, jvmServerExtension)
             configureKotlinExtension(jvmServerExtension)
-            registerTasks(chamaleonExtension)
+            configureDockerComposeExtension(jvmServerExtension)
+            registerTasks(jvmServerExtension, chamaleonExtension)
         }
     }
 
@@ -37,6 +45,7 @@ class JvmServerPlugin : Plugin<Project> {
             apply(KtorGradlePlugin::class.java)
             apply(KotlinPluginWrapper::class.java)
             apply(ChamaleonGradlePlugin::class.java)
+            apply(DockerComposePlugin::class.java)
         }
     }
 
@@ -96,7 +105,16 @@ class JvmServerPlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.registerTasks(chamaleonExtension: ChamaleonExtension?) {
+    private fun Project.configureDockerComposeExtension(jvmServerExtension: JvmServerExtension) {
+        val dockerComposeFileNameString = dockerComposeFileNameString()
+        extensions.configure(ComposeExtension::class.java) {
+            useComposeFiles.add(dockerComposeFileNameString)
+            executable.set(jvmServerExtension.dockerComposeConfiguration.dockerComposeExecutablePath)
+            dockerExecutable.set(jvmServerExtension.dockerComposeConfiguration.dockerExecutablePath)
+        }
+    }
+
+    private fun Project.registerTasks(jvmServerExtension: JvmServerExtension, chamaleonExtension: ChamaleonExtension?) {
         tasks.named(BUILD_DOCKER_IMAGE_TASK_NAME) {
             dependsOn(tasks.named(TESTS_TASK_NAME))
         }
@@ -109,15 +127,35 @@ class JvmServerPlugin : Plugin<Project> {
                 environment(key, value)
             }
         }
+
+        val dockerComposeFileName = dockerComposeFileName()
+        tasks.register<CreateDockerComposeConfigTask>(CREATE_DOCKER_COMPOSE_TASK_NAME) {
+            val environmentVariables = chamaleonExtension.toMap()
+            input.set(
+                CreateDockerComposeConfigInput(
+                    app = App(
+                        imageName = jvmServerExtension.dockerConfiguration.imageName.get(),
+                        imageTag = jvmServerExtension.dockerConfiguration.imageTag.get(),
+                        port = jvmServerExtension.dockerConfiguration.imagePort.get(),
+                        environmentVariables = environmentVariables,
+                    ),
+                    postgresDatabase = jvmServerExtension.dockerComposeConfiguration.postgresDatabase.orNull,
+                    redisDatabase = jvmServerExtension.dockerComposeConfiguration.redisDatabase.orNull,
+                )
+            )
+
+            outputFile.set(dockerComposeFileName)
+        }
     }
 
-    private fun ChamaleonExtension?.toMap(): List<Pair<String, String>> {
-        if (this == null) return emptyList()
-
-        val properties = selectedEnvironmentOrNull()?.jvmPlatformOrNull?.properties?.values ?: return emptyList()
-
-        return properties.map { property -> property.name.value to property.value.toString() }
-    }
+    private fun ChamaleonExtension?.toMap(): Map<String, String> =
+        if (this == null) emptyMap() else buildMap {
+            selectedEnvironmentOrNull()?.jvmPlatformOrNull?.properties?.forEach { (key, value) ->
+                value.value?.toString()?.let { valueString ->
+                    put(key, valueString)
+                }
+            }
+        }
 
     private fun Project.externalRegistryProject(
         imageRegistryUrl: Provider<String>,
@@ -126,12 +164,28 @@ class JvmServerPlugin : Plugin<Project> {
     ): Provider<String> =
         provider { "${imageRegistryUrl.get()}/${imageName.get()}:${imageTag.get()}" }
 
+    private fun Project.dockerComposeFileName(): Provider<RegularFile> =
+        project.layout.buildDirectory.file("$DOCKER_COMPOSE_DIRECTORY_NAME/$DOCKER_COMPOSE_FILE_NAME")
+
+    //TODO: Automate running composeUp and generating file
+    //TODO: Standard chamaleon files
+    //TODO: Connect load docker image
+    //TODO: Review warnings gradle
+    private fun Project.dockerComposeFileNameString(): Provider<String> =
+        dockerComposeFileName()
+            .map { dockerComposeFile ->
+                val dockerComposeFilePath = dockerComposeFile.asFile.toPath()
+                project.layout.projectDirectory.asFile.toPath().relativize(dockerComposeFilePath).toString()
+            }
+
     private companion object {
         const val BUILD_DOCKER_IMAGE_TASK_NAME = "buildImage"
         const val TESTS_TASK_NAME = "test"
         const val RUN_TASK_NAME = "run"
         const val JVM_JAR_TASK_NAME = "jar"
-
+        const val CREATE_DOCKER_COMPOSE_TASK_NAME = "createDockerCompose"
+        const val DOCKER_COMPOSE_DIRECTORY_NAME = "dockerCompose"
+        const val DOCKER_COMPOSE_FILE_NAME = "docker-compose.yml"
         const val JVM_SERVER_EXTENSION_NAME = "jvmServer"
     }
 }

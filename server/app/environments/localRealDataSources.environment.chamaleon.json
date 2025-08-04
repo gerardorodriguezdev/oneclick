@@ -4,7 +4,7 @@
     "properties": [
       {
         "name": "GITHUB_SHA",
-        "value": "githubSha"
+        "value": "latest"
       },
       {
         "name": "REGISTRY_LOCATION",
@@ -40,7 +40,7 @@
       },
       {
         "name": "JDBC_URL",
-        "value": "jdbc:postgresql://db:5432/SharedDatabase"
+        "value": "jdbc:postgresql://postgres:5432/SharedDatabase"
       },
       {
         "name": "POSTGRES_USERNAME",

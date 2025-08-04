@@ -1,3 +1,5 @@
+import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput
+
 plugins {
     id("theoneclick.jvm.server")
     alias(libs.plugins.kmp.serialization)
@@ -20,6 +22,23 @@ jvmServer {
     dockerComposeConfiguration {
         dockerExecutablePath.set("/usr/local/bin/docker")
         dockerComposeExecutablePath.set("/usr/local/bin/docker-compose")
+
+        postgresDatabase.set(
+            CreateDockerComposeConfigInput.PostgresDatabase(
+                imageVersion = 15,
+                databaseName = "SharedDatabase",
+                username = chamaleon.selectedEnvironment().jvmPlatform.propertyStringValue("POSTGRES_USERNAME"),
+                password = chamaleon.selectedEnvironment().jvmPlatform.propertyStringValueOrNull("POSTGRES_PASSWORD"),
+                port = 5432,
+            )
+        )
+
+        redisDatabase.set(
+            CreateDockerComposeConfigInput.RedisDatabase(
+                imageVersion = 7,
+                port = 6379,
+            )
+        )
     }
 }
 
@@ -34,6 +53,7 @@ dependencies {
     implementation(libs.jvm.logback.classic)
     implementation(libs.jvm.hiraki)
     implementation(libs.jvm.redis)
+    implementation(libs.jvm.postgresql)
     implementation(projects.shared.logging)
     implementation(projects.shared.contracts.core)
     implementation(projects.shared.timeProvider)

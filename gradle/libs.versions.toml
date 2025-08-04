@@ -33,6 +33,8 @@ gradle-detekt-formatting = "1.23.8"
 gradle-ksp = "2.1.21-2.0.1"
 gradle-chamaleon = "1.0.15"
 gradle-docker-compose = "0.17.12"
+gradle-kaml = "0.85.0"
+postgresql = "42.7.5"
 
 [libraries]
 android-activity = { module = "androidx.activity:activity-compose", version.ref = "android-activity" }
@@ -46,6 +48,7 @@ jvm-logback-classic = { module = "ch.qos.logback:logback-classic", version.ref =
 jvm-hiraki = { module = "com.zaxxer:HikariCP", version.ref = "jvm-hiraki" }
 jvm-redis = { module = "io.lettuce:lettuce-core", version.ref = "jvm-redis" }
 jvm-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:chamaleon-core", version.ref = "gradle-chamaleon" }
+jvm-postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
 kmp-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kmp-coroutines" }
 kmp-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kmp-atomicfu" }
 kmp-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kmp-date-time" }
@@ -73,6 +76,7 @@ gradle-android-library = { module = "com.android.library:com.android.library.gra
 gradle-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:gradle-plugin", version.ref = "gradle-chamaleon" }
 gradle-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kmp-serialization" }
 gradle-docker-compose = { module = "com.avast.gradle.docker-compose:com.avast.gradle.docker-compose.gradle.plugin", version.ref = "gradle-docker-compose" }
+gradle-kaml = { module = "com.charleskorn.kaml:kaml", version.ref = "gradle-kaml" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
@@ -88,4 +92,3 @@ kmp-poko = { id = "dev.drewhamilton.poko", version.ref = "kmp-poko" }
 gradle-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "gradle-detekt" }
 gradle-chamaleon = { id = "io.github.gerardorodriguezdev.chamaleon", version.ref = "gradle-chamaleon" }
 gradle-ksp = { id = "com.google.devtools.ksp", version.ref = "gradle-ksp" }
-gradle-docker-compose = { id = "com.avast.gradle.docker-compose", version.ref = "gradle-docker-compose" }
