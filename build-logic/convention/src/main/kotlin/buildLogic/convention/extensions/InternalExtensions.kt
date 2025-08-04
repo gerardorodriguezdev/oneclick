@@ -11,7 +11,8 @@ internal fun Int.toJavaVersion(): JavaVersion =
         else -> throw IllegalStateException("Version $this not supported")
     }
 
-internal fun Provider<Int>.toJavaVersion(): Provider<JavaVersion> = map { jvmApi -> jvmApi.toJavaVersion() }
+internal fun Provider<Int>.toJavaVersion(): Provider<JavaVersion> =
+    map { jvmApi -> jvmApi.toJavaVersion() }
 
 internal fun Provider<Int>.toJavaLanguageVersion(): Provider<JavaLanguageVersion> =
     map { jvmApi -> JavaLanguageVersion.of(jvmApi) }
