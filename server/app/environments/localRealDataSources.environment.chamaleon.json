@@ -3,7 +3,7 @@
     "platformType": "jvm",
     "properties": [
       {
-        "name": "GITHUB_SHA",
+        "name": "IMAGE_TAG",
         "value": "latest"
       },
       {

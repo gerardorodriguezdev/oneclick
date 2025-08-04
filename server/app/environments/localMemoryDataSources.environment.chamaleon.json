@@ -3,7 +3,7 @@
     "platformType": "jvm",
     "properties": [
       {
-        "name": "GITHUB_SHA",
+        "name": "IMAGE_TAG",
         "value": null
       },
       {
@@ -40,7 +40,7 @@
       },
       {
         "name": "JDBC_URL",
-        "value": "jdbc:postgresql://db:5432/SharedDatabase"
+        "value": "jdbc:postgresql://postgres:5432/SharedDatabase"
       },
       {
         "name": "POSTGRES_USERNAME",

@@ -171,6 +171,7 @@ class JvmServerPlugin : Plugin<Project> {
     //TODO: Standard chamaleon files
     //TODO: Connect load docker image
     //TODO: Review warnings gradle
+    //TODO: Use providers
     private fun Project.dockerComposeFileNameString(): Provider<String> =
         dockerComposeFileName()
             .map { dockerComposeFile ->

@@ -11,9 +11,9 @@ jvmServer {
     mainClass.set("theoneclick.server.app.ApplicationKt")
 
     dockerConfiguration {
-        imagePort.set(8080)
         imageName.set("theoneclick")
-        imageTag.set(stringProvider("GITHUB_SHA"))
+        imagePort.set(8080) //TODO: Move to refs
+        imageTag.set(stringProvider("IMAGE_TAG"))
         imageRegistryUrl.set(stringProvider("REGISTRY_LOCATION"))
         imageRegistryUsername.set(stringProvider("REGISTRY_USERNAME"))
         imageRegistryPassword.set(stringProvider("REGISTRY_PASSWORD"))
@@ -23,6 +23,7 @@ jvmServer {
         dockerExecutablePath.set("/usr/local/bin/docker")
         dockerComposeExecutablePath.set("/usr/local/bin/docker-compose")
 
+        //TODO: Use providers
         postgresDatabase.set(
             CreateDockerComposeConfigInput.PostgresDatabase(
                 imageVersion = 15,
