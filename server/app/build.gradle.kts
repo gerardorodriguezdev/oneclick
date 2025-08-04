@@ -47,7 +47,7 @@ dependencies {
     testImplementation(ktorLibs.client.contentNegotiation)
     testImplementation(libs.kmp.test)
 
-    ksp(libs.ksp.kotlin.inject)
+    ksp(libs.gradle.ksp.kotlin.inject)
 }
 
 fun stringProvider(name: String): Provider<String> =

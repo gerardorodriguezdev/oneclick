@@ -33,7 +33,7 @@ kotlin {
                 implementation(projects.shared.dispatchers)
                 runtimeOnly(libs.kmp.poko)
 
-                project.dependencies.kspJvm(libs.ksp.kotlin.inject)
+                project.dependencies.kspJvm(libs.gradle.ksp.kotlin.inject)
             }
         }
     }

@@ -10,15 +10,15 @@ java {
 }
 
 dependencies {
-    implementation(libs.gradle.kmp.api)
-    implementation(libs.gradle.jvm.kotlin.api)
-    implementation(libs.gradle.kmp.ktor)
-    implementation(libs.gradle.kmp.compose)
+    implementation(libs.gradle.kmp.kotlin)
+    implementation(libs.gradle.jvm.kotlin)
+    implementation(libs.gradle.ktor)
+    implementation(libs.gradle.compose)
     implementation(libs.gradle.android.application)
     implementation(libs.gradle.android.library)
     implementation(libs.gradle.chamaleon)
-    implementation(libs.gradle.kmp.serialization)
-    implementation(libs.gradle.jvm.chamaleon)
+    implementation(libs.gradle.serialization)
+    implementation(libs.jvm.chamaleon)
 
     testImplementation(libs.kmp.test)
 }

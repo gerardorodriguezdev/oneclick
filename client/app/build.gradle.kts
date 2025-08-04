@@ -90,12 +90,12 @@ kotlin {
                 api(libs.kmp.atomicfu)
 
                 project.dependencies {
-                    kspCommonMainMetadata(libs.ksp.kotlin.inject)
-                    kspAndroid(libs.ksp.kotlin.inject)
-                    kspWasmJs(libs.ksp.kotlin.inject)
-                    kspIosX64(libs.ksp.kotlin.inject)
-                    kspIosArm64(libs.ksp.kotlin.inject)
-                    kspIosSimulatorArm64(libs.ksp.kotlin.inject)
+                    kspCommonMainMetadata(libs.gradle.ksp.kotlin.inject)
+                    kspAndroid(libs.gradle.ksp.kotlin.inject)
+                    kspWasmJs(libs.gradle.ksp.kotlin.inject)
+                    kspIosX64(libs.gradle.ksp.kotlin.inject)
+                    kspIosArm64(libs.gradle.ksp.kotlin.inject)
+                    kspIosSimulatorArm64(libs.gradle.ksp.kotlin.inject)
                 }
             }
         }
