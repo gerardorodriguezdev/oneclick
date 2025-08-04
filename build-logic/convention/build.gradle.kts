@@ -18,6 +18,7 @@ dependencies {
     implementation(libs.gradle.android.library)
     implementation(libs.gradle.chamaleon)
     implementation(libs.gradle.serialization)
+    implementation(libs.gradle.docker.compose)
     implementation(libs.jvm.chamaleon)
 
     testImplementation(libs.kmp.test)

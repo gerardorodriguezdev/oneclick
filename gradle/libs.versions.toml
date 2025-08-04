@@ -72,6 +72,7 @@ gradle-android-application = { module = "com.android.application:com.android.app
 gradle-android-library = { module = "com.android.library:com.android.library.gradle.plugin", version.ref = "android-gradle-plugin" }
 gradle-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:gradle-plugin", version.ref = "gradle-chamaleon" }
 gradle-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kmp-serialization" }
+gradle-docker-compose = { module = "com.avast.gradle.docker-compose:com.avast.gradle.docker-compose.gradle.plugin", version.ref = "gradle-docker-compose" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }

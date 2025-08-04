@@ -2,7 +2,6 @@ plugins {
     id("theoneclick.jvm.server")
     alias(libs.plugins.kmp.serialization)
     alias(libs.plugins.gradle.ksp)
-    alias(libs.plugins.gradle.docker.compose)
 }
 
 jvmServer {
@@ -10,18 +9,18 @@ jvmServer {
     mainClass.set("theoneclick.server.app.ApplicationKt")
 
     dockerConfiguration {
+        imagePort.set(8080)
         imageName.set("theoneclick")
         imageTag.set(stringProvider("GITHUB_SHA"))
         imageRegistryUrl.set(stringProvider("REGISTRY_LOCATION"))
         imageRegistryUsername.set(stringProvider("REGISTRY_USERNAME"))
         imageRegistryPassword.set(stringProvider("REGISTRY_PASSWORD"))
     }
-}
 
-dockerCompose {
-    useComposeFiles.add("docker-compose.yml")
-    executable = "/usr/local/bin/docker-compose"
-    dockerExecutable = "/usr/local/bin/docker"
+    dockerComposeConfiguration {
+        dockerExecutablePath.set("/usr/local/bin/docker")
+        dockerComposeExecutablePath.set("/usr/local/bin/docker-compose")
+    }
 }
 
 dependencies {
