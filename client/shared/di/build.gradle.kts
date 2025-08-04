@@ -2,7 +2,7 @@ plugins {
     id("theoneclick.wasm.library")
     id("theoneclick.android.library")
     id("theoneclick.ios.library")
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.gradle.ksp)
 }
 
 androidLibrary {

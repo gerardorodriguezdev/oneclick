@@ -6,9 +6,6 @@ android-datastore = "1.1.4"
 android-test-junit = "1.8.2"
 android-test-leak-canary = "2.14"
 android-test-navigation = "2.9.0"
-detekt = "1.23.8"
-detekt-compose = "0.4.22"
-detekt-formatting = "1.23.8"
 jvm-api = "21"
 jvm-bcrypt = "0.10.2"
 jvm-logback = "1.5.16"
@@ -31,8 +28,11 @@ kmp-serialization = "1.8.1"
 kmp-kotlin-inject = "0.8.0"
 kmp-sqldelight = "2.1.0"
 kmp-poko = "0.18.7"
-ksp = "2.1.21-2.0.1"
-chamaleon = "1.0.15"
+gradle-detekt = "1.23.8"
+gradle-detekt-compose = "0.4.22"
+gradle-detekt-formatting = "1.23.8"
+gradle-ksp = "2.1.21-2.0.1"
+gradle-chamaleon = "1.0.15"
 
 [libraries]
 android-activity = { module = "androidx.activity:activity-compose", version.ref = "android-activity" }
@@ -41,17 +41,6 @@ android-test-leak-canary = { module = "com.squareup.leakcanary:leakcanary-androi
 android-test-navigation = { module = "androidx.navigation:navigation-testing", version.ref = "android-test-navigation" }
 android-test-junit = { module = "androidx.compose.ui:ui-test-junit4-android", version.ref = "android-test-junit" }
 android-test-manifest = { module = "androidx.compose.ui:ui-test-manifest", version.ref = "android-test-junit" }
-detekt-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "detekt-compose" }
-detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "detekt-formatting" }
-gradle-kmp-api = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kmp-kotlin-api" }
-gradle-jvm-kotlin-api = { module = "org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin", version.ref = "kmp-kotlin-api" }
-gradle-kmp-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "kmp-compose" }
-gradle-kmp-ktor = { module = "io.ktor.plugin:plugin", version.ref = "kmp-ktor" }
-gradle-android-application = { module = "com.android.application:com.android.application.gradle.plugin", version.ref = "android-gradle-plugin" }
-gradle-android-library = { module = "com.android.library:com.android.library.gradle.plugin", version.ref = "android-gradle-plugin" }
-gradle-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:gradle-plugin", version.ref = "chamaleon" }
-gradle-jvm-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:chamaleon-core", version.ref = "chamaleon" }
-gradle-kmp-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kmp-serialization" }
 jvm-bcrypt = { module = "at.favre.lib:bcrypt", version.ref = "jvm-bcrypt" }
 jvm-logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "jvm-logback" }
 jvm-hiraki = { module = "com.zaxxer:HikariCP", version.ref = "jvm-hiraki" }
@@ -74,12 +63,21 @@ kmp-sqldelight = { module = "app.cash.sqldelight:jdbc-driver", version.ref = "km
 kmp-sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "kmp-sqldelight" }
 kmp-sqldelight-postgresql = { module = "app.cash.sqldelight:postgresql-dialect", version.ref = "kmp-sqldelight" }
 kmp-poko = { module = "dev.drewhamilton.poko:poko-annotations", version.ref = "kmp-poko" }
+gradle-detekt-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "gradle-detekt-compose" }
+gradle-detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "gradle-detekt-formatting" }
+gradle-kmp-api = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kmp-kotlin-api" }
+gradle-jvm-kotlin-api = { module = "org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin", version.ref = "kmp-kotlin-api" }
+gradle-kmp-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "kmp-compose" }
+gradle-kmp-ktor = { module = "io.ktor.plugin:plugin", version.ref = "kmp-ktor" }
+gradle-android-application = { module = "com.android.application:com.android.application.gradle.plugin", version.ref = "android-gradle-plugin" }
+gradle-android-library = { module = "com.android.library:com.android.library.gradle.plugin", version.ref = "android-gradle-plugin" }
+gradle-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:gradle-plugin", version.ref = "gradle-chamaleon" }
+gradle-jvm-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:chamaleon-core", version.ref = "gradle-chamaleon" }
+gradle-kmp-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kmp-serialization" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "detekt" }
-chamaleon = { id = "io.github.gerardorodriguezdev.chamaleon", version.ref = "chamaleon" }
 kmp-atomicfu = { id = "org.jetbrains.kotlinx.atomicfu", version.ref = "kmp-atomicfu" }
 kmp-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kmp-kotlin-api" }
 kmp-compose-jetbrains = { id = "org.jetbrains.compose", version.ref = "kmp-compose" }
@@ -88,5 +86,7 @@ kmp-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.
 kmp-build-config = { id = "com.codingfeline.buildkonfig", version.ref = "kmp-buildconfig" }
 kmp-sqldelight = { id = "app.cash.sqldelight", version.ref = "kmp-sqldelight" }
 kmp-poko = { id = "dev.drewhamilton.poko", version.ref = "kmp-poko" }
-ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
-jvm-jib = { id = "com.google.cloud.tools.jib", version.ref = "jvm-jib" }
+gradle-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "gradle-detekt" }
+gradle-chamaleon = { id = "io.github.gerardorodriguezdev.chamaleon", version.ref = "gradle-chamaleon" }
+gradle-ksp = { id = "com.google.devtools.ksp", version.ref = "gradle-ksp" }
+gradle-jvm-jib = { id = "com.google.cloud.tools.jib", version.ref = "jvm-jib" }

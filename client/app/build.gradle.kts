@@ -11,8 +11,8 @@ plugins {
     alias(libs.plugins.kmp.serialization)
     alias(libs.plugins.kmp.atomicfu)
     alias(libs.plugins.kmp.build.config)
-    alias(libs.plugins.ksp)
-    alias(libs.plugins.chamaleon)
+    alias(libs.plugins.gradle.ksp)
+    alias(libs.plugins.gradle.chamaleon)
 }
 
 wasmWebsite {

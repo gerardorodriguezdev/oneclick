@@ -3,7 +3,7 @@ plugins {
     alias(libs.plugins.kmp.atomicfu)
     alias(libs.plugins.kmp.sqldelight)
     alias(libs.plugins.kmp.serialization)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.gradle.ksp)
     alias(libs.plugins.kmp.poko)
 }
 

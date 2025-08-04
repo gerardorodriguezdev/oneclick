@@ -1,7 +1,7 @@
 plugins {
     id("theoneclick.jvm.server")
     alias(libs.plugins.kmp.serialization)
-    alias(libs.plugins.ksp)
+    alias(libs.plugins.gradle.ksp)
 }
 
 jvmServer {
