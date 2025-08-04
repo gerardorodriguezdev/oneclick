@@ -14,12 +14,13 @@ jvm-bcrypt = "0.10.2"
 jvm-logback = "1.5.16"
 jvm-hiraki = "6.3.0"
 jvm-redis = "6.7.1.RELEASE"
+jvm-jib = "3.4.0"
 kmp-kotlin-api = "2.1.21"
 kmp-atomicfu = "0.27.0"
 kmp-compose = "1.8.0"
 kmp-coroutines = "1.10.2"
 kmp-date-time = "0.6.1"
-kmp-ktor = "3.2.0"
+kmp-ktor = "3.2.3"
 kmp-navigation = "2.9.0-beta01"
 kmp-viewModel = "2.8.3"
 kmp-test-turbine = "1.1.0"
@@ -88,3 +89,4 @@ kmp-build-config = { id = "com.codingfeline.buildkonfig", version.ref = "kmp-bui
 kmp-sqldelight = { id = "app.cash.sqldelight", version.ref = "kmp-sqldelight" }
 kmp-poko = { id = "dev.drewhamilton.poko", version.ref = "kmp-poko" }
 ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
+jvm-jib = { id = "com.google.cloud.tools.jib", version.ref = "jvm-jib" }

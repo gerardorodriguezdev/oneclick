@@ -4,19 +4,19 @@
     "properties": [
       {
         "name": "GITHUB_SHA",
-        "value": null
+        "value": "githubSha"
       },
       {
         "name": "REGISTRY_LOCATION",
-        "value": null
+        "value": "registryLocation"
       },
       {
         "name": "REGISTRY_USERNAME",
-        "value": null
+        "value": "username"
       },
       {
         "name": "REGISTRY_PASSWORD",
-        "value": null
+        "value": "password"
       },
       {
         "name": "PROTOCOL",
