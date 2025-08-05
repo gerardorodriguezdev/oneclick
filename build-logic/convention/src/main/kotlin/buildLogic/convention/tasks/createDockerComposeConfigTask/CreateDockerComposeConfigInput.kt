@@ -39,9 +39,8 @@ data class CreateDockerComposeConfigInput(
         val databaseName: String,
         @get:Input
         val databaseUsername: String,
-        @Optional
         @get:Input
-        val databasePassword: String?,
+        val databasePassword: String,
     )
 
     @Serializable

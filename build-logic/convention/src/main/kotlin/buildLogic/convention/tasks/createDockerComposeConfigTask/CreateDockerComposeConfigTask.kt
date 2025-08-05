@@ -1,6 +1,10 @@
 package buildLogic.convention.tasks.createDockerComposeConfigTask
 
+import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigTask.DockerComposeFile.Services.HealthCheck
+import com.charleskorn.kaml.SequenceStyle
+import com.charleskorn.kaml.SingleLineStringStyle
 import com.charleskorn.kaml.Yaml
+import com.charleskorn.kaml.YamlConfiguration
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import org.gradle.api.DefaultTask
@@ -29,7 +33,7 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
     }
 
     private fun dockerComposeConfigContent(input: CreateDockerComposeConfigInput): String =
-        Yaml.default.encodeToString(
+        yaml.encodeToString(
             DockerComposeFile.serializer(),
             DockerComposeFile(
                 services = DockerComposeFile.Services(
@@ -87,7 +91,7 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
     private fun postgresService(
         databaseName: String,
         databaseUsername: String,
-        databasePassword: String?,
+        databasePassword: String,
         imageVersion: String,
         imagePort: Int,
         imageVolume: String,
@@ -101,9 +105,19 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
             environment = buildMap {
                 put("POSTGRES_DB", databaseName)
                 put("POSTGRES_USER", databaseUsername)
-                databasePassword?.let { put("POSTGRES_PASSWORD", databasePassword) }
+                put("POSTGRES_PASSWORD", databasePassword)
             },
-            volumes = listOf("postgres_data:$imageVolume"),
+            volumes = listOf("$POSTGRES_VOLUME_NAME:$imageVolume"),
+            healthCheck = HealthCheck(
+                test = listOf(
+                    "CMD-SHELL",
+                    "pg_isready -U \${POSTGRES_USER:-$databaseUsername} -d \${POSTGRES_DB:-$databaseName}"
+                ),
+                interval = "10s",
+                timeout = "5s",
+                retries = 5,
+                startPeriod = "30s",
+            ),
         )
 
     private fun redisService(
@@ -117,7 +131,14 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
                 imageTag = imageVersion
             ),
             ports = ports(imagePort),
-            volumes = listOf("redis_data:$imageVolume"),
+            volumes = listOf("$REDIS_VOLUME_NAME:$imageVolume"),
+            healthCheck = HealthCheck(
+                test = listOf("CMD", "redis-cli", "ping"),
+                interval = "10s",
+                timeout = "3s",
+                retries = 3,
+                startPeriod = "10s",
+            ),
         )
 
     private fun image(imageName: String, imageTag: String): String = "$imageName:$imageTag"
@@ -125,6 +146,12 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
     private fun ports(port: Int): List<String> = listOf("$port:$port")
 
     private companion object {
+        val yaml = Yaml(
+            configuration = YamlConfiguration(
+                sequenceStyle = SequenceStyle.Flow,
+                singleLineStringStyle = SingleLineStringStyle.PlainExceptAmbiguous,
+            )
+        )
         const val POSTGRES_IMAGE_NAME = "postgres"
         const val REDIS_IMAGE_NAME = "redis"
 
@@ -158,6 +185,8 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
                 val ports: List<String>,
                 val environment: Map<String, String>,
                 val volumes: List<String>,
+                @SerialName("healthcheck")
+                val healthCheck: HealthCheck,
             )
 
             @Serializable
@@ -165,6 +194,18 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
                 val image: String,
                 val ports: List<String>,
                 val volumes: List<String>,
+                @SerialName("healthcheck")
+                val healthCheck: HealthCheck,
+            )
+
+            @Serializable
+            data class HealthCheck(
+                val test: List<String>,
+                val interval: String,
+                val timeout: String,
+                val retries: Int,
+                @SerialName("start_period")
+                val startPeriod: String,
             )
         }
 

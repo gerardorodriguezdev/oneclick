@@ -52,7 +52,7 @@
       },
       {
         "name": "POSTGRES_PASSWORD",
-        "value": null
+        "value": "postgres"
       },
       {
         "name": "REDIS_URL",

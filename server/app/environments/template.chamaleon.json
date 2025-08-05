@@ -24,8 +24,7 @@
     },
     {
       "name": "REGISTRY_PASSWORD",
-      "propertyType": "String",
-      "nullable": true
+      "propertyType": "String"
     },
     {
       "name": "PROTOCOL",

@@ -24,13 +24,13 @@ jvmServer {
         dockerComposeExecutablePath.set("/usr/local/bin/docker-compose")
 
         val postgresUsername = stringProvider("POSTGRES_USERNAME")
-        val postgresPassword = nullableStringProvider("POSTGRES_PASSWORD")
+        val postgresPassword = stringProvider("POSTGRES_PASSWORD")
         val postgresDatabaseProvider = provider {
             CreateDockerComposeConfigInput.PostgresDatabase(
                 imageVersion = 15,
                 databaseName = "SharedDatabase",
                 databaseUsername = postgresUsername.get(),
-                databasePassword = postgresPassword.orNull,
+                databasePassword = postgresPassword.get(),
                 imagePort = 5432,
                 imageVolume = "/var/lib/postgresql/data",
             )
@@ -79,7 +79,3 @@ fun intProvider(name: String): Provider<Int> =
 
 fun stringProvider(name: String): Provider<String> =
     provider { chamaleon.selectedEnvironment().jvmPlatform.propertyStringValue(name) }
-
-fun nullableStringProvider(name: String): Provider<String> =
-    provider { chamaleon.selectedEnvironment().jvmPlatform.propertyStringValueOrNull(name) }
-
