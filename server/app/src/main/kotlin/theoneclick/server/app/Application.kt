@@ -111,6 +111,7 @@ private fun databaseRepositories(
     val hikariDataSource = HikariDataSource(hikariConfig)
     val driver = hikariDataSource.asJdbcDriver()
     val sharedDatabase = SharedDatabase(driver)
+    SharedDatabase.Schema.create(driver)
 
     val redisClient = RedisClient.create(environment.redisUrl)
     val redisConnection = redisClient.connect()
