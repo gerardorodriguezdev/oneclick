@@ -3,6 +3,10 @@
     "platformType": "jvm",
     "properties": [
       {
+        "name": "IMAGE_PORT",
+        "value": "8080"
+      },
+      {
         "name": "IMAGE_TAG",
         "value": "latest"
       },

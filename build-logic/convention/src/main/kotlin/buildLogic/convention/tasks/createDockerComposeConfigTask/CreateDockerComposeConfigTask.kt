@@ -32,7 +32,7 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
     //TODO: Move volumes out
     //TODO: Fix postgres trusted
     private fun dockerComposeConfigContent(input: CreateDockerComposeConfigInput): String =
-        Yaml.Companion.default.encodeToString(
+        Yaml.default.encodeToString(
             DockerComposeFile.serializer(),
             DockerComposeFile(
                 services = DockerComposeFile.Services(

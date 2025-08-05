@@ -178,8 +178,6 @@ class JvmServerPlugin : Plugin<Project> {
     private fun Project.dockerComposeFileName(): Provider<RegularFile> =
         project.layout.buildDirectory.file("$DOCKER_COMPOSE_DIRECTORY_NAME/$DOCKER_COMPOSE_FILE_NAME")
 
-    //TODO: Standard chamaleon files
-    //TODO: Review warnings gradle
     private fun Project.dockerComposeFileNameString(): Provider<String> =
         dockerComposeFileName()
             .map { dockerComposeFile ->

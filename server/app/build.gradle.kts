@@ -12,7 +12,7 @@ jvmServer {
 
     dockerConfiguration {
         imageName.set("theoneclick")
-        imagePort.set(8080) //TODO: Move to refs
+        imagePort.set(intProvider("IMAGE_PORT"))
         imageTag.set(stringProvider("IMAGE_TAG"))
         imageRegistryUrl.set(stringProvider("REGISTRY_LOCATION"))
         imageRegistryUsername.set(stringProvider("REGISTRY_USERNAME"))
@@ -23,16 +23,18 @@ jvmServer {
         dockerExecutablePath.set("/usr/local/bin/docker")
         dockerComposeExecutablePath.set("/usr/local/bin/docker-compose")
 
-        //TODO: Use providers
-        postgresDatabase.set(
+        val postgresUsername = stringProvider("POSTGRES_USERNAME")
+        val postgresPassword = nullableStringProvider("POSTGRES_PASSWORD")
+        val postgresDatabaseProvider = provider {
             CreateDockerComposeConfigInput.PostgresDatabase(
                 imageVersion = 15,
                 databaseName = "SharedDatabase",
-                username = chamaleon.selectedEnvironment().jvmPlatform.propertyStringValue("POSTGRES_USERNAME"),
-                password = chamaleon.selectedEnvironment().jvmPlatform.propertyStringValueOrNull("POSTGRES_PASSWORD"),
+                username = postgresUsername.get(),
+                password = postgresPassword.orNull,
                 port = 5432,
             )
-        )
+        }
+        postgresDatabase.set(postgresDatabaseProvider)
 
         redisDatabase.set(
             CreateDockerComposeConfigInput.RedisDatabase(
@@ -70,5 +72,12 @@ dependencies {
     ksp(libs.gradle.ksp.kotlin.inject)
 }
 
+fun intProvider(name: String): Provider<Int> =
+    provider { chamaleon.selectedEnvironment().jvmPlatform.propertyStringValue(name).toInt() }
+
 fun stringProvider(name: String): Provider<String> =
     provider { chamaleon.selectedEnvironment().jvmPlatform.propertyStringValue(name) }
+
+fun nullableStringProvider(name: String): Provider<String> =
+    provider { chamaleon.selectedEnvironment().jvmPlatform.propertyStringValueOrNull(name) }
+
