@@ -18,6 +18,7 @@ import org.gradle.api.file.RegularFile
 import org.gradle.api.plugins.ExtensionAware
 import org.gradle.api.plugins.JavaApplication
 import org.gradle.api.provider.Provider
+import org.gradle.api.tasks.Exec
 import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.named
@@ -66,23 +67,24 @@ class JvmServerPlugin : Plugin<Project> {
     ) {
         val ktorExtension = extensions.getByType(KtorExtension::class.java)
         val ktorExtensions = (ktorExtension as ExtensionAware).extensions
+        val dockerImageRegistry = DockerImageRegistry.externalRegistry(
+            project = externalRegistryProject(
+                imageRegistryUrl = jvmServerExtension.dockerConfiguration.imageRegistryUrl,
+                imageName = jvmServerExtension.dockerConfiguration.imageName,
+                imageTag = jvmServerExtension.dockerConfiguration.imageTag,
+            ),
+            username = jvmServerExtension.dockerConfiguration.imageRegistryUsername,
+            password = jvmServerExtension.dockerConfiguration.imageRegistryPassword,
+        )
+        val environmentVariablesProvider = provider { chamaleonExtension.toMap() }
+
         ktorExtensions.configure(DockerExtension::class.java) {
             localImageName.set(jvmServerExtension.dockerConfiguration.imageName)
             jreVersion.set(jvmServerExtension.jvmTarget.toJavaVersion())
             imageTag.set(jvmServerExtension.dockerConfiguration.imageTag)
-            externalRegistry.set(
-                DockerImageRegistry.externalRegistry(
-                    project = externalRegistryProject(
-                        imageRegistryUrl = jvmServerExtension.dockerConfiguration.imageRegistryUrl,
-                        imageName = jvmServerExtension.dockerConfiguration.imageName,
-                        imageTag = jvmServerExtension.dockerConfiguration.imageTag,
-                    ),
-                    username = jvmServerExtension.dockerConfiguration.imageRegistryUsername,
-                    password = jvmServerExtension.dockerConfiguration.imageRegistryPassword,
-                )
-            )
+            externalRegistry.set(dockerImageRegistry)
 
-            chamaleonExtension.toMap().forEach { (key, value) ->
+            environmentVariablesProvider.get().forEach { (key, value) ->
                 environmentVariables.add(
                     DockerEnvironmentVariable(
                         variable = key,
@@ -115,36 +117,45 @@ class JvmServerPlugin : Plugin<Project> {
     }
 
     private fun Project.registerTasks(jvmServerExtension: JvmServerExtension, chamaleonExtension: ChamaleonExtension?) {
-        tasks.named(BUILD_DOCKER_IMAGE_TASK_NAME) {
-            dependsOn(tasks.named(TESTS_TASK_NAME))
-        }
-
+        val environmentVariablesProvider = provider { chamaleonExtension.toMap() }
         tasks.named<JavaExec>(RUN_TASK_NAME) {
             dependsOn(tasks.named<Jar>(JVM_JAR_TASK_NAME))
             classpath(tasks.named<Jar>(JVM_JAR_TASK_NAME))
 
-            chamaleonExtension.toMap().forEach { (key, value) ->
+            environmentVariablesProvider.get().forEach { (key, value) ->
                 environment(key, value)
             }
         }
 
         val dockerComposeFileName = dockerComposeFileName()
-        tasks.register<CreateDockerComposeConfigTask>(CREATE_DOCKER_COMPOSE_TASK_NAME) {
-            val environmentVariables = chamaleonExtension.toMap()
-            input.set(
-                CreateDockerComposeConfigInput(
-                    app = App(
-                        imageName = jvmServerExtension.dockerConfiguration.imageName.get(),
-                        imageTag = jvmServerExtension.dockerConfiguration.imageTag.get(),
-                        port = jvmServerExtension.dockerConfiguration.imagePort.get(),
-                        environmentVariables = environmentVariables,
-                    ),
-                    postgresDatabase = jvmServerExtension.dockerComposeConfiguration.postgresDatabase.orNull,
-                    redisDatabase = jvmServerExtension.dockerComposeConfiguration.redisDatabase.orNull,
+        val createDockerComposeConfigTask =
+            tasks.register<CreateDockerComposeConfigTask>(CREATE_DOCKER_COMPOSE_TASK_NAME) {
+                input.set(
+                    CreateDockerComposeConfigInput(
+                        app = App(
+                            imageName = jvmServerExtension.dockerConfiguration.imageName.get(),
+                            imageTag = jvmServerExtension.dockerConfiguration.imageTag.get(),
+                            port = jvmServerExtension.dockerConfiguration.imagePort.get(),
+                            environmentVariables = environmentVariablesProvider.get(),
+                        ),
+                        postgresDatabase = jvmServerExtension.dockerComposeConfiguration.postgresDatabase.orNull,
+                        redisDatabase = jvmServerExtension.dockerComposeConfiguration.redisDatabase.orNull,
+                    )
                 )
-            )
 
-            outputFile.set(dockerComposeFileName)
+                outputFile.set(dockerComposeFileName)
+            }
+
+        val buildImageTask = tasks.named(BUILD_DOCKER_IMAGE_TASK_NAME)
+        val loadImageTask = tasks.register<Exec>(LOAD_DOCKER_IMAGE_TASK_NAME) {
+            dependsOn(buildImageTask)
+            dependsOn(createDockerComposeConfigTask)
+
+            commandLine("bash", "-c", "docker load < build/jib-image.tar")
+        }
+
+        tasks.named(COMPOSE_UP_TASK_NAME) {
+            dependsOn(loadImageTask)
         }
     }
 
@@ -167,11 +178,8 @@ class JvmServerPlugin : Plugin<Project> {
     private fun Project.dockerComposeFileName(): Provider<RegularFile> =
         project.layout.buildDirectory.file("$DOCKER_COMPOSE_DIRECTORY_NAME/$DOCKER_COMPOSE_FILE_NAME")
 
-    //TODO: Automate running composeUp and generating file
     //TODO: Standard chamaleon files
-    //TODO: Connect load docker image
     //TODO: Review warnings gradle
-    //TODO: Use providers
     private fun Project.dockerComposeFileNameString(): Provider<String> =
         dockerComposeFileName()
             .map { dockerComposeFile ->
@@ -181,12 +189,15 @@ class JvmServerPlugin : Plugin<Project> {
 
     private companion object {
         const val BUILD_DOCKER_IMAGE_TASK_NAME = "buildImage"
-        const val TESTS_TASK_NAME = "test"
+        const val LOAD_DOCKER_IMAGE_TASK_NAME = "loadImage"
+        const val COMPOSE_UP_TASK_NAME = "composeUp"
         const val RUN_TASK_NAME = "run"
         const val JVM_JAR_TASK_NAME = "jar"
         const val CREATE_DOCKER_COMPOSE_TASK_NAME = "createDockerCompose"
+
         const val DOCKER_COMPOSE_DIRECTORY_NAME = "dockerCompose"
         const val DOCKER_COMPOSE_FILE_NAME = "docker-compose.yml"
+
         const val JVM_SERVER_EXTENSION_NAME = "jvmServer"
     }
 }

@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="server:app:composeUp" type="GradleRunConfiguration" factoryName="Gradle" folderName="Server">
+  <configuration default="false" name="server:app:runAll" type="GradleRunConfiguration" factoryName="Gradle" folderName="Server">
     <ExternalSystemSettings>
       <option name="env">
         <map>
