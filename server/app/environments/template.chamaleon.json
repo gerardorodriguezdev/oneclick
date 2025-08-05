@@ -24,7 +24,8 @@
     },
     {
       "name": "REGISTRY_PASSWORD",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "PROTOCOL",
@@ -56,8 +57,7 @@
     },
     {
       "name": "POSTGRES_PASSWORD",
-      "propertyType": "String",
-      "nullable": true
+      "propertyType": "String"
     },
     {
       "name": "REDIS_URL",
