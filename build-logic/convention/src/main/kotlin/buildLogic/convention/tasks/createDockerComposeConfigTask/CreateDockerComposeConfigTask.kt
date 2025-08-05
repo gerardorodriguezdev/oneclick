@@ -1,6 +1,5 @@
 package buildLogic.convention.tasks.createDockerComposeConfigTask
 
-import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigTask.DockerComposeFile.Services.HealthCheck
 import com.charleskorn.kaml.SequenceStyle
 import com.charleskorn.kaml.SingleLineStringStyle
 import com.charleskorn.kaml.Yaml
@@ -108,16 +107,6 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
                 put("POSTGRES_PASSWORD", databasePassword)
             },
             volumes = listOf("$POSTGRES_VOLUME_NAME:$imageVolume"),
-            healthCheck = HealthCheck(
-                test = listOf(
-                    "CMD-SHELL",
-                    "pg_isready -U \${POSTGRES_USER:-$databaseUsername} -d \${POSTGRES_DB:-$databaseName}"
-                ),
-                interval = "10s",
-                timeout = "5s",
-                retries = 5,
-                startPeriod = "30s",
-            ),
         )
 
     private fun redisService(
@@ -132,13 +121,6 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
             ),
             ports = ports(imagePort),
             volumes = listOf("$REDIS_VOLUME_NAME:$imageVolume"),
-            healthCheck = HealthCheck(
-                test = listOf("CMD", "redis-cli", "ping"),
-                interval = "10s",
-                timeout = "3s",
-                retries = 3,
-                startPeriod = "10s",
-            ),
         )
 
     private fun image(imageName: String, imageTag: String): String = "$imageName:$imageTag"
@@ -185,8 +167,6 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
                 val ports: List<String>,
                 val environment: Map<String, String>,
                 val volumes: List<String>,
-                @SerialName("healthcheck")
-                val healthCheck: HealthCheck,
             )
 
             @Serializable
@@ -194,18 +174,6 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
                 val image: String,
                 val ports: List<String>,
                 val volumes: List<String>,
-                @SerialName("healthcheck")
-                val healthCheck: HealthCheck,
-            )
-
-            @Serializable
-            data class HealthCheck(
-                val test: List<String>,
-                val interval: String,
-                val timeout: String,
-                val retries: Int,
-                @SerialName("start_period")
-                val startPeriod: String,
             )
         }
 
