@@ -154,7 +154,7 @@ class JvmServerPlugin : Plugin<Project> {
             commandLine("bash", "-c", "docker load < build/jib-image.tar")
         }
 
-        tasks.named(COMPOSE_UP_TASK_NAME) {
+        tasks.named(COMPOSE_BUILD_TASK_NAME) {
             dependsOn(loadImageTask)
         }
     }
@@ -188,7 +188,7 @@ class JvmServerPlugin : Plugin<Project> {
     private companion object {
         const val BUILD_DOCKER_IMAGE_TASK_NAME = "buildImage"
         const val LOAD_DOCKER_IMAGE_TASK_NAME = "loadImage"
-        const val COMPOSE_UP_TASK_NAME = "composeUp"
+        const val COMPOSE_BUILD_TASK_NAME = "composeBuild"
         const val RUN_TASK_NAME = "run"
         const val JVM_JAR_TASK_NAME = "jar"
         const val CREATE_DOCKER_COMPOSE_TASK_NAME = "createDockerCompose"
