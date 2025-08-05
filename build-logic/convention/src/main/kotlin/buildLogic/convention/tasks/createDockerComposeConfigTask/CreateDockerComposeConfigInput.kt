@@ -23,7 +23,7 @@ data class CreateDockerComposeConfigInput(
         @get:Input
         val imageTag: String,
         @get:Input
-        val port: Int,
+        val imagePort: Int,
         @get:Input
         val environmentVariables: Map<String, String>,
     )
@@ -32,14 +32,16 @@ data class CreateDockerComposeConfigInput(
         @get:Input
         val imageVersion: Int,
         @get:Input
+        val imagePort: Int,
+        @get:Input
+        val imageVolume: String,
+        @get:Input
         val databaseName: String,
         @get:Input
-        val username: String,
+        val databaseUsername: String,
         @Optional
         @get:Input
-        val password: String?,
-        @get:Input
-        val port: Int,
+        val databasePassword: String?,
     )
 
     @Serializable
@@ -47,6 +49,8 @@ data class CreateDockerComposeConfigInput(
         @get:Input
         val imageVersion: Int,
         @get:Input
-        val port: Int,
+        val imagePort: Int,
+        @get:Input
+        val imageVolume: String,
     )
 }

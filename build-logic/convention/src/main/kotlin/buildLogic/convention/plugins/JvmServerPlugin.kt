@@ -135,7 +135,7 @@ class JvmServerPlugin : Plugin<Project> {
                         app = App(
                             imageName = jvmServerExtension.dockerConfiguration.imageName.get(),
                             imageTag = jvmServerExtension.dockerConfiguration.imageTag.get(),
-                            port = jvmServerExtension.dockerConfiguration.imagePort.get(),
+                            imagePort = jvmServerExtension.dockerConfiguration.imagePort.get(),
                             environmentVariables = environmentVariablesProvider.get(),
                         ),
                         postgresDatabase = jvmServerExtension.dockerComposeConfiguration.postgresDatabase.orNull,

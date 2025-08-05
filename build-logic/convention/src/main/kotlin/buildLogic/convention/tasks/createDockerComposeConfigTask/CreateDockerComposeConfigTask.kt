@@ -36,7 +36,7 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
                     app = appService(
                         imageName = input.app.imageName,
                         imageTag = input.app.imageTag,
-                        imagePort = input.app.port,
+                        imagePort = input.app.imagePort,
                         environmentVariables = input.app.environmentVariables,
                         dependsOnPostgresDb = input.postgresDatabase != null,
                         dependsOnRedisDb = input.redisDatabase != null,
@@ -45,15 +45,17 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
                         postgresService(
                             databaseName = postgresDatabase.databaseName,
                             imageVersion = postgresDatabase.imageVersion.toString(),
-                            imagePort = postgresDatabase.port,
-                            databaseUsername = postgresDatabase.username,
-                            databasePassword = postgresDatabase.password,
+                            imagePort = postgresDatabase.imagePort,
+                            databaseUsername = postgresDatabase.databaseUsername,
+                            databasePassword = postgresDatabase.databasePassword,
+                            imageVolume = postgresDatabase.imageVolume,
                         )
                     },
                     redis = input.redisDatabase?.let { redisDatabase ->
                         redisService(
                             imageVersion = redisDatabase.imageVersion.toString(),
-                            port = redisDatabase.port,
+                            imagePort = redisDatabase.imagePort,
+                            imageVolume = redisDatabase.imageVolume,
                         )
                     },
                 ),
@@ -88,6 +90,7 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
         databasePassword: String?,
         imageVersion: String,
         imagePort: Int,
+        imageVolume: String,
     ): DockerComposeFile.Services.Postgres =
         DockerComposeFile.Services.Postgres(
             image = image(
@@ -100,20 +103,21 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
                 put("POSTGRES_USER", databaseUsername)
                 databasePassword?.let { put("POSTGRES_PASSWORD", databasePassword) }
             },
-            volumes = listOf("postgres_data:/var/lib/postgresql/data"),
+            volumes = listOf("postgres_data:$imageVolume"),
         )
 
     private fun redisService(
         imageVersion: String,
-        port: Int,
+        imagePort: Int,
+        imageVolume: String,
     ): DockerComposeFile.Services.Redis =
         DockerComposeFile.Services.Redis(
             image = image(
                 imageName = REDIS_IMAGE_NAME,
                 imageTag = imageVersion
             ),
-            ports = ports(port),
-            volumes = listOf("redis_data:/data"),
+            ports = ports(imagePort),
+            volumes = listOf("redis_data:$imageVolume"),
         )
 
     private fun image(imageName: String, imageTag: String): String = "$imageName:$imageTag"
