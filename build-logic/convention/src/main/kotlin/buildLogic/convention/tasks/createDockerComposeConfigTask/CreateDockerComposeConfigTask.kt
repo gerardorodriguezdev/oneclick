@@ -17,7 +17,7 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
     @get:Nested
     abstract val input: Property<CreateDockerComposeConfigInput>
 
-    @get: OutputFile
+    @get:OutputFile
     abstract val outputFile: RegularFileProperty
 
     @TaskAction
@@ -28,9 +28,6 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
         )
     }
 
-    //TODO: Add missing configs + healthchecks
-    //TODO: Move volumes out
-    //TODO: Fix postgres trusted
     private fun dockerComposeConfigContent(input: CreateDockerComposeConfigInput): String =
         Yaml.default.encodeToString(
             DockerComposeFile.serializer(),
@@ -49,6 +46,8 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
                             databaseName = postgresDatabase.databaseName,
                             imageVersion = postgresDatabase.imageVersion.toString(),
                             port = postgresDatabase.port,
+                            username = postgresDatabase.username,
+                            password = postgresDatabase.password,
                         )
                     },
                     redis = input.redisDatabase?.let { redisDatabase ->
@@ -85,6 +84,8 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
 
     private fun postgresService(
         databaseName: String,
+        username: String,
+        password: String?,
         imageVersion: String,
         port: Int,
     ): DockerComposeFile.Services.Postgres =
@@ -96,7 +97,8 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
             ports = ports(port),
             environment = buildMap {
                 put("POSTGRES_DB", databaseName)
-                put("POSTGRES_HOST_AUTH_METHOD", "trust")
+                put("POSTGRES_USER", username)
+                password?.let { put("POSTGRES_PASSWORD", password) }
             },
             volumes = listOf("postgres_data:/var/lib/postgresql/data"),
         )
