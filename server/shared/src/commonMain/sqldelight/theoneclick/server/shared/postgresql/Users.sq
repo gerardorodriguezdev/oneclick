@@ -1,3 +1,11 @@
+CREATE TABLE IF NOT EXISTS users (
+    user_id CHAR(36) PRIMARY KEY,
+    username VARCHAR(20) UNIQUE NOT NULL,
+    hashed_password VARCHAR(60) NOT NULL
+);
+
+CREATE INDEX IF NOT EXISTS users_username_idx ON users(username);
+
 insertUser:
 INSERT INTO users(user_id, username, hashed_password)
 VALUES ?;
@@ -6,4 +14,4 @@ userByUserId:
 SELECT * FROM users WHERE user_id = ? LIMIT 1;
 
 userByUsername:
-SELECT * FROM users WHERE username = ?;
+SELECT * FROM users WHERE username = ? LIMIT 1;

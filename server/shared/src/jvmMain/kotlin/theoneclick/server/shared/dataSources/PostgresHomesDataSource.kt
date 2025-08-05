@@ -7,13 +7,9 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import migrations.Devices
-import migrations.Homes
-import migrations.Rooms
 import theoneclick.server.shared.dataSources.base.HomesDataSource
 import theoneclick.server.shared.models.HomesEntry
-import theoneclick.server.shared.postgresql.HomesByUserId
-import theoneclick.server.shared.postgresql.SharedDatabase
+import theoneclick.server.shared.postgresql.*
 import theoneclick.shared.contracts.core.models.*
 import theoneclick.shared.contracts.core.models.NonNegativeInt.Companion.toNonNegativeInt
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
