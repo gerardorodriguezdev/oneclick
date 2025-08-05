@@ -26,21 +26,17 @@ jvmServer {
         postgresDatabase.set(
             provider {
                 CreateDockerComposeConfigInput.PostgresDatabase(
-                    imageVersion = 15,
+                    imageVersion = libs.versions.docker.postgres.api.get().toInt(),
                     databaseName = "SharedDatabase",
                     databaseUsername = stringProvider("POSTGRES_USERNAME").get(),
                     databasePassword = stringProvider("POSTGRES_PASSWORD").get(),
-                    imagePort = 5432,
-                    imageVolume = "/var/lib/postgresql/data",
                 )
             }
         )
 
         redisDatabase.set(
             CreateDockerComposeConfigInput.RedisDatabase(
-                imageVersion = 7,
-                imagePort = 6379,
-                imageVolume = "/data",
+                imageVersion = libs.versions.docker.redis.api.get().toInt(),
             )
         )
     }

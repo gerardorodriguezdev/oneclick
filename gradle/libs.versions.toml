@@ -1,4 +1,6 @@
 [versions]
+docker-postgres-api = "15"
+docker-redis-api = "7"
 android-activity = "1.10.1"
 android-gradle-plugin = "8.10.1"
 android-api = "35"
@@ -10,6 +12,7 @@ jvm-api = "21"
 jvm-bcrypt = "0.10.2"
 jvm-logback = "1.5.16"
 jvm-hiraki = "6.3.0"
+jvm-postgresql = "42.7.5"
 jvm-redis = "6.7.1.RELEASE"
 kmp-kotlin-api = "2.1.21"
 kmp-atomicfu = "0.27.0"
@@ -34,7 +37,6 @@ gradle-ksp = "2.1.21-2.0.1"
 gradle-chamaleon = "1.0.15"
 gradle-docker-compose = "0.17.12"
 gradle-kaml = "0.85.0"
-postgresql = "42.7.5"
 
 [libraries]
 android-activity = { module = "androidx.activity:activity-compose", version.ref = "android-activity" }
@@ -48,7 +50,7 @@ jvm-logback-classic = { module = "ch.qos.logback:logback-classic", version.ref =
 jvm-hiraki = { module = "com.zaxxer:HikariCP", version.ref = "jvm-hiraki" }
 jvm-redis = { module = "io.lettuce:lettuce-core", version.ref = "jvm-redis" }
 jvm-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:chamaleon-core", version.ref = "gradle-chamaleon" }
-jvm-postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
+jvm-postgresql = { module = "org.postgresql:postgresql", version.ref = "jvm-postgresql" }
 kmp-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kmp-coroutines" }
 kmp-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kmp-atomicfu" }
 kmp-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kmp-date-time" }

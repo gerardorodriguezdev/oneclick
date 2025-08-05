@@ -32,9 +32,9 @@ data class CreateDockerComposeConfigInput(
         @get:Input
         val imageVersion: Int,
         @get:Input
-        val imagePort: Int,
+        val imagePort: Int = 5432,
         @get:Input
-        val imageVolume: String,
+        val imageVolume: String = "/var/lib/postgresql/data",
         @get:Input
         val databaseName: String,
         @get:Input
@@ -48,8 +48,8 @@ data class CreateDockerComposeConfigInput(
         @get:Input
         val imageVersion: Int,
         @get:Input
-        val imagePort: Int,
+        val imagePort: Int = 6379,
         @get:Input
-        val imageVolume: String,
+        val imageVolume: String = "/data",
     )
 }
