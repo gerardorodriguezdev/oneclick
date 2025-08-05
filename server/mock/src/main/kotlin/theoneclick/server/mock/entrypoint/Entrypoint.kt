@@ -9,8 +9,8 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import theoneclick.server.mock.utils.mockHomes
+import theoneclick.server.mock.utils.mockJwt
 import theoneclick.server.shared.extensions.agent
-import theoneclick.shared.contracts.core.models.Jwt
 import theoneclick.shared.contracts.core.models.NonNegativeInt
 import theoneclick.shared.contracts.core.models.agents.Agent
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
@@ -43,12 +43,12 @@ private fun Application.configureRouting() {
 
         post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
             when (call.request.agent) {
-                Agent.MOBILE -> call.respond(RequestLoginResponse(jwt = Jwt.unsafe("")))
+                Agent.MOBILE -> call.respond(RequestLoginResponse(jwt = mockJwt()))
                 Agent.BROWSER -> call.respond(HttpStatusCode.OK)
             }
         }
 
-        get(ClientEndpoint.HOMES.route) {
+        post(ClientEndpoint.HOMES.route) {
             call.respond(
                 HomesResponse(
                     data = HomesResponse.Data(
