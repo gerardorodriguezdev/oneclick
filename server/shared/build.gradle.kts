@@ -28,6 +28,7 @@ kotlin {
                 implementation(libs.kmp.sqldelight.coroutines)
                 implementation(libs.jvm.bcrypt)
                 implementation(libs.jvm.redis)
+                implementation(libs.jvm.reactive)
                 implementation(projects.shared.contracts.core)
                 implementation(projects.shared.timeProvider)
                 implementation(projects.shared.dispatchers)

@@ -51,6 +51,7 @@ jvm-hiraki = { module = "com.zaxxer:HikariCP", version.ref = "jvm-hiraki" }
 jvm-redis = { module = "io.lettuce:lettuce-core", version.ref = "jvm-redis" }
 jvm-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:chamaleon-core", version.ref = "gradle-chamaleon" }
 jvm-postgresql = { module = "org.postgresql:postgresql", version.ref = "jvm-postgresql" }
+jvm-reactive = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactive", version.ref = "kmp-coroutines" }
 kmp-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kmp-coroutines" }
 kmp-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kmp-atomicfu" }
 kmp-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kmp-date-time" }
