@@ -1,0 +1,25 @@
+package theoneclick.shared.contracts.core.models
+
+import dev.drewhamilton.poko.Poko
+import kotlinx.serialization.Serializable
+
+@Poko
+@Serializable
+class PositiveLong private constructor(val value: Long) : Comparable<PositiveLong> {
+
+    init {
+        require(isValid(value)) { ERROR_MESSAGE }
+    }
+
+    override fun compareTo(other: PositiveLong): Int = value.compareTo(other.value)
+
+    companion object {
+        private const val ERROR_MESSAGE = "Value must be non-negative"
+
+        fun isValid(value: Long): Boolean = value >= 0
+
+        fun Long.toPositiveLong(): PositiveLong? = if (isValid(this)) PositiveLong(this) else null
+
+        fun unsafe(value: Long): PositiveLong = PositiveLong(value)
+    }
+}

@@ -1,0 +1,91 @@
+[
+  {
+    "platformType": "jvm",
+    "properties": [
+      {
+        "name": "IMAGE_PORT",
+        "value": "8080"
+      },
+      {
+        "name": "IMAGE_TAG",
+        "value": null
+      },
+      {
+        "name": "REGISTRY_LOCATION",
+        "value": null
+      },
+      {
+        "name": "REGISTRY_USERNAME",
+        "value": null
+      },
+      {
+        "name": "REGISTRY_PASSWORD",
+        "value": null
+      },
+      {
+        "name": "PROTOCOL",
+        "value": "http"
+      },
+      {
+        "name": "HOST",
+        "value": "0.0.0.0"
+      },
+      {
+        "name": "ENABLE_QAAPI",
+        "value": true
+      },
+      {
+        "name": "DISABLE_RATE_LIMIT",
+        "value": true
+      },
+      {
+        "name": "USE_MEMORY_DATA_SOURCES",
+        "value": true
+      },
+      {
+        "name": "JDBC_URL",
+        "value": "jdbc:postgresql://postgres:5432/SharedDatabase"
+      },
+      {
+        "name": "POSTGRES_USERNAME",
+        "value": "postgres"
+      },
+      {
+        "name": "POSTGRES_PASSWORD",
+        "value": "postgres"
+      },
+      {
+        "name": "REDIS_URL",
+        "value": "redis://redis:6379"
+      },
+      {
+        "name": "REDIS_USERNAME",
+        "value": null
+      },
+      {
+        "name": "REDIS_PASSWORD",
+        "value": null
+      },
+      {
+        "name": "JWT_SECRET_SIGN_KEY",
+        "value": "30db10b1baa440d7da9a68bee86e8a0b4f90d83c057ea490688a6da3da0f4a79"
+      },
+      {
+        "name": "JWT_SECRET_ENCRYPTION_KEY",
+        "value": "00112233445566778899aabbccddeeff"
+      },
+      {
+        "name": "JWT_REALM",
+        "value": "realm"
+      },
+      {
+        "name": "JWT_AUDIENCE",
+        "value": "audience"
+      },
+      {
+        "name": "JWT_ISSUER",
+        "value": "issuer"
+      }
+    ]
+  }
+]

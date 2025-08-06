@@ -5,7 +5,8 @@ plugins {
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kmp.build.config) apply false
-    alias(libs.plugins.detekt)
+    id("com.google.cloud.tools.jib") version "3.4.0" apply false
+    alias(libs.plugins.gradle.detekt)
 }
 
 detekt {
@@ -16,8 +17,8 @@ detekt {
 }
 
 dependencies {
-    detektPlugins(libs.detekt.formatting)
-    detektPlugins(libs.detekt.compose)
+    detektPlugins(libs.gradle.detekt.formatting)
+    detektPlugins(libs.gradle.detekt.compose)
 }
 
 tasks.withType<Detekt> detekt@{

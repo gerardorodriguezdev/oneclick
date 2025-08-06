@@ -1,8 +1,7 @@
 package buildLogic.convention.plugins
 
 import buildLogic.convention.extensions.plugins.AndroidAppExtension
-import buildLogic.convention.extensions.toJavaVersion
-import buildLogic.convention.extensions.toJvmTarget
+import buildLogic.convention.extensions.toJavaLanguageVersion
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.gradle.AppPlugin
@@ -11,7 +10,6 @@ import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
 import org.jetbrains.kotlin.gradle.dsl.KotlinMultiplatformExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinMultiplatformPluginWrapper
-import org.jetbrains.kotlin.gradle.plugin.KotlinSourceSetTree
 
 class AndroidAppPlugin : Plugin<Project> {
 
@@ -39,17 +37,15 @@ class AndroidAppPlugin : Plugin<Project> {
     @OptIn(ExperimentalKotlinGradlePluginApi::class)
     private fun Project.configureKotlinMultiplatformExtension(androidAppExtension: AndroidAppExtension) {
         extensions.configure(KotlinMultiplatformExtension::class.java) {
+            jvmToolchain {
+                languageVersion.set(androidAppExtension.jvmTarget.toJavaLanguageVersion())
+            }
+
             compilerOptions {
                 extraWarnings.set(true)
             }
 
-            androidTarget {
-                compilerOptions {
-                    jvmTarget.set(androidAppExtension.jvmTarget.toJvmTarget())
-                }
-
-                instrumentedTestVariant.sourceSetTree.set(KotlinSourceSetTree.test)
-            }
+            androidTarget()
         }
     }
 
@@ -88,11 +84,6 @@ class AndroidAppPlugin : Plugin<Project> {
                                 "src/androidMain/proguard-rules.pro"
                             )
                         }
-                    }
-
-                    compileOptions {
-                        sourceCompatibility = androidAppExtension.jvmTarget.get().toJavaVersion()
-                        targetCompatibility = androidAppExtension.jvmTarget.get().toJavaVersion()
                     }
 
                     buildFeatures {

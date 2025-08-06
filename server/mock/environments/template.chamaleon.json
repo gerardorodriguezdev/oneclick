@@ -4,12 +4,32 @@
   ],
   "propertyDefinitions": [
     {
-      "name": "host",
+      "name": "IMAGE_PORT",
+      "propertyType": "String"
+    },
+    {
+      "name": "IMAGE_TAG",
       "propertyType": "String",
-      "supportedPlatforms": [
-        "jvm"
-      ],
       "nullable": true
+    },
+    {
+      "name": "REGISTRY_LOCATION",
+      "propertyType": "String",
+      "nullable": true
+    },
+    {
+      "name": "REGISTRY_USERNAME",
+      "propertyType": "String",
+      "nullable": true
+    },
+    {
+      "name": "REGISTRY_PASSWORD",
+      "propertyType": "String",
+      "nullable": true
+    },
+    {
+      "name": "HOST",
+      "propertyType": "String"
     }
   ]
 }

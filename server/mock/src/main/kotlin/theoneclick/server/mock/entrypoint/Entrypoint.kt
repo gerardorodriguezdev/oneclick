@@ -3,25 +3,25 @@ package theoneclick.server.mock.entrypoint
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import io.ktor.server.application.*
-import io.ktor.server.cio.*
 import io.ktor.server.engine.*
+import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import theoneclick.server.mock.utils.mockHomes
+import theoneclick.server.mock.utils.mockJwt
 import theoneclick.server.shared.extensions.agent
-import theoneclick.shared.core.models.agents.Agent
-import theoneclick.shared.core.models.endpoints.ClientEndpoint
-import theoneclick.shared.core.models.entities.Device
-import theoneclick.shared.core.models.entities.Uuid
-import theoneclick.shared.core.models.requests.RequestLoginRequest
-import theoneclick.shared.core.models.responses.AddDeviceResponse
-import theoneclick.shared.core.models.responses.DevicesResponse
-import theoneclick.shared.core.models.responses.RequestLoginResponse
-import theoneclick.shared.core.models.responses.UserLoggedResponse
+import theoneclick.shared.contracts.core.models.NonNegativeInt
+import theoneclick.shared.contracts.core.models.agents.Agent
+import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
+import theoneclick.shared.contracts.core.models.requests.RequestLoginRequest
+import theoneclick.shared.contracts.core.models.responses.HomesResponse
+import theoneclick.shared.contracts.core.models.responses.RequestLoginResponse
+import theoneclick.shared.contracts.core.models.responses.UserLoggedResponse
 
-fun server(): EmbeddedServer<CIOApplicationEngine, CIOApplicationEngine.Configuration> =
+fun server(): EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration> =
     embeddedServer(
-        factory = CIO,
+        factory = Netty,
         port = 8080,
         module = {
             configureContentNegotiation()
@@ -36,16 +36,6 @@ private fun Application.configureContentNegotiation() {
 }
 
 private fun Application.configureRouting() {
-    val devices = mutableListOf<Device>(
-        Device.Blind(
-            id = Uuid("1"),
-            deviceName = "Device1",
-            room = "Room1",
-            isOpened = false,
-            rotation = 0,
-        )
-    )
-
     routing {
         get(ClientEndpoint.IS_USER_LOGGED.route) {
             call.respond<UserLoggedResponse>(UserLoggedResponse.Logged)
@@ -53,33 +43,21 @@ private fun Application.configureRouting() {
 
         post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
             when (call.request.agent) {
-                Agent.MOBILE -> call.respond(RequestLoginResponse("token"))
+                Agent.MOBILE -> call.respond(RequestLoginResponse(jwt = mockJwt()))
                 Agent.BROWSER -> call.respond(HttpStatusCode.OK)
             }
         }
 
-        get(ClientEndpoint.DEVICES.route) {
+        post(ClientEndpoint.HOMES.route) {
             call.respond(
-                DevicesResponse(
-                    devices = devices
+                HomesResponse(
+                    data = HomesResponse.Data(
+                        homes = mockHomes(5),
+                        pageIndex = NonNegativeInt.unsafe(5),
+                        canRequestMore = true,
+                    )
                 )
             )
-        }
-
-        post(ClientEndpoint.UPDATE_DEVICE.route) {
-            call.respond(HttpStatusCode.OK)
-        }
-
-        post(ClientEndpoint.ADD_DEVICE.route) {
-            val newDevice = Device.Blind(
-                id = Uuid(devices.last().id.value + "a"),
-                deviceName = "Device1",
-                room = "Room1",
-                isOpened = false,
-                rotation = 0,
-            )
-            devices.add(newDevice)
-            call.respond(AddDeviceResponse(newDevice))
         }
 
         get(ClientEndpoint.LOGOUT.route) {

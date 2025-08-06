@@ -8,11 +8,11 @@
       },
       {
         "name": "KEY_ALIAS",
-        "value": "alias"
+        "value": "key0"
       },
       {
         "name": "KEY_PASSWORD",
-        "value": "alias"
+        "value": "alias123"
       },
       {
         "name": "PROTOCOL",
@@ -33,19 +33,19 @@
     ]
   },
   {
-    "platformType": "wasm",
+    "platformType": "native",
     "properties": [
       {
         "name": "PROTOCOL",
-        "value": null
+        "value": "http"
       },
       {
         "name": "HOST",
-        "value": null
+        "value": "localhost"
       },
       {
         "name": "PORT",
-        "value": null
+        "value": "8080"
       },
       {
         "name": "IS_DEBUG",

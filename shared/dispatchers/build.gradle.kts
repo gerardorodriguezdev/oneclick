@@ -2,14 +2,10 @@ plugins {
     id("theoneclick.android.library")
     id("theoneclick.jvm.library")
     id("theoneclick.wasm.library")
-}
-
-jvmLibrary {
-    jvmTarget.set(libs.versions.jvm.api.get().toInt())
+    id("theoneclick.ios.library")
 }
 
 androidLibrary {
-    jvmTarget.set(libs.versions.jvm.api.get().toInt())
     namespace.set("theoneclick.shared.dispatchers")
     compileSdkVersion.set(libs.versions.android.api.get().toInt())
     minSdkVersion.set(libs.versions.android.api.get().toInt())

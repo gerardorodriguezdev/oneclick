@@ -1,41 +1,26 @@
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget
-
 plugins {
     `kotlin-dsl`
     alias(libs.plugins.kmp.serialization)
 }
 
 java {
-    val javaVersion = when (libs.versions.jvm.api.get().toInt()) {
-        17 -> JavaVersion.VERSION_17
-        21 -> JavaVersion.VERSION_21
-        else -> throw IllegalStateException("Version $this not supported")
-    }
-
-    sourceCompatibility = javaVersion
-    targetCompatibility = javaVersion
-}
-
-kotlin {
-    compilerOptions {
-        jvmTarget = when (libs.versions.jvm.api.get().toInt()) {
-            17 -> JvmTarget.JVM_17
-            21 -> JvmTarget.JVM_21
-            else -> throw IllegalStateException("Version $this not supported")
-        }
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(libs.versions.jvm.api.get().toInt()))
     }
 }
 
 dependencies {
-    implementation(libs.gradle.kmp.api)
-    implementation(libs.gradle.jvm.kotlin.api)
-    implementation(libs.gradle.kmp.ktor)
-    implementation(libs.gradle.kmp.compose)
+    implementation(libs.gradle.kmp.kotlin)
+    implementation(libs.gradle.jvm.kotlin)
+    implementation(libs.gradle.ktor)
+    implementation(libs.gradle.compose)
     implementation(libs.gradle.android.application)
     implementation(libs.gradle.android.library)
     implementation(libs.gradle.chamaleon)
-    implementation(libs.gradle.kmp.serialization)
-    implementation(libs.gradle.jvm.chamaleon)
+    implementation(libs.gradle.serialization)
+    implementation(libs.gradle.docker.compose)
+    implementation(libs.gradle.kaml)
+    implementation(libs.jvm.chamaleon)
 
     testImplementation(libs.kmp.test)
 }
@@ -68,6 +53,11 @@ gradlePlugin {
             implementationClass = "buildLogic.convention.plugins.AndroidAppPlugin"
         }
 
+        register("ios-app") {
+            id = "theoneclick.ios.app"
+            implementationClass = "buildLogic.convention.plugins.IOSAppPlugin"
+        }
+
         register("jvm-library") {
             id = "theoneclick.jvm.library"
             implementationClass = "buildLogic.convention.plugins.JvmLibraryPlugin"
@@ -81,6 +71,11 @@ gradlePlugin {
         register("android-library") {
             id = "theoneclick.android.library"
             implementationClass = "buildLogic.convention.plugins.AndroidLibraryPlugin"
+        }
+
+        register("ios-library") {
+            id = "theoneclick.ios.library"
+            implementationClass = "buildLogic.convention.plugins.IOSLibraryPlugin"
         }
     }
 }

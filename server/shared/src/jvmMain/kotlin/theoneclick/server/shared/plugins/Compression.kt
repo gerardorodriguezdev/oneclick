@@ -1,0 +1,17 @@
+package theoneclick.server.shared.plugins
+
+import io.ktor.http.*
+import io.ktor.server.application.*
+import io.ktor.server.plugins.compression.*
+import theoneclick.server.shared.di.Environment
+
+fun Application.configureCompression(environment: Environment) {
+    install(Compression) {
+        gzip {
+            minimumSize(1024)
+            condition {
+                request.headers[HttpHeaders.Referrer]?.startsWith(environment.baseUrl) == true
+            }
+        }
+    }
+}

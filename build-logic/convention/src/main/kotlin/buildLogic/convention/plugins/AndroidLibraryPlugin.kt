@@ -1,8 +1,6 @@
 package buildLogic.convention.plugins
 
 import buildLogic.convention.extensions.plugins.AndroidLibraryExtension
-import buildLogic.convention.extensions.toJavaVersion
-import buildLogic.convention.extensions.toJvmTarget
 import com.android.build.api.dsl.LibraryExtension
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.gradle.LibraryPlugin
@@ -17,7 +15,7 @@ class AndroidLibraryPlugin : Plugin<Project> {
         with(target) {
             applyPlugins()
             val androidLibraryExtension = createAndroidLibraryExtension()
-            configureKotlinMultiplatformExtension(androidLibraryExtension)
+            configureKotlinMultiplatformExtension()
             configureLibraryExtension(androidLibraryExtension)
         }
     }
@@ -45,11 +43,6 @@ class AndroidLibraryPlugin : Plugin<Project> {
                         minSdk = androidLibraryExtension.minSdkVersion.get()
                     }
 
-                    compileOptions {
-                        sourceCompatibility = androidLibraryExtension.jvmTarget.get().toJavaVersion()
-                        targetCompatibility = androidLibraryExtension.jvmTarget.get().toJavaVersion()
-                    }
-
                     buildFeatures {
                         compose = androidLibraryExtension.composeEnabled.get()
                     }
@@ -58,17 +51,9 @@ class AndroidLibraryPlugin : Plugin<Project> {
         }
     }
 
-    private fun Project.configureKotlinMultiplatformExtension(androidLibraryExtension: AndroidLibraryExtension) {
+    private fun Project.configureKotlinMultiplatformExtension() {
         extensions.configure(KotlinMultiplatformExtension::class.java) {
-            compilerOptions {
-                extraWarnings.set(true)
-            }
-
-            androidTarget {
-                compilerOptions {
-                    jvmTarget.set(androidLibraryExtension.jvmTarget.toJvmTarget())
-                }
-            }
+            androidTarget()
         }
     }
 

@@ -1,20 +1,35 @@
+import buildLogic.convention.extensions.plugins.WasmWebsiteExtension
 import com.codingfeline.buildkonfig.compiler.FieldSpec
-import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.extensions.ChamaleonExtension
 import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
     id("theoneclick.wasm.website")
     id("theoneclick.android.app")
+    id("theoneclick.ios.app")
     alias(libs.plugins.kmp.compose.compiler)
     alias(libs.plugins.kmp.compose.jetbrains)
     alias(libs.plugins.kmp.serialization)
     alias(libs.plugins.kmp.atomicfu)
     alias(libs.plugins.kmp.build.config)
-    alias(libs.plugins.chamaleon)
+    alias(libs.plugins.gradle.ksp)
+    alias(libs.plugins.gradle.chamaleon)
 }
 
 wasmWebsite {
     outputFileName.set("theoneclick.js")
+
+    webpackConfiguration {
+        port.set(3_000)
+        proxy.set(
+            WasmWebsiteExtension.WebpackConfiguration.Proxy(
+                context = mutableListOf("/api"),
+                target = "http://0.0.0.0:8080",
+            )
+        )
+        ignoredFiles.set(
+            listOf("**/local/**")
+        )
+    }
 }
 
 androidApp {
@@ -30,9 +45,9 @@ androidApp {
     versionName.set("1.0")
 
     storeFile.set(file("local/keystore.jks"))
-    storePassword.set(chamaleon.androidProviderString("KEYSTORE_PASSWORD"))
-    keyAlias.set(chamaleon.androidProviderString("KEY_ALIAS"))
-    keyPassword.set(chamaleon.androidProviderString("KEY_PASSWORD"))
+    storePassword.set(androidStringProvider("KEYSTORE_PASSWORD"))
+    keyAlias.set(androidStringProvider("KEY_ALIAS"))
+    keyPassword.set(androidStringProvider("KEY_PASSWORD"))
 
     composeEnabled.set(true)
 }
@@ -46,29 +61,43 @@ kotlin {
                 implementation(compose.material3)
                 implementation(compose.materialIconsExtended)
                 implementation(compose.ui)
-                implementation(compose.foundation)
                 implementation(compose.components.resources)
                 implementation(compose.components.uiToolingPreview)
+                implementation(ktorLibs.serialization.kotlinx.json)
+                implementation(ktorLibs.client.core)
+                implementation(ktorLibs.client.contentNegotiation)
+                implementation(ktorLibs.client.logging)
+                implementation(libs.kmp.window.classes)
                 implementation(libs.kmp.coroutines)
-                implementation(libs.kmp.ktor.client.auth)
+                implementation(ktorLibs.client.auth)
                 implementation(libs.kmp.navigation)
                 implementation(libs.kmp.viewModel)
-                implementation(libs.kmp.ktor.serialization.kotlinx.json)
-                implementation(libs.kmp.ktor.client.core)
-                implementation(libs.kmp.ktor.client.content.negotiation)
-                implementation(libs.kmp.ktor.client.logging)
-                implementation(libs.kmp.koin.core)
-                implementation(libs.kmp.koin.compose)
-                implementation(libs.kmp.koin.core.viewmodel)
-                implementation(libs.kmp.koin.compose.viewmodel)
                 implementation(libs.kmp.datetime)
                 implementation(libs.kmp.immutable)
-                implementation(libs.kmp.window.classes)
-                implementation(projects.shared.base)
+                implementation(libs.kmp.kotlin.inject)
+                implementation(libs.kmp.kotlin.inject.kmp)
+                implementation(libs.kmp.datastore)
+                implementation(projects.shared.logging)
+                implementation(projects.shared.contracts.core)
                 implementation(projects.shared.dispatchers)
                 implementation(projects.shared.timeProvider)
-                implementation(projects.shared.base)
+                implementation(projects.client.shared.di)
+                implementation(projects.client.shared.network)
+                implementation(projects.client.shared.navigation)
+                implementation(projects.client.shared.ui)
+                implementation(projects.client.shared.notifications)
+                implementation(projects.client.features.home)
+
                 api(libs.kmp.atomicfu)
+
+                project.dependencies {
+                    kspCommonMainMetadata(libs.gradle.ksp.kotlin.inject)
+                    kspAndroid(libs.gradle.ksp.kotlin.inject)
+                    kspWasmJs(libs.gradle.ksp.kotlin.inject)
+                    kspIosX64(libs.gradle.ksp.kotlin.inject)
+                    kspIosArm64(libs.gradle.ksp.kotlin.inject)
+                    kspIosSimulatorArm64(libs.gradle.ksp.kotlin.inject)
+                }
             }
         }
 
@@ -77,19 +106,15 @@ kotlin {
             dependencies {
                 implementation(libs.kmp.test)
                 implementation(compose.uiTest)
-                implementation(libs.kmp.test.koin)
-                implementation(libs.kmp.test.ktor.client.mock)
+                implementation(ktorLibs.client.mock)
                 implementation(libs.kmp.test.turbine)
-                implementation(projects.shared.testing)
             }
         }
 
         androidMain {
             dependencies {
                 implementation(libs.android.activity)
-                implementation(libs.android.datastore)
-                implementation(compose.preview)
-                implementation(libs.jvm.ktor.client.okhttp)
+                implementation(ktorLibs.client.okhttp)
             }
         }
 
@@ -116,7 +141,7 @@ kotlin {
 }
 
 buildkonfig {
-    packageName = "theoneclick.client.core.buildkonfig"
+    packageName = "theoneclick.client.app.buildkonfig"
 
     defaultConfigs {
         buildConfigField(FieldSpec.Type.STRING, name = "PROTOCOL", value = null, nullable = true)
@@ -126,34 +151,23 @@ buildkonfig {
     }
 
     targetConfigs {
-        create("wasmJs") {
-            buildConfigField(FieldSpec.Type.STRING, name = "PROTOCOL", value = null, nullable = true)
-            buildConfigField(FieldSpec.Type.STRING, name = "HOST", value = null, nullable = true)
-            buildConfigField(FieldSpec.Type.INT, name = "PORT", value = null, nullable = true)
-            buildConfigField(
-                FieldSpec.Type.BOOLEAN,
-                name = "IS_DEBUG",
-                value = chamaleon.selectedEnvironment().wasmPlatform.propertyBooleanValue("IS_DEBUG").toString()
-            )
-        }
-
         create("android") {
             buildConfigField(
                 FieldSpec.Type.STRING,
                 name = "PROTOCOL",
-                value = chamaleon.androidProviderString("PROTOCOL").get(),
+                value = androidStringProvider("PROTOCOL").get(),
                 nullable = true
             )
             buildConfigField(
                 FieldSpec.Type.STRING,
                 name = "HOST",
-                value = chamaleon.androidProviderString("HOST").get(),
+                value = androidStringProvider("HOST").get(),
                 nullable = true
             )
             buildConfigField(
                 FieldSpec.Type.INT,
                 name = "PORT",
-                value = chamaleon.androidProviderString("PORT").get(),
+                value = androidStringProvider("PORT").get(),
                 nullable = true
             )
             buildConfigField(
@@ -162,8 +176,39 @@ buildkonfig {
                 value = chamaleon.selectedEnvironment().androidPlatform.propertyBooleanValue("IS_DEBUG").toString()
             )
         }
+
+        listOf("iosSimulatorArm64", "iosX64", "iosArm64").forEach { target ->
+            create(target) {
+                buildConfigField(
+                    FieldSpec.Type.STRING,
+                    name = "PROTOCOL",
+                    value = iosStringProvider("PROTOCOL").get(),
+                    nullable = true
+                )
+                buildConfigField(
+                    FieldSpec.Type.STRING,
+                    name = "HOST",
+                    value = iosStringProvider("HOST").get(),
+                    nullable = true
+                )
+                buildConfigField(
+                    FieldSpec.Type.INT,
+                    name = "PORT",
+                    value = iosStringProvider("PORT").get(),
+                    nullable = true
+                )
+                buildConfigField(
+                    FieldSpec.Type.BOOLEAN,
+                    name = "IS_DEBUG",
+                    value = chamaleon.selectedEnvironment().nativePlatform.propertyBooleanValue("IS_DEBUG").toString()
+                )
+            }
+        }
     }
 }
 
-fun ChamaleonExtension.androidProviderString(name: String): Provider<String> =
+fun androidStringProvider(name: String): Provider<String> =
     provider { chamaleon.selectedEnvironment().androidPlatform.propertyStringValue(name) }
+
+fun iosStringProvider(name: String): Provider<String> =
+    provider { chamaleon.selectedEnvironment().nativePlatform.propertyStringValue(name) }

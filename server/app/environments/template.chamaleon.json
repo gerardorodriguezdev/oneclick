@@ -4,7 +4,11 @@
   ],
   "propertyDefinitions": [
     {
-      "name": "GITHUB_SHA",
+      "name": "IMAGE_PORT",
+      "propertyType": "String"
+    },
+    {
+      "name": "IMAGE_TAG",
       "propertyType": "String",
       "nullable": true
     },
@@ -24,11 +28,7 @@
       "nullable": true
     },
     {
-      "name": "SECRET_SIGN_KEY",
-      "propertyType": "String"
-    },
-    {
-      "name": "SECRET_ENCRYPTION_KEY",
+      "name": "PROTOCOL",
       "propertyType": "String"
     },
     {
@@ -44,8 +44,54 @@
       "propertyType": "Boolean"
     },
     {
-      "name": "IS_DEBUG",
+      "name": "USE_MEMORY_DATA_SOURCES",
       "propertyType": "Boolean"
+    },
+    {
+      "name": "JDBC_URL",
+      "propertyType": "String"
+    },
+    {
+      "name": "POSTGRES_USERNAME",
+      "propertyType": "String"
+    },
+    {
+      "name": "POSTGRES_PASSWORD",
+      "propertyType": "String"
+    },
+    {
+      "name": "REDIS_URL",
+      "propertyType": "String"
+    },
+    {
+      "name": "REDIS_USERNAME",
+      "propertyType": "String",
+      "nullable": true
+    },
+    {
+      "name": "REDIS_PASSWORD",
+      "propertyType": "String",
+      "nullable": true
+    },
+    {
+      "name": "JWT_SECRET_SIGN_KEY",
+      "propertyType": "String"
+    },
+    {
+      "name": "JWT_SECRET_ENCRYPTION_KEY",
+      "propertyType": "String"
+    },
+    {
+      "name": "JWT_REALM",
+      "propertyType": "String"
+    },
+    {
+      "name": "JWT_AUDIENCE",
+      "propertyType": "String"
+    },
+    {
+      "name": "JWT_ISSUER",
+      "propertyType": "String"
     }
   ]
 }

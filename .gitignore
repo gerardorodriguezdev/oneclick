@@ -1,12 +1,25 @@
-# Directories
-**/.idea
-**/.gradle
-**/build
-**/local
-**/.kotlin
-**/release
+# Build
+.kotlin
+.gradle
+**/build/
+!src/**/build/
 
-# Files
-.DS_Store
+# Local
+**/local/
 local.properties
 production.environment.chamaleon.json
+
+# IntelliJ
+.idea
+
+# XCode
+xcuserdata
+*.xcodeproj/*
+!*.xcodeproj/project.pbxproj
+!*.xcodeproj/xcshareddata/
+!*.xcodeproj/project.xcworkspace/
+!*.xcworkspace/contents.xcworkspacedata
+**/xcshareddata/WorkspaceSettings.xcsettings
+
+# Misc
+.DS_Store

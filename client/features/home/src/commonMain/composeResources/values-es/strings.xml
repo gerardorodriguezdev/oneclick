@@ -1,0 +1,13 @@
+<resources>
+    <string name="homesListScreen_placeholder_noHomesFound">Hogares no encontrados</string>
+    <string name="homesListScreen_snackbar_unknownError">Error desconocido</string>
+    <string name="homesListScreen_homeName_home">Hogar: %1$s</string>
+    <string name="homesListScreen_roomName_room">Cuarto: %1$s</string>
+    <string name="homesListScreen_deviceName_room">Dispositivo: %1$s</string>
+    <string name="homesListScreen_waterSensor_level">Nivel: %1$s</string>
+    <string name="homesListScreen_waterSensor_type">Sensor de agua</string>
+
+    <string name="userSettingsScreen_title_userSettings">Configuración de cuenta</string>
+    <string name="userSettingsScreen_snackbar_logout">Salir</string>
+    <string name="userSettingsScreen_snackbar_unknownError">Error desconocido</string>
+</resources>
