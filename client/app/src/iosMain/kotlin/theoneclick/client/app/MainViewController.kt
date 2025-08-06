@@ -2,7 +2,7 @@ package theoneclick.client.app
 
 import androidx.compose.ui.window.ComposeUIViewController
 import platform.UIKit.UIViewController
-import theoneclick.client.app.entrypoints.AppEntrypoint
+import theoneclick.client.app.TheOneClickApplication.appEntrypoint
 
-fun MainViewController(appEntrypoint: AppEntrypoint): UIViewController =
+fun MainViewController(): UIViewController =
     ComposeUIViewController { appEntrypoint.App() }
