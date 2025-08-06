@@ -65,7 +65,6 @@ class DefaultEncryptor(
             ivBytes + encryptedBytes
         }
 
-    @Suppress("MagicNumber")
     override fun decrypt(input: ByteArray): Result<String> =
         runCatching {
             val iv = input.sliceArray(0 until 16)

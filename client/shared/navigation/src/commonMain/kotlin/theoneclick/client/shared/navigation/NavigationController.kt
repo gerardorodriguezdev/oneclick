@@ -29,7 +29,7 @@ interface NavigationController {
     }
 }
 
-class DefaultNavigationController() : NavigationController {
+class DefaultNavigationController : NavigationController {
 
     private val mutableNavigationEvents = MutableSharedFlow<NavigationEvent>()
     override val navigationEvents: SharedFlow<NavigationEvent> = mutableNavigationEvents

@@ -70,7 +70,6 @@ class AppEntrypoint(
                         startDestination = Init,
                     ) {
                         composable<Init> {
-                            @Suppress("UnusedPrivateProperty")
                             val initViewModel = viewModel { appComponent.initViewModelFactory() }
                             LoadingScreen()
                         }

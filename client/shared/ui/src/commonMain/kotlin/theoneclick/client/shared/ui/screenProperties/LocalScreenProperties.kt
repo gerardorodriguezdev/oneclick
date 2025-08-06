@@ -8,7 +8,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 
-@Suppress("CompositionLocalAllowlist")
 val LocalScreenProperties = staticCompositionLocalOf { ScreenProperties(isCompact = true) }
 
 data class ScreenProperties(val isCompact: Boolean)

@@ -8,7 +8,6 @@ fun Application.configureRequestBodyLimit() {
     install(RequestBodyLimit)
 }
 
-@Suppress("ThrowExpression")
 private val RequestBodyLimit = createApplicationPlugin("RequestBodyLimit", ::RequestBodyLimitConfiguration) {
     val bodyLimit = pluginConfig.bodyLimit
 

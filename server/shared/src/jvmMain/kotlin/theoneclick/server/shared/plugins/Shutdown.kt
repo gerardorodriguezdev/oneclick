@@ -9,7 +9,6 @@ fun Application.configureShutdown(onShutdown: (application: Application) -> Unit
     }
 }
 
-@Suppress("ThrowExpression")
 private val Shutdown = createApplicationPlugin("Shutdown", ::ShutdownConfiguration) {
     val onShutdown = pluginConfig.onShutdown
 

@@ -51,7 +51,7 @@ class WasmRemoteAuthenticationDataSource(
             } catch (e: Exception) {
                 appLogger.e(
                     "Exception caught '${e.stackTraceToString()}' " +
-                            "while requesting logging user '${request.username.value}'"
+                        "while requesting logging user '${request.username.value}'"
                 )
                 RequestLoginResult.Error
             }

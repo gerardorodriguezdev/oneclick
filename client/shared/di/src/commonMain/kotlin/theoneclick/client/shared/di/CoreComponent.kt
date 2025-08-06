@@ -37,5 +37,6 @@ expect fun createCoreComponent(
     navigationController: NavigationController,
     dispatchersProvider: DispatchersProvider,
     httpClient: HttpClient,
-    authenticationDataSource: AuthenticationDataSource, notificationsController: NotificationsController,
+    authenticationDataSource: AuthenticationDataSource,
+    notificationsController: NotificationsController,
 ): CoreComponent

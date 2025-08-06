@@ -160,10 +160,14 @@ class JvmServerPlugin : Plugin<Project> {
     }
 
     private fun ChamaleonExtension?.toMap(): Map<String, String> =
-        if (this == null) emptyMap() else buildMap {
-            selectedEnvironmentOrNull()?.jvmPlatformOrNull?.properties?.forEach { (key, value) ->
-                value.value?.toString()?.let { valueString ->
-                    put(key, valueString)
+        if (this == null) {
+            emptyMap()
+        } else {
+            buildMap {
+                selectedEnvironmentOrNull()?.jvmPlatformOrNull?.properties?.forEach { (key, value) ->
+                    value.value?.toString()?.let { valueString ->
+                        put(key, valueString)
+                    }
                 }
             }
         }
