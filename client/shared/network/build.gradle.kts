@@ -34,6 +34,12 @@ kotlin {
             }
         }
 
+        iosMain {
+            dependencies {
+                implementation(ktorLibs.client.darwin)
+            }
+        }
+
         androidMain {
             dependencies {
                 implementation(ktorLibs.client.okhttp)
