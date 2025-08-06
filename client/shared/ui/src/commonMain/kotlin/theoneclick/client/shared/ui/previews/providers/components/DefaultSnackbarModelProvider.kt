@@ -30,12 +30,10 @@ class DefaultSnackbarModelProvider : PreviewParameterProvider<PreviewModel<Defau
             }
 
             @Suppress("EmptyFunctionBlock")
-            override fun dismiss() {
-            }
+            override fun dismiss() {}
 
             @Suppress("EmptyFunctionBlock")
-            override fun performAction() {
-            }
+            override fun performAction() {}
         }
 
         val errorDefaultSnackbarState = DefaultSnackbarState(

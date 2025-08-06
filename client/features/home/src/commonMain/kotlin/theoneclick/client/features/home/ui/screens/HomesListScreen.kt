@@ -127,7 +127,7 @@ private fun DeviceCard(device: UiDevice) {
 }
 
 @Composable
-private fun ColumnScope.WaterSensorInfo(waterSensor: UiDevice.UiWaterSensor) {
+private fun WaterSensorInfo(waterSensor: UiDevice.UiWaterSensor) {
     Body(text = stringResource(Res.string.homesListScreen_waterSensor_type))
 
     Label(

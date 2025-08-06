@@ -41,7 +41,7 @@ class AndroidRemoteAuthenticationDataSource(
                     else -> UserLoggedResult.UnknownError
                 }
             } catch (e: Exception) {
-                appLogger.e("Exception catched '${e.stackTraceToString()}' while checking if user is logged")
+                appLogger.e("Exception caught '${e.stackTraceToString()}' while checking if user is logged")
                 UserLoggedResult.UnknownError
             }
         }
@@ -70,7 +70,7 @@ class AndroidRemoteAuthenticationDataSource(
                 }
             } catch (e: Exception) {
                 appLogger.e(
-                    "Exception catched '${e.stackTraceToString()}' " +
+                    "Exception caught '${e.stackTraceToString()}' " +
                             "while requesting logging user '${request.username.value}'"
                 )
                 RequestLoginResult.Error
@@ -87,7 +87,7 @@ class AndroidRemoteAuthenticationDataSource(
                     else -> LogoutResult.Error
                 }
             } catch (e: Exception) {
-                appLogger.e("Exception catched '${e.stackTraceToString()}' while logging out")
+                appLogger.e("Exception caught '${e.stackTraceToString()}' while logging out")
 
                 LogoutResult.Error
             }

@@ -26,7 +26,7 @@ class MemoryHomesDataSource(
         homesEntry: HomesEntry,
         pageSize: PositiveInt,
         currentPageIndex: NonNegativeInt
-    ): PaginationResult<HomesEntry>? {
+    ): PaginationResult<HomesEntry> {
         val firstPageIndex = currentPageIndex.value + 1
         val lastPageIndex = firstPageIndex + pageSize.value
 

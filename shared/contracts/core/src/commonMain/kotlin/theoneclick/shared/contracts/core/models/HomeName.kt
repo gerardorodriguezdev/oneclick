@@ -2,7 +2,6 @@ package theoneclick.shared.contracts.core.models
 
 import dev.drewhamilton.poko.Poko
 import kotlinx.serialization.Serializable
-import kotlin.jvm.JvmInline
 
 @Poko
 @Serializable

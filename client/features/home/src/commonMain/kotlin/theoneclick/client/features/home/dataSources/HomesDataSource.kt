@@ -51,7 +51,7 @@ internal class RemoteHomesDataSource(
                     else -> HomesResult.Error
                 }
             } catch (e: Exception) {
-                appLogger.e("Exception catched '${e.stackTraceToString()}' while getting homes")
+                appLogger.e("Exception caught '${e.stackTraceToString()}' while getting homes")
                 HomesResult.Error
             }
         }
