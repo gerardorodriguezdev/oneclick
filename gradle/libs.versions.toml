@@ -37,6 +37,7 @@ gradle-ksp = "2.1.21-2.0.1"
 gradle-chamaleon = "1.0.15"
 gradle-docker-compose = "0.17.12"
 gradle-kaml = "0.85.0"
+gradle-jib = "3.4.0"
 
 [libraries]
 android-activity = { module = "androidx.activity:activity-compose", version.ref = "android-activity" }
@@ -95,3 +96,4 @@ kmp-poko = { id = "dev.drewhamilton.poko", version.ref = "kmp-poko" }
 gradle-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "gradle-detekt" }
 gradle-chamaleon = { id = "io.github.gerardorodriguezdev.chamaleon", version.ref = "gradle-chamaleon" }
 gradle-ksp = { id = "com.google.devtools.ksp", version.ref = "gradle-ksp" }
+gradle-jib = { id = "com.google.cloud.tools.jib", version.ref = "gradle-jib" }
