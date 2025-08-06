@@ -11,7 +11,7 @@ androidLibrary {
     namespace.set("theoneclick.client.shared.navigation")
     compileSdkVersion.set(libs.versions.android.api.get().toInt())
     minSdkVersion.set(libs.versions.android.api.get().toInt())
-    composeEnabled.set(false)
+    composeEnabled.set(true)
 }
 
 kotlin {
