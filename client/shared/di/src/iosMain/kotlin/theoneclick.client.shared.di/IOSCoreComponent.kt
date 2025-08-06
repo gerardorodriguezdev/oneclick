@@ -33,7 +33,7 @@ fun iosCoreComponent(
         logoutManager = logoutManager,
     )
 
-    return CoreComponent::class.create(
+    return createCoreComponent(
         appLogger = appLogger,
         dispatchersProvider = dispatchersProvider,
         navigationController = navigationController,
