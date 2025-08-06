@@ -27,7 +27,6 @@ kotlin {
                 implementation(projects.shared.logging)
 
                 project.dependencies {
-                    kspCommonMainMetadata(libs.gradle.ksp.kotlin.inject)
                     kspAndroid(libs.gradle.ksp.kotlin.inject)
                     kspWasmJs(libs.gradle.ksp.kotlin.inject)
                     kspIosX64(libs.gradle.ksp.kotlin.inject)

@@ -41,7 +41,7 @@ private fun Application.configureRouting() {
             call.respond<UserLoggedResponse>(UserLoggedResponse.Logged)
         }
 
-        post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
+        post(ClientEndpoint.REQUEST_LOGIN.route) { _: RequestLoginRequest ->
             when (call.request.agent) {
                 Agent.MOBILE -> call.respond(RequestLoginResponse(jwt = mockJwt()))
                 Agent.BROWSER -> call.respond(HttpStatusCode.OK)
