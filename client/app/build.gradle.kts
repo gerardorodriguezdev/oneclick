@@ -76,7 +76,6 @@ kotlin {
                 implementation(libs.kmp.immutable)
                 implementation(libs.kmp.kotlin.inject)
                 implementation(libs.kmp.kotlin.inject.kmp)
-                implementation(libs.kmp.datastore)
                 implementation(projects.shared.logging)
                 implementation(projects.shared.contracts.core)
                 implementation(projects.shared.dispatchers)
@@ -111,10 +110,17 @@ kotlin {
             }
         }
 
+        iosMain {
+            dependencies {
+                implementation(libs.kmp.datastore)
+            }
+        }
+
         androidMain {
             dependencies {
                 implementation(libs.android.activity)
                 implementation(ktorLibs.client.okhttp)
+                implementation(libs.kmp.datastore)
             }
         }
 

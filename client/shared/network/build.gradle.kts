@@ -22,7 +22,6 @@ kotlin {
                 implementation(ktorLibs.client.encoding)
                 implementation(ktorLibs.serialization.kotlinx.json)
                 implementation(libs.kmp.coroutines)
-                implementation(libs.kmp.datastore)
                 implementation(libs.kmp.datetime)
                 implementation(projects.shared.contracts.core)
                 implementation(projects.shared.dispatchers)
@@ -37,12 +36,14 @@ kotlin {
         iosMain {
             dependencies {
                 implementation(ktorLibs.client.darwin)
+                implementation(libs.kmp.datastore)
             }
         }
 
         androidMain {
             dependencies {
                 implementation(ktorLibs.client.okhttp)
+                implementation(libs.kmp.datastore)
             }
         }
     }
