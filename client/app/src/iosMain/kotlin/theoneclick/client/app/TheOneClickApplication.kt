@@ -14,6 +14,7 @@ import theoneclick.client.shared.di.iosCoreComponent
 import theoneclick.client.shared.navigation.DefaultNavigationController
 import theoneclick.client.shared.network.dataSources.IOSLocalTokenDataSource
 import theoneclick.client.shared.network.dataSources.IOSPreferences
+import theoneclick.client.shared.network.dataSources.Preferences
 import theoneclick.client.shared.network.platform.IOSLogoutManager
 import theoneclick.client.shared.network.platform.iosHttpClientEngine
 import theoneclick.client.shared.notifications.DefaultNotificationsController
@@ -37,7 +38,7 @@ internal object TheOneClickApplication {
                     create = false,
                     error = null,
                 )
-                (requireNotNull(documentDirectory).path + "/settings.preferences_pb").toPath()
+                (requireNotNull(documentDirectory).path + "/${Preferences.preferencesFileName("settings")}").toPath()
             },
             appLogger = appLogger,
             dispatchersProvider = dispatchersProvider,
