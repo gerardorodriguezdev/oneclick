@@ -40,7 +40,6 @@ gradle-kaml = "0.85.0"
 
 [libraries]
 android-activity = { module = "androidx.activity:activity-compose", version.ref = "android-activity" }
-android-datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "android-datastore" }
 android-test-leak-canary = { module = "com.squareup.leakcanary:leakcanary-android", version.ref = "android-test-leak-canary" }
 android-test-navigation = { module = "androidx.navigation:navigation-testing", version.ref = "android-test-navigation" }
 android-test-junit = { module = "androidx.compose.ui:ui-test-junit4-android", version.ref = "android-test-junit" }
@@ -52,6 +51,7 @@ jvm-redis = { module = "io.lettuce:lettuce-core", version.ref = "jvm-redis" }
 jvm-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:chamaleon-core", version.ref = "gradle-chamaleon" }
 jvm-postgresql = { module = "org.postgresql:postgresql", version.ref = "jvm-postgresql" }
 jvm-reactive = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactive", version.ref = "kmp-coroutines" }
+kmp-datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "android-datastore" }
 kmp-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kmp-coroutines" }
 kmp-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kmp-atomicfu" }
 kmp-datetime = { module = "org.jetbrains.kotlinx:kotlinx-datetime", version.ref = "kmp-date-time" }

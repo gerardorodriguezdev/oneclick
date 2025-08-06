@@ -15,13 +15,14 @@ kotlin {
     sourceSets {
         commonMain {
             dependencies {
-                implementation(libs.kmp.coroutines)
                 implementation(ktorLibs.client.core)
                 implementation(ktorLibs.client.auth)
                 implementation(ktorLibs.client.contentNegotiation)
                 implementation(ktorLibs.client.logging)
                 implementation(ktorLibs.client.encoding)
                 implementation(ktorLibs.serialization.kotlinx.json)
+                implementation(libs.kmp.coroutines)
+                implementation(libs.kmp.datastore)
                 implementation(libs.kmp.datetime)
                 implementation(projects.shared.contracts.core)
                 implementation(projects.shared.dispatchers)
@@ -35,7 +36,6 @@ kotlin {
 
         androidMain {
             dependencies {
-                implementation(libs.android.datastore)
                 implementation(ktorLibs.client.okhttp)
             }
         }
