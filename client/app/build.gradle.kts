@@ -177,30 +177,32 @@ buildkonfig {
             )
         }
 
-        create("native") {
-            buildConfigField(
-                FieldSpec.Type.STRING,
-                name = "PROTOCOL",
-                value = iosStringProvider("PROTOCOL").get(),
-                nullable = true
-            )
-            buildConfigField(
-                FieldSpec.Type.STRING,
-                name = "HOST",
-                value = iosStringProvider("HOST").get(),
-                nullable = true
-            )
-            buildConfigField(
-                FieldSpec.Type.INT,
-                name = "PORT",
-                value = iosStringProvider("PORT").get(),
-                nullable = true
-            )
-            buildConfigField(
-                FieldSpec.Type.BOOLEAN,
-                name = "IS_DEBUG",
-                value = chamaleon.selectedEnvironment().nativePlatform.propertyBooleanValue("IS_DEBUG").toString()
-            )
+        listOf("iosSimulatorArm64", "iosX64", "iosArm64").forEach { target ->
+            create(target) {
+                buildConfigField(
+                    FieldSpec.Type.STRING,
+                    name = "PROTOCOL",
+                    value = iosStringProvider("PROTOCOL").get(),
+                    nullable = true
+                )
+                buildConfigField(
+                    FieldSpec.Type.STRING,
+                    name = "HOST",
+                    value = iosStringProvider("HOST").get(),
+                    nullable = true
+                )
+                buildConfigField(
+                    FieldSpec.Type.INT,
+                    name = "PORT",
+                    value = iosStringProvider("PORT").get(),
+                    nullable = true
+                )
+                buildConfigField(
+                    FieldSpec.Type.BOOLEAN,
+                    name = "IS_DEBUG",
+                    value = chamaleon.selectedEnvironment().nativePlatform.propertyBooleanValue("IS_DEBUG").toString()
+                )
+            }
         }
     }
 }
