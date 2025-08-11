@@ -14,7 +14,6 @@ jvm-logback = "1.5.18"
 jvm-hiraki = "7.0.0"
 jvm-postgresql = "42.7.7"
 jvm-redis = "6.7.1.RELEASE"
-jvm-kafka = "2.2.1"
 kmp-kotlin-api = "2.2.0"
 kmp-atomicfu = "0.29.0"
 kmp-compose = "1.8.2"
@@ -53,7 +52,6 @@ jvm-redis = { module = "io.lettuce:lettuce-core", version.ref = "jvm-redis" }
 jvm-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:chamaleon-core", version.ref = "gradle-chamaleon" }
 jvm-postgresql = { module = "org.postgresql:postgresql", version.ref = "jvm-postgresql" }
 jvm-reactive = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactive", version.ref = "kmp-coroutines" }
-jvm-kafka = { module = "io.github.flaxoos:ktor-server-kafka", version.ref = "jvm-kafka" }
 kmp-datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "android-datastore" }
 kmp-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kmp-coroutines" }
 kmp-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kmp-atomicfu" }
