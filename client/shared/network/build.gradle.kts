@@ -22,7 +22,6 @@ kotlin {
                 implementation(ktorLibs.client.encoding)
                 implementation(ktorLibs.serialization.kotlinx.json)
                 implementation(libs.kmp.coroutines)
-                implementation(libs.kmp.datetime)
                 implementation(projects.shared.contracts.core)
                 implementation(projects.shared.dispatchers)
                 implementation(projects.shared.timeProvider)

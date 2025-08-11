@@ -35,5 +35,6 @@ private fun Application.configureModules(appComponent: AppComponent) {
     configureRateLimit(appComponent.environment, appComponent.timeProvider)
     configureCallId(appComponent.timeProvider)
     configureCompression(appComponent.environment)
+    configureKafka()
     configureShutdown(appComponent.onShutdown)
 }

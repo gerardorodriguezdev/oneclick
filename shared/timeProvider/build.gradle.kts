@@ -11,13 +11,3 @@ androidLibrary {
     minSdkVersion.set(libs.versions.android.api.get().toInt())
     composeEnabled.set(false)
 }
-
-kotlin {
-    sourceSets {
-        commonMain {
-            dependencies {
-                implementation(libs.kmp.datetime)
-            }
-        }
-    }
-}

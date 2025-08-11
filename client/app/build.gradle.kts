@@ -72,7 +72,6 @@ kotlin {
                 implementation(ktorLibs.client.auth)
                 implementation(libs.kmp.navigation)
                 implementation(libs.kmp.viewModel)
-                implementation(libs.kmp.datetime)
                 implementation(libs.kmp.immutable)
                 implementation(libs.kmp.kotlin.inject)
                 implementation(libs.kmp.kotlin.inject.kmp)
