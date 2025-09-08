@@ -25,12 +25,12 @@ class RedisUsersDataSource(
                 val userJson = syncCommands.getUser(findable) ?: return@withContext null
                 Json.decodeFromString<User>(userJson)
             }
-        } catch (e: SerializationException) {
-            logger.error("Error decoding user", e)
+        } catch (error: SerializationException) {
+            logger.error("Error decoding user", error)
             syncCommands.deleteUser(findable)
             null
-        } catch (e: Exception) {
-            logger.error("Error trying to find user", e)
+        } catch (error: Exception) {
+            logger.error("Error trying to find user", error)
             null
         }
 
@@ -41,8 +41,8 @@ class RedisUsersDataSource(
                 syncCommands.setUser(user, userJson)
                 true
             }
-        } catch (e: Exception) {
-            logger.error("Error trying to save user", e)
+        } catch (error: Exception) {
+            logger.error("Error trying to save user", error)
             false
         }
 

@@ -21,7 +21,7 @@ private fun Application.configureModules(appComponent: AppComponent) {
     configureCallLogging(appComponent.logger, appComponent.timeProvider)
     configureSerialization()
     configureSessions()
-    configureAuthentication(appComponent.environment, appComponent.encryptor)
+    configureAuthentication(appComponent.environment, appComponent.encryptor, appComponent.logger)
     configureRouting(
         environment = appComponent.environment,
         usersRepository = appComponent.usersRepository,

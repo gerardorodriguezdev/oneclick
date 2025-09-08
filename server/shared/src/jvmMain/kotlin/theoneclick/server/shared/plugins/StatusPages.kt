@@ -10,12 +10,12 @@ import io.ktor.util.logging.*
 fun Application.configureStatusPages(logger: Logger) {
     install(StatusPages) {
         exception<RequestValidationException> { call, cause ->
-            logger.debug(cause.stackTraceToString())
+            logger.error(cause)
             call.respond(HttpStatusCode.BadRequest)
         }
 
         exception<Throwable> { call, cause ->
-            logger.debug(cause.stackTraceToString())
+            logger.error(cause)
             call.respond(HttpStatusCode.InternalServerError)
         }
     }

@@ -34,8 +34,8 @@ class PostgresUsersDataSource(
 
                 dbUser?.toUser()
             }
-        } catch (e: Exception) {
-            logger.error("Error trying to find user", e)
+        } catch (error: Exception) {
+            logger.error("Error trying to find user", error)
             null
         }
 
@@ -50,8 +50,8 @@ class PostgresUsersDataSource(
         try {
             database.usersQueries.insertUser(user.toUsers())
             true
-        } catch (e: Exception) {
-            logger.error("Error trying to save user", e)
+        } catch (error: Exception) {
+            logger.error("Error trying to save user", error)
             false
         }
 

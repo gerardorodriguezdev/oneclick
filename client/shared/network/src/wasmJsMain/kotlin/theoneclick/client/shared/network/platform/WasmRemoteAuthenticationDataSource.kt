@@ -25,8 +25,8 @@ class WasmRemoteAuthenticationDataSource(
             try {
                 val response: UserLoggedResponse = httpClient.get(ClientEndpoint.IS_USER_LOGGED.route).body()
                 response.toUserLoggedResult()
-            } catch (e: Exception) {
-                appLogger.e("Exception caught '${e.stackTraceToString()}' while checking if user is logged")
+            } catch (error: Exception) {
+                appLogger.e("Exception caught '${error.stackTraceToString()}' while checking if user is logged")
                 UserLoggedResult.UnknownError
             }
         }
@@ -48,9 +48,9 @@ class WasmRemoteAuthenticationDataSource(
                     HttpStatusCode.OK -> RequestLoginResult.ValidLogin
                     else -> RequestLoginResult.Error
                 }
-            } catch (e: Exception) {
+            } catch (error: Exception) {
                 appLogger.e(
-                    "Exception caught '${e.stackTraceToString()}' " +
+                    "Exception caught '${error.stackTraceToString()}' " +
                         "while requesting logging user '${request.username.value}'"
                 )
                 RequestLoginResult.Error
@@ -66,8 +66,8 @@ class WasmRemoteAuthenticationDataSource(
                     HttpStatusCode.OK -> LogoutResult.Success
                     else -> LogoutResult.Error
                 }
-            } catch (e: Exception) {
-                appLogger.e("Exception caught '${e.stackTraceToString()}' while logging out")
+            } catch (error: Exception) {
+                appLogger.e("Exception caught '${error.stackTraceToString()}' while logging out")
                 LogoutResult.Error
             }
         }

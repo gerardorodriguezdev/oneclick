@@ -40,12 +40,12 @@ class RedisHomesDataSource(
                     totalPages = syncCommands.totalHomes(userId),
                 )
             }
-        } catch (e: SerializationException) {
-            logger.error("Error decoding homes", e)
+        } catch (error: SerializationException) {
+            logger.error("Error decoding homes", error)
             syncCommands.deleteHomes(userId)
             null
-        } catch (e: Exception) {
-            logger.error("Error trying to find homes", e)
+        } catch (error: Exception) {
+            logger.error("Error trying to find homes", error)
             null
         }
 

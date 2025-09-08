@@ -40,8 +40,8 @@ class IOSRemoteAuthenticationDataSource(
 
                     else -> UserLoggedResult.UnknownError
                 }
-            } catch (e: Exception) {
-                appLogger.e("Exception caught '${e.stackTraceToString()}' while checking if user is logged")
+            } catch (error: Exception) {
+                appLogger.e("Exception caught '${error.stackTraceToString()}' while checking if user is logged")
                 UserLoggedResult.UnknownError
             }
         }
@@ -68,10 +68,10 @@ class IOSRemoteAuthenticationDataSource(
 
                     else -> RequestLoginResult.Error
                 }
-            } catch (e: Exception) {
+            } catch (error: Exception) {
                 appLogger.e(
-                    "Exception caught '${e.stackTraceToString()}' " +
-                        "while requesting logging user '${request.username.value}'"
+                    "Exception caught '${error.stackTraceToString()}' " +
+                            "while requesting logging user '${request.username.value}'"
                 )
                 RequestLoginResult.Error
             }
@@ -86,8 +86,8 @@ class IOSRemoteAuthenticationDataSource(
                     HttpStatusCode.OK -> LogoutResult.Success
                     else -> LogoutResult.Error
                 }
-            } catch (e: Exception) {
-                appLogger.e("Exception caught '${e.stackTraceToString()}' while logging out")
+            } catch (error: Exception) {
+                appLogger.e("Exception caught '${error.stackTraceToString()}' while logging out")
 
                 LogoutResult.Error
             }

@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="server:app:runAll" type="GradleRunConfiguration" factoryName="Gradle" folderName="Server">
+  <configuration default="false" name="server:app:stopAll" type="GradleRunConfiguration" factoryName="Gradle" folderName="Server">
     <ExternalSystemSettings>
       <option name="env">
         <map>
@@ -15,7 +15,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value=":server:app:composeUp" />
+          <option value=":server:app:composeDown" />
         </list>
       </option>
       <option name="vmOptions" />

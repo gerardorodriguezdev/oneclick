@@ -1,4 +1,5 @@
-import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput
+import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput.PostgresDatabase
+import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput.RedisDatabase
 
 plugins {
     id("theoneclick.jvm.server")
@@ -25,7 +26,7 @@ jvmServer {
 
         postgresDatabase.set(
             provider {
-                CreateDockerComposeConfigInput.PostgresDatabase(
+                PostgresDatabase(
                     imageVersion = libs.versions.docker.postgres.api.get().toInt(),
                     databaseName = "SharedDatabase",
                     databaseUsername = stringProvider("POSTGRES_USERNAME").get(),
@@ -35,7 +36,7 @@ jvmServer {
         )
 
         redisDatabase.set(
-            CreateDockerComposeConfigInput.RedisDatabase(
+            RedisDatabase(
                 imageVersion = libs.versions.docker.redis.api.get().toInt(),
             )
         )

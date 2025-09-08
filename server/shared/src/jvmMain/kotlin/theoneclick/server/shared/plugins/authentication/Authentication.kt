@@ -9,6 +9,7 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
+import io.ktor.util.logging.*
 import theoneclick.server.shared.di.Environment
 import theoneclick.server.shared.models.JwtPayload
 import theoneclick.server.shared.security.Encryptor
@@ -16,20 +17,21 @@ import theoneclick.shared.contracts.core.models.Jwt
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 
-fun Application.configureAuthentication(environment: Environment, encryptor: Encryptor) {
+fun Application.configureAuthentication(environment: Environment, encryptor: Encryptor, logger: Logger) {
     install(Authentication) {
-        registerJwtSessionsAuthentication(encryptor)
+        registerJwtSessionsAuthentication(encryptor, logger)
         registerJwtAuthentication(environment, encryptor)
     }
 }
 
-private fun AuthenticationConfig.registerJwtSessionsAuthentication(encryptor: Encryptor) {
+private fun AuthenticationConfig.registerJwtSessionsAuthentication(encryptor: Encryptor, logger: Logger) {
     session<Jwt>(AuthenticationConstants.JWT_SESSION_AUTHENTICATION) {
         validate { jwt ->
             val jWTVerifier = encryptor.jwtVerifier
             val decodedJwt = try {
                 jWTVerifier.verify(jwt.value)
-            } catch (_: JWTVerificationException) {
+            } catch (error: JWTVerificationException) {
+                logger.error("Error decoding jwt", error)
                 null
             } ?: return@validate null
             val payload = decodedJwt.parsePayload()
@@ -54,7 +56,7 @@ private fun AuthenticationConfig.registerJwtAuthentication(
 
         validate { credential -> credential.toJwtPayload(encryptor) }
 
-        challenge { defaultScheme, realm ->
+        challenge { _, _ ->
             call.respond(HttpStatusCode.Unauthorized)
         }
     }

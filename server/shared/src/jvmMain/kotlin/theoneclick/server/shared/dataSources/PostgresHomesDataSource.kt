@@ -43,8 +43,8 @@ class PostgresHomesDataSource(
                     totalPages = totalHomes()
                 )
             }
-        } catch (e: Exception) {
-            logger.error("Error getting homes", e)
+        } catch (error: Exception) {
+            logger.error("Error getting homes", error)
             null
         }
 
@@ -120,8 +120,8 @@ class PostgresHomesDataSource(
                 async {
                     try {
                         Json.decodeFromString<Device>(device.device)
-                    } catch (e: SerializationException) {
-                        logger.error("Error deserializing device", e)
+                    } catch (error: SerializationException) {
+                        logger.error("Error deserializing device", error)
                         database.devicesQueries.deleteByDeviceId(device.device_id)
                         null
                     }
