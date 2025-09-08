@@ -43,6 +43,7 @@ androidApp {
     targetSdkVersion.set(libs.versions.android.api.get().toInt())
     versionCode.set(1)
     versionName.set("1.0")
+    testRunner.set("androidx.test.runner.AndroidJUnitRunner")
 
     storeFile.set(file("local/keystore.jks"))
     storePassword.set(androidStringProvider("KEYSTORE_PASSWORD"))

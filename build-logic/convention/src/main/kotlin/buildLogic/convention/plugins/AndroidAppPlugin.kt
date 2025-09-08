@@ -62,7 +62,7 @@ class AndroidAppPlugin : Plugin<Project> {
                         targetSdk = androidAppExtension.targetSdkVersion.get()
                         versionCode = androidAppExtension.versionCode.get()
                         versionName = androidAppExtension.versionName.get()
-                        testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+                        testInstrumentationRunner = androidAppExtension.testRunner.get()
                     }
 
                     signingConfigs {

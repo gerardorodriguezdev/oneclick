@@ -32,10 +32,14 @@ class IOSAppPlugin : Plugin<Project> {
                 iosSimulatorArm64()
             ).forEach { iosTarget ->
                 iosTarget.binaries.framework {
-                    baseName = "ComposeApp"
+                    baseName = IOS_APP_NAME
                     isStatic = true
                 }
             }
         }
+    }
+
+    private companion object {
+        const val IOS_APP_NAME = "ComposeApp"
     }
 }

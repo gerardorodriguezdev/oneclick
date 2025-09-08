@@ -12,6 +12,7 @@ interface AndroidAppExtension {
     val targetSdkVersion: Property<Int>
     val versionCode: Property<Int>
     val versionName: Property<String>
+    val testRunner: Property<String>
     val composeEnabled: Property<Boolean>
     val storeFile: Property<File>
     val storePassword: Property<String>
