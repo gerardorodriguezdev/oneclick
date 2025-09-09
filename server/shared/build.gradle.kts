@@ -1,7 +1,6 @@
 plugins {
     id("theoneclick.jvm.library")
     alias(libs.plugins.kmp.atomicfu)
-    alias(libs.plugins.kmp.sqldelight)
     alias(libs.plugins.kmp.serialization)
     alias(libs.plugins.gradle.ksp)
     alias(libs.plugins.kmp.poko)
@@ -24,11 +23,7 @@ kotlin {
                 implementation(ktorLibs.server.sessions)
                 implementation(ktorLibs.server.auth.jwt)
                 implementation(libs.kmp.kotlin.inject)
-                implementation(libs.kmp.sqldelight)
-                implementation(libs.kmp.sqldelight.coroutines)
                 implementation(libs.jvm.bcrypt)
-                implementation(libs.jvm.redis)
-                implementation(libs.jvm.reactive)
                 implementation(projects.shared.contracts.core)
                 implementation(projects.shared.timeProvider)
                 implementation(projects.shared.dispatchers)
@@ -36,15 +31,6 @@ kotlin {
 
                 project.dependencies.kspJvm(libs.gradle.ksp.kotlin.inject)
             }
-        }
-    }
-}
-
-sqldelight {
-    databases {
-        create("SharedDatabase") {
-            packageName.set("theoneclick.server.shared.postgresql")
-            dialect(libs.kmp.sqldelight.postgresql)
         }
     }
 }

@@ -8,19 +8,19 @@
       },
       {
         "name": "IMAGE_TAG",
-        "value": null
+        "value": "latest"
       },
       {
         "name": "REGISTRY_LOCATION",
-        "value": null
+        "value": "registryLocation"
       },
       {
         "name": "REGISTRY_USERNAME",
-        "value": null
+        "value": "username"
       },
       {
         "name": "REGISTRY_PASSWORD",
-        "value": null
+        "value": "password"
       },
       {
         "name": "PROTOCOL",
@@ -40,11 +40,11 @@
       },
       {
         "name": "USE_MEMORY_DATA_SOURCES",
-        "value": true
+        "value": false
       },
       {
         "name": "JDBC_URL",
-        "value": "jdbc:postgresql://postgres:5432/AuthDatabase"
+        "value": "jdbc:postgresql://postgres:5432/HomesDatabase"
       },
       {
         "name": "POSTGRES_USERNAME",

@@ -44,7 +44,7 @@
       },
       {
         "name": "JDBC_URL",
-        "value": "jdbc:postgresql://postgres:5432/AuthDatabase"
+        "value": "jdbc:postgresql://postgres:5432/HomesDatabase"
       },
       {
         "name": "POSTGRES_USERNAME",

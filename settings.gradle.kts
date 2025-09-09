@@ -45,8 +45,8 @@ include(
 )
 
 include(
-    "server:app",
     "server:services:auth",
+    "server:services:homes",
     "server:mock",
     "server:shared",
 )

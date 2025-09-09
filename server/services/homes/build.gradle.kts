@@ -10,10 +10,10 @@ plugins {
 
 jvmServer {
     jvmTarget.set(libs.versions.jvm.api.get().toInt())
-    mainClass.set("theoneclick.server.services.auth.ApplicationKt")
+    mainClass.set("theoneclick.server.services.homes.ApplicationKt")
 
     dockerConfiguration {
-        imageName.set("auth")
+        imageName.set("homes")
         imagePort.set(intProvider("IMAGE_PORT"))
         imageTag.set(stringProvider("IMAGE_TAG"))
         imageRegistryUrl.set(stringProvider("REGISTRY_LOCATION"))
@@ -29,7 +29,7 @@ jvmServer {
             provider {
                 PostgresDatabase(
                     imageVersion = libs.versions.docker.postgres.api.get().toInt(),
-                    databaseName = "AuthDatabase",
+                    databaseName = "HomesDatabase",
                     databaseUsername = stringProvider("POSTGRES_USERNAME").get(),
                     databasePassword = stringProvider("POSTGRES_PASSWORD").get(),
                 )
@@ -73,8 +73,8 @@ dependencies {
 
 sqldelight {
     databases {
-        create("AuthDatabase") {
-            packageName.set("theoneclick.server.services.auth.postgresql")
+        create("HomesDatabase") {
+            packageName.set("theoneclick.server.services.homes.postgresql")
             dialect(libs.kmp.sqldelight.postgresql)
         }
     }

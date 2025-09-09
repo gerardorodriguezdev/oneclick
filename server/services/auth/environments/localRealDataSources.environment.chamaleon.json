@@ -44,7 +44,7 @@
       },
       {
         "name": "JDBC_URL",
-        "value": "jdbc:postgresql://postgres:5432/SharedDatabase"
+        "value": "jdbc:postgresql://postgres:5432/AuthDatabase"
       },
       {
         "name": "POSTGRES_USERNAME",
