@@ -31,7 +31,7 @@ class IOSRemoteAuthenticationDataSource(
                     return@withContext UserLoggedResult.NotLogged
                 }
 
-                val response = httpClient.get(ClientEndpoint.IS_USER_LOGGED.route)
+                val response = httpClient.get(ClientEndpoint.IS_USER_LOGGED)
                 when (response.status) {
                     HttpStatusCode.OK -> {
                         val isUserLoggedResponse: UserLoggedResponse = response.body()
@@ -55,7 +55,7 @@ class IOSRemoteAuthenticationDataSource(
     override suspend fun login(request: RequestLoginRequest): RequestLoginResult =
         withContext(dispatchersProvider.io()) {
             try {
-                val response = httpClient.post(ClientEndpoint.REQUEST_LOGIN.route) {
+                val response = httpClient.post(ClientEndpoint.REQUEST_LOGIN) {
                     setBody(request)
                 }
 
@@ -80,7 +80,7 @@ class IOSRemoteAuthenticationDataSource(
     override suspend fun logout(): LogoutResult =
         withContext(dispatchersProvider.io()) {
             try {
-                val response = httpClient.get(ClientEndpoint.LOGOUT.route)
+                val response = httpClient.get(ClientEndpoint.LOGOUT)
 
                 when (response.status) {
                     HttpStatusCode.OK -> LogoutResult.Success

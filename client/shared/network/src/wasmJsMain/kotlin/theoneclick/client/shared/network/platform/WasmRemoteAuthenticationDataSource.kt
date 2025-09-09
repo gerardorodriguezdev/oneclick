@@ -23,7 +23,7 @@ class WasmRemoteAuthenticationDataSource(
     override suspend fun isUserLogged(): UserLoggedResult =
         withContext(dispatchersProvider.io()) {
             try {
-                val response: UserLoggedResponse = httpClient.get(ClientEndpoint.IS_USER_LOGGED.route).body()
+                val response: UserLoggedResponse = httpClient.get(ClientEndpoint.IS_USER_LOGGED).body()
                 response.toUserLoggedResult()
             } catch (error: Exception) {
                 appLogger.e("Exception caught '${error.stackTraceToString()}' while checking if user is logged")
@@ -40,7 +40,7 @@ class WasmRemoteAuthenticationDataSource(
     override suspend fun login(request: RequestLoginRequest): RequestLoginResult =
         withContext(dispatchersProvider.io()) {
             try {
-                val response = httpClient.post(ClientEndpoint.REQUEST_LOGIN.route) {
+                val response = httpClient.post(ClientEndpoint.REQUEST_LOGIN) {
                     setBody(request)
                 }
 
@@ -51,7 +51,7 @@ class WasmRemoteAuthenticationDataSource(
             } catch (error: Exception) {
                 appLogger.e(
                     "Exception caught '${error.stackTraceToString()}' " +
-                        "while requesting logging user '${request.username.value}'"
+                            "while requesting logging user '${request.username.value}'"
                 )
                 RequestLoginResult.Error
             }
@@ -60,7 +60,7 @@ class WasmRemoteAuthenticationDataSource(
     override suspend fun logout(): LogoutResult =
         withContext(dispatchersProvider.io()) {
             try {
-                val response = httpClient.get(ClientEndpoint.LOGOUT.route)
+                val response = httpClient.get(ClientEndpoint.LOGOUT)
 
                 when (response.status) {
                     HttpStatusCode.OK -> LogoutResult.Success

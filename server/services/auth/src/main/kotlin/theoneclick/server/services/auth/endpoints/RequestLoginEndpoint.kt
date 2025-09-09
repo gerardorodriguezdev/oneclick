@@ -5,10 +5,10 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import theoneclick.server.services.auth.dataSources.base.UsersDataSource
+import theoneclick.server.services.auth.repositories.UsersRepository
 import theoneclick.server.shared.extensions.agent
 import theoneclick.server.shared.models.JwtPayload
 import theoneclick.server.shared.models.User
-import theoneclick.server.services.auth.repositories.UsersRepository
 import theoneclick.server.shared.security.Encryptor
 import theoneclick.server.shared.security.UuidProvider
 import theoneclick.shared.contracts.core.models.Jwt
@@ -24,7 +24,7 @@ fun Routing.requestLoginEndpoint(
     encryptor: Encryptor,
     uuidProvider: UuidProvider,
 ) {
-    post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
+    post(ClientEndpoint.REQUEST_LOGIN) { requestLoginRequest: RequestLoginRequest ->
         val username = requestLoginRequest.username
         val password = requestLoginRequest.password.value
         val user = usersRepository.user(UsersDataSource.Findable.ByUsername(username))

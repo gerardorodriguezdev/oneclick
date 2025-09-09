@@ -10,7 +10,7 @@ import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 fun Routing.logoutEndpoint() {
     defaultAuthentication {
-        get(ClientEndpoint.LOGOUT.route) {
+        get(ClientEndpoint.LOGOUT) {
             call.sessions.clear<Jwt>()
             call.respond(HttpStatusCode.OK)
         }
