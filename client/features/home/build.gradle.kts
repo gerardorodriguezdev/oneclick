@@ -35,6 +35,7 @@ kotlin {
                 implementation(libs.kmp.kotlin.inject)
                 implementation(libs.kmp.kotlin.inject.kmp)
                 implementation(projects.shared.contracts.core)
+                implementation(projects.shared.contracts.homes)
                 implementation(projects.shared.dispatchers)
                 implementation(projects.shared.timeProvider)
                 implementation(projects.shared.logging)

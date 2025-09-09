@@ -78,6 +78,7 @@ kotlin {
                 implementation(libs.kmp.kotlin.inject.kmp)
                 implementation(projects.shared.logging)
                 implementation(projects.shared.contracts.core)
+                implementation(projects.shared.contracts.auth)
                 implementation(projects.shared.dispatchers)
                 implementation(projects.shared.timeProvider)
                 implementation(projects.client.shared.di)

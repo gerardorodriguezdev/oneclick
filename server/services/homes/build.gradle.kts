@@ -58,6 +58,7 @@ dependencies {
     implementation(libs.jvm.postgresql)
     implementation(projects.shared.logging)
     implementation(projects.shared.contracts.core)
+    implementation(projects.shared.contracts.homes)
     implementation(projects.shared.timeProvider)
     implementation(projects.shared.dispatchers)
     implementation(projects.server.shared)

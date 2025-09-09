@@ -42,11 +42,13 @@ include(
     "shared:dispatchers",
     "shared:timeProvider",
     "shared:contracts:core",
+    "shared:contracts:auth",
+    "shared:contracts:homes",
 )
 
 include(
     "server:services:auth",
     "server:services:homes",
-    "server:mock",
+    "server:services:mock",
     "server:shared",
 )
