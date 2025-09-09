@@ -8,16 +8,16 @@ import io.ktor.util.logging.*
 import io.lettuce.core.ExperimentalLettuceCoroutinesApi
 import io.lettuce.core.RedisClient
 import io.lettuce.core.api.coroutines
+import theoneclick.server.services.auth.dataSources.MemoryUsersDataSource
+import theoneclick.server.services.auth.dataSources.PostgresUsersDataSource
+import theoneclick.server.services.auth.dataSources.RedisUsersDataSource
 import theoneclick.server.services.auth.di.AppComponent
 import theoneclick.server.services.auth.di.create
 import theoneclick.server.services.auth.entrypoint.server
-import theoneclick.server.shared.dataSources.*
+import theoneclick.server.services.auth.postgresql.AuthDatabase
+import theoneclick.server.services.auth.repositories.DefaultUsersRepository
+import theoneclick.server.services.auth.repositories.UsersRepository
 import theoneclick.server.shared.di.Environment
-import theoneclick.server.shared.postgresql.SharedDatabase
-import theoneclick.server.shared.repositories.DefaultHomesRepository
-import theoneclick.server.shared.repositories.DefaultUsersRepository
-import theoneclick.server.shared.repositories.HomesRepository
-import theoneclick.server.shared.repositories.UsersRepository
 import theoneclick.server.shared.security.DefaultEncryptor
 import theoneclick.server.shared.security.DefaultSecureRandomProvider
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
@@ -68,7 +68,6 @@ fun main() {
         timeProvider = timeProvider,
         logger = logger,
         usersRepository = repositories.usersRepository,
-        homesRepository = repositories.homesRepository,
         onShutdown = { application ->
             repositories.onShutdown(application)
         }
@@ -83,15 +82,8 @@ private fun memoryRepositories(): Repositories {
         memoryUsersDataSource = memoryUsersDataSource,
     )
 
-    val memoryHomesDataSource = MemoryHomesDataSource()
-    val homesRepository = DefaultHomesRepository(
-        memoryHomesDataSource = memoryHomesDataSource,
-        diskHomesDataSource = memoryHomesDataSource,
-    )
-
     return Repositories(
         usersRepository = usersRepository,
-        homesRepository = homesRepository,
         onShutdown = {},
     )
 }
@@ -110,8 +102,8 @@ private fun databaseRepositories(
     }
     val hikariDataSource = HikariDataSource(hikariConfig)
     val driver = hikariDataSource.asJdbcDriver()
-    val sharedDatabase = SharedDatabase(driver)
-    SharedDatabase.Schema.create(driver)
+    val authDatabase = AuthDatabase(driver)
+    AuthDatabase.Schema.create(driver)
 
     val redisClient = RedisClient.create(environment.redisUrl)
     val redisConnection = redisClient.connect()
@@ -121,26 +113,14 @@ private fun databaseRepositories(
         dispatchersProvider = dispatchersProvider,
         logger = logger,
     )
-    val diskUsersDataSource = PostgresUsersDataSource(sharedDatabase, dispatchersProvider, logger)
+    val diskUsersDataSource = PostgresUsersDataSource(authDatabase, dispatchersProvider, logger)
     val usersRepository = DefaultUsersRepository(
         diskUsersDataSource = diskUsersDataSource,
         memoryUsersDataSource = memoryUsersDataSource,
     )
 
-    val memoryHomesDataSource = RedisHomesDataSource(
-        syncCommands = redisConnection.coroutines(),
-        dispatchersProvider = dispatchersProvider,
-        logger = logger,
-    )
-    val diskHomesDataSource = PostgresHomesDataSource(sharedDatabase, dispatchersProvider, logger)
-    val homesRepository = DefaultHomesRepository(
-        memoryHomesDataSource = memoryHomesDataSource,
-        diskHomesDataSource = diskHomesDataSource,
-    )
-
     return Repositories(
         usersRepository = usersRepository,
-        homesRepository = homesRepository,
         onShutdown = {
             driver.close()
             redisConnection.close()
@@ -151,6 +131,5 @@ private fun databaseRepositories(
 
 private class Repositories(
     val usersRepository: UsersRepository,
-    val homesRepository: HomesRepository,
     val onShutdown: (application: Application) -> Unit,
 )

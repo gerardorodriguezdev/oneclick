@@ -3,6 +3,7 @@ import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerCom
 
 plugins {
     id("theoneclick.jvm.server")
+    alias(libs.plugins.kmp.sqldelight)
     alias(libs.plugins.kmp.serialization)
     alias(libs.plugins.gradle.ksp)
 }
@@ -68,6 +69,15 @@ dependencies {
     testImplementation(libs.kmp.test)
 
     ksp(libs.gradle.ksp.kotlin.inject)
+}
+
+sqldelight {
+    databases {
+        create("AuthDatabase") {
+            packageName.set("theoneclick.server.services.auth.postgresql")
+            dialect(libs.kmp.sqldelight.postgresql)
+        }
+    }
 }
 
 fun stringProvider(name: String): Provider<String> =

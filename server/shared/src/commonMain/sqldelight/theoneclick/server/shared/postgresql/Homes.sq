@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS homes (
-    user_id CHAR(36) REFERENCES users(user_id) ON DELETE CASCADE,
+    user_id CHAR(36) NOT NULL,
     home_id CHAR(36) PRIMARY KEY,
     home_name VARCHAR(20) NOT NULL
 );

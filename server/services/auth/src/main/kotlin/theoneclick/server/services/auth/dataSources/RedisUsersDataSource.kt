@@ -1,4 +1,4 @@
-package theoneclick.server.shared.dataSources
+package theoneclick.server.services.auth.dataSources
 
 import io.ktor.util.logging.*
 import io.lettuce.core.ExperimentalLettuceCoroutinesApi
@@ -6,7 +6,7 @@ import io.lettuce.core.api.coroutines.RedisCoroutinesCommands
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import theoneclick.server.shared.dataSources.base.UsersDataSource
+import theoneclick.server.services.auth.dataSources.base.UsersDataSource
 import theoneclick.server.shared.models.User
 import theoneclick.shared.contracts.core.models.Username
 import theoneclick.shared.contracts.core.models.Uuid

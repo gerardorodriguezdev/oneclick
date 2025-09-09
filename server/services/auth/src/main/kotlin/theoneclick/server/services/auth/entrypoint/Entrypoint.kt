@@ -23,11 +23,9 @@ private fun Application.configureModules(appComponent: AppComponent) {
     configureSessions()
     configureAuthentication(appComponent.environment, appComponent.encryptor, appComponent.logger)
     configureRouting(
-        environment = appComponent.environment,
         usersRepository = appComponent.usersRepository,
         encryptor = appComponent.encryptor,
         uuidProvider = appComponent.uuidProvider,
-        homesRepository = appComponent.homesRepository,
     )
     configureStatusPages(appComponent.logger)
     configureRequestValidation()

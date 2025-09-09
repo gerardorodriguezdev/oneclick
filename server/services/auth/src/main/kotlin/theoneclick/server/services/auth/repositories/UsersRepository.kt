@@ -1,6 +1,6 @@
-package theoneclick.server.shared.repositories
+package theoneclick.server.services.auth.repositories
 
-import theoneclick.server.shared.dataSources.base.UsersDataSource
+import theoneclick.server.services.auth.dataSources.base.UsersDataSource
 import theoneclick.server.shared.models.User
 
 interface UsersRepository {

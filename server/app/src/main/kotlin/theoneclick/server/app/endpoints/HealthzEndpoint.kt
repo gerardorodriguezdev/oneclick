@@ -3,10 +3,9 @@ package theoneclick.server.app.endpoints
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import theoneclick.server.shared.models.endpoints.ServerEndpoint
 
 fun Routing.healthzEndpoint() {
-    get(ServerEndpoint.HEALTHZ.route) {
+    get("/api/healthz/app") {
         call.respond(HttpStatusCode.OK)
     }
 }
