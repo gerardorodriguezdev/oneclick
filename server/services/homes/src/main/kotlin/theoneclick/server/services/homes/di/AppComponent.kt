@@ -6,7 +6,7 @@ import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.Provides
 import me.tatarka.inject.annotations.Scope
 import theoneclick.server.services.homes.repositories.HomesRepository
-import theoneclick.server.shared.di.Environment
+import theoneclick.server.shared.Environment
 import theoneclick.server.shared.security.DefaultUuidProvider
 import theoneclick.server.shared.security.Encryptor
 import theoneclick.server.shared.security.UuidProvider

@@ -61,7 +61,7 @@ dependencies {
     implementation(projects.shared.contracts.homes)
     implementation(projects.shared.timeProvider)
     implementation(projects.shared.dispatchers)
-    implementation(projects.server.shared)
+    implementation(projects.server.shared.core)
 
     testImplementation(ktorLibs.server.testHost)
     testImplementation(ktorLibs.client.core)

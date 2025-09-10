@@ -7,8 +7,8 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import theoneclick.server.services.auth.dataSources.base.UsersDataSource
-import theoneclick.server.shared.models.User
-import theoneclick.shared.contracts.core.models.Username
+import theoneclick.server.services.auth.dataSources.models.User
+import theoneclick.shared.contracts.auth.models.Username
 import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 

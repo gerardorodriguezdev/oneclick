@@ -1,7 +1,7 @@
 package theoneclick.server.services.auth.dataSources.base
 
-import theoneclick.server.shared.models.User
-import theoneclick.shared.contracts.core.models.Username
+import theoneclick.server.services.auth.dataSources.models.User
+import theoneclick.shared.contracts.auth.models.Username
 import theoneclick.shared.contracts.core.models.Uuid
 
 interface UsersDataSource {

@@ -1,7 +1,7 @@
 package theoneclick.server.services.auth.dataSources
 
 import theoneclick.server.services.auth.dataSources.base.UsersDataSource
-import theoneclick.server.shared.models.User
+import theoneclick.server.services.auth.dataSources.models.User
 import theoneclick.shared.contracts.core.models.Uuid
 import java.util.concurrent.ConcurrentHashMap
 

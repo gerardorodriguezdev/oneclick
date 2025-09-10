@@ -5,7 +5,7 @@ import io.ktor.server.routing.*
 import theoneclick.server.services.homes.repositories.HomesRepository
 import theoneclick.server.shared.extensions.defaultAuthentication
 import theoneclick.server.shared.extensions.requireJwtPayload
-import theoneclick.server.shared.models.HomesEntry
+import theoneclick.server.services.homes.dataSources.models.HomesEntry
 import theoneclick.shared.contracts.core.models.PaginationResult
 import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint

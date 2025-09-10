@@ -1,7 +1,7 @@
 package theoneclick.server.services.homes.dataSources
 
 import theoneclick.server.services.homes.dataSources.base.HomesDataSource
-import theoneclick.server.shared.models.HomesEntry
+import theoneclick.server.services.homes.dataSources.models.HomesEntry
 import theoneclick.shared.contracts.core.models.*
 
 class MemoryHomesDataSource(

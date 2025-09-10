@@ -30,7 +30,7 @@ dependencies {
     implementation(projects.shared.contracts.core)
     implementation(projects.shared.contracts.auth)
     implementation(projects.shared.contracts.homes)
-    implementation(projects.server.shared)
+    implementation(projects.server.shared.core)
     implementation(libs.jvm.logback.classic)
 }
 

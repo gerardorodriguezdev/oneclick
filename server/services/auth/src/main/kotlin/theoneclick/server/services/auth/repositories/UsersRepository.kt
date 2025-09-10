@@ -1,7 +1,7 @@
 package theoneclick.server.services.auth.repositories
 
 import theoneclick.server.services.auth.dataSources.base.UsersDataSource
-import theoneclick.server.shared.models.User
+import theoneclick.server.services.auth.dataSources.models.User
 
 interface UsersRepository {
     suspend fun user(findable: UsersDataSource.Findable): User?

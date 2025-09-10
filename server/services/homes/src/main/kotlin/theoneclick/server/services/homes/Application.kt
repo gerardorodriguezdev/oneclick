@@ -17,7 +17,7 @@ import theoneclick.server.services.homes.entrypoint.server
 import theoneclick.server.services.homes.postgresql.HomesDatabase
 import theoneclick.server.services.homes.repositories.DefaultHomesRepository
 import theoneclick.server.services.homes.repositories.HomesRepository
-import theoneclick.server.shared.di.Environment
+import theoneclick.server.shared.Environment
 import theoneclick.server.shared.security.DefaultEncryptor
 import theoneclick.server.shared.security.DefaultSecureRandomProvider
 import theoneclick.shared.dispatchers.platform.DispatchersProvider

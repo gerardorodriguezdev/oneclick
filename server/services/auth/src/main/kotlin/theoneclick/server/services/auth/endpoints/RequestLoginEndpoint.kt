@@ -5,23 +5,25 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import theoneclick.server.services.auth.dataSources.base.UsersDataSource
+import theoneclick.server.services.auth.dataSources.models.User
 import theoneclick.server.services.auth.repositories.UsersRepository
-import theoneclick.server.shared.extensions.agent
-import theoneclick.server.shared.models.JwtPayload
-import theoneclick.server.shared.models.User
-import theoneclick.server.shared.security.Encryptor
-import theoneclick.server.shared.security.UuidProvider
-import theoneclick.shared.contracts.core.models.Jwt
-import theoneclick.shared.contracts.core.models.Username
+import theoneclick.server.shared.auth.models.JwtPayload
+import theoneclick.server.shared.auth.security.Encryptor
+import theoneclick.server.shared.auth.security.JwtProvider
+import theoneclick.server.shared.auth.security.UuidProvider
+import theoneclick.server.shared.core.extensions.agent
+import theoneclick.shared.contracts.auth.models.Jwt
+import theoneclick.shared.contracts.auth.models.Username
+import theoneclick.shared.contracts.auth.models.requests.RequestLoginRequest
+import theoneclick.shared.contracts.auth.models.responses.RequestLoginResponse
 import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.contracts.core.models.agents.Agent
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
-import theoneclick.shared.contracts.core.models.requests.RequestLoginRequest
-import theoneclick.shared.contracts.core.models.responses.RequestLoginResponse
 
 fun Routing.requestLoginEndpoint(
     usersRepository: UsersRepository,
     encryptor: Encryptor,
+    jwtProvider: JwtProvider,
     uuidProvider: UuidProvider,
 ) {
     post(ClientEndpoint.REQUEST_LOGIN) { requestLoginRequest: RequestLoginRequest ->
@@ -34,6 +36,7 @@ fun Routing.requestLoginEndpoint(
                 username = username,
                 password = password,
                 encryptor = encryptor,
+                jwtProvider = jwtProvider,
                 uuidProvider = uuidProvider,
                 usersRepository = usersRepository,
             )
@@ -45,7 +48,7 @@ fun Routing.requestLoginEndpoint(
 
             else -> createJwt(
                 userId = user.userId,
-                encryptor = encryptor,
+                jwtProvider = jwtProvider,
             )
         }
     }
@@ -55,6 +58,7 @@ private suspend fun RoutingContext.registerUser(
     username: Username,
     password: String,
     encryptor: Encryptor,
+    jwtProvider: JwtProvider,
     uuidProvider: UuidProvider,
     usersRepository: UsersRepository,
 ) {
@@ -67,16 +71,16 @@ private suspend fun RoutingContext.registerUser(
 
     createJwt(
         userId = newUser.userId,
-        encryptor = encryptor,
+        jwtProvider = jwtProvider,
     )
 }
 
 private suspend fun RoutingContext.createJwt(
     userId: Uuid,
-    encryptor: Encryptor,
+    jwtProvider: JwtProvider,
 ) {
     val jwtPayload = JwtPayload(userId)
-    val jwt = encryptor.jwt(jwtPayload)
+    val jwt = jwtProvider.jwt(jwtPayload)
     respondJwt(jwt)
 }
 

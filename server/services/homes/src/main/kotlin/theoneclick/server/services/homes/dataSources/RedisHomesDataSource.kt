@@ -12,7 +12,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import theoneclick.server.services.homes.dataSources.base.HomesDataSource
-import theoneclick.server.shared.models.HomesEntry
+import theoneclick.server.services.homes.dataSources.models.HomesEntry
 import theoneclick.shared.contracts.core.models.*
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
