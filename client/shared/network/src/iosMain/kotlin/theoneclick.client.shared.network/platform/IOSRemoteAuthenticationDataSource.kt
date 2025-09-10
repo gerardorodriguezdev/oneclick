@@ -26,8 +26,7 @@ class IOSRemoteAuthenticationDataSource(
     override suspend fun isUserLogged(): UserLoggedResult =
         withContext(dispatchersProvider.io()) {
             try {
-                val token = tokenDataSource.token()
-                if (token == null) {
+                if (tokenDataSource.token() == null) {
                     return@withContext UserLoggedResult.NotLogged
                 }
 

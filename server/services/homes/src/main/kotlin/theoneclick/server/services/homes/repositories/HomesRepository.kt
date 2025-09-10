@@ -29,10 +29,6 @@ class DefaultHomesRepository(
         if (memoryHomes != null) return memoryHomes
 
         val diskHomes = diskHomesDataSource.homesEntry(userId, pageSize, currentPageIndex)
-        return if (diskHomes != null) {
-            diskHomes
-        } else {
-            null
-        }
+        return diskHomes
     }
 }

@@ -50,7 +50,6 @@ jvm-hiraki = { module = "com.zaxxer:HikariCP", version.ref = "jvm-hiraki" }
 jvm-redis = { module = "io.lettuce:lettuce-core", version.ref = "jvm-redis" }
 jvm-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:chamaleon-core", version.ref = "gradle-chamaleon" }
 jvm-postgresql = { module = "org.postgresql:postgresql", version.ref = "jvm-postgresql" }
-jvm-reactive = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactive", version.ref = "kmp-coroutines" }
 kmp-datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "android-datastore" }
 kmp-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kmp-coroutines" }
 kmp-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kmp-atomicfu" }
@@ -63,7 +62,6 @@ kmp-test-turbine = { module = "app.cash.turbine:turbine", version.ref = "kmp-tes
 kmp-kotlin-inject = { module = "me.tatarka.inject:kotlin-inject-runtime", version.ref = "kmp-kotlin-inject" }
 kmp-kotlin-inject-kmp = { module = "me.tatarka.inject:kotlin-inject-runtime-kmp", version.ref = "kmp-kotlin-inject" }
 kmp-sqldelight = { module = "app.cash.sqldelight:jdbc-driver", version.ref = "kmp-sqldelight" }
-kmp-sqldelight-coroutines = { module = "app.cash.sqldelight:coroutines-extensions", version.ref = "kmp-sqldelight" }
 kmp-sqldelight-postgresql = { module = "app.cash.sqldelight:postgresql-dialect", version.ref = "kmp-sqldelight" }
 kmp-poko = { module = "dev.drewhamilton.poko:poko-annotations", version.ref = "kmp-poko" }
 gradle-ksp-kotlin-inject = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kmp-kotlin-inject" }
