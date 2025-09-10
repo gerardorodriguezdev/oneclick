@@ -4,11 +4,10 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.window.ComposeViewport
 import androidx.navigation.ExperimentalBrowserHistoryApi
-import androidx.navigation.bindToNavigation
+import androidx.navigation.bindToBrowserNavigation
 import androidx.navigation.compose.rememberNavController
 import io.ktor.client.engine.js.*
 import kotlinx.browser.document
-import kotlinx.browser.window
 import theoneclick.client.app.buildkonfig.BuildKonfig
 import theoneclick.client.app.di.createAppComponent
 import theoneclick.client.app.entrypoints.AppEntrypoint
@@ -40,7 +39,7 @@ fun main() {
         appEntrypoint.App(navHostController = navHostController)
 
         LaunchedEffect(Unit) {
-            window.bindToNavigation(navHostController)
+            navHostController.bindToBrowserNavigation()
         }
     }
 }
