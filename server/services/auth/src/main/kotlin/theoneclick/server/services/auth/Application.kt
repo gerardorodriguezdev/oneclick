@@ -8,15 +8,12 @@ import io.lettuce.core.api.coroutines
 import theoneclick.server.services.auth.dataSources.MemoryUsersDataSource
 import theoneclick.server.services.auth.dataSources.PostgresUsersDataSource
 import theoneclick.server.services.auth.dataSources.RedisUsersDataSource
-import theoneclick.server.services.auth.di.AppComponent
 import theoneclick.server.services.auth.plugins.configureRouting
 import theoneclick.server.services.auth.postgresql.AuthDatabase
 import theoneclick.server.services.auth.repositories.DefaultUsersRepository
 import theoneclick.server.services.auth.repositories.UsersRepository
-import theoneclick.server.shared.auth.security.DefaultEncryptor
-import theoneclick.server.shared.auth.security.DefaultJwtProvider
-import theoneclick.server.shared.auth.security.DefaultSecureRandomProvider
-import theoneclick.server.shared.auth.security.DefaultUuidProvider
+import theoneclick.server.shared.auth.security.*
+import theoneclick.server.shared.core.di.Dependencies
 import theoneclick.server.shared.core.extensions.databaseDriver
 import theoneclick.server.shared.core.server
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
@@ -24,60 +21,71 @@ import theoneclick.shared.dispatchers.platform.dispatchersProvider
 import theoneclick.shared.timeProvider.SystemTimeProvider
 
 fun main() {
+    val environment = Environment()
     val jvmSecureRandomProvider = DefaultSecureRandomProvider()
     val timeProvider = SystemTimeProvider()
     val encryptor = DefaultEncryptor(
-        secretEncryptionKey = System.getenv("JWT_SECRET_ENCRYPTION_KEY"),
+        secretEncryptionKey = environment.secretEncryptionKey,
         secureRandomProvider = jvmSecureRandomProvider,
     )
     val logger = KtorSimpleLogger("theoneclick.defaultlogger")
     val dispatchersProvider = dispatchersProvider()
-    val repositories = if (System.getenv("USE_MEMORY_DATA_SOURCES") == "true") {
+    val repositories = if (environment.useMemoryDataSources) {
         memoryRepositories()
     } else {
         databaseRepositories(
-            jdbcUrl = System.getenv("JDBC_URL"),
-            postgresUsername = System.getenv("POSTGRES_USERNAME"),
-            postgresPassword = System.getenv("POSTGRES_PASSWORD"),
-            redisUrl = System.getenv("REDIS_URL"),
+            jdbcUrl = environment.jdbcUrl,
+            postgresUsername = environment.postgresUsername,
+            postgresPassword = environment.postgresPassword,
+            redisUrl = environment.redisUrl,
             logger = logger,
             dispatchersProvider = dispatchersProvider,
         )
     }
-
     val jwtProvider = DefaultJwtProvider(
-        jwtRealm = System.getenv("JWT_REALM"),
-        jwtAudience = System.getenv("JWT_AUDIENCE"),
-        jwtIssuer = System.getenv("JWT_ISSUER"),
-        secretSignKey = System.getenv("JWT_SECRET_SIGN_KEY"),
+        jwtRealm = environment.jwtRealm,
+        jwtAudience = environment.jwtAudience,
+        jwtIssuer = environment.jwtIssuer,
+        secretSignKey = environment.secretSignKey,
         timeProvider = timeProvider,
         encryptor = encryptor,
     )
     val uuidProvider = DefaultUuidProvider()
-
-    val appComponent = AppComponent(
-        disableRateLimit = System.getenv("DISABLE_RATE_LIMIT") == "true",
-        protocol = System.getenv("PROTOCOL"),
-        host = System.getenv("HOST"),
+    val dependencies = Dependencies(
+        disableRateLimit = environment.disableRateLimit,
         healthzPath = "/api/healthz/auth",
         encryptor = encryptor,
         timeProvider = timeProvider,
         logger = logger,
         jwtProvider = jwtProvider,
+        baseUrl = "${environment.protocol}://${environment.host}",
     )
+
     server(
-        dependencies = appComponent,
+        dependencies = dependencies,
+        uuidProvider = uuidProvider,
+        usersRepository = repositories.usersRepository,
+        onShutdown = repositories.onShutdown
+    )
+}
+
+internal fun server(
+    dependencies: Dependencies,
+    uuidProvider: UuidProvider,
+    usersRepository: UsersRepository,
+    onShutdown: (application: Application) -> Unit,
+) {
+    server(
+        dependencies = dependencies,
         configureModules = {
             configureRouting(
-                usersRepository = repositories.usersRepository,
-                encryptor = appComponent.encryptor,
+                usersRepository = usersRepository,
+                encryptor = dependencies.encryptor,
                 uuidProvider = uuidProvider,
-                jwtProvider = appComponent.jwtProvider,
+                jwtProvider = dependencies.jwtProvider,
             )
         },
-        onShutdown = { application ->
-            repositories.onShutdown(application)
-        }
+        onShutdown = onShutdown,
     ).start(wait = true)
 }
 
@@ -134,6 +142,22 @@ private fun databaseRepositories(
         },
     )
 }
+
+private data class Environment(
+    val secretEncryptionKey: String = System.getenv("JWT_SECRET_ENCRYPTION_KEY"),
+    val secretSignKey: String = System.getenv("JWT_SECRET_SIGN_KEY"),
+    val useMemoryDataSources: Boolean = System.getenv("USE_MEMORY_DATA_SOURCES") == "true",
+    val jdbcUrl: String = System.getenv("JDBC_URL"),
+    val postgresUsername: String = System.getenv("POSTGRES_USERNAME"),
+    val postgresPassword: String = System.getenv("POSTGRES_PASSWORD"),
+    val redisUrl: String = System.getenv("REDIS_URL"),
+    val jwtRealm: String = System.getenv("JWT_REALM"),
+    val jwtAudience: String = System.getenv("JWT_AUDIENCE"),
+    val jwtIssuer: String = System.getenv("JWT_ISSUER"),
+    val disableRateLimit: Boolean = System.getenv("DISABLE_RATE_LIMIT") == "true",
+    val protocol: String = System.getenv("PROTOCOL"),
+    val host: String = System.getenv("HOST"),
+)
 
 private class Repositories(
     val usersRepository: UsersRepository,
