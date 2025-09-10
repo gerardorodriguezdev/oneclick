@@ -9,8 +9,8 @@ import me.tatarka.inject.annotations.Inject
 import theoneclick.client.features.home.models.HomesEntry
 import theoneclick.client.features.home.models.HomesResult
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
-import theoneclick.shared.contracts.core.models.requests.HomesRequest
-import theoneclick.shared.contracts.core.models.responses.HomesResponse
+import theoneclick.shared.contracts.homes.models.requests.HomesRequest
+import theoneclick.shared.contracts.homes.models.responses.HomesResponse
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.logging.AppLogger
 

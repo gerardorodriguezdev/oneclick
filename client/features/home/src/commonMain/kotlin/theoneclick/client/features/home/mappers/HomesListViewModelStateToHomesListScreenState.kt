@@ -9,10 +9,10 @@ import theoneclick.client.features.home.ui.screens.HomesListScreenState.UiHome.U
 import theoneclick.client.features.home.ui.screens.HomesListScreenState.UiHome.UiRoom.UiDevice
 import theoneclick.client.features.home.ui.screens.HomesListScreenState.UiHome.UiRoom.UiDevice.UiWaterSensor
 import theoneclick.client.features.home.viewModels.HomesListViewModel
-import theoneclick.shared.contracts.core.models.Device
-import theoneclick.shared.contracts.core.models.Home
-import theoneclick.shared.contracts.core.models.Room
 import theoneclick.shared.contracts.core.models.UniqueList
+import theoneclick.shared.contracts.homes.models.Device
+import theoneclick.shared.contracts.homes.models.Home
+import theoneclick.shared.contracts.homes.models.Room
 
 internal fun HomesListViewModel.HomesListViewModelState.toHomesListScreenState(): HomesListScreenState =
     HomesListScreenState(

@@ -15,9 +15,9 @@ import theoneclick.client.features.home.repositories.HomesRepository
 import theoneclick.client.features.home.ui.screens.HomesListEvent
 import theoneclick.client.features.home.ui.screens.HomesListScreenState
 import theoneclick.client.shared.notifications.NotificationsController
-import theoneclick.shared.contracts.core.models.Home
 import theoneclick.shared.contracts.core.models.UniqueList
 import theoneclick.shared.contracts.core.models.UniqueList.Companion.emptyUniqueList
+import theoneclick.shared.contracts.homes.models.Home
 
 @Inject
 internal class HomesListViewModel(

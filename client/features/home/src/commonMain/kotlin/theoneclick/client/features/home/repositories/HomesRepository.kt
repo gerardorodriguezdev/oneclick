@@ -12,7 +12,7 @@ import theoneclick.shared.contracts.core.models.NonNegativeInt
 import theoneclick.shared.contracts.core.models.PositiveInt
 import theoneclick.shared.contracts.core.models.UniqueList
 import theoneclick.shared.contracts.core.models.UniqueList.Companion.plus
-import theoneclick.shared.contracts.core.models.requests.HomesRequest
+import theoneclick.shared.contracts.homes.models.requests.HomesRequest
 
 internal interface HomesRepository {
     val homesEntry: SharedFlow<HomesEntry?>

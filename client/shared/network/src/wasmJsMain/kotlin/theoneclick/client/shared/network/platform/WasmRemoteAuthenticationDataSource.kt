@@ -8,9 +8,9 @@ import kotlinx.coroutines.withContext
 import theoneclick.client.shared.network.models.LogoutResult
 import theoneclick.client.shared.network.models.RequestLoginResult
 import theoneclick.client.shared.network.models.UserLoggedResult
+import theoneclick.shared.contracts.auth.models.requests.RequestLoginRequest
+import theoneclick.shared.contracts.auth.models.responses.UserLoggedResponse
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
-import theoneclick.shared.contracts.core.models.requests.RequestLoginRequest
-import theoneclick.shared.contracts.core.models.responses.UserLoggedResponse
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.logging.AppLogger
 
