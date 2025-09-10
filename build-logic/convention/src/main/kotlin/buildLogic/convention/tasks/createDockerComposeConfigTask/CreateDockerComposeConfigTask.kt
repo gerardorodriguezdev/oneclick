@@ -75,7 +75,7 @@ abstract class CreateDockerComposeConfigTask : DefaultTask() {
                         )
                     }
                 },
-                volumes = Volumes()
+                volumes = Volumes(),
             )
         )
 
