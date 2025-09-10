@@ -2,20 +2,18 @@ package theoneclick.server.services.homes.endpoints
 
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import theoneclick.server.services.homes.repositories.HomesRepository
-import theoneclick.server.shared.extensions.defaultAuthentication
-import theoneclick.server.shared.extensions.requireJwtPayload
 import theoneclick.server.services.homes.dataSources.models.HomesEntry
+import theoneclick.server.services.homes.repositories.HomesRepository
+import theoneclick.server.shared.core.extensions.defaultAuthentication
+import theoneclick.server.shared.core.extensions.requireJwtPayload
 import theoneclick.shared.contracts.core.models.PaginationResult
 import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
-import theoneclick.shared.contracts.core.models.requests.HomesRequest
-import theoneclick.shared.contracts.core.models.responses.HomesResponse
-import theoneclick.shared.contracts.core.models.responses.HomesResponse.Data
+import theoneclick.shared.contracts.homes.models.requests.HomesRequest
+import theoneclick.shared.contracts.homes.models.responses.HomesResponse
+import theoneclick.shared.contracts.homes.models.responses.HomesResponse.Data
 
-fun Routing.homesListEndpoint(
-    homesRepository: HomesRepository,
-) {
+fun Routing.homesListEndpoint(homesRepository: HomesRepository) {
     defaultAuthentication {
         post(ClientEndpoint.HOMES) { homesRequest: HomesRequest ->
             val userId = requireJwtPayload().userId

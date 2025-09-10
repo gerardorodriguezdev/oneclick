@@ -14,6 +14,7 @@ import kotlinx.serialization.json.Json
 import theoneclick.server.services.homes.dataSources.base.HomesDataSource
 import theoneclick.server.services.homes.dataSources.models.HomesEntry
 import theoneclick.shared.contracts.core.models.*
+import theoneclick.shared.contracts.homes.models.*
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
 @OptIn(ExperimentalLettuceCoroutinesApi::class)

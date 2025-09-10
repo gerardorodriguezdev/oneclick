@@ -5,7 +5,6 @@ plugins {
     id("theoneclick.jvm.server")
     alias(libs.plugins.kmp.sqldelight)
     alias(libs.plugins.kmp.serialization)
-    alias(libs.plugins.gradle.ksp)
 }
 
 jvmServer {
@@ -50,7 +49,6 @@ dependencies {
     implementation(ktorLibs.serialization.kotlinx.json)
     implementation(ktorLibs.server.auth)
     implementation(ktorLibs.server.auth.jwt)
-    implementation(libs.kmp.kotlin.inject)
     implementation(libs.kmp.sqldelight)
     implementation(libs.jvm.logback.classic)
     implementation(libs.jvm.hiraki)
@@ -62,14 +60,13 @@ dependencies {
     implementation(projects.shared.timeProvider)
     implementation(projects.shared.dispatchers)
     implementation(projects.server.shared.core)
+    implementation(projects.server.shared.auth)
 
     testImplementation(ktorLibs.server.testHost)
     testImplementation(ktorLibs.client.core)
     testImplementation(ktorLibs.client.cio)
     testImplementation(ktorLibs.client.contentNegotiation)
     testImplementation(libs.kmp.test)
-
-    ksp(libs.gradle.ksp.kotlin.inject)
 }
 
 sqldelight {

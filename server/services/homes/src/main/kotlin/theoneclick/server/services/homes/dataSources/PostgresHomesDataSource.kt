@@ -8,10 +8,11 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import theoneclick.server.services.homes.dataSources.base.HomesDataSource
-import theoneclick.server.services.homes.postgresql.*
 import theoneclick.server.services.homes.dataSources.models.HomesEntry
+import theoneclick.server.services.homes.postgresql.*
 import theoneclick.shared.contracts.core.models.*
 import theoneclick.shared.contracts.core.models.NonNegativeInt.Companion.toNonNegativeInt
+import theoneclick.shared.contracts.homes.models.*
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
 class PostgresHomesDataSource(
