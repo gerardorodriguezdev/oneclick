@@ -2,7 +2,7 @@
 docker-postgres-api = "15"
 docker-redis-api = "7"
 android-activity = "1.11.0"
-android-gradle-plugin = "8.11.1"
+android-gradle-plugin = "8.11.2"
 android-api = "35"
 android-datastore = "1.1.7"
 android-test-junit = "1.9.1"
