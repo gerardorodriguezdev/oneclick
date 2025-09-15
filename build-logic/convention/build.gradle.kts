@@ -3,10 +3,8 @@ plugins {
     alias(libs.plugins.kmp.serialization)
 }
 
-java {
-    toolchain {
-        languageVersion.set(JavaLanguageVersion.of(libs.versions.jvm.api.get().toInt()))
-    }
+kotlin {
+    jvmToolchain(libs.versions.jvm.api.get().toInt())
 }
 
 dependencies {

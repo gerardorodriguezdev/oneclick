@@ -17,6 +17,7 @@ import theoneclick.server.shared.auth.security.DefaultJwtProvider
 import theoneclick.server.shared.auth.security.DefaultSecureRandomProvider
 import theoneclick.server.shared.core.di.Dependencies
 import theoneclick.server.shared.core.extensions.databaseDriver
+import theoneclick.server.shared.core.server
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 import theoneclick.shared.dispatchers.platform.dispatchersProvider
 import theoneclick.shared.timeProvider.SystemTimeProvider
@@ -72,7 +73,7 @@ internal fun server(
     homesRepository: HomesRepository,
     onShutdown: (application: Application) -> Unit,
 ) {
-    theoneclick.server.shared.core.server(
+    server(
         dependencies = dependencies,
         configureModules = {
             configureRouting(

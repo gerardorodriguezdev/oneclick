@@ -5,16 +5,28 @@ pluginManagement {
     includeBuild("build-logic")
 
     repositories {
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
         mavenCentral()
         gradlePluginPortal()
-        google()
     }
 }
 
 @Suppress("UnstableApiUsage")
 dependencyResolutionManagement {
     repositories {
-        google()
+        google {
+            content {
+                includeGroupByRegex("com\\.android.*")
+                includeGroupByRegex("com\\.google.*")
+                includeGroupByRegex("androidx.*")
+            }
+        }
         mavenCentral()
         maven("https://maven.pkg.jetbrains.space/public/p/ktor/eap")
         maven("https://packages.confluent.io/maven/")
