@@ -1,13 +1,11 @@
 package theoneclick.client.app.entrypoints
 
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavDestination
 import androidx.navigation.NavDestination.Companion.hasRoute
+import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -15,22 +13,19 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
 import theoneclick.client.app.di.AppComponent
-import theoneclick.client.app.ui.screens.AppScreen
-import theoneclick.client.app.ui.screens.AppScreenState
-import theoneclick.client.app.ui.screens.LoadingScreen
-import theoneclick.client.app.ui.screens.LoginScreen
+import theoneclick.client.app.ui.screens.*
 import theoneclick.client.features.home.entrypoints.HomeEntrypoint
 import theoneclick.client.shared.di.CoreComponent
 import theoneclick.client.shared.navigation.RegisterNavigationControllerObserver
 import theoneclick.client.shared.navigation.models.routes.AppRoute.Init
 import theoneclick.client.shared.navigation.models.routes.AppRoute.Login
-import theoneclick.client.shared.navigation.models.routes.HomeRoute.NavigationBarRoute
-import theoneclick.client.shared.navigation.models.routes.HomeRoute.NavigationBarRoute.HomesList
-import theoneclick.client.shared.navigation.models.routes.HomeRoute.NavigationBarRoute.UserSettings
+import theoneclick.client.shared.navigation.models.routes.HomeRoute
+import theoneclick.client.shared.navigation.models.routes.HomeRoute.HomesList
 import theoneclick.client.shared.notifications.NotificationsController.Notification
 import theoneclick.client.shared.ui.screenProperties.LocalScreenProperties
 import theoneclick.client.shared.ui.screenProperties.ScreenProperties
 import theoneclick.client.shared.ui.theme.TheOneClickTheme
+import kotlin.reflect.KClass
 
 class AppEntrypoint(
     private val coreComponent: CoreComponent,
@@ -96,9 +91,9 @@ class AppEntrypoint(
     private fun NavHostController.navigationBar(): AppScreenState.NavigationBar? {
         val navBackStackEntry by currentBackStackEntryAsState()
         val currentDestination = navBackStackEntry?.destination
-
-        val selectedNavigationBarRoute = currentDestination?.toNavigationBarRoute()
-
+        val selectedNavigationBarRoute = NavigationBarRoute.entries.firstOrNull { navigationBarRoute ->
+            currentDestination.isRouteInHierarchy(navigationBarRoute.route)
+        }
         return selectedNavigationBarRoute?.let {
             val isCompact = LocalScreenProperties.current.isCompact
             if (isCompact) {
@@ -109,15 +104,13 @@ class AppEntrypoint(
         }
     }
 
-    private fun NavDestination.toNavigationBarRoute(): NavigationBarRoute? =
-        when {
-            hasRoute<HomesList>() -> HomesList
-            hasRoute<UserSettings>() -> UserSettings
-            else -> null
+    private fun NavHostController.handleNavigationBarClick(navigationBarRoute: NavigationBarRoute) {
+        val destination = when (navigationBarRoute) {
+            NavigationBarRoute.HOMES_LIST -> HomesList
+            NavigationBarRoute.USER_SETTINGS -> HomeRoute.UserSettings
         }
 
-    private fun NavHostController.handleNavigationBarClick(navigationBarRoute: NavigationBarRoute) {
-        navigate(navigationBarRoute) {
+        navigate(destination) {
             launchSingleTop = true
             restoreState = true
             popUpTo(HomesList) {
@@ -125,6 +118,9 @@ class AppEntrypoint(
             }
         }
     }
+
+    private fun NavDestination?.isRouteInHierarchy(route: KClass<*>): Boolean =
+        this?.hierarchy?.any { destination -> destination.hasRoute(route) } ?: false
 
     @Composable
     private fun snackbarState(): AppScreenState.SnackbarState? {

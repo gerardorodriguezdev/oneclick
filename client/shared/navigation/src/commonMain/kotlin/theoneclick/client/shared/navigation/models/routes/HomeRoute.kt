@@ -6,14 +6,10 @@ import theoneclick.client.shared.navigation.models.routes.base.Route
 
 sealed interface HomeRoute : Route {
     @Serializable
-    sealed interface NavigationBarRoute : HomeRoute {
+    @SerialName("home--homes-list")
+    data object HomesList : HomeRoute
 
-        @Serializable
-        @SerialName("home--homes-list")
-        data object HomesList : NavigationBarRoute
-
-        @Serializable
-        @SerialName("home--user-settings")
-        data object UserSettings : NavigationBarRoute
-    }
+    @Serializable
+    @SerialName("home--user-settings")
+    data object UserSettings : HomeRoute
 }

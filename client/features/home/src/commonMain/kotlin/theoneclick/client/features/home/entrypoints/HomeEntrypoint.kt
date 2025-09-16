@@ -17,13 +17,14 @@ import theoneclick.client.features.home.ui.screens.HomesListScreen
 import theoneclick.client.features.home.ui.screens.UserSettingsScreen
 import theoneclick.client.shared.di.CoreComponent
 import theoneclick.client.shared.navigation.models.routes.AppRoute.Home
-import theoneclick.client.shared.navigation.models.routes.HomeRoute.NavigationBarRoute
+import theoneclick.client.shared.navigation.models.routes.HomeRoute.HomesList
+import theoneclick.client.shared.navigation.models.routes.HomeRoute.UserSettings
 
 class HomeEntrypoint(private val coreComponent: CoreComponent) {
 
     fun NavGraphBuilder.home(navController: NavController) {
-        navigation<Home>(startDestination = NavigationBarRoute.HomesList) {
-            composable<NavigationBarRoute.HomesList> { navBackstackEntry ->
+        navigation<Home>(startDestination = HomesList) {
+            composable<HomesList> { navBackstackEntry ->
                 val homeComponent = navController.getOrBuildHomeComponent(navBackstackEntry)
                 val homesListViewModel = viewModel { homeComponent.homesListViewModelFactory() }
                 val state by homesListViewModel.homesListScreenState.collectAsState()
@@ -34,7 +35,7 @@ class HomeEntrypoint(private val coreComponent: CoreComponent) {
                 )
             }
 
-            composable<NavigationBarRoute.UserSettings> { navBackstackEntry ->
+            composable<UserSettings> { navBackstackEntry ->
                 val homeComponent = navController.getOrBuildHomeComponent(navBackstackEntry)
                 val userSettingsViewModel = viewModel { homeComponent.userSettingsViewModelFactory() }
                 val state by userSettingsViewModel.userSettingsScreenState.collectAsState()

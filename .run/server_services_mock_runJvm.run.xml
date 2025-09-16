@@ -1,5 +1,5 @@
 <component name="ProjectRunConfigurationManager">
-  <configuration default="false" name="server:mock:runJvm" type="GradleRunConfiguration" factoryName="Gradle" folderName="Server" activateToolWindowBeforeRun="false">
+  <configuration default="false" name="server:services:mock:runJvm" type="GradleRunConfiguration" factoryName="Gradle" folderName="Server" activateToolWindowBeforeRun="false">
     <ExternalSystemSettings>
       <option name="env">
         <map>
@@ -15,7 +15,7 @@
       </option>
       <option name="taskNames">
         <list>
-          <option value=":server:mock:run" />
+          <option value=":server:services:mock:run" />
         </list>
       </option>
       <option name="vmOptions" />
