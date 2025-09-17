@@ -28,7 +28,7 @@ internal class RemoteHomesDataSource(
     override suspend fun homes(request: HomesRequest): HomesResult =
         withContext(dispatchersProvider.io()) {
             try {
-                val response = httpClient.post(ClientEndpoint.HOMES) {
+                val response = httpClient.post(ClientEndpoint.HOMES.route) {
                     setBody(request)
                 }
 

@@ -26,7 +26,7 @@ internal fun Routing.requestLoginEndpoint(
     jwtProvider: JwtProvider,
     uuidProvider: UuidProvider,
 ) {
-    post(ClientEndpoint.REQUEST_LOGIN) { requestLoginRequest: RequestLoginRequest ->
+    post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
         val username = requestLoginRequest.username
         val password = requestLoginRequest.password.value
         val user = usersRepository.user(UsersDataSource.Findable.ByUsername(username))

@@ -37,18 +37,18 @@ private fun Application.configureContentNegotiation() {
 
 private fun Application.configureRouting() {
     routing {
-        get(ClientEndpoint.IS_USER_LOGGED) {
+        get(ClientEndpoint.IS_USER_LOGGED.route) {
             call.respond<UserLoggedResponse>(UserLoggedResponse.Logged)
         }
 
-        post(ClientEndpoint.REQUEST_LOGIN) { _: RequestLoginRequest ->
+        post(ClientEndpoint.REQUEST_LOGIN.route) { _: RequestLoginRequest ->
             when (call.request.agent) {
                 Agent.MOBILE -> call.respond(RequestLoginResponse(jwt = mockJwt()))
                 Agent.BROWSER -> call.respond(HttpStatusCode.OK)
             }
         }
 
-        post(ClientEndpoint.HOMES) {
+        post(ClientEndpoint.HOMES.route) {
             call.respond(
                 HomesResponse(
                     data = HomesResponse.Data(
@@ -60,7 +60,7 @@ private fun Application.configureRouting() {
             )
         }
 
-        get(ClientEndpoint.LOGOUT) {
+        get(ClientEndpoint.LOGOUT.route) {
             call.respond(HttpStatusCode.OK)
         }
     }

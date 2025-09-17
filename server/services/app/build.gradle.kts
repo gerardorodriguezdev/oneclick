@@ -2,7 +2,6 @@ import app.cash.sqldelight.gradle.SqlDelightDatabase
 import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput.PostgresDatabase
 import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput.RedisDatabase
 
-//TODO: Db name out
 plugins {
     id("theoneclick.jvm.server")
     alias(libs.plugins.kmp.sqldelight)

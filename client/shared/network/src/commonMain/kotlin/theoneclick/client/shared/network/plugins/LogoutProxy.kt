@@ -15,7 +15,7 @@ val LogoutProxy = createClientPlugin("LogoutProxy", ::LogoutProxyConfiguration) 
     }
 
     onResponse { response ->
-        if (response.request.url.fullPath == ClientEndpoint.LOGOUT && response.status == HttpStatusCode.OK) {
+        if (response.request.url.fullPath == ClientEndpoint.LOGOUT.route && response.status == HttpStatusCode.OK) {
             onLogout()
         }
     }

@@ -4,8 +4,8 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import theoneclick.server.services.app.dataSources.models.HomesEntry
 import theoneclick.server.services.app.plugins.authentication.defaultAuthentication
-import theoneclick.server.services.app.repositories.HomesRepository
 import theoneclick.server.services.app.plugins.authentication.requireJwtPayload
+import theoneclick.server.services.app.repositories.HomesRepository
 import theoneclick.shared.contracts.core.models.PaginationResult
 import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
@@ -15,7 +15,7 @@ import theoneclick.shared.contracts.homes.models.responses.HomesResponse.Data
 
 internal fun Routing.homesListEndpoint(homesRepository: HomesRepository) {
     defaultAuthentication {
-        post(ClientEndpoint.HOMES) { homesRequest: HomesRequest ->
+        post(ClientEndpoint.HOMES.route) { homesRequest: HomesRequest ->
             val userId = requireJwtPayload().userId
             handleUserAvailable(
                 userId = userId,

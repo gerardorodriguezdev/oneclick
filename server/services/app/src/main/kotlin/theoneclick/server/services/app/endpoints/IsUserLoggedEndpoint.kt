@@ -10,7 +10,7 @@ import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 internal fun Routing.isUserLoggedEndpoint() {
     defaultAuthentication(optional = true) {
-        get(ClientEndpoint.IS_USER_LOGGED) {
+        get(ClientEndpoint.IS_USER_LOGGED.route) {
             val jwtPayload = call.principal<JwtPayload>()
 
             if (jwtPayload == null) {
