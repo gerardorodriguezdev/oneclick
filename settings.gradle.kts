@@ -59,9 +59,9 @@ include(
 )
 
 include(
-    "server:services:auth",
-    "server:services:homes",
+    "server:services:app",
     "server:services:mock",
     "server:shared:core",
     "server:shared:auth",
+    "server:shared:db",
 )

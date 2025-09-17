@@ -10,7 +10,7 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import theoneclick.server.services.mock.utils.mockHomes
 import theoneclick.server.services.mock.utils.mockJwt
-import theoneclick.server.shared.core.extensions.agent
+import theoneclick.server.shared.core.agent
 import theoneclick.shared.contracts.auth.models.requests.RequestLoginRequest
 import theoneclick.shared.contracts.auth.models.responses.RequestLoginResponse
 import theoneclick.shared.contracts.auth.models.responses.UserLoggedResponse
@@ -19,7 +19,7 @@ import theoneclick.shared.contracts.core.models.agents.Agent
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import theoneclick.shared.contracts.homes.models.responses.HomesResponse
 
-fun server(): EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration> =
+internal fun server(): EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration> =
     embeddedServer(
         factory = Netty,
         port = 8080,
