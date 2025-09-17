@@ -9,7 +9,7 @@ import theoneclick.server.shared.auth.security.Encryptor
 import theoneclick.server.shared.auth.security.JwtProvider
 import theoneclick.server.shared.auth.security.UuidProvider
 
-fun Application.configureRouting(
+internal fun Application.configureRouting(
     usersRepository: UsersRepository,
     encryptor: Encryptor,
     jwtProvider: JwtProvider,

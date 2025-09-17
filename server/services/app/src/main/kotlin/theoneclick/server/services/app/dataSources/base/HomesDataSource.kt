@@ -6,7 +6,7 @@ import theoneclick.shared.contracts.core.models.PaginationResult
 import theoneclick.shared.contracts.core.models.PositiveInt
 import theoneclick.shared.contracts.core.models.Uuid
 
-interface HomesDataSource {
+internal interface HomesDataSource {
     suspend fun homesEntry(
         userId: Uuid,
         pageSize: PositiveInt,

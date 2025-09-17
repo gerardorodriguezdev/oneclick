@@ -18,7 +18,7 @@ import theoneclick.shared.contracts.homes.models.*
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
 @OptIn(ExperimentalLettuceCoroutinesApi::class)
-class RedisHomesDataSource(
+internal class RedisHomesDataSource(
     private val syncCommands: RedisCoroutinesCommands<String, String>,
     private val dispatchersProvider: DispatchersProvider,
     private val logger: Logger,

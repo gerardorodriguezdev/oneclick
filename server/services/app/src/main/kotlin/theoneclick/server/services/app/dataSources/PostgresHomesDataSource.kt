@@ -15,7 +15,7 @@ import theoneclick.shared.contracts.core.models.NonNegativeInt.Companion.toNonNe
 import theoneclick.shared.contracts.homes.models.*
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
-class PostgresHomesDataSource(
+internal class PostgresHomesDataSource(
     private val database: AppDatabase,
     private val dispatchersProvider: DispatchersProvider,
     private val logger: Logger,

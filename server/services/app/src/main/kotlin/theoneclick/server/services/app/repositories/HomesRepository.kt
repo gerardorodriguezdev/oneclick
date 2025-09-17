@@ -7,7 +7,7 @@ import theoneclick.shared.contracts.core.models.PaginationResult
 import theoneclick.shared.contracts.core.models.PositiveInt
 import theoneclick.shared.contracts.core.models.Uuid
 
-interface HomesRepository {
+internal interface HomesRepository {
     suspend fun homesEntry(
         userId: Uuid,
         pageSize: PositiveInt,
@@ -15,7 +15,7 @@ interface HomesRepository {
     ): PaginationResult<HomesEntry>?
 }
 
-class DefaultHomesRepository(
+internal class DefaultHomesRepository(
     private val diskHomesDataSource: HomesDataSource,
     private val memoryHomesDataSource: HomesDataSource,
 ) : HomesRepository {

@@ -4,7 +4,7 @@ import theoneclick.shared.contracts.core.models.UniqueList
 import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.contracts.homes.models.Home
 
-data class HomesEntry(
+internal data class HomesEntry(
     val userId: Uuid,
     val homes: UniqueList<Home>,
 ) : UniqueList.KeyProvider {

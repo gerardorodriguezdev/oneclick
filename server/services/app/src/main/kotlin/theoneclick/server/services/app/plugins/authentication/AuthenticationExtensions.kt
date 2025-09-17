@@ -4,7 +4,7 @@ import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 import theoneclick.server.shared.auth.models.JwtPayload
 
-fun Routing.defaultAuthentication(
+internal fun Routing.defaultAuthentication(
     optional: Boolean = false,
     block: Route.() -> Unit
 ): Route =
@@ -17,5 +17,5 @@ fun Routing.defaultAuthentication(
         build = block,
     )
 
-fun RoutingContext.requireJwtPayload(): JwtPayload =
+internal fun RoutingContext.requireJwtPayload(): JwtPayload =
     requireNotNull(call.principal<JwtPayload>())

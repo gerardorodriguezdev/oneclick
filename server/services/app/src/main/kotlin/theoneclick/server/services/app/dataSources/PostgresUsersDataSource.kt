@@ -11,7 +11,7 @@ import theoneclick.shared.contracts.auth.models.Username
 import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
-class PostgresUsersDataSource(
+internal class PostgresUsersDataSource(
     private val database: AppDatabase,
     private val dispatchersProvider: DispatchersProvider,
     private val logger: Logger,

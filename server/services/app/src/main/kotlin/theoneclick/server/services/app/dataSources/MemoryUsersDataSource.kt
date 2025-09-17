@@ -5,7 +5,7 @@ import theoneclick.server.services.app.dataSources.models.User
 import theoneclick.shared.contracts.core.models.Uuid
 import java.util.concurrent.ConcurrentHashMap
 
-class MemoryUsersDataSource(
+internal class MemoryUsersDataSource(
     private val users: ConcurrentHashMap<Uuid, User> = ConcurrentHashMap(),
 ) : UsersDataSource {
 

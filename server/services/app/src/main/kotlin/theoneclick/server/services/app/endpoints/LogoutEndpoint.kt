@@ -8,7 +8,7 @@ import theoneclick.server.services.app.plugins.authentication.defaultAuthenticat
 import theoneclick.shared.contracts.auth.models.Jwt
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
-fun Routing.logoutEndpoint() {
+internal fun Routing.logoutEndpoint() {
     defaultAuthentication {
         get(ClientEndpoint.LOGOUT) {
             call.sessions.clear<Jwt>()

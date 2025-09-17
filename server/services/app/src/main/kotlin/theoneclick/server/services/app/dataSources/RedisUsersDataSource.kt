@@ -13,7 +13,7 @@ import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.dispatchers.platform.DispatchersProvider
 
 @OptIn(ExperimentalLettuceCoroutinesApi::class)
-class RedisUsersDataSource(
+internal class RedisUsersDataSource(
     private val syncCommands: RedisCoroutinesCommands<String, String>,
     private val dispatchersProvider: DispatchersProvider,
     private val logger: Logger,

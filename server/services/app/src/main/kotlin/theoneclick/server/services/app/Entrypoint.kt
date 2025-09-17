@@ -7,7 +7,7 @@ import theoneclick.server.services.app.di.Dependencies
 import theoneclick.server.services.app.plugins.*
 import theoneclick.server.services.app.plugins.authentication.configureAuthentication
 
-fun server(dependencies: Dependencies): EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration> =
+internal fun server(dependencies: Dependencies): EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration> =
     embeddedServer(
         factory = Netty,
         port = 8080,

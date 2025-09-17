@@ -13,7 +13,7 @@ import theoneclick.shared.contracts.homes.models.requests.HomesRequest
 import theoneclick.shared.contracts.homes.models.responses.HomesResponse
 import theoneclick.shared.contracts.homes.models.responses.HomesResponse.Data
 
-fun Routing.homesListEndpoint(homesRepository: HomesRepository) {
+internal fun Routing.homesListEndpoint(homesRepository: HomesRepository) {
     defaultAuthentication {
         post(ClientEndpoint.HOMES) { homesRequest: HomesRequest ->
             val userId = requireJwtPayload().userId

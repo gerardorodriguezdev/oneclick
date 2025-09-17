@@ -4,7 +4,7 @@ import theoneclick.server.services.app.dataSources.base.HomesDataSource
 import theoneclick.server.services.app.dataSources.models.HomesEntry
 import theoneclick.shared.contracts.core.models.*
 
-class MemoryHomesDataSource(
+internal class MemoryHomesDataSource(
     private val homesEntries: LinkedHashMap<Uuid, HomesEntry> = linkedMapOf(),
 ) : HomesDataSource {
 

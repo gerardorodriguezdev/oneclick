@@ -3,12 +3,12 @@ package theoneclick.server.services.app.repositories
 import theoneclick.server.services.app.dataSources.base.UsersDataSource
 import theoneclick.server.services.app.dataSources.models.User
 
-interface UsersRepository {
+internal interface UsersRepository {
     suspend fun user(findable: UsersDataSource.Findable): User?
     suspend fun saveUser(user: User): Boolean
 }
 
-class DefaultUsersRepository(
+internal class DefaultUsersRepository(
     private val diskUsersDataSource: UsersDataSource,
     private val memoryUsersDataSource: UsersDataSource,
 ) : UsersRepository {

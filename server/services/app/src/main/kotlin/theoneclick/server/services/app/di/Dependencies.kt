@@ -9,7 +9,7 @@ import theoneclick.server.shared.auth.security.JwtProvider
 import theoneclick.server.shared.auth.security.UuidProvider
 import theoneclick.shared.timeProvider.TimeProvider
 
-class Dependencies(
+internal class Dependencies(
     protocol: String,
     host: String,
     val disableRateLimit: Boolean,

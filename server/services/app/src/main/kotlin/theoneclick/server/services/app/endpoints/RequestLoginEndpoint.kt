@@ -20,7 +20,7 @@ import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.contracts.core.models.agents.Agent
 import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
-fun Routing.requestLoginEndpoint(
+internal fun Routing.requestLoginEndpoint(
     usersRepository: UsersRepository,
     encryptor: Encryptor,
     jwtProvider: JwtProvider,
