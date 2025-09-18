@@ -3,6 +3,7 @@ package theoneclick.server.shared.auth.security
 import at.favre.lib.crypto.bcrypt.BCrypt
 import io.ktor.util.hex
 import theoneclick.server.shared.auth.models.HashedPassword
+import theoneclick.shared.contracts.auth.models.Password
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec
@@ -12,8 +13,8 @@ interface Encryptor {
     fun encrypt(input: String): Result<ByteArray>
     fun decrypt(input: ByteArray): Result<String>
 
-    fun hashPassword(password: String): HashedPassword
-    fun verifyPassword(password: String, hashedPassword: HashedPassword): Boolean
+    fun hashPassword(password: Password): HashedPassword
+    fun verifyPassword(password: Password, hashedPassword: HashedPassword): Boolean
 }
 
 class DefaultEncryptor(
@@ -57,15 +58,15 @@ class DefaultEncryptor(
             decryptedBytes.decodeToString()
         }
 
-    override fun hashPassword(password: String): HashedPassword =
+    override fun hashPassword(password: Password): HashedPassword =
         HashedPassword.unsafe(
             BCrypt.with(secureRandomProvider.secureRandom())
-                .hashToString(PASSWORD_VERIFICATION_COST, password.toCharArray())
+                .hashToString(PASSWORD_VERIFICATION_COST, password.value.toCharArray())
         )
 
-    override fun verifyPassword(password: String, hashedPassword: HashedPassword): Boolean =
+    override fun verifyPassword(password: Password, hashedPassword: HashedPassword): Boolean =
         BCrypt.verifyer().verify(
-            password.toCharArray(),
+            password.value.toCharArray(),
             hashedPassword.value.toCharArray()
         ).verified
 

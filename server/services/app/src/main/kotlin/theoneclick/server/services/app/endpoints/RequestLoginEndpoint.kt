@@ -13,6 +13,7 @@ import theoneclick.server.shared.auth.security.JwtProvider
 import theoneclick.server.shared.auth.security.UuidProvider
 import theoneclick.server.shared.core.agent
 import theoneclick.shared.contracts.auth.models.Jwt
+import theoneclick.shared.contracts.auth.models.Password
 import theoneclick.shared.contracts.auth.models.Username
 import theoneclick.shared.contracts.auth.models.requests.RequestLoginRequest
 import theoneclick.shared.contracts.auth.models.responses.RequestLoginResponse
@@ -28,7 +29,7 @@ internal fun Routing.requestLoginEndpoint(
 ) {
     post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
         val username = requestLoginRequest.username
-        val password = requestLoginRequest.password.value
+        val password = requestLoginRequest.password
         val user = usersRepository.user(UsersDataSource.Findable.ByUsername(username))
 
         when {
@@ -56,7 +57,7 @@ internal fun Routing.requestLoginEndpoint(
 
 private suspend fun RoutingContext.registerUser(
     username: Username,
-    password: String,
+    password: Password,
     encryptor: Encryptor,
     jwtProvider: JwtProvider,
     uuidProvider: UuidProvider,
