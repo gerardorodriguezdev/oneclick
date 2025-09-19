@@ -5,6 +5,3 @@ CREATE TABLE IF NOT EXISTS devices (
 );
 
 CREATE INDEX IF NOT EXISTS devices_room_id_idx ON devices(room_id);
-
-deleteByDeviceId:
-DELETE FROM devices WHERE device_id = ?;

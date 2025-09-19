@@ -123,7 +123,6 @@ internal class PostgresHomesDataSource(
                         Json.decodeFromString<Device>(device.device)
                     } catch (error: SerializationException) {
                         logger.error("Error deserializing device", error)
-                        database.devicesQueries.deleteByDeviceId(device.device_id)
                         null
                     }
                 }
