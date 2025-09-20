@@ -10,7 +10,6 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.util.logging.*
-import kotlinx.serialization.Serializable
 import theoneclick.server.services.app.dataSources.base.InvalidJwtDataSource
 import theoneclick.server.shared.auth.security.Encryptor
 import theoneclick.server.shared.auth.security.JwtProvider
@@ -100,19 +99,8 @@ private fun authCredentials(
     return AuthCredentials(jti = jti, userId = userId)
 }
 
-@Serializable
-class AuthCredentials(
-    val jti: Uuid,
-    val userId: Uuid,
-)
-
 @OptIn(ExperimentalEncodingApi::class)
 private fun DecodedJWT.parsePayload(): Payload {
     val payloadString = String(Base64.getDecoder().decode(payload))
     return JWTParser().parsePayload(payloadString)
-}
-
-internal object AuthenticationConstants {
-    const val JWT_SESSION_AUTHENTICATION = "jwt_session_authentication"
-    const val JWT_AUTHENTICATION = "jwt_authentication"
 }
