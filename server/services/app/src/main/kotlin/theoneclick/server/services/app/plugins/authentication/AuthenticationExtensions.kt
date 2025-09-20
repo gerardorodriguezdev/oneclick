@@ -16,5 +16,5 @@ internal fun Routing.defaultAuthentication(
         build = block,
     )
 
-internal fun RoutingContext.requireAuthCredentials(): AuthCredentials =
-    requireNotNull(call.principal<AuthCredentials>())
+internal fun RoutingContext.requireJwtCredentials(): JwtCredentials =
+    requireNotNull(call.principal<JwtCredentials>())

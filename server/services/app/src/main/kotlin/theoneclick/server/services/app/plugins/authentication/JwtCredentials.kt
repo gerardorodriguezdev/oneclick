@@ -4,7 +4,7 @@ import kotlinx.serialization.Serializable
 import theoneclick.shared.contracts.core.models.Uuid
 
 @Serializable
-internal class AuthCredentials(
+internal class JwtCredentials(
     val jti: Uuid,
     val userId: Uuid,
 )

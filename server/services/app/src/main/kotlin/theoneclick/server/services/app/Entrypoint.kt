@@ -24,7 +24,6 @@ private fun Application.configureModules(dependencies: Dependencies) {
         jwtProvider = dependencies.jwtProvider,
         logger = dependencies.logger,
         invalidJwtDataSource = dependencies.invalidJwtDataSource,
-        encryptor = dependencies.encryptor,
     )
     configureStatusPages(dependencies.logger)
     configureRequestValidation()

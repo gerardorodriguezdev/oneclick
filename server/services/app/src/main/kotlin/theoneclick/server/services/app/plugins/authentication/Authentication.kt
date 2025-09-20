@@ -11,7 +11,7 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.util.logging.*
 import theoneclick.server.services.app.dataSources.base.InvalidJwtDataSource
-import theoneclick.server.shared.auth.security.Encryptor
+import theoneclick.server.shared.auth.models.JwtUserId.Companion.toJwtUserId
 import theoneclick.server.shared.auth.security.JwtProvider
 import theoneclick.shared.contracts.auth.models.Jwt
 import theoneclick.shared.contracts.core.models.Uuid
@@ -23,11 +23,10 @@ internal fun Application.configureAuthentication(
     jwtProvider: JwtProvider,
     logger: Logger,
     invalidJwtDataSource: InvalidJwtDataSource,
-    encryptor: Encryptor,
 ) {
     install(Authentication) {
-        registerJwtSessionsAuthentication(jwtProvider, logger, invalidJwtDataSource, encryptor)
-        registerJwtAuthentication(jwtProvider, invalidJwtDataSource, encryptor)
+        registerJwtSessionsAuthentication(jwtProvider, logger, invalidJwtDataSource)
+        registerJwtAuthentication(jwtProvider, invalidJwtDataSource)
     }
 }
 
@@ -35,7 +34,6 @@ private fun AuthenticationConfig.registerJwtSessionsAuthentication(
     jwtProvider: JwtProvider,
     logger: Logger,
     invalidJwtDataSource: InvalidJwtDataSource,
-    encryptor: Encryptor,
 ) {
     session<Jwt>(AuthenticationConstants.JWT_SESSION_AUTHENTICATION) {
         validate { jwt ->
@@ -53,7 +51,7 @@ private fun AuthenticationConfig.registerJwtSessionsAuthentication(
             val payload = decodedJwt.parsePayload()
             val jwtCredential = JWTCredential(payload)
 
-            authCredentials(jti = jti, jwtCredential = jwtCredential, jwtProvider = jwtProvider, encryptor = encryptor)
+            jwtProvider.jwtCredentials(jti = jti, jwtCredential = jwtCredential)
         }
 
         challenge {
@@ -65,7 +63,6 @@ private fun AuthenticationConfig.registerJwtSessionsAuthentication(
 private fun AuthenticationConfig.registerJwtAuthentication(
     jwtProvider: JwtProvider,
     invalidJwtDataSource: InvalidJwtDataSource,
-    encryptor: Encryptor,
 ) {
     jwt(AuthenticationConstants.JWT_AUTHENTICATION) {
         realm = jwtProvider.jwtRealm
@@ -77,7 +74,7 @@ private fun AuthenticationConfig.registerJwtAuthentication(
             val jti = jtiString.toUuid() ?: return@validate null
             if (invalidJwtDataSource.isJwtInvalid(jti)) return@validate null
 
-            authCredentials(jti = jti, jwtCredential = jwtCredential, jwtProvider = jwtProvider, encryptor = encryptor)
+            jwtProvider.jwtCredentials(jti = jti, jwtCredential = jwtCredential)
         }
 
         challenge { _, _ ->
@@ -86,17 +83,14 @@ private fun AuthenticationConfig.registerJwtAuthentication(
     }
 }
 
-private fun authCredentials(
+private fun JwtProvider.jwtCredentials(
     jti: Uuid,
     jwtCredential: JWTCredential,
-    jwtProvider: JwtProvider,
-    encryptor: Encryptor
-): AuthCredentials? {
-    val userIdString = jwtCredential.payload.getClaim(jwtProvider.jwtClaim).asString()
-    val decodedUserIdString = Base64.getDecoder().decode(userIdString)
-    val decryptedUserIdString = encryptor.decrypt(decodedUserIdString).getOrThrow()
-    val userId = decryptedUserIdString.toUuid() ?: return null
-    return AuthCredentials(jti = jti, userId = userId)
+): JwtCredentials? {
+    val claim = jwtCredential.payload.getClaim(jwtClaim).asString()
+    val jwtUserId = claim.toJwtUserId() ?: return null
+    val userId = userId(jwtUserId) ?: return null
+    return JwtCredentials(jti = jti, userId = userId)
 }
 
 @OptIn(ExperimentalEncodingApi::class)
