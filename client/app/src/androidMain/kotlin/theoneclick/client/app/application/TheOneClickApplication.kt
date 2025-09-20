@@ -13,7 +13,6 @@ import theoneclick.client.shared.di.androidCoreComponent
 import theoneclick.client.shared.navigation.DefaultNavigationController
 import theoneclick.client.shared.network.dataSources.AndroidEncryptedPreferences
 import theoneclick.client.shared.network.dataSources.AndroidLocalTokenDataSource
-import theoneclick.client.shared.network.dataSources.EncryptedPreferences
 import theoneclick.client.shared.network.platform.AndroidLogoutManager
 import theoneclick.client.shared.network.platform.androidHttpClientEngine
 import theoneclick.client.shared.network.security.AndroidEncryptor
@@ -36,7 +35,7 @@ class TheOneClickApplication : Application() {
         val dispatchersProvider = dispatchersProvider()
         val encryptedPreferences = AndroidEncryptedPreferences(
             preferencesFileProvider = {
-                filesDir.resolve(EncryptedPreferences.preferencesFileName("settings"))
+                filesDir.resolve("settings.preferences_pb")
             },
             appLogger = appLogger,
             dispatchersProvider = dispatchersProvider,
