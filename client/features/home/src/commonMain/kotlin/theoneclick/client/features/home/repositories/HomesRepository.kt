@@ -7,7 +7,6 @@ import me.tatarka.inject.annotations.Inject
 import theoneclick.client.features.home.dataSources.HomesDataSource
 import theoneclick.client.features.home.models.HomesEntry
 import theoneclick.client.features.home.models.HomesResult
-import theoneclick.client.features.home.repositories.HomesRepository.Companion.defaultPageSize
 import theoneclick.shared.contracts.core.models.NonNegativeInt
 import theoneclick.shared.contracts.core.models.PositiveInt
 import theoneclick.shared.contracts.core.models.UniqueList
@@ -19,10 +18,6 @@ internal interface HomesRepository {
 
     suspend fun refreshHomes(): HomesResult
     suspend fun requestMoreHomes(): HomesResult
-
-    companion object {
-        val defaultPageSize = PositiveInt.unsafe(10)
-    }
 }
 
 @Inject
@@ -69,5 +64,9 @@ internal class DefaultHomesRepository(
         }
 
         return homesResult
+    }
+
+    private companion object {
+        val defaultPageSize = PositiveInt.unsafe(10)
     }
 }

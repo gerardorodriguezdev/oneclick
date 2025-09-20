@@ -22,7 +22,9 @@ private fun Application.configureModules(dependencies: Dependencies) {
     configureSessions(dependencies.jwtProvider)
     configureAuthentication(
         jwtProvider = dependencies.jwtProvider,
-        logger = dependencies.logger
+        logger = dependencies.logger,
+        invalidJwtDataSource = dependencies.invalidJwtDataSource,
+        encryptor = dependencies.encryptor,
     )
     configureStatusPages(dependencies.logger)
     configureRequestValidation()
@@ -37,5 +39,6 @@ private fun Application.configureModules(dependencies: Dependencies) {
         jwtProvider = dependencies.jwtProvider,
         uuidProvider = dependencies.uuidProvider,
         homesRepository = dependencies.homesRepository,
+        invalidJwtDataSource = dependencies.invalidJwtDataSource,
     )
 }

@@ -6,10 +6,14 @@ import kotlinx.serialization.Serializable
 @Serializable
 @Poko
 class HashedPassword private constructor(val value: String) {
+    init {
+        require(isValid(value)) { ERROR_MESSAGE }
+    }
+
     companion object {
         private const val ERROR_MESSAGE = "Invalid hashed password"
 
-        private val REGEX = "^\$2[ayb]\$[0-9]{2}\$[A-Za-z0-9./]{53}$".toRegex()
+        private val REGEX = """^\$2[ayb]\$[0-9]{2}\$[A-Za-z0-9./]{53}$""".toRegex()
 
         private fun isValid(value: String): Boolean = REGEX.matches(value)
 

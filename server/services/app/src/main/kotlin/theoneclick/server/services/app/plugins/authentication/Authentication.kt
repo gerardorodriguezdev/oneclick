@@ -10,20 +10,34 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.util.logging.*
-import theoneclick.server.shared.auth.models.JwtPayload
+import kotlinx.serialization.Serializable
+import theoneclick.server.services.app.dataSources.base.InvalidJwtDataSource
+import theoneclick.server.shared.auth.security.Encryptor
 import theoneclick.server.shared.auth.security.JwtProvider
 import theoneclick.shared.contracts.auth.models.Jwt
-import kotlin.io.encoding.Base64
+import theoneclick.shared.contracts.core.models.Uuid
+import theoneclick.shared.contracts.core.models.Uuid.Companion.toUuid
+import java.util.*
 import kotlin.io.encoding.ExperimentalEncodingApi
 
-internal fun Application.configureAuthentication(jwtProvider: JwtProvider, logger: Logger) {
+internal fun Application.configureAuthentication(
+    jwtProvider: JwtProvider,
+    logger: Logger,
+    invalidJwtDataSource: InvalidJwtDataSource,
+    encryptor: Encryptor,
+) {
     install(Authentication) {
-        registerJwtSessionsAuthentication(jwtProvider, logger)
-        registerJwtAuthentication(jwtProvider)
+        registerJwtSessionsAuthentication(jwtProvider, logger, invalidJwtDataSource, encryptor)
+        registerJwtAuthentication(jwtProvider, invalidJwtDataSource, encryptor)
     }
 }
 
-private fun AuthenticationConfig.registerJwtSessionsAuthentication(jwtProvider: JwtProvider, logger: Logger) {
+private fun AuthenticationConfig.registerJwtSessionsAuthentication(
+    jwtProvider: JwtProvider,
+    logger: Logger,
+    invalidJwtDataSource: InvalidJwtDataSource,
+    encryptor: Encryptor,
+) {
     session<Jwt>(AuthenticationConstants.JWT_SESSION_AUTHENTICATION) {
         validate { jwt ->
             val decodedJwt = try {
@@ -32,9 +46,15 @@ private fun AuthenticationConfig.registerJwtSessionsAuthentication(jwtProvider: 
                 logger.error("Error decoding jwt", error)
                 null
             } ?: return@validate null
+
+            val jtiString = decodedJwt.id ?: return@validate null
+            val jti = jtiString.toUuid() ?: return@validate null
+            if (invalidJwtDataSource.isJwtInvalid(jti)) return@validate null
+
             val payload = decodedJwt.parsePayload()
-            val credential = JWTCredential(payload)
-            credential.toJwtPayload(jwtProvider)
+            val jwtCredential = JWTCredential(payload)
+
+            authCredentials(jti = jti, jwtCredential = jwtCredential, jwtProvider = jwtProvider, encryptor = encryptor)
         }
 
         challenge {
@@ -43,13 +63,23 @@ private fun AuthenticationConfig.registerJwtSessionsAuthentication(jwtProvider: 
     }
 }
 
-private fun AuthenticationConfig.registerJwtAuthentication(jwtProvider: JwtProvider) {
+private fun AuthenticationConfig.registerJwtAuthentication(
+    jwtProvider: JwtProvider,
+    invalidJwtDataSource: InvalidJwtDataSource,
+    encryptor: Encryptor,
+) {
     jwt(AuthenticationConstants.JWT_AUTHENTICATION) {
         realm = jwtProvider.jwtRealm
 
         verifier(jwtProvider.jwtVerifier)
 
-        validate { credential -> credential.toJwtPayload(jwtProvider) }
+        validate { jwtCredential ->
+            val jtiString = jwtCredential.jwtId ?: return@validate null
+            val jti = jtiString.toUuid() ?: return@validate null
+            if (invalidJwtDataSource.isJwtInvalid(jti)) return@validate null
+
+            authCredentials(jti = jti, jwtCredential = jwtCredential, jwtProvider = jwtProvider, encryptor = encryptor)
+        }
 
         challenge { _, _ ->
             call.respond(HttpStatusCode.Unauthorized)
@@ -57,15 +87,28 @@ private fun AuthenticationConfig.registerJwtAuthentication(jwtProvider: JwtProvi
     }
 }
 
-private fun JWTCredential.toJwtPayload(jwtProvider: JwtProvider): JwtPayload? {
-    val jwtPayloadString =
-        payload.getClaim(jwtProvider.jwtClaim).asString()
-    return jwtProvider.jwtPayload(jwtPayloadString).getOrNull()
+private fun authCredentials(
+    jti: Uuid,
+    jwtCredential: JWTCredential,
+    jwtProvider: JwtProvider,
+    encryptor: Encryptor
+): AuthCredentials? {
+    val userIdString = jwtCredential.payload.getClaim(jwtProvider.jwtClaim).asString()
+    val decodedUserIdString = Base64.getDecoder().decode(userIdString)
+    val decryptedUserIdString = encryptor.decrypt(decodedUserIdString).getOrThrow()
+    val userId = decryptedUserIdString.toUuid() ?: return null
+    return AuthCredentials(jti = jti, userId = userId)
 }
+
+@Serializable
+class AuthCredentials(
+    val jti: Uuid,
+    val userId: Uuid,
+)
 
 @OptIn(ExperimentalEncodingApi::class)
 private fun DecodedJWT.parsePayload(): Payload {
-    val payloadString = String(Base64.decode(payload))
+    val payloadString = String(Base64.getDecoder().decode(payload))
     return JWTParser().parsePayload(payloadString)
 }
 

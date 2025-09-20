@@ -7,7 +7,6 @@ import io.ktor.server.sessions.*
 import theoneclick.server.services.app.dataSources.base.UsersDataSource
 import theoneclick.server.services.app.dataSources.models.User
 import theoneclick.server.services.app.repositories.UsersRepository
-import theoneclick.server.shared.auth.models.JwtPayload
 import theoneclick.server.shared.auth.security.Encryptor
 import theoneclick.server.shared.auth.security.JwtProvider
 import theoneclick.server.shared.auth.security.UuidProvider
@@ -80,8 +79,7 @@ private suspend fun RoutingContext.createJwt(
     userId: Uuid,
     jwtProvider: JwtProvider,
 ) {
-    val jwtPayload = JwtPayload(userId)
-    val jwt = jwtProvider.jwt(jwtPayload)
+    val jwt = jwtProvider.jwt(userId)
     respondJwt(jwt)
 }
 
@@ -94,7 +92,7 @@ private suspend fun RoutingContext.respondJwt(jwt: Jwt) {
         }
 
         Agent.BROWSER -> {
-            call.sessions.set(jwt)
+            call.sessions.set(jwt.value)
             call.respond(HttpStatusCode.OK)
         }
     }

@@ -2,6 +2,7 @@ package theoneclick.server.services.app.di
 
 import io.ktor.server.application.Application
 import io.ktor.util.logging.Logger
+import theoneclick.server.services.app.dataSources.base.InvalidJwtDataSource
 import theoneclick.server.services.app.repositories.HomesRepository
 import theoneclick.server.services.app.repositories.UsersRepository
 import theoneclick.server.shared.auth.security.Encryptor
@@ -17,6 +18,7 @@ internal class Dependencies(
     val timeProvider: TimeProvider,
     val logger: Logger,
     val jwtProvider: JwtProvider,
+    val invalidJwtDataSource: InvalidJwtDataSource,
     val usersRepository: UsersRepository,
     val uuidProvider: UuidProvider,
     val homesRepository: HomesRepository,

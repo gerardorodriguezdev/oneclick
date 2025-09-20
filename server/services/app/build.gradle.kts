@@ -64,6 +64,7 @@ dependencies {
     implementation(libs.jvm.logback.classic)
     implementation(libs.jvm.hiraki)
     implementation(libs.jvm.redis)
+    implementation(libs.jvm.reactive)
     implementation(libs.jvm.postgresql)
     implementation(projects.shared.logging)
     implementation(projects.shared.contracts.core)

@@ -3,9 +3,8 @@ package theoneclick.server.shared.auth.security
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
-import kotlinx.serialization.json.Json
-import theoneclick.server.shared.auth.models.JwtPayload
 import theoneclick.shared.contracts.auth.models.Jwt
+import theoneclick.shared.contracts.core.models.Uuid
 import theoneclick.shared.timeProvider.TimeProvider
 import java.util.*
 
@@ -16,8 +15,7 @@ interface JwtProvider {
     val jwtExpirationTimeInMillis: Long
     val jwtSessionName: String
 
-    fun jwt(jwtPayload: JwtPayload): Jwt
-    fun jwtPayload(jwtPayloadString: String): Result<JwtPayload>
+    fun jwt(userId: Uuid): Jwt
 }
 
 class DefaultJwtProvider(
@@ -27,6 +25,7 @@ class DefaultJwtProvider(
     private val secretSignKey: String,
     private val timeProvider: TimeProvider,
     private val encryptor: Encryptor,
+    private val uuidProvider: UuidProvider,
 ) : JwtProvider {
 
     override val jwtExpirationTimeInMillis: Long = 60_000L
@@ -40,29 +39,22 @@ class DefaultJwtProvider(
         .withClaimPresence(jwtClaim)
         .build()
 
-    override fun jwt(jwtPayload: JwtPayload): Jwt {
+    override fun jwt(userId: Uuid): Jwt {
         val currentTime = timeProvider.currentTimeMillis()
         val jwtExpiration = Date(currentTime + jwtExpirationTimeInMillis)
-        val jwtPayloadString = Json.encodeToString(jwtPayload)
-        val encryptedJwtPayloadString = encryptor.encrypt(jwtPayloadString).getOrThrow()
-        val encodedJwtPayloadString = Base64.getEncoder().encodeToString(encryptedJwtPayloadString)
+        val encryptedUserId = encryptor.encrypt(userId.value).getOrThrow()
+        val encodedUserIdString = Base64.getEncoder().encodeToString(encryptedUserId)
         return Jwt.unsafe(
             JWT.create()
+                .withJWTId(uuidProvider.uuid().value)
                 .withAudience(jwtAudience)
                 .withIssuer(jwtIssuer)
                 .withExpiresAt(jwtExpiration)
                 .withClaim(
                     jwtClaim,
-                    encodedJwtPayloadString,
+                    encodedUserIdString,
                 )
                 .sign(Algorithm.HMAC256(secretSignKey))
         )
     }
-
-    override fun jwtPayload(jwtPayloadString: String): Result<JwtPayload> =
-        runCatching {
-            val decodedJwtPayloadString = Base64.getDecoder().decode(jwtPayloadString)
-            val decryptedJwtPayloadString = encryptor.decrypt(decodedJwtPayloadString).getOrThrow()
-            Json.decodeFromString<JwtPayload>(decryptedJwtPayloadString)
-        }
 }
