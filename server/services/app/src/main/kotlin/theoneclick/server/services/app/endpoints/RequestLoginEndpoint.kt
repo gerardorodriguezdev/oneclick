@@ -92,7 +92,7 @@ private suspend fun RoutingContext.respondJwt(jwt: Jwt) {
         }
 
         Agent.BROWSER -> {
-            call.sessions.set(jwt.value)
+            call.sessions.set(jwt)
             call.respond(HttpStatusCode.OK)
         }
     }
