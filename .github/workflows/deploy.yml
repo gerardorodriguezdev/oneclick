@@ -1,0 +1,30 @@
+name: Deploy workflow
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Build
+        uses: ./.github/actions/setup-action
+
+      - name: Build
+        run: |
+          ./gradlew :server:services:app:generateEnvironment -Pchamaleon.environment="production.jvm.properties[IMAGE_PORT=8080,IMAGE_TAG=ghcr.io/${{ github.repository }}:latest,REGISTRY_LOCATION=ghcr.io,REGISTRY_USERNAME=${{ github.actor }},REGISTRY_PASSWORD=${{ secrets.GITHUB_TOKEN }},PROTOCOL=1,HOST=1,DISABLE_RATE_LIMIT=false,USE_MEMORY_DATA_SOURCES=false,JDBC_URL=1,POSTGRES_USERNAME=1,POSTGRES_PASSWORD=1,REDIS_URL=1,REDIS_USERNAME=1,REDIS_PASSWORD=1,JWT_SECRET_SIGN_KEY=1,JWT_SECRET_ENCRYPTION_KEY=1,JWT_REALM=1,JWT_AUDIENCE=1,JWT_ISSUER=1]" \
+          ./gradlew :server:services:app:selectEnvironment -Pchamaleon.newSelectedEnvironment=production \
+          ./gradlew :server:services:app:publishImage
