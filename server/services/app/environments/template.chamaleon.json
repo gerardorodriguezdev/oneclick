@@ -29,39 +29,43 @@
     },
     {
       "name": "PROTOCOL",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "HOST",
-      "propertyType": "String"
-    },
-    {
-      "name": "ENABLE_QAAPI",
-      "propertyType": "Boolean"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "DISABLE_RATE_LIMIT",
-      "propertyType": "Boolean"
+      "propertyType": "Boolean",
+      "nullable": true
     },
     {
       "name": "USE_MEMORY_DATA_SOURCES",
-      "propertyType": "Boolean"
+      "propertyType": "Boolean",
+      "nullable": true
     },
     {
       "name": "JDBC_URL",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "POSTGRES_USERNAME",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "POSTGRES_PASSWORD",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "REDIS_URL",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "REDIS_USERNAME",
@@ -75,23 +79,28 @@
     },
     {
       "name": "JWT_SECRET_SIGN_KEY",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "JWT_SECRET_ENCRYPTION_KEY",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "JWT_REALM",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "JWT_AUDIENCE",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "JWT_ISSUER",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     }
   ]
 }
