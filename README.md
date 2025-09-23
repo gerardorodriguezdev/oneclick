@@ -1,4 +1,4 @@
-# TheOneClick
+# OneClick
 
 A cross-platform home automation application built with Kotlin Multiplatform, featuring a modern client-server architecture with support for Android, iOS, and Web platforms.
 
