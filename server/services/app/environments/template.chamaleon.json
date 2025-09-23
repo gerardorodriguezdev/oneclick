@@ -9,8 +9,7 @@
     },
     {
       "name": "IMAGE_TAG",
-      "propertyType": "String",
-      "nullable": true
+      "propertyType": "String"
     },
     {
       "name": "REGISTRY_LOCATION",

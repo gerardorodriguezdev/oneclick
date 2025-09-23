@@ -8,7 +8,7 @@
       },
       {
         "name": "IMAGE_TAG",
-        "value": null
+        "value": "latest"
       },
       {
         "name": "REGISTRY_LOCATION",
