@@ -12,15 +12,15 @@
       },
       {
         "name": "REGISTRY_LOCATION",
-        "value": null
+        "value": "registryLocation"
       },
       {
         "name": "REGISTRY_USERNAME",
-        "value": null
+        "value": "username"
       },
       {
         "name": "REGISTRY_PASSWORD",
-        "value": null
+        "value": "password"
       },
       {
         "name": "PROTOCOL",
@@ -60,23 +60,23 @@
       },
       {
         "name": "JWT_SECRET_SIGN_KEY",
-        "value": "30db10b1baa440d7da9a68bee86e8a0b4f90d83c057ea490688a6da3da0f4a79"
+        "value": "v09XYkjI+P+8wSz4gXSmRic6TiMZxf3jNmlDhvZHpUE="
       },
       {
         "name": "JWT_SECRET_ENCRYPTION_KEY",
-        "value": "00112233445566778899aabbccddeeff"
+        "value": "K3Y+kAXVDsyEYfzlEPuhn+nxw2EFrQsgrg2jrBDJijA="
       },
       {
         "name": "JWT_REALM",
-        "value": "realm"
+        "value": "Oneclick api"
       },
       {
         "name": "JWT_AUDIENCE",
-        "value": "audience"
+        "value": "http://localhost:8080/api"
       },
       {
         "name": "JWT_ISSUER",
-        "value": "issuer"
+        "value": "http://localhost:8080"
       }
     ]
   }
