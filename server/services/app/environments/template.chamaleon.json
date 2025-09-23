@@ -72,16 +72,6 @@
       "nullable": true
     },
     {
-      "name": "REDIS_USERNAME",
-      "propertyType": "String",
-      "nullable": true
-    },
-    {
-      "name": "REDIS_PASSWORD",
-      "propertyType": "String",
-      "nullable": true
-    },
-    {
       "name": "JWT_SECRET_SIGN_KEY",
       "propertyType": "String",
       "nullable": true

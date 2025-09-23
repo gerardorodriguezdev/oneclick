@@ -59,14 +59,6 @@
         "value": "redis://redis:6379"
       },
       {
-        "name": "REDIS_USERNAME",
-        "value": null
-      },
-      {
-        "name": "REDIS_PASSWORD",
-        "value": null
-      },
-      {
         "name": "JWT_SECRET_SIGN_KEY",
         "value": "30db10b1baa440d7da9a68bee86e8a0b4f90d83c057ea490688a6da3da0f4a79"
       },
