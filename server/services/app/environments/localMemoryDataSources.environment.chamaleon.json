@@ -64,7 +64,7 @@
       },
       {
         "name": "JWT_SECRET_ENCRYPTION_KEY",
-        "value": "K3Y+kAXVDsyEYfzlEPuhn+nxw2EFrQsgrg2jrBDJijA="
+        "value": "5a9b2616505a9aebb886ea6fcdb63960"
       },
       {
         "name": "JWT_REALM",
