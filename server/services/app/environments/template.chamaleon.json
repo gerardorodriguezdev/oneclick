@@ -47,17 +47,22 @@
       "nullable": true
     },
     {
-      "name": "JDBC_URL",
-      "propertyType": "String",
-      "nullable": true
-    },
-    {
-      "name": "POSTGRES_USERNAME",
+      "name": "POSTGRES_USER",
       "propertyType": "String",
       "nullable": true
     },
     {
       "name": "POSTGRES_PASSWORD",
+      "propertyType": "String",
+      "nullable": true
+    },
+    {
+      "name": "PGPORT",
+      "propertyType": "String",
+      "nullable": true
+    },
+    {
+      "name": "PGDATABASE",
       "propertyType": "String",
       "nullable": true
     },

@@ -39,16 +39,20 @@
         "value": false
       },
       {
-        "name": "JDBC_URL",
-        "value": "jdbc:postgresql://postgres:5432/AppDatabase"
-      },
-      {
-        "name": "POSTGRES_USERNAME",
+        "name": "POSTGRES_USER",
         "value": "postgres"
       },
       {
         "name": "POSTGRES_PASSWORD",
         "value": "postgres"
+      },
+      {
+        "name": "PGPORT",
+        "value": "5432"
+      },
+      {
+        "name": "PGDATABASE",
+        "value": "AppDatabase"
       },
       {
         "name": "REDIS_URL",
