@@ -3,6 +3,10 @@
     "platformType": "jvm",
     "properties": [
       {
+        "name": "IMAGE_NAME",
+        "value": "app-local"
+      },
+      {
         "name": "IMAGE_PORT",
         "value": "8080"
       },

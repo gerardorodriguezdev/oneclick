@@ -15,7 +15,7 @@ jvmServer {
     mainClass.set("theoneclick.server.services.app.ApplicationKt")
 
     dockerConfiguration {
-        imageName.set("app")
+        imageName.set(stringProvider("IMAGE_NAME"))
         imagePort.set(intProvider("IMAGE_PORT"))
         imageTag.set(stringProvider("IMAGE_TAG"))
         imageRegistryUrl.set(stringProvider("REGISTRY_LOCATION"))
@@ -92,7 +92,7 @@ dependencies {
 sqldelight {
     databases {
         create(
-            name = "AppDatabase",
+            name = stringProvider("PGDATABASE").get(),
             configureAction = Action<SqlDelightDatabase> {
                 packageName.set("theoneclick.server.services.app.postgresql")
                 dialect(libs.kmp.sqldelight.postgresql)
