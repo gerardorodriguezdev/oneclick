@@ -37,7 +37,7 @@ gradle-detekt-formatting = "1.23.8"
 gradle-ksp = "2.2.20-2.0.2"
 gradle-chamaleon = "1.0.15"
 gradle-docker-compose = "0.17.12"
-gradle-kaml = "0.96.0"
+gradle-kaml = "0.97.0"
 gradle-jib = "3.4.5"
 
 [libraries]
