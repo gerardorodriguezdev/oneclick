@@ -31,10 +31,9 @@ jvmServer {
             provider {
                 PostgresDatabase(
                     imageVersion = libs.versions.docker.postgres.api.get().toInt(),
-                    databaseName = stringProvider("PGDATABASE").get(),
-                    databaseUsername = stringProvider("POSTGRES_USER").get(),
-                    databasePassword = stringProvider("POSTGRES_PASSWORD").get(),
-                    imagePort = stringProvider("PGPORT").get().toInt(),
+                    databaseName = "AppDatabase",
+                    databaseUsername = "postgres",
+                    databasePassword = "postgres",
                 )
             }
         )
@@ -92,7 +91,7 @@ dependencies {
 sqldelight {
     databases {
         create(
-            name = stringProvider("PGDATABASE").get(),
+            name = "AppDatabase",
             configureAction = Action<SqlDelightDatabase> {
                 packageName.set("theoneclick.server.services.app.postgresql")
                 dialect(libs.kmp.sqldelight.postgresql)
