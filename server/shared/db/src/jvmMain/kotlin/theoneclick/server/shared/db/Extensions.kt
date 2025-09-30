@@ -7,9 +7,13 @@ import com.zaxxer.hikari.HikariDataSource
 
 fun databaseDriver(
     jdbcUrl: String,
+    postgresUsername: String,
+    postgresPassword: String,
 ): JdbcDriver {
     val hikariConfig = HikariConfig().apply {
         this.jdbcUrl = jdbcUrl
+        this.username = postgresUsername
+        this.password = postgresPassword
         validate()
     }
     val hikariDataSource = HikariDataSource(hikariConfig)

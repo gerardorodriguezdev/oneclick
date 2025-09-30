@@ -48,6 +48,8 @@ fun main() {
     } else {
         databaseRepositories(
             jdbcUrl = environment.jdbcUrl,
+            postgresUsername = environment.jdbcUrl,
+            postgresPassword = environment.jdbcUrl,
             redisUrl = environment.redisUrl,
             logger = logger,
             dispatchersProvider = dispatchersProvider,
@@ -104,6 +106,8 @@ private fun memoryRepositories(
 @OptIn(ExperimentalLettuceCoroutinesApi::class)
 private fun databaseRepositories(
     jdbcUrl: String,
+    postgresUsername: String,
+    postgresPassword: String,
     redisUrl: String,
     logger: Logger,
     dispatchersProvider: DispatchersProvider,
@@ -111,6 +115,8 @@ private fun databaseRepositories(
 ): Repositories {
     val databaseDriver = databaseDriver(
         jdbcUrl = jdbcUrl,
+        postgresUsername = postgresUsername,
+        postgresPassword = postgresPassword,
     )
 
     val appDatabase = AppDatabase(databaseDriver)
@@ -163,15 +169,18 @@ private data class Environment(
     val secretEncryptionKey: String = System.getenv("SECRET_ENCRYPTION_KEY"),
     val secretSignKey: String = System.getenv("SECRET_SIGN_KEY"),
     val useMemoryDataSources: Boolean = System.getenv("USE_MEMORY_DATA_SOURCES") == "true",
+    val postgresHost: String = System.getenv("POSTGRES_HOST"),
+    val postgresDatabase: String = System.getenv("POSTGRES_DATABASE"),
+    val postgresUsername: String = System.getenv("POSTGRES_USERNAME"),
+    val postgresPassword: String = System.getenv("POSTGRES_PASSWORD"),
     val redisUrl: String = System.getenv("REDIS_URL"),
-    val postgresUrl: String = System.getenv("POSTGRES_URL"),
     val disableRateLimit: Boolean = System.getenv("DISABLE_RATE_LIMIT") == "true",
     val protocol: String = System.getenv("PROTOCOL"),
     val host: String = System.getenv("HOST"),
 ) {
     val baseUrl: String = "$protocol://$host"
     val jwtAudience: String = "$baseUrl/api"
-    val jdbcUrl: String = "jdbc:$postgresUrl"
+    val jdbcUrl: String = "jdbc:postgresql://$postgresHost:5432/$postgresDatabase"
 }
 
 private class Repositories(

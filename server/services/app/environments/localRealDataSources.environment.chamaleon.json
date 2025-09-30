@@ -43,8 +43,20 @@
         "value": false
       },
       {
-        "name": "POSTGRES_URL",
-        "value": "jdbc:postgresql://postgres:5432/AppDatabase"
+        "name": "POSTGRES_HOST",
+        "value": "postgres"
+      },
+      {
+        "name": "POSTGRES_DATABASE",
+        "value": "postgres"
+      },
+      {
+        "name": "POSTGRES_USERNAME",
+        "value": "postgres"
+      },
+      {
+        "name": "POSTGRES_PASSWORD",
+        "value": "postgres"
       },
       {
         "name": "REDIS_URL",

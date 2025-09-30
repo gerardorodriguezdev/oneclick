@@ -52,7 +52,17 @@
       "nullable": true
     },
     {
-      "name": "POSTGRES_URL",
+      "name": "POSTGRES_DATABASE",
+      "propertyType": "String",
+      "nullable": true
+    },
+    {
+      "name": "POSTGRES_USERNAME",
+      "propertyType": "String",
+      "nullable": true
+    },
+    {
+      "name": "POSTGRES_PASSWORD",
       "propertyType": "String",
       "nullable": true
     },
