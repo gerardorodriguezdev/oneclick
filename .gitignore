@@ -8,6 +8,7 @@
 **/local/
 local.properties
 production.environment.chamaleon.json
+staging.environment.chamaleon.json
 
 # IntelliJ
 .idea

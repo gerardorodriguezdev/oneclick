@@ -173,7 +173,7 @@ buildkonfig {
             buildConfigField(
                 FieldSpec.Type.INT,
                 name = "PORT",
-                value = androidStringProvider("PORT").get(),
+                value = androidNullableStringProvider("PORT").orNull,
                 nullable = true
             )
             buildConfigField(
@@ -200,7 +200,7 @@ buildkonfig {
                 buildConfigField(
                     FieldSpec.Type.INT,
                     name = "PORT",
-                    value = iosStringProvider("PORT").get(),
+                    value = iosNullableStringProvider("PORT").orNull,
                     nullable = true
                 )
                 buildConfigField(
@@ -213,8 +213,14 @@ buildkonfig {
     }
 }
 
+fun androidNullableStringProvider(name: String): Provider<String> =
+    provider { chamaleon.selectedEnvironment().androidPlatform.propertyStringValueOrNull(name) }
+
 fun androidStringProvider(name: String): Provider<String> =
     provider { chamaleon.selectedEnvironment().androidPlatform.propertyStringValue(name) }
+
+fun iosNullableStringProvider(name: String): Provider<String> =
+    provider { chamaleon.selectedEnvironment().nativePlatform.propertyStringValueOrNull(name) }
 
 fun iosStringProvider(name: String): Provider<String> =
     provider { chamaleon.selectedEnvironment().nativePlatform.propertyStringValue(name) }

@@ -1,0 +1,56 @@
+[
+  {
+    "platformType": "android",
+    "properties": [
+      {
+        "name": "KEYSTORE_PASSWORD",
+        "value": "Password123"
+      },
+      {
+        "name": "KEY_ALIAS",
+        "value": "key0"
+      },
+      {
+        "name": "KEY_PASSWORD",
+        "value": "Password123"
+      },
+      {
+        "name": "PROTOCOL",
+        "value": "https"
+      },
+      {
+        "name": "HOST",
+        "value": "oneclick-staging.up.railway.app"
+      },
+      {
+        "name": "PORT",
+        "value": null
+      },
+      {
+        "name": "IS_DEBUG",
+        "value": false
+      }
+    ]
+  },
+  {
+    "platformType": "native",
+    "properties": [
+      {
+        "name": "PROTOCOL",
+        "value": "https"
+      },
+      {
+        "name": "HOST",
+        "value": "oneclick-staging.up.railway.app"
+      },
+      {
+        "name": "PORT",
+        "value": null
+      },
+      {
+        "name": "IS_DEBUG",
+        "value": false
+      }
+    ]
+  }
+]

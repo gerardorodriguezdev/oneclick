@@ -12,11 +12,11 @@
       },
       {
         "name": "IMAGE_TAG",
-        "value": "v1.0.0"
+        "value": "123"
       },
       {
         "name": "REGISTRY_LOCATION",
-        "value": "registryLocation"
+        "value": "local"
       },
       {
         "name": "REGISTRY_USERNAME",
