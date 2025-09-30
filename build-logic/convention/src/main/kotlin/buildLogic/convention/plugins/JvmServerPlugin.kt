@@ -71,7 +71,7 @@ class JvmServerPlugin : Plugin<Project> {
             project = externalRegistryProject(
                 imageRegistryUrl = jvmServerExtension.dockerConfiguration.imageRegistryUrl,
                 imageName = jvmServerExtension.dockerConfiguration.imageName,
-                imageTag = provider { "latest" },
+                identifier = provider { "latest" },
             ),
             username = jvmServerExtension.dockerConfiguration.imageRegistryUsername,
             password = jvmServerExtension.dockerConfiguration.imageRegistryPassword,
@@ -175,9 +175,9 @@ class JvmServerPlugin : Plugin<Project> {
     private fun Project.externalRegistryProject(
         imageRegistryUrl: Provider<String>,
         imageName: Provider<String>,
-        imageTag: Provider<String>,
+        identifier: Provider<String>,
     ): Provider<String> =
-        provider { "${imageRegistryUrl.get()}/${imageName.get()}:${imageTag.get()}" }
+        provider { "${imageRegistryUrl.get()}/${imageName.get()}:${identifier.get()}" }
 
     private fun Project.dockerComposeFileName(): Provider<RegularFile> =
         project.layout.buildDirectory.file("$DOCKER_COMPOSE_DIRECTORY_NAME/$DOCKER_COMPOSE_FILE_NAME")
