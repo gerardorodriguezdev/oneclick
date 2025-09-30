@@ -29,7 +29,7 @@ jobs:
 
       - name: Generate environment
         run: |
-          ./gradlew :server:services:app:generateEnvironment -Pchamaleon.environment="${{ env.BRANCH_NAME }}.jvm.properties[IMAGE_NAME=app-${{ env.BRANCH_NAME }},IMAGE_PORT=8080,IMAGE_TAG=${{ github.sha }},REGISTRY_LOCATION=ghcr.io/${{ github.repository }},REGISTRY_USERNAME=${{ github.actor }},REGISTRY_PASSWORD=${{ secrets.GITHUB_TOKEN }},PROTOCOL=1,HOST=1,DISABLE_RATE_LIMIT=false,USE_MEMORY_DATA_SOURCES=false,POSTGRES_USER=1,POSTGRES_PASSWORD=1,PGPORT=1,PGDATABASE=AppDatabase,REDIS_URL=1,JWT_SECRET_SIGN_KEY=1,JWT_SECRET_ENCRYPTION_KEY=1,JWT_REALM=1,JWT_AUDIENCE=1,JWT_ISSUER=1]"
+          ./gradlew :server:services:app:generateEnvironment -Pchamaleon.environment="${{ env.BRANCH_NAME }}.jvm.properties[IMAGE_NAME=app-${{ env.BRANCH_NAME }},IMAGE_PORT=8080,IMAGE_TAG=${{ github.sha }},REGISTRY_LOCATION=ghcr.io/${{ github.repository }},REGISTRY_USERNAME=${{ github.actor }},REGISTRY_PASSWORD=${{ secrets.GITHUB_TOKEN }},PROTOCOL=1,HOST=1,DISABLE_RATE_LIMIT=false,USE_MEMORY_DATA_SOURCES=false,POSTGRES_URL=1,REDIS_URL=1,SECRET_SIGN_KEY=1,SECRET_ENCRYPTION_KEY=1]"
 
       - name: Select environment
         run: |

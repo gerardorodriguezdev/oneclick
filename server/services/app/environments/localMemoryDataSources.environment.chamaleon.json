@@ -43,44 +43,20 @@
         "value": true
       },
       {
-        "name": "POSTGRES_USER",
-        "value": "postgres"
-      },
-      {
-        "name": "POSTGRES_PASSWORD",
-        "value": "postgres"
-      },
-      {
-        "name": "PGPORT",
-        "value": "5432"
-      },
-      {
-        "name": "PGDATABASE",
-        "value": "AppDatabase"
+        "name": "POSTGRES_URL",
+        "value": "jdbc:postgresql://postgres:5432/AppDatabase"
       },
       {
         "name": "REDIS_URL",
         "value": "redis://redis:6379"
       },
       {
-        "name": "JWT_SECRET_SIGN_KEY",
+        "name": "SECRET_SIGN_KEY",
         "value": "v09XYkjI+P+8wSz4gXSmRic6TiMZxf3jNmlDhvZHpUE="
       },
       {
-        "name": "JWT_SECRET_ENCRYPTION_KEY",
+        "name": "SECRET_ENCRYPTION_KEY",
         "value": "5a9b2616505a9aebb886ea6fcdb63960"
-      },
-      {
-        "name": "JWT_REALM",
-        "value": "Oneclick api"
-      },
-      {
-        "name": "JWT_AUDIENCE",
-        "value": "http://localhost:8080/api"
-      },
-      {
-        "name": "JWT_ISSUER",
-        "value": "http://localhost:8080"
       }
     ]
   }

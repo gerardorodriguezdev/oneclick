@@ -32,9 +32,9 @@ fun main() {
     val dispatchersProvider = dispatchersProvider()
     val uuidProvider = DefaultUuidProvider()
     val jwtProvider = DefaultJwtProvider(
-        jwtRealm = environment.jwtRealm,
+        jwtRealm = "Oneclick api",
         jwtAudience = environment.jwtAudience,
-        jwtIssuer = environment.jwtIssuer,
+        jwtIssuer = environment.baseUrl,
         secretSignKey = environment.secretSignKey,
         timeProvider = timeProvider,
         encryptor = encryptor,
@@ -48,8 +48,6 @@ fun main() {
     } else {
         databaseRepositories(
             jdbcUrl = environment.jdbcUrl,
-            postgresUsername = environment.postgresUsername,
-            postgresPassword = environment.postgresPassword,
             redisUrl = environment.redisUrl,
             logger = logger,
             dispatchersProvider = dispatchersProvider,
@@ -106,8 +104,6 @@ private fun memoryRepositories(
 @OptIn(ExperimentalLettuceCoroutinesApi::class)
 private fun databaseRepositories(
     jdbcUrl: String,
-    postgresUsername: String,
-    postgresPassword: String,
     redisUrl: String,
     logger: Logger,
     dispatchersProvider: DispatchersProvider,
@@ -115,8 +111,6 @@ private fun databaseRepositories(
 ): Repositories {
     val databaseDriver = databaseDriver(
         jdbcUrl = jdbcUrl,
-        postgresUsername = postgresUsername,
-        postgresPassword = postgresPassword,
     )
 
     val appDatabase = AppDatabase(databaseDriver)
@@ -166,22 +160,18 @@ private fun databaseRepositories(
 }
 
 private data class Environment(
-    val secretEncryptionKey: String = System.getenv("JWT_SECRET_ENCRYPTION_KEY"),
-    val secretSignKey: String = System.getenv("JWT_SECRET_SIGN_KEY"),
+    val secretEncryptionKey: String = System.getenv("SECRET_ENCRYPTION_KEY"),
+    val secretSignKey: String = System.getenv("SECRET_SIGN_KEY"),
     val useMemoryDataSources: Boolean = System.getenv("USE_MEMORY_DATA_SOURCES") == "true",
-    val postgresUsername: String = System.getenv("POSTGRES_USER"),
-    val postgresPassword: String = System.getenv("POSTGRES_PASSWORD"),
-    val postgresPort: String = System.getenv("PGPORT"),
-    val postgresDatabase: String = System.getenv("PGDATABASE"),
     val redisUrl: String = System.getenv("REDIS_URL"),
-    val jwtRealm: String = System.getenv("JWT_REALM"),
-    val jwtAudience: String = System.getenv("JWT_AUDIENCE"),
-    val jwtIssuer: String = System.getenv("JWT_ISSUER"),
+    val postgresUrl: String = System.getenv("POSTGRES_URL"),
     val disableRateLimit: Boolean = System.getenv("DISABLE_RATE_LIMIT") == "true",
     val protocol: String = System.getenv("PROTOCOL"),
     val host: String = System.getenv("HOST"),
 ) {
-    val jdbcUrl: String = "jdbc:postgresql://$postgresUsername:$postgresPort/$postgresDatabase"
+    val baseUrl: String = "$protocol://$host"
+    val jwtAudience: String = "$baseUrl/api"
+    val jdbcUrl: String = "jdbc:$postgresUrl"
 }
 
 private class Repositories(

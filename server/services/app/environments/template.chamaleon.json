@@ -52,22 +52,7 @@
       "nullable": true
     },
     {
-      "name": "POSTGRES_USER",
-      "propertyType": "String",
-      "nullable": true
-    },
-    {
-      "name": "POSTGRES_PASSWORD",
-      "propertyType": "String",
-      "nullable": true
-    },
-    {
-      "name": "PGPORT",
-      "propertyType": "String",
-      "nullable": true
-    },
-    {
-      "name": "PGDATABASE",
+      "name": "POSTGRES_URL",
       "propertyType": "String",
       "nullable": true
     },
@@ -77,27 +62,12 @@
       "nullable": true
     },
     {
-      "name": "JWT_SECRET_SIGN_KEY",
+      "name": "SECRET_SIGN_KEY",
       "propertyType": "String",
       "nullable": true
     },
     {
-      "name": "JWT_SECRET_ENCRYPTION_KEY",
-      "propertyType": "String",
-      "nullable": true
-    },
-    {
-      "name": "JWT_REALM",
-      "propertyType": "String",
-      "nullable": true
-    },
-    {
-      "name": "JWT_AUDIENCE",
-      "propertyType": "String",
-      "nullable": true
-    },
-    {
-      "name": "JWT_ISSUER",
+      "name": "SECRET_ENCRYPTION_KEY",
       "propertyType": "String",
       "nullable": true
     }
