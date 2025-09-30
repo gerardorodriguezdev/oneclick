@@ -12,7 +12,7 @@
       },
       {
         "name": "IMAGE_TAG",
-        "value": "latest"
+        "value": "v1.0.0"
       },
       {
         "name": "REGISTRY_LOCATION",

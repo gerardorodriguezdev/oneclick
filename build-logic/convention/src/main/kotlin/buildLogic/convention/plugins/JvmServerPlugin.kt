@@ -71,7 +71,7 @@ class JvmServerPlugin : Plugin<Project> {
             project = externalRegistryProject(
                 imageRegistryUrl = jvmServerExtension.dockerConfiguration.imageRegistryUrl,
                 imageName = jvmServerExtension.dockerConfiguration.imageName,
-                imageTag = jvmServerExtension.dockerConfiguration.imageTag,
+                imageTag = provider { "latest" },
             ),
             username = jvmServerExtension.dockerConfiguration.imageRegistryUsername,
             password = jvmServerExtension.dockerConfiguration.imageRegistryPassword,
