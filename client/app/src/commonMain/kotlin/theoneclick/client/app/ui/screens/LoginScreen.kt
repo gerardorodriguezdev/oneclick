@@ -7,7 +7,9 @@ import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.autofill.ContentType
 import androidx.compose.ui.platform.testTag
@@ -91,7 +93,7 @@ private fun PasswordTextField(
     isPasswordValid: Boolean,
     onPasswordChange: (String) -> Unit
 ) {
-    var showPassword by remember { mutableStateOf(false) }
+    val showPassword = remember { mutableStateOf(false) }
 
     OutlinedTextField(
         placeholder = {
@@ -101,16 +103,16 @@ private fun PasswordTextField(
             )
         },
         trailingIcon = {
-            IconButton(onClick = { showPassword = !showPassword }) {
+            IconButton(onClick = { showPassword.value = !showPassword.value }) {
                 Icon(
-                    imageVector = if (showPassword) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
+                    imageVector = if (showPassword.value) Icons.Filled.VisibilityOff else Icons.Filled.Visibility,
                     contentDescription = null,
                 )
             }
         },
         value = password,
         onValueChange = onPasswordChange,
-        visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+        visualTransformation = if (showPassword.value) VisualTransformation.None else PasswordVisualTransformation(),
         isError = !isPasswordValid,
         maxLines = 1,
         modifier = Modifier
