@@ -169,6 +169,7 @@ private data class Environment(
     val secretEncryptionKey: String = System.getenv("SECRET_ENCRYPTION_KEY"),
     val secretSignKey: String = System.getenv("SECRET_SIGN_KEY"),
     val useMemoryDataSources: Boolean = System.getenv("USE_MEMORY_DATA_SOURCES") == "true",
+    val postgresHost: String = System.getenv("POSTGRES_HOST"),
     val postgresDatabase: String = System.getenv("POSTGRES_DATABASE"),
     val postgresUsername: String = System.getenv("POSTGRES_USERNAME"),
     val postgresPassword: String = System.getenv("POSTGRES_PASSWORD"),
@@ -179,7 +180,7 @@ private data class Environment(
 ) {
     val baseUrl: String = "$protocol://$host"
     val jwtAudience: String = "$baseUrl/api"
-    val jdbcUrl: String = "jdbc:postgresql://$postgresUsername:5432/$postgresDatabase"
+    val jdbcUrl: String = "jdbc:postgresql://$postgresHost:5432/$postgresDatabase"
 }
 
 private class Repositories(

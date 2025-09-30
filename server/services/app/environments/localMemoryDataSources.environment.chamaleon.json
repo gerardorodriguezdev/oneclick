@@ -43,6 +43,10 @@
         "value": true
       },
       {
+        "name": "POSTGRES_HOST",
+        "value": "postgres"
+      },
+      {
         "name": "POSTGRES_DATABASE",
         "value": "postgres"
       },
