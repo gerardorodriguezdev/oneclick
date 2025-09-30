@@ -48,8 +48,8 @@ fun main() {
     } else {
         databaseRepositories(
             jdbcUrl = environment.jdbcUrl,
-            postgresUsername = environment.jdbcUrl,
-            postgresPassword = environment.jdbcUrl,
+            postgresUsername = environment.postgresUsername,
+            postgresPassword = environment.postgresPassword,
             redisUrl = environment.redisUrl,
             logger = logger,
             dispatchersProvider = dispatchersProvider,
