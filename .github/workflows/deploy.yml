@@ -1,0 +1,40 @@
+name: Deploy Workflow
+
+on:
+  push:
+    branches:
+      - production
+      - staging
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+  packages: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      BRANCH_NAME: ${{ github.ref_name }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup
+        uses: ./.github/actions/setup-action
+
+      - name: Generate environment
+        run: |
+          ./gradlew :server:services:app:generateEnvironment -Pchamaleon.environment="${{ env.BRANCH_NAME }}.jvm.properties[IMAGE_NAME=app-${{ env.BRANCH_NAME }},IMAGE_PORT=8080,IMAGE_TAG=${{ github.sha }},REGISTRY_LOCATION=ghcr.io/${{ github.repository }},REGISTRY_USERNAME=${{ github.actor }},REGISTRY_PASSWORD=${{ secrets.GITHUB_TOKEN }},PROTOCOL=1,HOST=1,DISABLE_RATE_LIMIT=false,USE_MEMORY_DATA_SOURCES=false,POSTGRES_USER=1,POSTGRES_PASSWORD=1,PGPORT=1,PGDATABASE=AppDatabase,REDIS_URL=1,JWT_SECRET_SIGN_KEY=1,JWT_SECRET_ENCRYPTION_KEY=1,JWT_REALM=1,JWT_AUDIENCE=1,JWT_ISSUER=1]"
+
+      - name: Select environment
+        run: |
+          ./gradlew :server:services:app:selectEnvironment -Pchamaleon.newSelectedEnvironment=${{ env.BRANCH_NAME }}
+
+      - name: Publish
+        run: |
+          ./gradlew :server:services:app:publishImage
