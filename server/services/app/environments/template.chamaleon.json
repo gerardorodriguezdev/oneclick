@@ -52,11 +52,6 @@
       "nullable": true
     },
     {
-      "name": "POSTGRES_HOST",
-      "propertyType": "String",
-      "nullable": true
-    },
-    {
       "name": "POSTGRES_DATABASE",
       "propertyType": "String",
       "nullable": true
