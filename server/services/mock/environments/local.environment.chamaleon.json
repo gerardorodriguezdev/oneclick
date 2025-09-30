@@ -21,10 +21,6 @@
       {
         "name": "REGISTRY_PASSWORD",
         "value": "password"
-      },
-      {
-        "name": "HOST",
-        "value": "0.0.0.0"
       }
     ]
   }

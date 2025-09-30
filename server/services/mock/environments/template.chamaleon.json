@@ -26,10 +26,6 @@
       "name": "REGISTRY_PASSWORD",
       "propertyType": "String",
       "nullable": true
-    },
-    {
-      "name": "HOST",
-      "propertyType": "String"
     }
   ]
 }
