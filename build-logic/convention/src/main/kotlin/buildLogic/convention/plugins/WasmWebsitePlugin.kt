@@ -118,6 +118,6 @@ class WasmWebsitePlugin : Plugin<Project> {
 
         private const val WASM_WEBSITE_EXTENSION_NAME = "wasmWebsite"
 
-        const val WASM_WEBSITE_CONSUMER_CONFIGURATION_NAME = "consumeWasmWebsite"
+        const val WASM_WEBSITE_CONSUMER_CONFIGURATION_NAME = "wasmWebsiteConsumer"
     }
 }
