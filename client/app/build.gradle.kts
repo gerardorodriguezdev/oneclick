@@ -9,7 +9,6 @@ plugins {
     alias(libs.plugins.kmp.compose.compiler)
     alias(libs.plugins.kmp.compose.jetbrains)
     alias(libs.plugins.kmp.serialization)
-    alias(libs.plugins.kmp.atomicfu)
     alias(libs.plugins.kmp.build.config)
     alias(libs.plugins.gradle.ksp)
     alias(libs.plugins.gradle.chamaleon)
@@ -87,8 +86,6 @@ kotlin {
                 implementation(projects.client.shared.ui)
                 implementation(projects.client.shared.notifications)
                 implementation(projects.client.features.home)
-
-                api(libs.kmp.atomicfu)
 
                 project.dependencies {
                     kspAndroid(libs.gradle.ksp.kotlin.inject)

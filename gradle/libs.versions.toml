@@ -15,7 +15,6 @@ jvm-hiraki = "7.0.2"
 jvm-postgresql = "42.7.7"
 jvm-redis = "6.7.1.RELEASE"
 kmp-kotlin-api = "2.2.20"
-kmp-atomicfu = "0.29.0"
 kmp-compose = "1.8.2"
 kmp-coroutines = "1.10.2"
 kmp-ktor = "3.2.3"
@@ -53,7 +52,6 @@ jvm-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:chamaleon-co
 jvm-postgresql = { module = "org.postgresql:postgresql", version.ref = "jvm-postgresql" }
 kmp-datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "android-datastore" }
 kmp-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kmp-coroutines" }
-kmp-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu", version.ref = "kmp-atomicfu" }
 kmp-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "kmp-navigation" }
 kmp-viewModel = { module = "org.jetbrains.androidx.lifecycle:lifecycle-viewmodel-compose", version.ref = "kmp-viewModel" }
 kmp-immutable = { module = "org.jetbrains.kotlinx:kotlinx-collections-immutable", version.ref = "kmp-immutable" }
@@ -82,7 +80,6 @@ gradle-kaml = { module = "com.charleskorn.kaml:kaml", version.ref = "gradle-kaml
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 android-library = { id = "com.android.library", version.ref = "android-gradle-plugin" }
-kmp-atomicfu = { id = "org.jetbrains.kotlinx.atomicfu", version.ref = "kmp-atomicfu" }
 kmp-compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kmp-kotlin-api" }
 kmp-compose-jetbrains = { id = "org.jetbrains.compose", version.ref = "kmp-compose" }
 kmp-kotlin = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kmp-kotlin-api" }

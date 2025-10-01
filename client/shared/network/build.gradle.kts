@@ -28,8 +28,6 @@ kotlin {
                 implementation(projects.shared.timeProvider)
                 implementation(projects.shared.logging)
                 implementation(projects.client.shared.navigation)
-
-                api(libs.kmp.atomicfu)
             }
         }
 

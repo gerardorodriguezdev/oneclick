@@ -29,7 +29,7 @@ private fun Application.configureModules(dependencies: Dependencies) {
     configureRequestValidation()
     configureRequestBodyLimit()
     configureRateLimit(disableRateLimit = dependencies.disableRateLimit, timeProvider = dependencies.timeProvider)
-    configureCallId(dependencies.timeProvider)
+    configureCallId(dependencies.uuidProvider)
     configureCompression(dependencies.baseUrl)
     configureShutdown(dependencies.onShutdown)
     configureRouting(

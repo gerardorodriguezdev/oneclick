@@ -1,7 +1,6 @@
 plugins {
     alias(libs.plugins.kmp.kotlin) apply false
     alias(libs.plugins.kmp.build.config) apply false
-    alias(libs.plugins.kmp.atomicfu) apply false
     alias(libs.plugins.kmp.serialization) apply false
     alias(libs.plugins.kmp.sqldelight) apply false
     alias(libs.plugins.kmp.poko) apply false
