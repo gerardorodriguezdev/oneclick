@@ -31,7 +31,6 @@ private fun Application.configureModules(dependencies: Dependencies) {
     configureRateLimit(disableRateLimit = dependencies.disableRateLimit, timeProvider = dependencies.timeProvider)
     configureCallId(dependencies.timeProvider)
     configureCompression(dependencies.baseUrl)
-    configureOpenTelemetry()
     configureShutdown(dependencies.onShutdown)
     configureRouting(
         usersRepository = dependencies.usersRepository,

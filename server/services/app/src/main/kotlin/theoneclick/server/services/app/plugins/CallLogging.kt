@@ -3,6 +3,7 @@ package theoneclick.server.services.app.plugins
 import io.ktor.server.application.*
 import io.ktor.server.plugins.callid.*
 import io.ktor.server.plugins.calllogging.*
+import io.ktor.server.request.path
 import io.ktor.util.logging.*
 import org.slf4j.event.Level
 import theoneclick.shared.timeProvider.TimeProvider
@@ -16,6 +17,8 @@ internal fun Application.configureCallLogging(
         this.logger = logger
 
         clock { timeProvider.currentTimeMillis() }
+
+        filter { call -> call.request.path().startsWith("/") }
 
         callIdMdc("call-id")
     }
