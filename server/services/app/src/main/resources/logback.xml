@@ -1,13 +1,27 @@
 <configuration>
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%d{HH:mm:ss.SSS} %-5level %X{call-id} -%kvp- %msg%n</pattern>
+            <pattern>%d{HH:mm:ss.SSS} %.-1level %X{call-id} -%kvp- %msg%n</pattern>
         </encoder>
     </appender>
 
-    <root level="trace">
+    <root level="WARN">
         <appender-ref ref="STDOUT"/>
     </root>
 
-    <logger name="theoneclick.defaultlogger" level="debug"/>
+    <logger name="theoneclick.defaultlogger" level="DEBUG" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <logger name="io.ktor.application" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <logger name="io.ktor.routing" level="INFO" additivity="false">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+
+    <logger name="io.netty" level="WARN"/>
+
+    <logger name="ch.qos.logback" level="WARN"/>
 </configuration>
