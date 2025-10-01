@@ -7,6 +7,9 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
+import migrations.Devices
+import migrations.Homes
+import migrations.Rooms
 import theoneclick.server.services.app.dataSources.base.HomesDataSource
 import theoneclick.server.services.app.dataSources.models.HomesEntry
 import theoneclick.server.services.app.postgresql.*

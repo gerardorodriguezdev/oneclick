@@ -90,6 +90,7 @@ sqldelight {
             name = "AppDatabase",
             configureAction = Action<SqlDelightDatabase> {
                 packageName.set("theoneclick.server.services.app.postgresql")
+                deriveSchemaFromMigrations.set(true)
                 dialect(libs.kmp.sqldelight.postgresql)
             }
         )

@@ -2,10 +2,10 @@ package theoneclick.server.services.app.dataSources
 
 import io.ktor.util.logging.*
 import kotlinx.coroutines.withContext
+import migrations.Users
 import theoneclick.server.services.app.dataSources.base.UsersDataSource
 import theoneclick.server.services.app.dataSources.models.User
 import theoneclick.server.services.app.postgresql.AppDatabase
-import theoneclick.server.services.app.postgresql.Users
 import theoneclick.server.shared.auth.models.HashedPassword
 import theoneclick.shared.contracts.auth.models.Username
 import theoneclick.shared.contracts.core.models.Uuid

@@ -1,7 +1,0 @@
-CREATE TABLE IF NOT EXISTS rooms (
-    home_id CHAR(36) REFERENCES homes(home_id) ON DELETE CASCADE,
-    room_id CHAR(36) PRIMARY KEY,
-    room_name VARCHAR(20) NOT NULL
-);
-
-CREATE INDEX IF NOT EXISTS rooms_home_id_idx ON rooms(home_id);
