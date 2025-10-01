@@ -46,7 +46,7 @@ internal fun Routing.requestLoginEndpoint(
                 hashedPassword = user.hashedPassword
             ) -> handleError()
 
-            else -> createJwt(
+            else -> respondJwt(
                 userId = user.userId,
                 jwtProvider = jwtProvider,
             )
@@ -69,13 +69,13 @@ private suspend fun RoutingContext.registerUser(
     )
     usersRepository.saveUser(newUser)
 
-    createJwt(
+    respondJwt(
         userId = newUser.userId,
         jwtProvider = jwtProvider,
     )
 }
 
-private suspend fun RoutingContext.createJwt(
+private suspend fun RoutingContext.respondJwt(
     userId: Uuid,
     jwtProvider: JwtProvider,
 ) {
