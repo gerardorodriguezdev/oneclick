@@ -135,6 +135,12 @@ kotlin {
             }
         }
 
+        wasmJsMain {
+            dependencies {
+                implementation(devNpm("compression-webpack-plugin", libs.versions.webpack.compression.get()))
+            }
+        }
+
         wasmJsTest {
             dependencies {
                 implementation(libs.kmp.test.turbine)

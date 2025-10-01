@@ -46,6 +46,27 @@ abstract class CreateWebpackConfigTask : DefaultTask() {
                     }))
                 }
             }
+            
+            if (config.mode === 'production') {
+                config.plugins = config.plugins || [];
+                
+                const CompressionPlugin = require('compression-webpack-plugin');
+                const zlib = require('node:zlib');
+                
+                config.plugins.push(
+                    new CompressionPlugin({
+                        filename: '[path].br',
+                        algorithm: 'brotliCompress',
+                        test: /\.(js|css|html|svg|json|wasm)$/,
+                        compressionOptions: {
+                            params: {
+                                [zlib.constants.BROTLI_PARAM_QUALITY]: 11
+                            }
+                        },
+                        deleteOriginalAssets: false
+                    })
+                );
+            }
         """.trimIndent()
 
     private fun List<String>.toIgnoredFilesString(): String =
