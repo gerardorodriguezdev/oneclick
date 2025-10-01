@@ -1,4 +1,5 @@
 import app.cash.sqldelight.gradle.SqlDelightDatabase
+import buildLogic.convention.plugins.WasmWebsitePlugin
 import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput.PostgresDatabase
 import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput.RedisDatabase
 
@@ -74,6 +75,9 @@ dependencies {
     implementation(projects.server.shared.core)
     implementation(projects.server.shared.auth)
     implementation(projects.server.shared.db)
+    consumeWasmWebsite(projects.client.app) {
+        targetConfiguration = WasmWebsitePlugin.WASM_WEBSITE_CONSUMER_CONFIGURATION_NAME
+    }
 
     testImplementation(ktorLibs.server.testHost)
     testImplementation(ktorLibs.client.core)

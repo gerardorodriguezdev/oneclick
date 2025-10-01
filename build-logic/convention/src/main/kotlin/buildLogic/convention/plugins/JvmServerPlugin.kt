@@ -20,6 +20,7 @@ import org.gradle.api.plugins.JavaApplication
 import org.gradle.api.provider.Provider
 import org.gradle.api.tasks.Exec
 import org.gradle.api.tasks.JavaExec
+import org.gradle.api.tasks.Sync
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.named
 import org.gradle.kotlin.dsl.register
@@ -117,6 +118,21 @@ class JvmServerPlugin : Plugin<Project> {
     }
 
     private fun Project.registerTasks(jvmServerExtension: JvmServerExtension, chamaleonExtension: ChamaleonExtension?) {
+        val wasmWebsiteConsumerConfiguration =
+            configurations.create(WasmWebsitePlugin.WASM_WEBSITE_CONSUMER_CONFIGURATION_NAME) {
+                isCanBeConsumed = false
+                isCanBeResolved = true
+            }
+
+        val syncWasmWebsiteFilesTask = tasks.register<Sync>(SYNC_WASM_WEBSITE_FILES_TASK_NAME) {
+            from(wasmWebsiteConsumerConfiguration)
+            into(layout.buildDirectory.dir("resources/main/static"))
+        }
+
+        tasks.named(PROCESS_RESOURCES_TASK_NAME) {
+            dependsOn(syncWasmWebsiteFilesTask)
+        }
+
         val environmentVariablesProvider = provider { chamaleonExtension.toMap() }
         tasks.named<JavaExec>(RUN_TASK_NAME) {
             dependsOn(tasks.named<Jar>(JVM_JAR_TASK_NAME))
@@ -196,6 +212,8 @@ class JvmServerPlugin : Plugin<Project> {
         const val RUN_TASK_NAME = "run"
         const val JVM_JAR_TASK_NAME = "jar"
         const val CREATE_DOCKER_COMPOSE_TASK_NAME = "createDockerCompose"
+        const val SYNC_WASM_WEBSITE_FILES_TASK_NAME = "syncWasmWebsiteFiles"
+        const val PROCESS_RESOURCES_TASK_NAME = "processResources"
 
         const val DOCKER_COMPOSE_DIRECTORY_NAME = "dockerCompose"
         const val DOCKER_COMPOSE_FILE_NAME = "docker-compose.yml"

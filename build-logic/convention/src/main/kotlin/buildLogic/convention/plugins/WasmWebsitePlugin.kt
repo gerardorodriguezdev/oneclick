@@ -90,15 +90,34 @@ class WasmWebsitePlugin : Plugin<Project> {
         tasks.named(JS_PACKAGE_JSON_TASK_NAME) {
             dependsOn(webpackConfigTask)
         }
+
+        val wasmWebsiteConsumerConfiguration = configurations.create(WASM_WEBSITE_CONSUMER_CONFIGURATION_NAME) {
+            isCanBeConsumed = true
+            isCanBeResolved = false
+        }
+
+        val wasmDistributionTask = tasks.named(WASM_DISTRIBUTION_TASK_NAME)
+        artifacts {
+            add(
+                wasmWebsiteConsumerConfiguration.name,
+                wasmDistributionTask.map { it.outputs.files.singleFile }
+            ) {
+                builtBy(wasmDistributionTask)
+            }
+        }
     }
 
-    private companion object {
-        const val WEBPACK_CONFIG_DIRECTORY_NAME = "configs"
-        const val WEBPACK_CONFIG_FILE_NAME = "Config.js"
+    companion object {
+        private const val WEBPACK_CONFIG_DIRECTORY_NAME = "configs"
+        private const val WEBPACK_CONFIG_FILE_NAME = "Config.js"
 
-        const val CREATE_WEBPACK_CONFIG_TASK_NAME = "createWebpackConfigFile"
-        const val JS_PACKAGE_JSON_TASK_NAME = "wasmJsPackageJson"
+        private const val CREATE_WEBPACK_CONFIG_TASK_NAME = "createWebpackConfigFile"
+        private const val JS_PACKAGE_JSON_TASK_NAME = "wasmJsPackageJson"
 
-        const val WASM_WEBSITE_EXTENSION_NAME = "wasmWebsite"
+        private const val WASM_DISTRIBUTION_TASK_NAME = "wasmJsBrowserDistribution"
+
+        private const val WASM_WEBSITE_EXTENSION_NAME = "wasmWebsite"
+
+        const val WASM_WEBSITE_CONSUMER_CONFIGURATION_NAME = "consumeWasmWebsite"
     }
 }

@@ -1,6 +1,7 @@
 package theoneclick.server.services.app.plugins
 
 import io.ktor.server.application.*
+import io.ktor.server.http.content.staticResources
 import io.ktor.server.routing.*
 import theoneclick.server.services.app.dataSources.base.InvalidJwtDataSource
 import theoneclick.server.services.app.endpoints.*
@@ -29,5 +30,6 @@ internal fun Application.configureRouting(
             uuidProvider = uuidProvider,
         )
         homesListEndpoint(homesRepository = homesRepository)
+        staticResources("/", "static")
     }
 }
