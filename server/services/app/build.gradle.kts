@@ -31,9 +31,9 @@ jvmServer {
             provider {
                 PostgresDatabase(
                     imageVersion = libs.versions.docker.postgres.api.get().toInt(),
-                    databaseName = "AppDatabase",
-                    databaseUsername = "postgres",
-                    databasePassword = "postgres",
+                    databaseName = stringProvider("POSTGRES_DATABASE").get(),
+                    databaseUsername = stringProvider("POSTGRES_USERNAME").get(),
+                    databasePassword = stringProvider("POSTGRES_PASSWORD").get(),
                 )
             }
 

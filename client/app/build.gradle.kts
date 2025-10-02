@@ -28,7 +28,7 @@ wasmWebsite {
 androidApp {
     jvmTarget = libs.versions.jvm.api.get().toInt()
 
-    namespace = "theoneclick"
+    namespace = "theoneclick.client.app"
     compileSdkVersion = libs.versions.android.api.get().toInt()
 
     applicationId = "org.theoneclick"

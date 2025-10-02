@@ -36,6 +36,7 @@ class WasmWebsitePlugin : Plugin<Project> {
         val rootDirPath = rootDir.path
         val projectDirPath = projectDir.path
         val configDir = project.layout.buildDirectory.dir(WEBPACK_CONFIG_DIRECTORY_NAME).get().asFile
+        val outputFileName = "${project.name}.[contenthash].js"
 
         extensions.configure(KotlinMultiplatformExtension::class.java) {
             compilerOptions {
@@ -46,7 +47,7 @@ class WasmWebsitePlugin : Plugin<Project> {
                 browser {
                     commonWebpackConfig {
                         configDirectory = configDir
-                        outputFileName = "[contenthash].js"
+                        this.outputFileName = outputFileName
                         devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
                             static = (static ?: mutableListOf()).apply {
                                 add(rootDirPath)
@@ -80,8 +81,7 @@ class WasmWebsitePlugin : Plugin<Project> {
 
     private fun Project.registerTasks(wasmWebsiteExtension: WasmWebsiteExtension) {
         val webpackConfigTaskOutputFile =
-            project.layout.buildDirectory.file("$WEBPACK_CONFIG_DIRECTORY_NAME/$WEBPACK_CONFIG_FILE_NAME")
-
+            layout.buildDirectory.file("$WEBPACK_CONFIG_DIRECTORY_NAME/$WEBPACK_CONFIG_FILE_NAME")
         val webpackConfigTask = tasks.register(CREATE_WEBPACK_CONFIG_TASK_NAME, CreateWebpackConfigTask::class.java) {
             ignoredFiles.set(wasmWebsiteExtension.webpackConfiguration.ignoredFiles)
             outputFile.set(webpackConfigTaskOutputFile)
@@ -113,7 +113,6 @@ class WasmWebsitePlugin : Plugin<Project> {
 
         private const val CREATE_WEBPACK_CONFIG_TASK_NAME = "createWebpackConfigFile"
         private const val JS_PACKAGE_JSON_TASK_NAME = "wasmJsPackageJson"
-
         private const val WASM_DISTRIBUTION_TASK_NAME = "wasmJsBrowserDistribution"
 
         private const val WASM_WEBSITE_EXTENSION_NAME = "wasmWebsite"
