@@ -7,7 +7,6 @@ import org.gradle.kotlin.dsl.newInstance
 import javax.inject.Inject
 
 open class WasmWebsiteExtension @Inject constructor(objects: ObjectFactory) {
-    val outputFileName: Property<String> = objects.property(String::class.java)
     val webpackConfiguration: WebpackConfiguration = objects.newInstance(WebpackConfiguration::class)
 
     fun webpackConfiguration(configure: WebpackConfiguration.() -> Unit) {

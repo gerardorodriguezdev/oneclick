@@ -15,8 +15,6 @@ plugins {
 }
 
 wasmWebsite {
-    outputFileName.set("theoneclick.js")
-
     webpackConfiguration {
         port.set(3_000)
         proxy.set(

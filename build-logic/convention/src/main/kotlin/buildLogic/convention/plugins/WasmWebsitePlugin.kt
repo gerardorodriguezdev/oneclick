@@ -46,7 +46,7 @@ class WasmWebsitePlugin : Plugin<Project> {
                 browser {
                     commonWebpackConfig {
                         configDirectory = configDir
-                        outputFileName = wasmWebsiteExtension.outputFileName.get()
+                        outputFileName = "[contenthash].js"
                         devServer = (devServer ?: KotlinWebpackConfig.DevServer()).apply {
                             static = (static ?: mutableListOf()).apply {
                                 add(rootDirPath)
