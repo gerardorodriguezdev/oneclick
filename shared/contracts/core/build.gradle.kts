@@ -12,10 +12,10 @@ plugins {
 }
 
 androidLibrary {
-    namespace.set("theoneclick.shared.contracts.core")
-    compileSdkVersion.set(libs.versions.android.api.get().toInt())
-    minSdkVersion.set(libs.versions.android.api.get().toInt())
-    composeEnabled.set(false)
+    namespace = "theoneclick.shared.contracts.core"
+    compileSdkVersion = libs.versions.android.api.get().toInt()
+    minSdkVersion = libs.versions.android.api.get().toInt()
+    composeEnabled = false
 }
 
 kotlin {

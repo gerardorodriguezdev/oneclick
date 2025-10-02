@@ -4,21 +4,21 @@ plugins {
 }
 
 jvmServer {
-    jvmTarget.set(libs.versions.jvm.api.get().toInt())
-    mainClass.set("theoneclick.server.services.mock.ApplicationKt")
+    jvmTarget = libs.versions.jvm.api.get().toInt()
+    mainClass = "theoneclick.server.services.mock.ApplicationKt"
 
     dockerConfiguration {
-        imageName.set("mock")
-        imagePort.set(intProvider("IMAGE_PORT"))
-        imageTag.set(stringProvider("IMAGE_TAG"))
-        imageRegistryUrl.set(stringProvider("REGISTRY_LOCATION"))
-        imageRegistryUsername.set(stringProvider("REGISTRY_USERNAME"))
-        imageRegistryPassword.set(stringProvider("REGISTRY_PASSWORD"))
+        imageName = "mock"
+        imagePort = intProvider("IMAGE_PORT")
+        imageTag = stringProvider("IMAGE_TAG")
+        imageRegistryUrl = stringProvider("REGISTRY_LOCATION")
+        imageRegistryUsername = stringProvider("REGISTRY_USERNAME")
+        imageRegistryPassword = stringProvider("REGISTRY_PASSWORD")
     }
 
     dockerComposeConfiguration {
-        dockerExecutablePath.set("/usr/local/bin/docker")
-        dockerComposeExecutablePath.set("/usr/local/bin/docker-compose")
+        dockerExecutablePath = "/usr/local/bin/docker"
+        dockerComposeExecutablePath = "/usr/local/bin/docker-compose"
     }
 }
 

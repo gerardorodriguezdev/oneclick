@@ -5,10 +5,10 @@ plugins {
 }
 
 androidLibrary {
-    namespace.set("theoneclick.client.shared.notifications")
-    compileSdkVersion.set(libs.versions.android.api.get().toInt())
-    minSdkVersion.set(libs.versions.android.api.get().toInt())
-    composeEnabled.set(false)
+    namespace = "theoneclick.client.shared.notifications"
+    compileSdkVersion = libs.versions.android.api.get().toInt()
+    minSdkVersion = libs.versions.android.api.get().toInt()
+    composeEnabled = false
 }
 
 kotlin {

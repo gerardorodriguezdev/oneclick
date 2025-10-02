@@ -7,10 +7,10 @@ plugins {
 }
 
 androidLibrary {
-    namespace.set("theoneclick.client.shared.ui")
-    compileSdkVersion.set(libs.versions.android.api.get().toInt())
-    minSdkVersion.set(libs.versions.android.api.get().toInt())
-    composeEnabled.set(true)
+    namespace = "theoneclick.client.shared.ui"
+    compileSdkVersion = libs.versions.android.api.get().toInt()
+    minSdkVersion = libs.versions.android.api.get().toInt()
+    composeEnabled = true
 }
 
 kotlin {

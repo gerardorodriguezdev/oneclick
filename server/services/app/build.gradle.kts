@@ -11,23 +11,23 @@ plugins {
 }
 
 jvmServer {
-    jvmTarget.set(libs.versions.jvm.api.get().toInt())
-    mainClass.set("theoneclick.server.services.app.ApplicationKt")
+    jvmTarget = libs.versions.jvm.api.get().toInt()
+    mainClass = "theoneclick.server.services.app.ApplicationKt"
 
     dockerConfiguration {
-        imageName.set(stringProvider("IMAGE_NAME"))
-        imagePort.set(intProvider("IMAGE_PORT"))
-        imageTag.set(stringProvider("IMAGE_TAG"))
-        imageRegistryUrl.set(stringProvider("REGISTRY_LOCATION"))
-        imageRegistryUsername.set(stringProvider("REGISTRY_USERNAME"))
-        imageRegistryPassword.set(stringProvider("REGISTRY_PASSWORD"))
+        imageName = stringProvider("IMAGE_NAME")
+        imagePort = intProvider("IMAGE_PORT")
+        imageTag = stringProvider("IMAGE_TAG")
+        imageRegistryUrl = stringProvider("REGISTRY_LOCATION")
+        imageRegistryUsername = stringProvider("REGISTRY_USERNAME")
+        imageRegistryPassword = stringProvider("REGISTRY_PASSWORD")
     }
 
     dockerComposeConfiguration {
-        dockerExecutablePath.set("/usr/local/bin/docker")
-        dockerComposeExecutablePath.set("/usr/local/bin/docker-compose")
+        dockerExecutablePath = "/usr/local/bin/docker"
+        dockerComposeExecutablePath = "/usr/local/bin/docker-compose"
 
-        postgresDatabase.set(
+        postgresDatabase =
             provider {
                 PostgresDatabase(
                     imageVersion = libs.versions.docker.postgres.api.get().toInt(),
@@ -36,12 +36,9 @@ jvmServer {
                     databasePassword = "postgres",
                 )
             }
-        )
 
-        redisDatabase.set(
-            RedisDatabase(
-                imageVersion = libs.versions.docker.redis.api.get().toInt(),
-            )
+        redisDatabase = RedisDatabase(
+            imageVersion = libs.versions.docker.redis.api.get().toInt(),
         )
     }
 }
@@ -91,8 +88,8 @@ sqldelight {
         create(
             name = "AppDatabase",
             configureAction = Action<SqlDelightDatabase> {
-                packageName.set("theoneclick.server.services.app.postgresql")
-                deriveSchemaFromMigrations.set(true)
+                packageName = "theoneclick.server.services.app.postgresql"
+                deriveSchemaFromMigrations = true
                 dialect(libs.kmp.sqldelight.postgresql)
             }
         )

@@ -16,38 +16,34 @@ plugins {
 
 wasmWebsite {
     webpackConfiguration {
-        port.set(3_000)
-        proxy.set(
-            WasmWebsiteExtension.WebpackConfiguration.Proxy(
-                context = mutableListOf("/api"),
-                target = "http://0.0.0.0:8080",
-            )
+        port = 3_000
+        proxy = WasmWebsiteExtension.WebpackConfiguration.Proxy(
+            context = mutableListOf("/api"),
+            target = "http://0.0.0.0:8080",
         )
-        ignoredFiles.set(
-            listOf("**/local/**")
-        )
+        ignoredFiles = listOf("**/local/**")
     }
 }
 
 androidApp {
-    jvmTarget.set(libs.versions.jvm.api.get().toInt())
+    jvmTarget = libs.versions.jvm.api.get().toInt()
 
-    namespace.set("theoneclick")
-    compileSdkVersion.set(libs.versions.android.api.get().toInt())
+    namespace = "theoneclick"
+    compileSdkVersion = libs.versions.android.api.get().toInt()
 
-    applicationId.set("org.theoneclick")
-    minSdkVersion.set(libs.versions.android.api.get().toInt())
-    targetSdkVersion.set(libs.versions.android.api.get().toInt())
-    versionCode.set(1)
-    versionName.set("1.0")
-    testRunner.set("androidx.test.runner.AndroidJUnitRunner")
+    applicationId = "org.theoneclick"
+    minSdkVersion = libs.versions.android.api.get().toInt()
+    targetSdkVersion = libs.versions.android.api.get().toInt()
+    versionCode = 1
+    versionName = "1.0"
+    testRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-    storeFile.set(file("local/keystore.jks"))
-    storePassword.set(androidStringProvider("KEYSTORE_PASSWORD"))
-    keyAlias.set(androidStringProvider("KEY_ALIAS"))
-    keyPassword.set(androidStringProvider("KEY_PASSWORD"))
+    storeFile = file("local/keystore.jks")
+    storePassword = androidStringProvider("KEYSTORE_PASSWORD")
+    keyAlias = androidStringProvider("KEY_ALIAS")
+    keyPassword = androidStringProvider("KEY_PASSWORD")
 
-    composeEnabled.set(true)
+    composeEnabled = true
 }
 
 kotlin {
