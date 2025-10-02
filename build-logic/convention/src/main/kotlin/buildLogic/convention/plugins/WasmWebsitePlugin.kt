@@ -108,8 +108,8 @@ class WasmWebsitePlugin : Plugin<Project> {
     }
 
     companion object {
-        private const val WEBPACK_CONFIG_DIRECTORY_NAME = "configs"
-        private const val WEBPACK_CONFIG_FILE_NAME = "Config.js"
+        private const val WEBPACK_CONFIG_DIRECTORY_NAME = "webpackConfigurations"
+        private const val WEBPACK_CONFIG_FILE_NAME = "WasmWebsitePluginConfig.js"
 
         private const val CREATE_WEBPACK_CONFIG_TASK_NAME = "createWebpackConfigFile"
         private const val JS_PACKAGE_JSON_TASK_NAME = "wasmJsPackageJson"

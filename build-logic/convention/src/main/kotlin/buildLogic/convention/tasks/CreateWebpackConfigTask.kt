@@ -11,10 +11,10 @@ import org.gradle.api.tasks.TaskAction
 @CacheableTask
 abstract class CreateWebpackConfigTask : DefaultTask() {
 
-    @get: Input
+    @get:Input
     abstract val ignoredFiles: ListProperty<String>
 
-    @get: OutputFile
+    @get:OutputFile
     abstract val outputFile: RegularFileProperty
 
     @TaskAction
@@ -32,6 +32,14 @@ abstract class CreateWebpackConfigTask : DefaultTask() {
     private fun webpackConfigContent(ignoredFilesString: String): String =
         //language=javascript
         """
+            const HtmlWebpackPlugin = require('html-webpack-plugin');
+            
+            config.plugins.push(
+                new HtmlWebpackPlugin({
+                    template: 'kotlin/template.html'
+                })
+            );
+            
             if (config.devServer) {
                 const directories = config.devServer.static
 
@@ -48,8 +56,6 @@ abstract class CreateWebpackConfigTask : DefaultTask() {
             }
             
             if (config.mode === 'production') {
-                config.plugins = config.plugins || [];
-                
                 const CompressionPlugin = require('compression-webpack-plugin');
                 const zlib = require('node:zlib');
                 
