@@ -4,6 +4,7 @@ import io.ktor.http.*
 import io.ktor.server.http.content.*
 import io.ktor.server.routing.*
 import theoneclick.server.services.app.endpoints.AppEndpointConstants.fileNameContainsHashRegex
+import theoneclick.server.services.app.endpoints.AppEndpointConstants.isHtmlFileRegex
 
 internal fun Route.appEndpoint() {
     staticResources("/", "static") {
@@ -24,6 +25,25 @@ internal fun Route.appEndpoint() {
                 emptyList()
             }
         }
+
+        modify { resource, call ->
+            val fileName = resource.file.substringAfterLast('/')
+            val isHtmlFile = fileName.matches(isHtmlFileRegex)
+            if (isHtmlFile) {
+                call.response.headers.append(
+                    "Content-Security-Policy",
+                    "default-src 'none'; script-src 'self' 'unsafe-eval'; connect-src 'self'; img-src 'self'; style-src 'self'; frame-ancestors 'self'; form-action 'self';"
+                )
+                call.response.headers.append(
+                    "X-Content-Type-Options",
+                    "nosniff"
+                )
+                call.response.headers.append(
+                    "Permissions-Policy",
+                    "*=()"
+                )
+            }
+        }
     }
 }
 
@@ -31,5 +51,8 @@ private object AppEndpointConstants {
     val fileNameContainsHashRegex = Regex(
         ".*[a-f0-9]{8,20}.*",
         RegexOption.IGNORE_CASE
+    )
+    val isHtmlFileRegex = Regex(
+        """\b\w+\.html(\.br)?$"""
     )
 }
