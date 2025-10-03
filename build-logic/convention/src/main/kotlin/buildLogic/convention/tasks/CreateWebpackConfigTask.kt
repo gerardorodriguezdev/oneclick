@@ -63,7 +63,7 @@ abstract class CreateWebpackConfigTask : DefaultTask() {
                     new CompressionPlugin({
                         filename: '[path].br',
                         algorithm: 'brotliCompress',
-                        test: /\.(js|css|html|svg|json|wasm)$/,
+                        test: /\.(js|css|html|svg|wasm)$/,
                         compressionOptions: {
                             params: {
                                 [zlib.constants.BROTLI_PARAM_QUALITY]: 11
