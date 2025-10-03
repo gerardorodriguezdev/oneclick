@@ -1,27 +1,27 @@
 package theoneclick.server.services.app.endpoints
 
 import io.ktor.http.*
-import io.ktor.http.content.*
 import io.ktor.server.http.content.*
-import io.ktor.server.plugins.cachingheaders.*
 import io.ktor.server.routing.*
 import theoneclick.server.services.app.endpoints.AppEndpointConstants.fileNameContainsHashRegex
 
 internal fun Route.appEndpoint() {
-    install(CachingHeaders)
-
     staticResources("/", "static") {
-        modify { resource, call ->
+        preCompressed(CompressedFileType.BROTLI)
+
+        cacheControl { resource ->
             val fileName = resource.file.substringAfterLast('/')
             val shouldCacheFile = fileName.matches(fileNameContainsHashRegex)
 
             if (shouldCacheFile) {
-                call.caching = CachingOptions(
+                listOf(
                     CacheControl.MaxAge(
-                        maxAgeSeconds = Int.MAX_VALUE,
-                        visibility = CacheControl.Visibility.Public
+                        visibility = CacheControl.Visibility.Public,
+                        maxAgeSeconds = Int.MAX_VALUE
                     )
                 )
+            } else {
+                emptyList()
             }
         }
     }
