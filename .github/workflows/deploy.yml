@@ -27,14 +27,35 @@ jobs:
       - name: Setup
         uses: ./.github/actions/setup-action
 
-      - name: Generate environment
+      - name: Generate server environment
         run: |
           ./gradlew :server:services:app:generateEnvironment -Pchamaleon.environment="${{ env.BRANCH_NAME }}.jvm.properties[IMAGE_NAME=app-${{ env.BRANCH_NAME }},IMAGE_PORT=8080,IMAGE_TAG=${{ github.sha }},REGISTRY_LOCATION=ghcr.io/${{ github.repository }},REGISTRY_USERNAME=${{ github.actor }},REGISTRY_PASSWORD=${{ secrets.GITHUB_TOKEN }},PROTOCOL=1,HOST=1,DISABLE_RATE_LIMIT=false,USE_MEMORY_DATA_SOURCES=false,POSTGRES_HOST=1,POSTGRES_DATABASE=1,POSTGRES_USERNAME=1,POSTGRES_PASSWORD=1,REDIS_URL=1,SECRET_SIGN_KEY=1,SECRET_ENCRYPTION_KEY=1]"
 
-      - name: Select environment
+      - name: Select server environment
         run: |
           ./gradlew :server:services:app:selectEnvironment -Pchamaleon.newSelectedEnvironment=${{ env.BRANCH_NAME }}
 
-      - name: Publish
+      - name: Publish server image
         run: |
           ./gradlew :server:services:app:publishImage
+
+      - name: Setup app files
+        if: env.BRANCH_NAME == 'production'
+        run: |
+          echo "${{ secrets.GOOGLE_SERVICES_BASE64 }}" | base64 -d > /client/app/google-services.json
+          echo "${{ secrets.SERVICE_ACCOUNT_CREDENTIALS_BASE64 }}" | base64 -d > /client/app/service-account-credentials.json
+
+      - name: Generate app environment
+        if: env.BRANCH_NAME == 'production'
+        run: |
+          ./gradlew :client:app:generateEnvironment -Pchamaleon.environment="production.jvm.properties[KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }},KEY_ALIAS=${{ secrets.KEY_ALIAS }},KEY_PASSWORD=${{ secrets.KEY_PASSWORD }},KEYSTORE_PATH=local/production-keystore.jks,PROTOCOL=https,HOST=${{ secrets.HOST }},PORT=null]"
+
+      - name: Select server environment
+        if: env.BRANCH_NAME == 'production'
+        run: |
+          ./gradlew :client:app:selectEnvironment -Pchamaleon.newSelectedEnvironment=production
+
+      - name: Publish server image
+        if: env.BRANCH_NAME == 'production'
+        run: |
+          ./gradlew :client:app:assembleRelease appDistributionUploadRelease appDistributionAddTesters --emails=${{ secrets.TESTER_EMAIL }}
