@@ -1,7 +1,7 @@
-package theoneclick.shared.logging
+package oneclick.shared.logging
 
 import android.util.Log
-import theoneclick.shared.logging.AppLogger.Companion.TAG
+import oneclick.shared.logging.AppLogger.Companion.TAG
 
 class AndroidAppLogger : AppLogger {
     override fun i(message: String) {

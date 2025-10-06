@@ -1,8 +1,8 @@
-package theoneclick.server.services.app.dataSources
+package oneclick.server.services.app.dataSources
 
-import theoneclick.server.services.app.dataSources.base.UsersDataSource
-import theoneclick.server.services.app.dataSources.models.User
-import theoneclick.shared.contracts.core.models.Uuid
+import oneclick.server.services.app.dataSources.base.UsersDataSource
+import oneclick.server.services.app.dataSources.models.User
+import oneclick.shared.contracts.core.models.Uuid
 import java.util.concurrent.ConcurrentHashMap
 
 internal class MemoryUsersDataSource(

@@ -1,4 +1,4 @@
-package theoneclick.client.shared.ui.previews.providers.base
+package oneclick.client.shared.ui.previews.providers.base
 
 data class PreviewModel<T>(
     val description: String,

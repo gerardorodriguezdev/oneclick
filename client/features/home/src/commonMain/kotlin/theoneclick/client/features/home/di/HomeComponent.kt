@@ -1,16 +1,16 @@
-package theoneclick.client.features.home.di
+package oneclick.client.features.home.di
 
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.KmpComponentCreate
 import me.tatarka.inject.annotations.Provides
 import me.tatarka.inject.annotations.Scope
-import theoneclick.client.features.home.dataSources.HomesDataSource
-import theoneclick.client.features.home.dataSources.RemoteHomesDataSource
-import theoneclick.client.features.home.repositories.DefaultHomesRepository
-import theoneclick.client.features.home.repositories.HomesRepository
-import theoneclick.client.features.home.viewModels.HomesListViewModel
-import theoneclick.client.features.home.viewModels.UserSettingsViewModel
-import theoneclick.client.shared.di.CoreComponent
+import oneclick.client.features.home.dataSources.HomesDataSource
+import oneclick.client.features.home.dataSources.RemoteHomesDataSource
+import oneclick.client.features.home.repositories.DefaultHomesRepository
+import oneclick.client.features.home.repositories.HomesRepository
+import oneclick.client.features.home.viewModels.HomesListViewModel
+import oneclick.client.features.home.viewModels.UserSettingsViewModel
+import oneclick.client.shared.di.CoreComponent
 
 @HomeScope
 @Component

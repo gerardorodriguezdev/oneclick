@@ -1,24 +1,24 @@
-package theoneclick.server.services.app
+package oneclick.server.services.app
 
 import io.ktor.server.application.*
 import io.ktor.util.logging.*
 import io.lettuce.core.ExperimentalLettuceCoroutinesApi
 import io.lettuce.core.RedisClient
 import io.lettuce.core.api.coroutines
-import theoneclick.server.services.app.dataSources.*
-import theoneclick.server.services.app.dataSources.base.InvalidJwtDataSource
-import theoneclick.server.services.app.di.Dependencies
-import theoneclick.server.services.app.postgresql.AppDatabase
-import theoneclick.server.services.app.repositories.DefaultHomesRepository
-import theoneclick.server.services.app.repositories.DefaultUsersRepository
-import theoneclick.server.services.app.repositories.HomesRepository
-import theoneclick.server.services.app.repositories.UsersRepository
-import theoneclick.server.shared.auth.security.*
-import theoneclick.server.shared.db.databaseDriver
-import theoneclick.shared.dispatchers.platform.DispatchersProvider
-import theoneclick.shared.dispatchers.platform.dispatchersProvider
-import theoneclick.shared.timeProvider.SystemTimeProvider
-import theoneclick.shared.timeProvider.TimeProvider
+import oneclick.server.services.app.dataSources.*
+import oneclick.server.services.app.dataSources.base.InvalidJwtDataSource
+import oneclick.server.services.app.di.Dependencies
+import oneclick.server.services.app.postgresql.AppDatabase
+import oneclick.server.services.app.repositories.DefaultHomesRepository
+import oneclick.server.services.app.repositories.DefaultUsersRepository
+import oneclick.server.services.app.repositories.HomesRepository
+import oneclick.server.services.app.repositories.UsersRepository
+import oneclick.server.shared.auth.security.*
+import oneclick.server.shared.db.databaseDriver
+import oneclick.shared.dispatchers.platform.DispatchersProvider
+import oneclick.shared.dispatchers.platform.dispatchersProvider
+import oneclick.shared.timeProvider.SystemTimeProvider
+import oneclick.shared.timeProvider.TimeProvider
 
 fun main() {
     val environment = Environment()
@@ -28,7 +28,7 @@ fun main() {
         secretEncryptionKey = environment.secretEncryptionKey,
         secureRandomProvider = jvmSecureRandomProvider,
     )
-    val logger = KtorSimpleLogger("theoneclick.defaultlogger")
+    val logger = KtorSimpleLogger("oneclick.defaultlogger")
     val dispatchersProvider = dispatchersProvider()
     val uuidProvider = DefaultUuidProvider()
     val jwtProvider = DefaultJwtProvider(

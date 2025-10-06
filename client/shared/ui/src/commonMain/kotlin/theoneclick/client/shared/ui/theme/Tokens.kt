@@ -1,4 +1,4 @@
-package theoneclick.client.shared.ui.theme
+package oneclick.client.shared.ui.theme
 
 import androidx.compose.ui.unit.dp
 

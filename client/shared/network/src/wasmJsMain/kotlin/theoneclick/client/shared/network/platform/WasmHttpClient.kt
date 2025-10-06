@@ -1,4 +1,4 @@
-package theoneclick.client.shared.network.platform
+package oneclick.client.shared.network.platform
 
 import io.ktor.client.*
 import io.ktor.client.engine.*
@@ -7,8 +7,8 @@ import io.ktor.client.plugins.compression.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import theoneclick.client.shared.network.plugins.LogoutProxy
-import theoneclick.shared.contracts.core.models.agents.Agent
+import oneclick.client.shared.network.plugins.LogoutProxy
+import oneclick.shared.contracts.core.models.agents.Agent
 
 fun wasmHttpClient(
     httpClientEngine: HttpClientEngine,

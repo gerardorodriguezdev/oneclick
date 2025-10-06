@@ -1,4 +1,4 @@
-package theoneclick.shared.dispatchers.platform
+package oneclick.shared.dispatchers.platform
 
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

@@ -1,24 +1,24 @@
-package theoneclick.server.services.app.endpoints
+package oneclick.server.services.app.endpoints
 
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import theoneclick.server.services.app.dataSources.base.UsersDataSource
-import theoneclick.server.services.app.dataSources.models.User
-import theoneclick.server.services.app.repositories.UsersRepository
-import theoneclick.server.shared.auth.security.Encryptor
-import theoneclick.server.shared.auth.security.JwtProvider
-import theoneclick.server.shared.auth.security.UuidProvider
-import theoneclick.server.shared.core.agent
-import theoneclick.shared.contracts.auth.models.Jwt
-import theoneclick.shared.contracts.auth.models.Password
-import theoneclick.shared.contracts.auth.models.Username
-import theoneclick.shared.contracts.auth.models.requests.RequestLoginRequest
-import theoneclick.shared.contracts.auth.models.responses.RequestLoginResponse
-import theoneclick.shared.contracts.core.models.Uuid
-import theoneclick.shared.contracts.core.models.agents.Agent
-import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
+import oneclick.server.services.app.dataSources.base.UsersDataSource
+import oneclick.server.services.app.dataSources.models.User
+import oneclick.server.services.app.repositories.UsersRepository
+import oneclick.server.shared.auth.security.Encryptor
+import oneclick.server.shared.auth.security.JwtProvider
+import oneclick.server.shared.auth.security.UuidProvider
+import oneclick.server.shared.core.agent
+import oneclick.shared.contracts.auth.models.Jwt
+import oneclick.shared.contracts.auth.models.Password
+import oneclick.shared.contracts.auth.models.Username
+import oneclick.shared.contracts.auth.models.requests.RequestLoginRequest
+import oneclick.shared.contracts.auth.models.responses.RequestLoginResponse
+import oneclick.shared.contracts.core.models.Uuid
+import oneclick.shared.contracts.core.models.agents.Agent
+import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 internal fun Routing.requestLoginEndpoint(
     usersRepository: UsersRepository,

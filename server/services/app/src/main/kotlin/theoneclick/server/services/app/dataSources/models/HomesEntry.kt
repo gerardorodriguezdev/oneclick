@@ -1,8 +1,8 @@
-package theoneclick.server.services.app.dataSources.models
+package oneclick.server.services.app.dataSources.models
 
-import theoneclick.shared.contracts.core.models.UniqueList
-import theoneclick.shared.contracts.core.models.Uuid
-import theoneclick.shared.contracts.homes.models.Home
+import oneclick.shared.contracts.core.models.UniqueList
+import oneclick.shared.contracts.core.models.Uuid
+import oneclick.shared.contracts.homes.models.Home
 
 internal data class HomesEntry(
     val userId: Uuid,

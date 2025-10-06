@@ -1,6 +1,6 @@
-package theoneclick.server.services.mock
+package oneclick.server.services.mock
 
-import theoneclick.server.services.mock.entrypoint.server
+import oneclick.server.services.mock.entrypoint.server
 
 fun main() {
     server().start(wait = true)

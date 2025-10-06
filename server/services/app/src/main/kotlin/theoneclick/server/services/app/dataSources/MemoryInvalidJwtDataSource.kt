@@ -1,8 +1,8 @@
-package theoneclick.server.services.app.dataSources
+package oneclick.server.services.app.dataSources
 
-import theoneclick.server.services.app.dataSources.base.InvalidJwtDataSource
-import theoneclick.shared.contracts.core.models.Uuid
-import theoneclick.shared.timeProvider.TimeProvider
+import oneclick.server.services.app.dataSources.base.InvalidJwtDataSource
+import oneclick.shared.contracts.core.models.Uuid
+import oneclick.shared.timeProvider.TimeProvider
 import java.util.concurrent.ConcurrentHashMap
 
 class MemoryInvalidJwtDataSource(

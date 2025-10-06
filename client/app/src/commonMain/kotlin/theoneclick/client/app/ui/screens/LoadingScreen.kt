@@ -1,13 +1,13 @@
-package theoneclick.client.app.ui.screens
+package oneclick.client.app.ui.screens
 
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import theoneclick.client.app.ui.screens.LoadingScreenTestTags.PROGRESS_INDICATOR_TEST_TAG
-import theoneclick.client.shared.ui.components.ScreenBox
-import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
-import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
+import oneclick.client.app.ui.screens.LoadingScreenTestTags.PROGRESS_INDICATOR_TEST_TAG
+import oneclick.client.shared.ui.components.ScreenBox
+import oneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
+import oneclick.client.shared.ui.previews.providers.base.PreviewModel
 
 @Composable
 fun LoadingScreen() {

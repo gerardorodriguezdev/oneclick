@@ -1,4 +1,4 @@
-package theoneclick.client.shared.ui.previews.dev
+package oneclick.client.shared.ui.previews.dev
 
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Surface

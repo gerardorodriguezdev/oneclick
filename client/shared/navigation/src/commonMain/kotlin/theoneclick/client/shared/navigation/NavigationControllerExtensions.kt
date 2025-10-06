@@ -1,11 +1,11 @@
-package theoneclick.client.shared.navigation
+package oneclick.client.shared.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
-import theoneclick.client.shared.navigation.NavigationController.NavigationEvent.Navigate
-import theoneclick.client.shared.navigation.models.routes.base.Route
+import oneclick.client.shared.navigation.NavigationController.NavigationEvent.Navigate
+import oneclick.client.shared.navigation.models.routes.base.Route
 
 fun popUpToInclusive(
     startRoute: Route,

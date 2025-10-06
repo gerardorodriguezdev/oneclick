@@ -1,7 +1,7 @@
-package theoneclick.server.services.app.repositories
+package oneclick.server.services.app.repositories
 
-import theoneclick.server.services.app.dataSources.base.UsersDataSource
-import theoneclick.server.services.app.dataSources.models.User
+import oneclick.server.services.app.dataSources.base.UsersDataSource
+import oneclick.server.services.app.dataSources.models.User
 
 internal interface UsersRepository {
     suspend fun user(findable: UsersDataSource.Findable): User?

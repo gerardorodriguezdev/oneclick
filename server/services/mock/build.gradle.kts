@@ -1,11 +1,11 @@
 plugins {
-    id("theoneclick.jvm.server")
+    id("oneclick.jvm.server")
     alias(libs.plugins.kmp.serialization)
 }
 
 jvmServer {
     jvmTarget = libs.versions.jvm.api.get().toInt()
-    mainClass = "theoneclick.server.services.mock.ApplicationKt"
+    mainClass = "oneclick.server.services.mock.ApplicationKt"
 
     dockerConfiguration {
         imageName = "mock"

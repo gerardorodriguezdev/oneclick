@@ -37,42 +37,42 @@ tasks {
 gradlePlugin {
     plugins {
         register("jvm-server") {
-            id = "theoneclick.jvm.server"
+            id = "oneclick.jvm.server"
             implementationClass = "buildLogic.convention.plugins.JvmServerPlugin"
         }
 
         register("wasm-website") {
-            id = "theoneclick.wasm.website"
+            id = "oneclick.wasm.website"
             implementationClass = "buildLogic.convention.plugins.WasmWebsitePlugin"
         }
 
         register("android-app") {
-            id = "theoneclick.android.app"
+            id = "oneclick.android.app"
             implementationClass = "buildLogic.convention.plugins.AndroidAppPlugin"
         }
 
         register("ios-app") {
-            id = "theoneclick.ios.app"
+            id = "oneclick.ios.app"
             implementationClass = "buildLogic.convention.plugins.IOSAppPlugin"
         }
 
         register("jvm-library") {
-            id = "theoneclick.jvm.library"
+            id = "oneclick.jvm.library"
             implementationClass = "buildLogic.convention.plugins.JvmLibraryPlugin"
         }
 
         register("wasm-library") {
-            id = "theoneclick.wasm.library"
+            id = "oneclick.wasm.library"
             implementationClass = "buildLogic.convention.plugins.WasmLibraryPlugin"
         }
 
         register("android-library") {
-            id = "theoneclick.android.library"
+            id = "oneclick.android.library"
             implementationClass = "buildLogic.convention.plugins.AndroidLibraryPlugin"
         }
 
         register("ios-library") {
-            id = "theoneclick.ios.library"
+            id = "oneclick.ios.library"
             implementationClass = "buildLogic.convention.plugins.IOSLibraryPlugin"
         }
     }

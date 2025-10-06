@@ -1,4 +1,4 @@
-package theoneclick.client.features.home.ui.screens
+package oneclick.client.features.home.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -21,15 +21,15 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import org.jetbrains.compose.resources.stringResource
-import theoneclick.client.features.home.generated.resources.*
-import theoneclick.client.features.home.ui.screens.HomesListScreenState.UiHome.UiRoom.UiDevice
-import theoneclick.client.shared.ui.components.Body
-import theoneclick.client.shared.ui.components.Label
-import theoneclick.client.shared.ui.components.ScreenBox
-import theoneclick.client.shared.ui.components.Title
-import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
-import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
-import theoneclick.client.shared.ui.theme.Tokens
+import oneclick.client.features.home.generated.resources.*
+import oneclick.client.features.home.ui.screens.HomesListScreenState.UiHome.UiRoom.UiDevice
+import oneclick.client.shared.ui.components.Body
+import oneclick.client.shared.ui.components.Label
+import oneclick.client.shared.ui.components.ScreenBox
+import oneclick.client.shared.ui.components.Title
+import oneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
+import oneclick.client.shared.ui.previews.providers.base.PreviewModel
+import oneclick.client.shared.ui.theme.Tokens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

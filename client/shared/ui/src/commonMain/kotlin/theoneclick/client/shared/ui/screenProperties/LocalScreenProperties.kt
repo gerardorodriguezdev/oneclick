@@ -1,4 +1,4 @@
-package theoneclick.client.shared.ui.screenProperties
+package oneclick.client.shared.ui.screenProperties
 
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass

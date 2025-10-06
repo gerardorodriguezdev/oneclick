@@ -1,9 +1,9 @@
-package theoneclick.server.shared.auth.security
+package oneclick.server.shared.auth.security
 
 import at.favre.lib.crypto.bcrypt.BCrypt
 import io.ktor.util.hex
-import theoneclick.server.shared.auth.models.HashedPassword
-import theoneclick.shared.contracts.auth.models.Password
+import oneclick.server.shared.auth.models.HashedPassword
+import oneclick.shared.contracts.auth.models.Password
 import javax.crypto.Cipher
 import javax.crypto.spec.IvParameterSpec
 import javax.crypto.spec.SecretKeySpec

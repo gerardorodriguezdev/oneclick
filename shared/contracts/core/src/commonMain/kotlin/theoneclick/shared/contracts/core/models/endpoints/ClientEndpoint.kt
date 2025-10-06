@@ -1,4 +1,4 @@
-package theoneclick.shared.contracts.core.models.endpoints
+package oneclick.shared.contracts.core.models.endpoints
 
 enum class ClientEndpoint(val route: String) {
     IS_USER_LOGGED("/api/is-user-logged"),

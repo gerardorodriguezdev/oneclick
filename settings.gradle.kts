@@ -1,4 +1,4 @@
-rootProject.name = "TheOneClick"
+rootProject.name = "OneClick"
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
 
 pluginManagement {

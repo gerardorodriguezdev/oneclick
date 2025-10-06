@@ -1,8 +1,8 @@
-package theoneclick.server.services.app.plugins
+package oneclick.server.services.app.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.plugins.ratelimit.*
-import theoneclick.shared.timeProvider.TimeProvider
+import oneclick.shared.timeProvider.TimeProvider
 import kotlin.time.Duration.Companion.seconds
 
 internal fun Application.configureRateLimit(

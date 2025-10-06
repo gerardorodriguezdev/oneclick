@@ -1,28 +1,28 @@
-package theoneclick.client.app.application
+package oneclick.client.app.application
 
 import android.app.Application
 import android.os.StrictMode
 import android.os.StrictMode.ThreadPolicy
 import android.os.StrictMode.VmPolicy
 import io.ktor.http.*
-import theoneclick.client.app.buildkonfig.BuildKonfig
-import theoneclick.client.app.di.createAppComponent
-import theoneclick.client.app.entrypoints.AppEntrypoint
-import theoneclick.client.app.mappers.urlProtocol
-import theoneclick.client.shared.di.androidCoreComponent
-import theoneclick.client.shared.navigation.DefaultNavigationController
-import theoneclick.client.shared.network.dataSources.AndroidEncryptedPreferences
-import theoneclick.client.shared.network.dataSources.AndroidLocalTokenDataSource
-import theoneclick.client.shared.network.platform.AndroidLogoutManager
-import theoneclick.client.shared.network.platform.androidHttpClientEngine
-import theoneclick.client.shared.network.security.AndroidEncryptor
-import theoneclick.client.shared.notifications.DefaultNotificationsController
-import theoneclick.shared.dispatchers.platform.dispatchersProvider
-import theoneclick.shared.logging.EmptyAppLogger
-import theoneclick.shared.logging.appLogger
-import theoneclick.shared.timeProvider.SystemTimeProvider
+import oneclick.client.app.buildkonfig.BuildKonfig
+import oneclick.client.app.di.createAppComponent
+import oneclick.client.app.entrypoints.AppEntrypoint
+import oneclick.client.app.mappers.urlProtocol
+import oneclick.client.shared.di.androidCoreComponent
+import oneclick.client.shared.navigation.DefaultNavigationController
+import oneclick.client.shared.network.dataSources.AndroidEncryptedPreferences
+import oneclick.client.shared.network.dataSources.AndroidLocalTokenDataSource
+import oneclick.client.shared.network.platform.AndroidLogoutManager
+import oneclick.client.shared.network.platform.androidHttpClientEngine
+import oneclick.client.shared.network.security.AndroidEncryptor
+import oneclick.client.shared.notifications.DefaultNotificationsController
+import oneclick.shared.dispatchers.platform.dispatchersProvider
+import oneclick.shared.logging.EmptyAppLogger
+import oneclick.shared.logging.appLogger
+import oneclick.shared.timeProvider.SystemTimeProvider
 
-class TheOneClickApplication : Application() {
+class OneClickApplication : Application() {
     lateinit var appEntrypoint: AppEntrypoint
         private set
 

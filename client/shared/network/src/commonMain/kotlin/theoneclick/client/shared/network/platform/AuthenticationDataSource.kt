@@ -1,9 +1,9 @@
-package theoneclick.client.shared.network.platform
+package oneclick.client.shared.network.platform
 
-import theoneclick.client.shared.network.models.LogoutResult
-import theoneclick.client.shared.network.models.RequestLoginResult
-import theoneclick.client.shared.network.models.UserLoggedResult
-import theoneclick.shared.contracts.auth.models.requests.RequestLoginRequest
+import oneclick.client.shared.network.models.LogoutResult
+import oneclick.client.shared.network.models.RequestLoginResult
+import oneclick.client.shared.network.models.UserLoggedResult
+import oneclick.shared.contracts.auth.models.requests.RequestLoginRequest
 
 interface AuthenticationDataSource {
     suspend fun isUserLogged(): UserLoggedResult

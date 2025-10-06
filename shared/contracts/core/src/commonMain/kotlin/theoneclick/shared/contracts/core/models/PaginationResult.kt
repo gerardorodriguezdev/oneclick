@@ -1,4 +1,4 @@
-package theoneclick.shared.contracts.core.models
+package oneclick.shared.contracts.core.models
 
 import kotlinx.serialization.Serializable
 

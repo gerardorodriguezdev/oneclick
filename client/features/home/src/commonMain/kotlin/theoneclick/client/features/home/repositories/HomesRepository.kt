@@ -1,17 +1,17 @@
-package theoneclick.client.features.home.repositories
+package oneclick.client.features.home.repositories
 
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
 import kotlinx.coroutines.flow.StateFlow
 import me.tatarka.inject.annotations.Inject
-import theoneclick.client.features.home.dataSources.HomesDataSource
-import theoneclick.client.features.home.models.HomesEntry
-import theoneclick.client.features.home.models.HomesResult
-import theoneclick.shared.contracts.core.models.NonNegativeInt
-import theoneclick.shared.contracts.core.models.PositiveInt
-import theoneclick.shared.contracts.core.models.UniqueList
-import theoneclick.shared.contracts.core.models.UniqueList.Companion.plus
-import theoneclick.shared.contracts.homes.models.requests.HomesRequest
+import oneclick.client.features.home.dataSources.HomesDataSource
+import oneclick.client.features.home.models.HomesEntry
+import oneclick.client.features.home.models.HomesResult
+import oneclick.shared.contracts.core.models.NonNegativeInt
+import oneclick.shared.contracts.core.models.PositiveInt
+import oneclick.shared.contracts.core.models.UniqueList
+import oneclick.shared.contracts.core.models.UniqueList.Companion.plus
+import oneclick.shared.contracts.homes.models.requests.HomesRequest
 
 internal interface HomesRepository {
     val homesEntry: SharedFlow<HomesEntry?>

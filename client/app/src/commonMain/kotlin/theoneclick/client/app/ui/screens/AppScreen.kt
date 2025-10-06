@@ -1,4 +1,4 @@
-package theoneclick.client.app.ui.screens
+package oneclick.client.app.ui.screens
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
@@ -14,17 +14,17 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.StringResource
 import org.jetbrains.compose.resources.stringResource
-import theoneclick.client.app.generated.resources.Res
-import theoneclick.client.app.generated.resources.appScreen_navigationBar_homesList
-import theoneclick.client.app.generated.resources.appScreen_navigationBar_userSettings
-import theoneclick.client.shared.navigation.models.routes.HomeRoute
-import theoneclick.client.shared.ui.components.DefaultSnackbar
-import theoneclick.client.shared.ui.components.DefaultSnackbarState
-import theoneclick.client.shared.ui.components.Label
-import theoneclick.client.shared.ui.previews.dev.MockContent
-import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
-import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
-import theoneclick.client.shared.ui.theme.Tokens
+import oneclick.client.app.generated.resources.Res
+import oneclick.client.app.generated.resources.appScreen_navigationBar_homesList
+import oneclick.client.app.generated.resources.appScreen_navigationBar_userSettings
+import oneclick.client.shared.navigation.models.routes.HomeRoute
+import oneclick.client.shared.ui.components.DefaultSnackbar
+import oneclick.client.shared.ui.components.DefaultSnackbarState
+import oneclick.client.shared.ui.components.Label
+import oneclick.client.shared.ui.previews.dev.MockContent
+import oneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
+import oneclick.client.shared.ui.previews.providers.base.PreviewModel
+import oneclick.client.shared.ui.theme.Tokens
 import kotlin.reflect.KClass
 
 @Composable

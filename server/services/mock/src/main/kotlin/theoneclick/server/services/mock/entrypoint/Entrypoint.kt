@@ -1,4 +1,4 @@
-package theoneclick.server.services.mock.entrypoint
+package oneclick.server.services.mock.entrypoint
 
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
@@ -8,16 +8,16 @@ import io.ktor.server.netty.*
 import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import theoneclick.server.services.mock.utils.mockHomes
-import theoneclick.server.services.mock.utils.mockJwt
-import theoneclick.server.shared.core.agent
-import theoneclick.shared.contracts.auth.models.requests.RequestLoginRequest
-import theoneclick.shared.contracts.auth.models.responses.RequestLoginResponse
-import theoneclick.shared.contracts.auth.models.responses.UserLoggedResponse
-import theoneclick.shared.contracts.core.models.NonNegativeInt
-import theoneclick.shared.contracts.core.models.agents.Agent
-import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
-import theoneclick.shared.contracts.homes.models.responses.HomesResponse
+import oneclick.server.services.mock.utils.mockHomes
+import oneclick.server.services.mock.utils.mockJwt
+import oneclick.server.shared.core.agent
+import oneclick.shared.contracts.auth.models.requests.RequestLoginRequest
+import oneclick.shared.contracts.auth.models.responses.RequestLoginResponse
+import oneclick.shared.contracts.auth.models.responses.UserLoggedResponse
+import oneclick.shared.contracts.core.models.NonNegativeInt
+import oneclick.shared.contracts.core.models.agents.Agent
+import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
+import oneclick.shared.contracts.homes.models.responses.HomesResponse
 
 internal fun server(): EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration> =
     embeddedServer(

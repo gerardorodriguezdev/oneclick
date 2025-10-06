@@ -1,4 +1,4 @@
-package theoneclick.client.features.home.dataSources
+package oneclick.client.features.home.dataSources
 
 import io.ktor.client.*
 import io.ktor.client.call.*
@@ -6,13 +6,13 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.withContext
 import me.tatarka.inject.annotations.Inject
-import theoneclick.client.features.home.models.HomesEntry
-import theoneclick.client.features.home.models.HomesResult
-import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
-import theoneclick.shared.contracts.homes.models.requests.HomesRequest
-import theoneclick.shared.contracts.homes.models.responses.HomesResponse
-import theoneclick.shared.dispatchers.platform.DispatchersProvider
-import theoneclick.shared.logging.AppLogger
+import oneclick.client.features.home.models.HomesEntry
+import oneclick.client.features.home.models.HomesResult
+import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
+import oneclick.shared.contracts.homes.models.requests.HomesRequest
+import oneclick.shared.contracts.homes.models.responses.HomesResponse
+import oneclick.shared.dispatchers.platform.DispatchersProvider
+import oneclick.shared.logging.AppLogger
 
 internal interface HomesDataSource {
     suspend fun homes(request: HomesRequest): HomesResult

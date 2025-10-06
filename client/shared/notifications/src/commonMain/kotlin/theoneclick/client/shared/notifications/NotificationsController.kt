@@ -1,8 +1,8 @@
-package theoneclick.client.shared.notifications
+package oneclick.client.shared.notifications
 
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import theoneclick.client.shared.notifications.NotificationsController.Notification
+import oneclick.client.shared.notifications.NotificationsController.Notification
 
 interface NotificationsController {
     val notificationEvents: SharedFlow<Notification?>

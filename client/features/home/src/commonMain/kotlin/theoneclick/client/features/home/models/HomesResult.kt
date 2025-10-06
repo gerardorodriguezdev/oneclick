@@ -1,4 +1,4 @@
-package theoneclick.client.features.home.models
+package oneclick.client.features.home.models
 
 internal sealed interface HomesResult {
     data class Success(val homesEntry: HomesEntry?) : HomesResult

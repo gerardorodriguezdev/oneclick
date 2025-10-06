@@ -1,11 +1,11 @@
-package theoneclick.client.shared.navigation
+package oneclick.client.shared.navigation
 
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import theoneclick.client.shared.navigation.NavigationController.NavigationEvent
-import theoneclick.client.shared.navigation.NavigationController.NavigationEvent.Navigate
-import theoneclick.client.shared.navigation.NavigationController.NavigationEvent.PopBackStack
+import oneclick.client.shared.navigation.NavigationController.NavigationEvent
+import oneclick.client.shared.navigation.NavigationController.NavigationEvent.Navigate
+import oneclick.client.shared.navigation.NavigationController.NavigationEvent.PopBackStack
 
 interface NavigationControllerObserver {
     val navigationController: NavigationController

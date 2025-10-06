@@ -1,4 +1,4 @@
-package theoneclick.client.app.ui.screens
+package oneclick.client.app.ui.screens
 
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
@@ -19,18 +19,18 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import org.jetbrains.compose.resources.stringResource
-import theoneclick.client.app.generated.resources.*
-import theoneclick.client.app.ui.screens.LoginScreenTestTags.PASSWORD_PLACEHOLDER
-import theoneclick.client.app.ui.screens.LoginScreenTestTags.PASSWORD_TEXT_FIELD
-import theoneclick.client.app.ui.screens.LoginScreenTestTags.USERNAME_PLACEHOLDER
-import theoneclick.client.app.ui.screens.LoginScreenTestTags.USERNAME_TEXT_FIELD
-import theoneclick.client.shared.ui.components.Body
-import theoneclick.client.shared.ui.components.DefaultButton
-import theoneclick.client.shared.ui.components.DialogBox
-import theoneclick.client.shared.ui.components.ScreenBox
-import theoneclick.client.shared.ui.models.Field
-import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
-import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
+import oneclick.client.app.generated.resources.*
+import oneclick.client.app.ui.screens.LoginScreenTestTags.PASSWORD_PLACEHOLDER
+import oneclick.client.app.ui.screens.LoginScreenTestTags.PASSWORD_TEXT_FIELD
+import oneclick.client.app.ui.screens.LoginScreenTestTags.USERNAME_PLACEHOLDER
+import oneclick.client.app.ui.screens.LoginScreenTestTags.USERNAME_TEXT_FIELD
+import oneclick.client.shared.ui.components.Body
+import oneclick.client.shared.ui.components.DefaultButton
+import oneclick.client.shared.ui.components.DialogBox
+import oneclick.client.shared.ui.components.ScreenBox
+import oneclick.client.shared.ui.models.Field
+import oneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
+import oneclick.client.shared.ui.previews.providers.base.PreviewModel
 
 @Composable
 fun LoginScreen(

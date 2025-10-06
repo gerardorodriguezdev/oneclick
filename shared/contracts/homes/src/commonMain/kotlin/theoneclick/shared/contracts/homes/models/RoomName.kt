@@ -1,4 +1,4 @@
-package theoneclick.shared.contracts.homes.models
+package oneclick.shared.contracts.homes.models
 
 import dev.drewhamilton.poko.Poko
 import kotlinx.serialization.Serializable

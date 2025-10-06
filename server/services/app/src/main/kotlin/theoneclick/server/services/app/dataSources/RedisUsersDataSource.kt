@@ -1,4 +1,4 @@
-package theoneclick.server.services.app.dataSources
+package oneclick.server.services.app.dataSources
 
 import io.ktor.util.logging.*
 import io.lettuce.core.ExperimentalLettuceCoroutinesApi
@@ -6,11 +6,11 @@ import io.lettuce.core.api.coroutines.RedisCoroutinesCommands
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import theoneclick.server.services.app.dataSources.base.UsersDataSource
-import theoneclick.server.services.app.dataSources.models.User
-import theoneclick.shared.contracts.auth.models.Username
-import theoneclick.shared.contracts.core.models.Uuid
-import theoneclick.shared.dispatchers.platform.DispatchersProvider
+import oneclick.server.services.app.dataSources.base.UsersDataSource
+import oneclick.server.services.app.dataSources.models.User
+import oneclick.shared.contracts.auth.models.Username
+import oneclick.shared.contracts.core.models.Uuid
+import oneclick.shared.dispatchers.platform.DispatchersProvider
 
 @OptIn(ExperimentalLettuceCoroutinesApi::class)
 internal class RedisUsersDataSource(

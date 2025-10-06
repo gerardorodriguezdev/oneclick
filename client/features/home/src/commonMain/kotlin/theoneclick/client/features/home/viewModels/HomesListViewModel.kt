@@ -1,4 +1,4 @@
-package theoneclick.client.features.home.viewModels
+package oneclick.client.features.home.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,17 +7,17 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
 import org.jetbrains.compose.resources.getString
-import theoneclick.client.features.home.generated.resources.Res
-import theoneclick.client.features.home.generated.resources.homesListScreen_snackbar_unknownError
-import theoneclick.client.features.home.mappers.toHomesListScreenState
-import theoneclick.client.features.home.models.HomesResult
-import theoneclick.client.features.home.repositories.HomesRepository
-import theoneclick.client.features.home.ui.screens.HomesListEvent
-import theoneclick.client.features.home.ui.screens.HomesListScreenState
-import theoneclick.client.shared.notifications.NotificationsController
-import theoneclick.shared.contracts.core.models.UniqueList
-import theoneclick.shared.contracts.core.models.UniqueList.Companion.emptyUniqueList
-import theoneclick.shared.contracts.homes.models.Home
+import oneclick.client.features.home.generated.resources.Res
+import oneclick.client.features.home.generated.resources.homesListScreen_snackbar_unknownError
+import oneclick.client.features.home.mappers.toHomesListScreenState
+import oneclick.client.features.home.models.HomesResult
+import oneclick.client.features.home.repositories.HomesRepository
+import oneclick.client.features.home.ui.screens.HomesListEvent
+import oneclick.client.features.home.ui.screens.HomesListScreenState
+import oneclick.client.shared.notifications.NotificationsController
+import oneclick.shared.contracts.core.models.UniqueList
+import oneclick.shared.contracts.core.models.UniqueList.Companion.emptyUniqueList
+import oneclick.shared.contracts.homes.models.Home
 
 @Inject
 internal class HomesListViewModel(

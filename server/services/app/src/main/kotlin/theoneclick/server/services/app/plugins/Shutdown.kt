@@ -1,4 +1,4 @@
-package theoneclick.server.services.app.plugins
+package oneclick.server.services.app.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.application.hooks.*

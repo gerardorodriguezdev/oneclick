@@ -1,4 +1,4 @@
-package theoneclick.shared.contracts.auth.models.responses
+package oneclick.shared.contracts.auth.models.responses
 
 import kotlinx.serialization.Serializable
 

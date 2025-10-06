@@ -1,13 +1,13 @@
-package theoneclick.server.shared.auth.security
+package oneclick.server.shared.auth.security
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
-import theoneclick.server.shared.auth.models.JwtUserId
-import theoneclick.shared.contracts.auth.models.Jwt
-import theoneclick.shared.contracts.core.models.Uuid
-import theoneclick.shared.contracts.core.models.Uuid.Companion.toUuid
-import theoneclick.shared.timeProvider.TimeProvider
+import oneclick.server.shared.auth.models.JwtUserId
+import oneclick.shared.contracts.auth.models.Jwt
+import oneclick.shared.contracts.core.models.Uuid
+import oneclick.shared.contracts.core.models.Uuid.Companion.toUuid
+import oneclick.shared.timeProvider.TimeProvider
 import java.util.*
 
 interface JwtProvider {

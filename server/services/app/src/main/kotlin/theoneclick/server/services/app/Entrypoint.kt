@@ -1,11 +1,11 @@
-package theoneclick.server.services.app
+package oneclick.server.services.app
 
 import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
-import theoneclick.server.services.app.di.Dependencies
-import theoneclick.server.services.app.plugins.*
-import theoneclick.server.services.app.plugins.authentication.configureAuthentication
+import oneclick.server.services.app.di.Dependencies
+import oneclick.server.services.app.plugins.*
+import oneclick.server.services.app.plugins.authentication.configureAuthentication
 
 internal fun server(dependencies: Dependencies): EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration> =
     embeddedServer(

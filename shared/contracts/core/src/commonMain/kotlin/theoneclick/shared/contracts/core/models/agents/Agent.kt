@@ -1,4 +1,4 @@
-package theoneclick.shared.contracts.core.models.agents
+package oneclick.shared.contracts.core.models.agents
 
 enum class Agent(val value: String) {
     BROWSER("browser"),

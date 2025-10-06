@@ -1,4 +1,4 @@
-package theoneclick.client.shared.ui.components
+package oneclick.client.shared.ui.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Box
@@ -12,11 +12,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.unit.dp
-import theoneclick.client.shared.ui.components.DefaultButtonTestTags.BUTTON_PROGRESS_INDICATOR
-import theoneclick.client.shared.ui.components.DefaultButtonTestTags.BUTTON_TEXT
-import theoneclick.client.shared.ui.previews.dev.ComponentPreviewComposable
-import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
-import theoneclick.client.shared.ui.previews.providers.components.DefaultButtonModelProvider.DefaultButtonModel
+import oneclick.client.shared.ui.components.DefaultButtonTestTags.BUTTON_PROGRESS_INDICATOR
+import oneclick.client.shared.ui.components.DefaultButtonTestTags.BUTTON_TEXT
+import oneclick.client.shared.ui.previews.dev.ComponentPreviewComposable
+import oneclick.client.shared.ui.previews.providers.base.PreviewModel
+import oneclick.client.shared.ui.previews.providers.components.DefaultButtonModelProvider.DefaultButtonModel
 
 @Composable
 fun DefaultButton(

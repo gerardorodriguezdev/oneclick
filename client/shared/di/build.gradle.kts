@@ -1,12 +1,12 @@
 plugins {
-    id("theoneclick.wasm.library")
-    id("theoneclick.android.library")
-    id("theoneclick.ios.library")
+    id("oneclick.wasm.library")
+    id("oneclick.android.library")
+    id("oneclick.ios.library")
     alias(libs.plugins.gradle.ksp)
 }
 
 androidLibrary {
-    namespace = "theoneclick.client.shared.di"
+    namespace = "oneclick.client.shared.di"
     compileSdkVersion = libs.versions.android.api.get().toInt()
     minSdkVersion = libs.versions.android.api.get().toInt()
     composeEnabled = false

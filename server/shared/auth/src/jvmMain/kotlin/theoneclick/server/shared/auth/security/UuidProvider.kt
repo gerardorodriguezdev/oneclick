@@ -1,6 +1,6 @@
-package theoneclick.server.shared.auth.security
+package oneclick.server.shared.auth.security
 
-import theoneclick.shared.contracts.core.models.Uuid
+import oneclick.shared.contracts.core.models.Uuid
 import java.util.*
 import kotlin.uuid.ExperimentalUuidApi
 

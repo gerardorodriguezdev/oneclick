@@ -1,14 +1,14 @@
-package theoneclick.client.shared.di
+package oneclick.client.shared.di
 
 import io.ktor.client.*
 import io.ktor.client.engine.*
-import theoneclick.client.shared.navigation.NavigationController
-import theoneclick.client.shared.network.platform.LogoutManager
-import theoneclick.client.shared.network.platform.WasmRemoteAuthenticationDataSource
-import theoneclick.client.shared.network.platform.wasmHttpClient
-import theoneclick.client.shared.notifications.NotificationsController
-import theoneclick.shared.dispatchers.platform.DispatchersProvider
-import theoneclick.shared.logging.AppLogger
+import oneclick.client.shared.navigation.NavigationController
+import oneclick.client.shared.network.platform.LogoutManager
+import oneclick.client.shared.network.platform.WasmRemoteAuthenticationDataSource
+import oneclick.client.shared.network.platform.wasmHttpClient
+import oneclick.client.shared.notifications.NotificationsController
+import oneclick.shared.dispatchers.platform.DispatchersProvider
+import oneclick.shared.logging.AppLogger
 
 fun wasmCoreComponent(
     httpClientEngine: HttpClientEngine,

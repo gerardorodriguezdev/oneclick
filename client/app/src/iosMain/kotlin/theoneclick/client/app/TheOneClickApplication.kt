@@ -1,4 +1,4 @@
-package theoneclick.client.app
+package oneclick.client.app
 
 import kotlinx.cinterop.ExperimentalForeignApi
 import okio.Path.Companion.toPath
@@ -6,23 +6,23 @@ import platform.Foundation.NSDocumentDirectory
 import platform.Foundation.NSFileManager
 import platform.Foundation.NSURL
 import platform.Foundation.NSUserDomainMask
-import theoneclick.client.app.buildkonfig.BuildKonfig
-import theoneclick.client.app.di.createAppComponent
-import theoneclick.client.app.entrypoints.AppEntrypoint
-import theoneclick.client.app.mappers.urlProtocol
-import theoneclick.client.shared.di.iosCoreComponent
-import theoneclick.client.shared.navigation.DefaultNavigationController
-import theoneclick.client.shared.network.dataSources.IOSLocalTokenDataSource
-import theoneclick.client.shared.network.dataSources.IOSPreferences
-import theoneclick.client.shared.network.platform.IOSLogoutManager
-import theoneclick.client.shared.network.platform.iosHttpClientEngine
-import theoneclick.client.shared.notifications.DefaultNotificationsController
-import theoneclick.shared.dispatchers.platform.dispatchersProvider
-import theoneclick.shared.logging.EmptyAppLogger
-import theoneclick.shared.logging.appLogger
+import oneclick.client.app.buildkonfig.BuildKonfig
+import oneclick.client.app.di.createAppComponent
+import oneclick.client.app.entrypoints.AppEntrypoint
+import oneclick.client.app.mappers.urlProtocol
+import oneclick.client.shared.di.iosCoreComponent
+import oneclick.client.shared.navigation.DefaultNavigationController
+import oneclick.client.shared.network.dataSources.IOSLocalTokenDataSource
+import oneclick.client.shared.network.dataSources.IOSPreferences
+import oneclick.client.shared.network.platform.IOSLogoutManager
+import oneclick.client.shared.network.platform.iosHttpClientEngine
+import oneclick.client.shared.notifications.DefaultNotificationsController
+import oneclick.shared.dispatchers.platform.dispatchersProvider
+import oneclick.shared.logging.EmptyAppLogger
+import oneclick.shared.logging.appLogger
 
 @OptIn(ExperimentalForeignApi::class)
-internal object TheOneClickApplication {
+internal object OneClickApplication {
     val appEntrypoint: AppEntrypoint
 
     init {

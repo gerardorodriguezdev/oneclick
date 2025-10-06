@@ -1,14 +1,14 @@
-package theoneclick.server.services.app.endpoints
+package oneclick.server.services.app.endpoints
 
 import io.ktor.http.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
-import theoneclick.server.services.app.dataSources.base.InvalidJwtDataSource
-import theoneclick.server.services.app.plugins.authentication.defaultAuthentication
-import theoneclick.server.services.app.plugins.authentication.requireJwtCredentials
-import theoneclick.shared.contracts.auth.models.Jwt
-import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
+import oneclick.server.services.app.dataSources.base.InvalidJwtDataSource
+import oneclick.server.services.app.plugins.authentication.defaultAuthentication
+import oneclick.server.services.app.plugins.authentication.requireJwtCredentials
+import oneclick.shared.contracts.auth.models.Jwt
+import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 internal fun Routing.logoutEndpoint(invalidJwtDataSource: InvalidJwtDataSource) {
     defaultAuthentication {

@@ -1,7 +1,7 @@
-package theoneclick.server.services.app.plugins.authentication
+package oneclick.server.services.app.plugins.authentication
 
 import kotlinx.serialization.Serializable
-import theoneclick.shared.contracts.core.models.Uuid
+import oneclick.shared.contracts.core.models.Uuid
 
 @Serializable
 internal class JwtCredentials(

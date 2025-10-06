@@ -1,12 +1,12 @@
-package theoneclick.server.services.app.endpoints
+package oneclick.server.services.app.endpoints
 
 import io.ktor.server.auth.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import theoneclick.server.services.app.plugins.authentication.JwtCredentials
-import theoneclick.server.services.app.plugins.authentication.defaultAuthentication
-import theoneclick.shared.contracts.auth.models.responses.UserLoggedResponse
-import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
+import oneclick.server.services.app.plugins.authentication.JwtCredentials
+import oneclick.server.services.app.plugins.authentication.defaultAuthentication
+import oneclick.shared.contracts.auth.models.responses.UserLoggedResponse
+import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 internal fun Routing.isUserLoggedEndpoint() {
     defaultAuthentication(optional = true) {

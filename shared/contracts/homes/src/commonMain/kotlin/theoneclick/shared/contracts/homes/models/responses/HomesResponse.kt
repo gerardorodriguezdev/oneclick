@@ -1,9 +1,9 @@
-package theoneclick.shared.contracts.homes.models.responses
+package oneclick.shared.contracts.homes.models.responses
 
 import kotlinx.serialization.Serializable
-import theoneclick.shared.contracts.core.models.NonNegativeInt
-import theoneclick.shared.contracts.core.models.UniqueList
-import theoneclick.shared.contracts.homes.models.Home
+import oneclick.shared.contracts.core.models.NonNegativeInt
+import oneclick.shared.contracts.core.models.UniqueList
+import oneclick.shared.contracts.homes.models.Home
 
 @Serializable
 data class HomesResponse(

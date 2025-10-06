@@ -1,6 +1,6 @@
-package theoneclick.shared.logging
+package oneclick.shared.logging
 
-import theoneclick.shared.logging.AppLogger.Companion.TAG
+import oneclick.shared.logging.AppLogger.Companion.TAG
 
 class WasmAppLogger : AppLogger {
     override fun i(message: String) {

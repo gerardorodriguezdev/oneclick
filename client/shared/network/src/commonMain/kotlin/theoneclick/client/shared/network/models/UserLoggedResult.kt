@@ -1,4 +1,4 @@
-package theoneclick.client.shared.network.models
+package oneclick.client.shared.network.models
 
 sealed interface UserLoggedResult {
     data object Logged : UserLoggedResult

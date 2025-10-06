@@ -1,6 +1,6 @@
-package theoneclick.server.services.app.dataSources.base
+package oneclick.server.services.app.dataSources.base
 
-import theoneclick.shared.contracts.core.models.Uuid
+import oneclick.shared.contracts.core.models.Uuid
 
 interface InvalidJwtDataSource {
     val jwtExpirationTime: Long

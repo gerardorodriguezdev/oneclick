@@ -1,4 +1,4 @@
-package theoneclick.server.services.app.plugins.authentication
+package oneclick.server.services.app.plugins.authentication
 
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*

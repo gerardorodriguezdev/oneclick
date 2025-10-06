@@ -1,8 +1,8 @@
-package theoneclick.shared.contracts.auth.models.requests
+package oneclick.shared.contracts.auth.models.requests
 
 import kotlinx.serialization.Serializable
-import theoneclick.shared.contracts.auth.models.Password
-import theoneclick.shared.contracts.auth.models.Username
+import oneclick.shared.contracts.auth.models.Password
+import oneclick.shared.contracts.auth.models.Username
 
 @Serializable
 data class RequestLoginRequest(

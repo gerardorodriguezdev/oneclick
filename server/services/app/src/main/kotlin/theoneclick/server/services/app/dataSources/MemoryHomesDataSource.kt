@@ -1,8 +1,8 @@
-package theoneclick.server.services.app.dataSources
+package oneclick.server.services.app.dataSources
 
-import theoneclick.server.services.app.dataSources.base.HomesDataSource
-import theoneclick.server.services.app.dataSources.models.HomesEntry
-import theoneclick.shared.contracts.core.models.*
+import oneclick.server.services.app.dataSources.base.HomesDataSource
+import oneclick.server.services.app.dataSources.models.HomesEntry
+import oneclick.shared.contracts.core.models.*
 
 internal class MemoryHomesDataSource(
     private val homesEntries: LinkedHashMap<Uuid, HomesEntry> = linkedMapOf(),

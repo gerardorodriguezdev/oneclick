@@ -1,17 +1,17 @@
-package theoneclick.server.services.app.endpoints
+package oneclick.server.services.app.endpoints
 
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import theoneclick.server.services.app.dataSources.models.HomesEntry
-import theoneclick.server.services.app.plugins.authentication.defaultAuthentication
-import theoneclick.server.services.app.plugins.authentication.requireJwtCredentials
-import theoneclick.server.services.app.repositories.HomesRepository
-import theoneclick.shared.contracts.core.models.PaginationResult
-import theoneclick.shared.contracts.core.models.Uuid
-import theoneclick.shared.contracts.core.models.endpoints.ClientEndpoint
-import theoneclick.shared.contracts.homes.models.requests.HomesRequest
-import theoneclick.shared.contracts.homes.models.responses.HomesResponse
-import theoneclick.shared.contracts.homes.models.responses.HomesResponse.Data
+import oneclick.server.services.app.dataSources.models.HomesEntry
+import oneclick.server.services.app.plugins.authentication.defaultAuthentication
+import oneclick.server.services.app.plugins.authentication.requireJwtCredentials
+import oneclick.server.services.app.repositories.HomesRepository
+import oneclick.shared.contracts.core.models.PaginationResult
+import oneclick.shared.contracts.core.models.Uuid
+import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
+import oneclick.shared.contracts.homes.models.requests.HomesRequest
+import oneclick.shared.contracts.homes.models.responses.HomesResponse
+import oneclick.shared.contracts.homes.models.responses.HomesResponse.Data
 
 internal fun Routing.homesListEndpoint(homesRepository: HomesRepository) {
     defaultAuthentication {

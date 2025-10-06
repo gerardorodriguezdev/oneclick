@@ -1,6 +1,6 @@
-package theoneclick.client.shared.network.platform
+package oneclick.client.shared.network.platform
 
-import theoneclick.client.shared.navigation.NavigationController
+import oneclick.client.shared.navigation.NavigationController
 
 class WasmLogoutManager(
     private val navigationController: NavigationController,

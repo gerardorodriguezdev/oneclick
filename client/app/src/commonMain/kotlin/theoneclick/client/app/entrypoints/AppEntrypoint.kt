@@ -1,4 +1,4 @@
-package theoneclick.client.app.entrypoints
+package oneclick.client.app.entrypoints
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.*
@@ -12,19 +12,19 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.launch
-import theoneclick.client.app.di.AppComponent
-import theoneclick.client.app.ui.screens.*
-import theoneclick.client.features.home.entrypoints.HomeEntrypoint
-import theoneclick.client.shared.di.CoreComponent
-import theoneclick.client.shared.navigation.RegisterNavigationControllerObserver
-import theoneclick.client.shared.navigation.models.routes.AppRoute.Init
-import theoneclick.client.shared.navigation.models.routes.AppRoute.Login
-import theoneclick.client.shared.navigation.models.routes.HomeRoute
-import theoneclick.client.shared.navigation.models.routes.HomeRoute.HomesList
-import theoneclick.client.shared.notifications.NotificationsController.Notification
-import theoneclick.client.shared.ui.screenProperties.LocalScreenProperties
-import theoneclick.client.shared.ui.screenProperties.ScreenProperties
-import theoneclick.client.shared.ui.theme.TheOneClickTheme
+import oneclick.client.app.di.AppComponent
+import oneclick.client.app.ui.screens.*
+import oneclick.client.features.home.entrypoints.HomeEntrypoint
+import oneclick.client.shared.di.CoreComponent
+import oneclick.client.shared.navigation.RegisterNavigationControllerObserver
+import oneclick.client.shared.navigation.models.routes.AppRoute.Init
+import oneclick.client.shared.navigation.models.routes.AppRoute.Login
+import oneclick.client.shared.navigation.models.routes.HomeRoute
+import oneclick.client.shared.navigation.models.routes.HomeRoute.HomesList
+import oneclick.client.shared.notifications.NotificationsController.Notification
+import oneclick.client.shared.ui.screenProperties.LocalScreenProperties
+import oneclick.client.shared.ui.screenProperties.ScreenProperties
+import oneclick.client.shared.ui.theme.OneClickTheme
 import kotlin.reflect.KClass
 
 class AppEntrypoint(
@@ -38,7 +38,7 @@ class AppEntrypoint(
         isDarkTheme: Boolean = isSystemInDarkTheme(),
         navHostController: NavHostController = rememberNavController(),
     ) {
-        TheOneClickTheme(isDarkTheme = isDarkTheme) {
+        OneClickTheme(isDarkTheme = isDarkTheme) {
             ScreenProperties {
                 RegisterNavigationControllerObserver(
                     navigationController = coreComponent.navigationController,

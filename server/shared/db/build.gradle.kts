@@ -1,5 +1,5 @@
 plugins {
-    id("theoneclick.jvm.library")
+    id("oneclick.jvm.library")
 }
 
 kotlin {

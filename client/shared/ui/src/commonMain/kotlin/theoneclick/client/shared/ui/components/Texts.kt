@@ -1,4 +1,4 @@
-package theoneclick.client.shared.ui.components
+package oneclick.client.shared.ui.components
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.heading
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextAlign
-import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
-import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
+import oneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
+import oneclick.client.shared.ui.previews.providers.base.PreviewModel
 
 @Composable
 fun Header(

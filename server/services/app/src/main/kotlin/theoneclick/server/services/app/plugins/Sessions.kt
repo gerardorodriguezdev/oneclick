@@ -1,9 +1,9 @@
-package theoneclick.server.services.app.plugins
+package oneclick.server.services.app.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
-import theoneclick.server.shared.auth.security.JwtProvider
-import theoneclick.shared.contracts.auth.models.Jwt
+import oneclick.server.shared.auth.security.JwtProvider
+import oneclick.shared.contracts.auth.models.Jwt
 
 internal fun Application.configureSessions(jwtProvider: JwtProvider) {
     install(Sessions) {

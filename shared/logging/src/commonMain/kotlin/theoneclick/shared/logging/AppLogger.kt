@@ -1,4 +1,4 @@
-package theoneclick.shared.logging
+package oneclick.shared.logging
 
 interface AppLogger {
     fun i(message: String)

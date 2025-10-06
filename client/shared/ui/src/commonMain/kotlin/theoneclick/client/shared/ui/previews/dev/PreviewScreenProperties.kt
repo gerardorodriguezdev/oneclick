@@ -1,9 +1,9 @@
-package theoneclick.client.shared.ui.previews.dev
+package oneclick.client.shared.ui.previews.dev
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import theoneclick.client.shared.ui.screenProperties.LocalScreenProperties
-import theoneclick.client.shared.ui.screenProperties.ScreenProperties
+import oneclick.client.shared.ui.screenProperties.LocalScreenProperties
+import oneclick.client.shared.ui.screenProperties.ScreenProperties
 
 @Composable
 fun PreviewScreenProperties(

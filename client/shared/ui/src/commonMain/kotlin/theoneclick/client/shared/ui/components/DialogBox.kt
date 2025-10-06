@@ -1,4 +1,4 @@
-package theoneclick.client.shared.ui.components
+package oneclick.client.shared.ui.components
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.Card
@@ -8,11 +8,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import theoneclick.client.shared.ui.components.DialogBoxTestTags.HEADER
-import theoneclick.client.shared.ui.previews.dev.MockContent
-import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
-import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
-import theoneclick.client.shared.ui.theme.Tokens
+import oneclick.client.shared.ui.components.DialogBoxTestTags.HEADER
+import oneclick.client.shared.ui.previews.dev.MockContent
+import oneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
+import oneclick.client.shared.ui.previews.providers.base.PreviewModel
+import oneclick.client.shared.ui.theme.Tokens
 
 @Composable
 fun DialogBox(

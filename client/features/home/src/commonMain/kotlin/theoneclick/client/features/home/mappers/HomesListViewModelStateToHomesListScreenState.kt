@@ -1,18 +1,18 @@
-package theoneclick.client.features.home.mappers
+package oneclick.client.features.home.mappers
 
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
-import theoneclick.client.features.home.ui.screens.HomesListScreenState
-import theoneclick.client.features.home.ui.screens.HomesListScreenState.UiHome
-import theoneclick.client.features.home.ui.screens.HomesListScreenState.UiHome.UiRoom
-import theoneclick.client.features.home.ui.screens.HomesListScreenState.UiHome.UiRoom.UiDevice
-import theoneclick.client.features.home.ui.screens.HomesListScreenState.UiHome.UiRoom.UiDevice.UiWaterSensor
-import theoneclick.client.features.home.viewModels.HomesListViewModel
-import theoneclick.shared.contracts.core.models.UniqueList
-import theoneclick.shared.contracts.homes.models.Device
-import theoneclick.shared.contracts.homes.models.Home
-import theoneclick.shared.contracts.homes.models.Room
+import oneclick.client.features.home.ui.screens.HomesListScreenState
+import oneclick.client.features.home.ui.screens.HomesListScreenState.UiHome
+import oneclick.client.features.home.ui.screens.HomesListScreenState.UiHome.UiRoom
+import oneclick.client.features.home.ui.screens.HomesListScreenState.UiHome.UiRoom.UiDevice
+import oneclick.client.features.home.ui.screens.HomesListScreenState.UiHome.UiRoom.UiDevice.UiWaterSensor
+import oneclick.client.features.home.viewModels.HomesListViewModel
+import oneclick.shared.contracts.core.models.UniqueList
+import oneclick.shared.contracts.homes.models.Device
+import oneclick.shared.contracts.homes.models.Home
+import oneclick.shared.contracts.homes.models.Room
 
 internal fun HomesListViewModel.HomesListViewModelState.toHomesListScreenState(): HomesListScreenState =
     HomesListScreenState(

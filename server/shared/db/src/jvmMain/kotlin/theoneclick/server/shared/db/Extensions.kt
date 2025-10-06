@@ -1,4 +1,4 @@
-package theoneclick.server.shared.db
+package oneclick.server.shared.db
 
 import app.cash.sqldelight.driver.jdbc.JdbcDriver
 import app.cash.sqldelight.driver.jdbc.asJdbcDriver

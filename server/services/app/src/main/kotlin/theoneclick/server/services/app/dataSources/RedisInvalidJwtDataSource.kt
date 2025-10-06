@@ -1,11 +1,11 @@
-package theoneclick.server.services.app.dataSources
+package oneclick.server.services.app.dataSources
 
 import io.lettuce.core.ExperimentalLettuceCoroutinesApi
 import io.lettuce.core.api.coroutines.RedisCoroutinesCommands
 import kotlinx.coroutines.withContext
-import theoneclick.server.services.app.dataSources.base.InvalidJwtDataSource
-import theoneclick.shared.contracts.core.models.Uuid
-import theoneclick.shared.dispatchers.platform.DispatchersProvider
+import oneclick.server.services.app.dataSources.base.InvalidJwtDataSource
+import oneclick.shared.contracts.core.models.Uuid
+import oneclick.shared.dispatchers.platform.DispatchersProvider
 
 @OptIn(ExperimentalLettuceCoroutinesApi::class)
 class RedisInvalidJwtDataSource(

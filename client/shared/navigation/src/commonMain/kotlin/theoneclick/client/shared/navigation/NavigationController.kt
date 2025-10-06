@@ -1,9 +1,9 @@
-package theoneclick.client.shared.navigation
+package oneclick.client.shared.navigation
 
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.SharedFlow
-import theoneclick.client.shared.navigation.NavigationController.NavigationEvent
-import theoneclick.client.shared.navigation.models.routes.base.Route
+import oneclick.client.shared.navigation.NavigationController.NavigationEvent
+import oneclick.client.shared.navigation.models.routes.base.Route
 
 interface NavigationController {
 

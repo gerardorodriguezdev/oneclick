@@ -1,4 +1,4 @@
-package theoneclick.client.app
+package oneclick.client.app
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -8,16 +8,16 @@ import androidx.navigation.bindToBrowserNavigation
 import androidx.navigation.compose.rememberNavController
 import io.ktor.client.engine.js.*
 import kotlinx.browser.document
-import theoneclick.client.app.buildkonfig.BuildKonfig
-import theoneclick.client.app.di.createAppComponent
-import theoneclick.client.app.entrypoints.AppEntrypoint
-import theoneclick.client.shared.di.wasmCoreComponent
-import theoneclick.client.shared.navigation.DefaultNavigationController
-import theoneclick.client.shared.network.platform.WasmLogoutManager
-import theoneclick.client.shared.notifications.DefaultNotificationsController
-import theoneclick.shared.dispatchers.platform.dispatchersProvider
-import theoneclick.shared.logging.EmptyAppLogger
-import theoneclick.shared.logging.appLogger
+import oneclick.client.app.buildkonfig.BuildKonfig
+import oneclick.client.app.di.createAppComponent
+import oneclick.client.app.entrypoints.AppEntrypoint
+import oneclick.client.shared.di.wasmCoreComponent
+import oneclick.client.shared.navigation.DefaultNavigationController
+import oneclick.client.shared.network.platform.WasmLogoutManager
+import oneclick.client.shared.notifications.DefaultNotificationsController
+import oneclick.shared.dispatchers.platform.dispatchersProvider
+import oneclick.shared.logging.EmptyAppLogger
+import oneclick.shared.logging.appLogger
 
 @OptIn(ExperimentalComposeUiApi::class, ExperimentalBrowserHistoryApi::class)
 fun main() {

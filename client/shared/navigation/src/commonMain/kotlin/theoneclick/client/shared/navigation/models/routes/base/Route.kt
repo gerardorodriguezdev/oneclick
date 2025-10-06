@@ -1,3 +1,3 @@
-package theoneclick.client.shared.navigation.models.routes.base
+package oneclick.client.shared.navigation.models.routes.base
 
 interface Route

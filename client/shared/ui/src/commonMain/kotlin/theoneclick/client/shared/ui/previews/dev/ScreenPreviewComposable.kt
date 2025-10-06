@@ -1,15 +1,15 @@
-package theoneclick.client.shared.ui.previews.dev
+package oneclick.client.shared.ui.previews.dev
 
 import androidx.compose.runtime.Composable
-import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
-import theoneclick.client.shared.ui.theme.TheOneClickTheme
+import oneclick.client.shared.ui.previews.providers.base.PreviewModel
+import oneclick.client.shared.ui.theme.OneClickTheme
 
 @Composable
 fun <T> ScreenPreviewComposable(
     previewModel: PreviewModel<T>,
     content: @Composable () -> Unit
 ) {
-    TheOneClickTheme(isDarkTheme = previewModel.isDarkTheme) {
+    OneClickTheme(isDarkTheme = previewModel.isDarkTheme) {
         PreviewScreenProperties(isCompact = previewModel.isCompact) {
             content()
         }

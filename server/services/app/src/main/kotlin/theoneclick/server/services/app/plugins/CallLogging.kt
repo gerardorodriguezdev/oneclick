@@ -1,4 +1,4 @@
-package theoneclick.server.services.app.plugins
+package oneclick.server.services.app.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.plugins.callid.*
@@ -6,7 +6,7 @@ import io.ktor.server.plugins.calllogging.*
 import io.ktor.server.request.path
 import io.ktor.util.logging.*
 import org.slf4j.event.Level
-import theoneclick.shared.timeProvider.TimeProvider
+import oneclick.shared.timeProvider.TimeProvider
 
 internal fun Application.configureCallLogging(
     logger: Logger,

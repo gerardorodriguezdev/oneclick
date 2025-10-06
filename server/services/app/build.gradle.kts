@@ -4,7 +4,7 @@ import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerCom
 import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput.RedisDatabase
 
 plugins {
-    id("theoneclick.jvm.server")
+    id("oneclick.jvm.server")
     alias(libs.plugins.kmp.sqldelight)
     alias(libs.plugins.kmp.serialization)
     alias(libs.plugins.kmp.poko)
@@ -12,7 +12,7 @@ plugins {
 
 jvmServer {
     jvmTarget = libs.versions.jvm.api.get().toInt()
-    mainClass = "theoneclick.server.services.app.ApplicationKt"
+    mainClass = "oneclick.server.services.app.ApplicationKt"
 
     dockerConfiguration {
         imageName = stringProvider("IMAGE_NAME")
@@ -88,7 +88,7 @@ sqldelight {
         create(
             name = "AppDatabase",
             configureAction = Action<SqlDelightDatabase> {
-                packageName = "theoneclick.server.services.app.postgresql"
+                packageName = "oneclick.server.services.app.postgresql"
                 deriveSchemaFromMigrations = true
                 dialect(libs.kmp.sqldelight.postgresql)
             }

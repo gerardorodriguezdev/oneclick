@@ -1,4 +1,4 @@
-package theoneclick.client.shared.network.security
+package oneclick.client.shared.network.security
 
 import android.security.keystore.KeyGenParameterSpec
 import android.security.keystore.KeyProperties

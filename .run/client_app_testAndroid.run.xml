@@ -1,11 +1,11 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="client:app:testAndroid" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
-    <module name="TheOneClick.client.app" />
+    <module name="OneClick.client.app" />
     <option name="ANDROID_TEST_RUN_CONFIGURATION_SCHEMA_VERSION" value="0" />
     <option name="TESTING_TYPE" value="1" />
     <option name="METHOD_NAME" value="" />
     <option name="CLASS_NAME" value="" />
-    <option name="PACKAGE_NAME" value="theoneclick" />
+    <option name="PACKAGE_NAME" value="oneclick" />
     <option name="TEST_NAME_REGEX" value="" />
     <option name="INSTRUMENTATION_RUNNER_CLASS" value="" />
     <option name="EXTRA_OPTIONS" value="" />

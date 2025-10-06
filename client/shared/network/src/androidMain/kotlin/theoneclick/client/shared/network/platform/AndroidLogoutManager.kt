@@ -1,7 +1,7 @@
-package theoneclick.client.shared.network.platform
+package oneclick.client.shared.network.platform
 
-import theoneclick.client.shared.navigation.NavigationController
-import theoneclick.client.shared.network.dataSources.TokenDataSource
+import oneclick.client.shared.navigation.NavigationController
+import oneclick.client.shared.network.dataSources.TokenDataSource
 
 class AndroidLogoutManager(
     private val navigationController: NavigationController,

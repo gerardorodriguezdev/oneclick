@@ -1,10 +1,10 @@
-package theoneclick.client.shared.ui.previews.providers.components
+package oneclick.client.shared.ui.previews.providers.components
 
 import org.jetbrains.compose.ui.tooling.preview.PreviewParameterProvider
-import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
-import theoneclick.client.shared.ui.previews.providers.base.darkThemeCompactPreviewModel
-import theoneclick.client.shared.ui.previews.providers.base.lightThemeCompactPreviewModel
-import theoneclick.client.shared.ui.previews.providers.components.DefaultButtonModelProvider.DefaultButtonModel
+import oneclick.client.shared.ui.previews.providers.base.PreviewModel
+import oneclick.client.shared.ui.previews.providers.base.darkThemeCompactPreviewModel
+import oneclick.client.shared.ui.previews.providers.base.lightThemeCompactPreviewModel
+import oneclick.client.shared.ui.previews.providers.components.DefaultButtonModelProvider.DefaultButtonModel
 
 class DefaultButtonModelProvider : PreviewParameterProvider<PreviewModel<DefaultButtonModel>> {
 

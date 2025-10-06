@@ -1,12 +1,12 @@
 plugins {
-    id("theoneclick.android.library")
-    id("theoneclick.jvm.library")
-    id("theoneclick.wasm.library")
-    id("theoneclick.ios.library")
+    id("oneclick.android.library")
+    id("oneclick.jvm.library")
+    id("oneclick.wasm.library")
+    id("oneclick.ios.library")
 }
 
 androidLibrary {
-    namespace = "theoneclick.shared.dispatchers"
+    namespace = "oneclick.shared.dispatchers"
     compileSdkVersion = libs.versions.android.api.get().toInt()
     minSdkVersion = libs.versions.android.api.get().toInt()
     composeEnabled = false

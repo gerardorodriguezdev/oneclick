@@ -1,10 +1,10 @@
-package theoneclick.client.app
+package oneclick.client.app
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import theoneclick.client.app.application.TheOneClickApplication
+import oneclick.client.app.application.OneClickApplication
 
 class MainActivity : ComponentActivity() {
 
@@ -12,7 +12,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
-        val entrypoint = (application as TheOneClickApplication).appEntrypoint
+        val entrypoint = (application as OneClickApplication).appEntrypoint
 
         setContent {
             entrypoint.App()

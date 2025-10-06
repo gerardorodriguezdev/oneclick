@@ -1,10 +1,10 @@
-package theoneclick.client.app.mappers
+package oneclick.client.app.mappers
 
-import theoneclick.client.app.ui.screens.LoginScreenState
-import theoneclick.client.app.viewModels.LoginViewModel
-import theoneclick.client.shared.ui.models.Field
-import theoneclick.shared.contracts.auth.models.Password
-import theoneclick.shared.contracts.auth.models.Username
+import oneclick.client.app.ui.screens.LoginScreenState
+import oneclick.client.app.viewModels.LoginViewModel
+import oneclick.client.shared.ui.models.Field
+import oneclick.shared.contracts.auth.models.Password
+import oneclick.shared.contracts.auth.models.Username
 
 fun LoginViewModel.LoginViewModelState.toLoginScreenState(): LoginScreenState {
     val isUsernameValid = Username.isValid(username ?: "")

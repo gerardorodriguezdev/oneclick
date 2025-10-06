@@ -1,8 +1,8 @@
-package theoneclick.client.features.home.models
+package oneclick.client.features.home.models
 
-import theoneclick.shared.contracts.core.models.NonNegativeInt
-import theoneclick.shared.contracts.core.models.UniqueList
-import theoneclick.shared.contracts.homes.models.Home
+import oneclick.shared.contracts.core.models.NonNegativeInt
+import oneclick.shared.contracts.core.models.UniqueList
+import oneclick.shared.contracts.homes.models.Home
 
 data class HomesEntry(
     val homes: UniqueList<Home>,

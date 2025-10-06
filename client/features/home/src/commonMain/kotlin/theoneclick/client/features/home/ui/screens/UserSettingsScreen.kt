@@ -1,18 +1,18 @@
-package theoneclick.client.features.home.ui.screens
+package oneclick.client.features.home.ui.screens
 
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import org.jetbrains.compose.resources.stringResource
-import theoneclick.client.features.home.generated.resources.Res
-import theoneclick.client.features.home.generated.resources.userSettingsScreen_snackbar_logout
-import theoneclick.client.features.home.generated.resources.userSettingsScreen_title_userSettings
-import theoneclick.client.shared.ui.components.DefaultButton
-import theoneclick.client.shared.ui.components.DialogBox
-import theoneclick.client.shared.ui.components.ScreenBox
-import theoneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
-import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
+import oneclick.client.features.home.generated.resources.Res
+import oneclick.client.features.home.generated.resources.userSettingsScreen_snackbar_logout
+import oneclick.client.features.home.generated.resources.userSettingsScreen_title_userSettings
+import oneclick.client.shared.ui.components.DefaultButton
+import oneclick.client.shared.ui.components.DialogBox
+import oneclick.client.shared.ui.components.ScreenBox
+import oneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
+import oneclick.client.shared.ui.previews.providers.base.PreviewModel
 
 @Composable
 internal fun UserSettingsScreen(

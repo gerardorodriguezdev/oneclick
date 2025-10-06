@@ -1,8 +1,8 @@
-package theoneclick.server.services.app.dataSources.base
+package oneclick.server.services.app.dataSources.base
 
-import theoneclick.server.services.app.dataSources.models.User
-import theoneclick.shared.contracts.auth.models.Username
-import theoneclick.shared.contracts.core.models.Uuid
+import oneclick.server.services.app.dataSources.models.User
+import oneclick.shared.contracts.auth.models.Username
+import oneclick.shared.contracts.core.models.Uuid
 
 internal interface UsersDataSource {
     suspend fun user(findable: Findable): User?

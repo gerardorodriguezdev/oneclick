@@ -1,4 +1,4 @@
-package theoneclick.client.shared.ui.models
+package oneclick.client.shared.ui.models
 
 data class Field(
     val text: String = "",

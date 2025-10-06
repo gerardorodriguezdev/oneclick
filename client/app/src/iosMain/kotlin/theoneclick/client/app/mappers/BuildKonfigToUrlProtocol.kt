@@ -1,7 +1,7 @@
-package theoneclick.client.app.mappers
+package oneclick.client.app.mappers
 
 import io.ktor.http.*
-import theoneclick.client.app.buildkonfig.BuildKonfig
+import oneclick.client.app.buildkonfig.BuildKonfig
 
 internal fun BuildKonfig.urlProtocol(): URLProtocol? =
     when (PROTOCOL) {

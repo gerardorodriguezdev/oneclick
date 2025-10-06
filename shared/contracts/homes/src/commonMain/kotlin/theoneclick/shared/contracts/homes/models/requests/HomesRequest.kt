@@ -1,8 +1,8 @@
-package theoneclick.shared.contracts.homes.models.requests
+package oneclick.shared.contracts.homes.models.requests
 
 import kotlinx.serialization.Serializable
-import theoneclick.shared.contracts.core.models.NonNegativeInt
-import theoneclick.shared.contracts.core.models.PositiveInt
+import oneclick.shared.contracts.core.models.NonNegativeInt
+import oneclick.shared.contracts.core.models.PositiveInt
 
 @Serializable
 data class HomesRequest(

@@ -1,4 +1,4 @@
-package theoneclick.client.shared.network.dataSources
+package oneclick.client.shared.network.dataSources
 
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
@@ -11,9 +11,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
-import theoneclick.client.shared.network.security.Encryptor
-import theoneclick.shared.dispatchers.platform.DispatchersProvider
-import theoneclick.shared.logging.AppLogger
+import oneclick.client.shared.network.security.Encryptor
+import oneclick.shared.dispatchers.platform.DispatchersProvider
+import oneclick.shared.logging.AppLogger
 import java.io.File
 
 interface EncryptedPreferences {

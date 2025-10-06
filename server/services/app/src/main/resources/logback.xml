@@ -9,7 +9,7 @@
         <appender-ref ref="STDOUT"/>
     </root>
 
-    <logger name="theoneclick.defaultlogger" level="DEBUG" additivity="false">
+    <logger name="oneclick.defaultlogger" level="DEBUG" additivity="false">
         <appender-ref ref="STDOUT"/>
     </logger>
 

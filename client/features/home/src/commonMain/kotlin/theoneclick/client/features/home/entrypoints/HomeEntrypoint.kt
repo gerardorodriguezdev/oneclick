@@ -1,4 +1,4 @@
-package theoneclick.client.features.home.entrypoints
+package oneclick.client.features.home.entrypoints
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -11,14 +11,14 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import androidx.navigation.navigation
-import theoneclick.client.features.home.di.HomeComponent
-import theoneclick.client.features.home.di.createHomeComponent
-import theoneclick.client.features.home.ui.screens.HomesListScreen
-import theoneclick.client.features.home.ui.screens.UserSettingsScreen
-import theoneclick.client.shared.di.CoreComponent
-import theoneclick.client.shared.navigation.models.routes.AppRoute.Home
-import theoneclick.client.shared.navigation.models.routes.HomeRoute.HomesList
-import theoneclick.client.shared.navigation.models.routes.HomeRoute.UserSettings
+import oneclick.client.features.home.di.HomeComponent
+import oneclick.client.features.home.di.createHomeComponent
+import oneclick.client.features.home.ui.screens.HomesListScreen
+import oneclick.client.features.home.ui.screens.UserSettingsScreen
+import oneclick.client.shared.di.CoreComponent
+import oneclick.client.shared.navigation.models.routes.AppRoute.Home
+import oneclick.client.shared.navigation.models.routes.HomeRoute.HomesList
+import oneclick.client.shared.navigation.models.routes.HomeRoute.UserSettings
 
 class HomeEntrypoint(private val coreComponent: CoreComponent) {
 

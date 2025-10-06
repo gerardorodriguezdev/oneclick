@@ -1,4 +1,4 @@
-package theoneclick.client.shared.ui.components
+package oneclick.client.shared.ui.components
 
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Snackbar
@@ -7,9 +7,9 @@ import androidx.compose.material3.SnackbarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
-import theoneclick.client.shared.ui.components.DefaultSnackbarTestTags.SNACKBAR
-import theoneclick.client.shared.ui.previews.dev.ComponentPreviewComposable
-import theoneclick.client.shared.ui.previews.providers.base.PreviewModel
+import oneclick.client.shared.ui.components.DefaultSnackbarTestTags.SNACKBAR
+import oneclick.client.shared.ui.previews.dev.ComponentPreviewComposable
+import oneclick.client.shared.ui.previews.providers.base.PreviewModel
 
 @Composable
 fun DefaultSnackbar(state: DefaultSnackbarState) {

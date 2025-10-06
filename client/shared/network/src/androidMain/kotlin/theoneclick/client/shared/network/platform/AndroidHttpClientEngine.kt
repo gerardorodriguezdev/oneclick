@@ -1,9 +1,9 @@
-package theoneclick.client.shared.network.platform
+package oneclick.client.shared.network.platform
 
 import android.net.TrafficStats
 import io.ktor.client.engine.*
 import io.ktor.client.engine.okhttp.*
-import theoneclick.shared.timeProvider.TimeProvider
+import oneclick.shared.timeProvider.TimeProvider
 import java.net.InetAddress
 import java.net.Socket
 import javax.net.SocketFactory

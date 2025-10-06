@@ -1,10 +1,10 @@
-package theoneclick.client.app.di
+package oneclick.client.app.di
 
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.KmpComponentCreate
-import theoneclick.client.app.viewModels.InitViewModel
-import theoneclick.client.app.viewModels.LoginViewModel
-import theoneclick.client.shared.di.CoreComponent
+import oneclick.client.app.viewModels.InitViewModel
+import oneclick.client.app.viewModels.LoginViewModel
+import oneclick.client.shared.di.CoreComponent
 
 @Component
 abstract class AppComponent(

@@ -1,15 +1,15 @@
-package theoneclick.server.services.app.dataSources
+package oneclick.server.services.app.dataSources
 
 import io.ktor.util.logging.*
 import kotlinx.coroutines.withContext
 import migrations.Users
-import theoneclick.server.services.app.dataSources.base.UsersDataSource
-import theoneclick.server.services.app.dataSources.models.User
-import theoneclick.server.services.app.postgresql.AppDatabase
-import theoneclick.server.shared.auth.models.HashedPassword
-import theoneclick.shared.contracts.auth.models.Username
-import theoneclick.shared.contracts.core.models.Uuid
-import theoneclick.shared.dispatchers.platform.DispatchersProvider
+import oneclick.server.services.app.dataSources.base.UsersDataSource
+import oneclick.server.services.app.dataSources.models.User
+import oneclick.server.services.app.postgresql.AppDatabase
+import oneclick.server.shared.auth.models.HashedPassword
+import oneclick.shared.contracts.auth.models.Username
+import oneclick.shared.contracts.core.models.Uuid
+import oneclick.shared.dispatchers.platform.DispatchersProvider
 
 internal class PostgresUsersDataSource(
     private val database: AppDatabase,

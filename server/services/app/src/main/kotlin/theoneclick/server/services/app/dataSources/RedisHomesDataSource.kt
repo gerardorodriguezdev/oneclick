@@ -1,4 +1,4 @@
-package theoneclick.server.services.app.dataSources
+package oneclick.server.services.app.dataSources
 
 import io.ktor.util.logging.*
 import io.lettuce.core.ExperimentalLettuceCoroutinesApi
@@ -11,11 +11,11 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import theoneclick.server.services.app.dataSources.base.HomesDataSource
-import theoneclick.server.services.app.dataSources.models.HomesEntry
-import theoneclick.shared.contracts.core.models.*
-import theoneclick.shared.contracts.homes.models.*
-import theoneclick.shared.dispatchers.platform.DispatchersProvider
+import oneclick.server.services.app.dataSources.base.HomesDataSource
+import oneclick.server.services.app.dataSources.models.HomesEntry
+import oneclick.shared.contracts.core.models.*
+import oneclick.shared.contracts.homes.models.*
+import oneclick.shared.dispatchers.platform.DispatchersProvider
 
 @OptIn(ExperimentalLettuceCoroutinesApi::class)
 internal class RedisHomesDataSource(

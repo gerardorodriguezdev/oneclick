@@ -1,14 +1,14 @@
-package theoneclick.client.shared.di
+package oneclick.client.shared.di
 
 import io.ktor.client.*
 import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.KmpComponentCreate
 import me.tatarka.inject.annotations.Provides
-import theoneclick.client.shared.navigation.NavigationController
-import theoneclick.client.shared.network.platform.AuthenticationDataSource
-import theoneclick.client.shared.notifications.NotificationsController
-import theoneclick.shared.dispatchers.platform.DispatchersProvider
-import theoneclick.shared.logging.AppLogger
+import oneclick.client.shared.navigation.NavigationController
+import oneclick.client.shared.network.platform.AuthenticationDataSource
+import oneclick.client.shared.notifications.NotificationsController
+import oneclick.shared.dispatchers.platform.DispatchersProvider
+import oneclick.shared.logging.AppLogger
 
 @Component
 abstract class CoreComponent(

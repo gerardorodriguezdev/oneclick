@@ -3,9 +3,9 @@ import com.codingfeline.buildkonfig.compiler.FieldSpec
 import org.jetbrains.compose.ExperimentalComposeLibrary
 
 plugins {
-    id("theoneclick.wasm.website")
-    id("theoneclick.android.app")
-    id("theoneclick.ios.app")
+    id("oneclick.wasm.website")
+    id("oneclick.android.app")
+    id("oneclick.ios.app")
     alias(libs.plugins.kmp.compose.compiler)
     alias(libs.plugins.kmp.compose.jetbrains)
     alias(libs.plugins.kmp.serialization)
@@ -28,10 +28,10 @@ wasmWebsite {
 androidApp {
     jvmTarget = libs.versions.jvm.api.get().toInt()
 
-    namespace = "theoneclick.client.app"
+    namespace = "oneclick.client.app"
     compileSdkVersion = libs.versions.android.api.get().toInt()
 
-    applicationId = "org.theoneclick"
+    applicationId = "org.oneclick"
     minSdkVersion = libs.versions.android.api.get().toInt()
     targetSdkVersion = libs.versions.android.api.get().toInt()
     versionCode = 1
@@ -145,7 +145,7 @@ kotlin {
 }
 
 buildkonfig {
-    packageName = "theoneclick.client.app.buildkonfig"
+    packageName = "oneclick.client.app.buildkonfig"
 
     defaultConfigs {
         buildConfigField(FieldSpec.Type.STRING, name = "PROTOCOL", value = null, nullable = true)

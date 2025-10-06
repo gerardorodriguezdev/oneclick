@@ -1,14 +1,14 @@
-package theoneclick.server.services.app.plugins
+package oneclick.server.services.app.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.routing.*
-import theoneclick.server.services.app.dataSources.base.InvalidJwtDataSource
-import theoneclick.server.services.app.endpoints.*
-import theoneclick.server.services.app.repositories.HomesRepository
-import theoneclick.server.services.app.repositories.UsersRepository
-import theoneclick.server.shared.auth.security.Encryptor
-import theoneclick.server.shared.auth.security.JwtProvider
-import theoneclick.server.shared.auth.security.UuidProvider
+import oneclick.server.services.app.dataSources.base.InvalidJwtDataSource
+import oneclick.server.services.app.endpoints.*
+import oneclick.server.services.app.repositories.HomesRepository
+import oneclick.server.services.app.repositories.UsersRepository
+import oneclick.server.shared.auth.security.Encryptor
+import oneclick.server.shared.auth.security.JwtProvider
+import oneclick.server.shared.auth.security.UuidProvider
 
 internal fun Application.configureRouting(
     usersRepository: UsersRepository,

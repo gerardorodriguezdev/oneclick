@@ -1,4 +1,4 @@
-package theoneclick.server.services.app.dataSources
+package oneclick.server.services.app.dataSources
 
 import io.ktor.util.logging.*
 import kotlinx.coroutines.CoroutineScope
@@ -10,13 +10,13 @@ import kotlinx.serialization.json.Json
 import migrations.Devices
 import migrations.Homes
 import migrations.Rooms
-import theoneclick.server.services.app.dataSources.base.HomesDataSource
-import theoneclick.server.services.app.dataSources.models.HomesEntry
-import theoneclick.server.services.app.postgresql.*
-import theoneclick.shared.contracts.core.models.*
-import theoneclick.shared.contracts.core.models.NonNegativeInt.Companion.toNonNegativeInt
-import theoneclick.shared.contracts.homes.models.*
-import theoneclick.shared.dispatchers.platform.DispatchersProvider
+import oneclick.server.services.app.dataSources.base.HomesDataSource
+import oneclick.server.services.app.dataSources.models.HomesEntry
+import oneclick.server.services.app.postgresql.*
+import oneclick.shared.contracts.core.models.*
+import oneclick.shared.contracts.core.models.NonNegativeInt.Companion.toNonNegativeInt
+import oneclick.shared.contracts.homes.models.*
+import oneclick.shared.dispatchers.platform.DispatchersProvider
 
 internal class PostgresHomesDataSource(
     private val database: AppDatabase,

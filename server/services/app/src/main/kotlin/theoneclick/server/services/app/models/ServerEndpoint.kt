@@ -1,4 +1,4 @@
-package theoneclick.server.services.app.models
+package oneclick.server.services.app.models
 
 internal enum class ServerEndpoint(val route: String) {
     HEALTHZ("/api/healthz")

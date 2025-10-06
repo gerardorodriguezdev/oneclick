@@ -1,4 +1,4 @@
-package theoneclick.shared.timeProvider
+package oneclick.shared.timeProvider
 
 import kotlin.time.Clock
 import kotlin.time.ExperimentalTime

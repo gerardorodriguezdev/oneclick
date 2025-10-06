@@ -1,8 +1,8 @@
-package theoneclick.client.shared.navigation.models.routes
+package oneclick.client.shared.navigation.models.routes
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import theoneclick.client.shared.navigation.models.routes.base.Route
+import oneclick.client.shared.navigation.models.routes.base.Route
 
 @Serializable
 sealed interface AppRoute : Route {

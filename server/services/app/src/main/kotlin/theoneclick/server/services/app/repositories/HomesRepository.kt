@@ -1,11 +1,11 @@
-package theoneclick.server.services.app.repositories
+package oneclick.server.services.app.repositories
 
-import theoneclick.server.services.app.dataSources.base.HomesDataSource
-import theoneclick.server.services.app.dataSources.models.HomesEntry
-import theoneclick.shared.contracts.core.models.NonNegativeInt
-import theoneclick.shared.contracts.core.models.PaginationResult
-import theoneclick.shared.contracts.core.models.PositiveInt
-import theoneclick.shared.contracts.core.models.Uuid
+import oneclick.server.services.app.dataSources.base.HomesDataSource
+import oneclick.server.services.app.dataSources.models.HomesEntry
+import oneclick.shared.contracts.core.models.NonNegativeInt
+import oneclick.shared.contracts.core.models.PaginationResult
+import oneclick.shared.contracts.core.models.PositiveInt
+import oneclick.shared.contracts.core.models.Uuid
 
 internal interface HomesRepository {
     suspend fun homesEntry(

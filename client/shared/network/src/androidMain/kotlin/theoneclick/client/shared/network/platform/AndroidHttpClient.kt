@@ -1,4 +1,4 @@
-package theoneclick.client.shared.network.platform
+package oneclick.client.shared.network.platform
 
 import io.ktor.client.*
 import io.ktor.client.engine.*
@@ -8,11 +8,11 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import theoneclick.client.shared.network.dataSources.TokenDataSource
-import theoneclick.client.shared.network.plugins.LogoutProxy
-import theoneclick.client.shared.network.plugins.TokenProxy
-import theoneclick.shared.contracts.core.models.agents.Agent
-import theoneclick.shared.logging.AppLogger
+import oneclick.client.shared.network.dataSources.TokenDataSource
+import oneclick.client.shared.network.plugins.LogoutProxy
+import oneclick.client.shared.network.plugins.TokenProxy
+import oneclick.shared.contracts.core.models.agents.Agent
+import oneclick.shared.logging.AppLogger
 
 fun androidHttpClient(
     urlProtocol: URLProtocol?,

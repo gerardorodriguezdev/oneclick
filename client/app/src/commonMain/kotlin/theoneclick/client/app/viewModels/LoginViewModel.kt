@@ -1,4 +1,4 @@
-package theoneclick.client.app.viewModels
+package oneclick.client.app.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,21 +7,21 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
 import org.jetbrains.compose.resources.getString
-import theoneclick.client.app.generated.resources.Res
-import theoneclick.client.app.generated.resources.loginScreen_snackbar_unknownError
-import theoneclick.client.app.mappers.toLoginScreenState
-import theoneclick.client.app.ui.screens.LoginEvent
-import theoneclick.client.app.ui.screens.LoginScreenState
-import theoneclick.client.shared.navigation.NavigationController
-import theoneclick.client.shared.navigation.NavigationController.NavigationEvent.Navigate
-import theoneclick.client.shared.navigation.models.routes.AppRoute
-import theoneclick.client.shared.navigation.popUpToInclusive
-import theoneclick.client.shared.network.models.RequestLoginResult
-import theoneclick.client.shared.network.platform.AuthenticationDataSource
-import theoneclick.client.shared.notifications.NotificationsController
-import theoneclick.shared.contracts.auth.models.Password.Companion.toPassword
-import theoneclick.shared.contracts.auth.models.Username.Companion.toUsername
-import theoneclick.shared.contracts.auth.models.requests.RequestLoginRequest
+import oneclick.client.app.generated.resources.Res
+import oneclick.client.app.generated.resources.loginScreen_snackbar_unknownError
+import oneclick.client.app.mappers.toLoginScreenState
+import oneclick.client.app.ui.screens.LoginEvent
+import oneclick.client.app.ui.screens.LoginScreenState
+import oneclick.client.shared.navigation.NavigationController
+import oneclick.client.shared.navigation.NavigationController.NavigationEvent.Navigate
+import oneclick.client.shared.navigation.models.routes.AppRoute
+import oneclick.client.shared.navigation.popUpToInclusive
+import oneclick.client.shared.network.models.RequestLoginResult
+import oneclick.client.shared.network.platform.AuthenticationDataSource
+import oneclick.client.shared.notifications.NotificationsController
+import oneclick.shared.contracts.auth.models.Password.Companion.toPassword
+import oneclick.shared.contracts.auth.models.Username.Companion.toUsername
+import oneclick.shared.contracts.auth.models.requests.RequestLoginRequest
 
 @Inject
 class LoginViewModel(

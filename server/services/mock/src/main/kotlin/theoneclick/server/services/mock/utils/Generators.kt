@@ -1,11 +1,11 @@
-package theoneclick.server.services.mock.utils
+package oneclick.server.services.mock.utils
 
-import theoneclick.shared.contracts.auth.models.Jwt
-import theoneclick.shared.contracts.core.models.NonNegativeInt
-import theoneclick.shared.contracts.core.models.PositiveIntRange
-import theoneclick.shared.contracts.core.models.UniqueList
-import theoneclick.shared.contracts.core.models.Uuid
-import theoneclick.shared.contracts.homes.models.*
+import oneclick.shared.contracts.auth.models.Jwt
+import oneclick.shared.contracts.core.models.NonNegativeInt
+import oneclick.shared.contracts.core.models.PositiveIntRange
+import oneclick.shared.contracts.core.models.UniqueList
+import oneclick.shared.contracts.core.models.Uuid
+import oneclick.shared.contracts.homes.models.*
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid as KUuid
 

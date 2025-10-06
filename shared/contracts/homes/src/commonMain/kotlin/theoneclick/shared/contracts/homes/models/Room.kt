@@ -1,9 +1,9 @@
-package theoneclick.shared.contracts.homes.models
+package oneclick.shared.contracts.homes.models
 
 import kotlinx.serialization.Serializable
-import theoneclick.shared.contracts.core.models.UniqueList
-import theoneclick.shared.contracts.core.models.UniqueList.KeyProvider
-import theoneclick.shared.contracts.core.models.Uuid
+import oneclick.shared.contracts.core.models.UniqueList
+import oneclick.shared.contracts.core.models.UniqueList.KeyProvider
+import oneclick.shared.contracts.core.models.Uuid
 
 @Serializable
 data class Room(

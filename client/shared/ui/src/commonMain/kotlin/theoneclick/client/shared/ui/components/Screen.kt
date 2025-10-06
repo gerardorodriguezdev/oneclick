@@ -1,4 +1,4 @@
-package theoneclick.client.shared.ui.components
+package oneclick.client.shared.ui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope

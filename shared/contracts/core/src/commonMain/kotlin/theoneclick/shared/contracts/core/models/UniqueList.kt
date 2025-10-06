@@ -1,8 +1,8 @@
-package theoneclick.shared.contracts.core.models
+package oneclick.shared.contracts.core.models
 
 import dev.drewhamilton.poko.Poko
 import kotlinx.serialization.Serializable
-import theoneclick.shared.contracts.core.models.UniqueList.KeyProvider
+import oneclick.shared.contracts.core.models.UniqueList.KeyProvider
 
 @Poko
 @Serializable

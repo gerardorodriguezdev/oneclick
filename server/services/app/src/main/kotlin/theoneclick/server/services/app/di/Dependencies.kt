@@ -1,14 +1,14 @@
-package theoneclick.server.services.app.di
+package oneclick.server.services.app.di
 
 import io.ktor.server.application.Application
 import io.ktor.util.logging.Logger
-import theoneclick.server.services.app.dataSources.base.InvalidJwtDataSource
-import theoneclick.server.services.app.repositories.HomesRepository
-import theoneclick.server.services.app.repositories.UsersRepository
-import theoneclick.server.shared.auth.security.Encryptor
-import theoneclick.server.shared.auth.security.JwtProvider
-import theoneclick.server.shared.auth.security.UuidProvider
-import theoneclick.shared.timeProvider.TimeProvider
+import oneclick.server.services.app.dataSources.base.InvalidJwtDataSource
+import oneclick.server.services.app.repositories.HomesRepository
+import oneclick.server.services.app.repositories.UsersRepository
+import oneclick.server.shared.auth.security.Encryptor
+import oneclick.server.shared.auth.security.JwtProvider
+import oneclick.server.shared.auth.security.UuidProvider
+import oneclick.shared.timeProvider.TimeProvider
 
 internal class Dependencies(
     protocol: String,

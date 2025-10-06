@@ -1,4 +1,4 @@
-package theoneclick.server.services.app.plugins.authentication
+package oneclick.server.services.app.plugins.authentication
 
 import com.auth0.jwt.exceptions.JWTVerificationException
 import com.auth0.jwt.impl.JWTParser
@@ -10,12 +10,12 @@ import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.util.logging.*
-import theoneclick.server.services.app.dataSources.base.InvalidJwtDataSource
-import theoneclick.server.shared.auth.models.JwtUserId.Companion.toJwtUserId
-import theoneclick.server.shared.auth.security.JwtProvider
-import theoneclick.shared.contracts.auth.models.Jwt
-import theoneclick.shared.contracts.core.models.Uuid
-import theoneclick.shared.contracts.core.models.Uuid.Companion.toUuid
+import oneclick.server.services.app.dataSources.base.InvalidJwtDataSource
+import oneclick.server.shared.auth.models.JwtUserId.Companion.toJwtUserId
+import oneclick.server.shared.auth.security.JwtProvider
+import oneclick.shared.contracts.auth.models.Jwt
+import oneclick.shared.contracts.core.models.Uuid
+import oneclick.shared.contracts.core.models.Uuid.Companion.toUuid
 import java.util.*
 import kotlin.io.encoding.ExperimentalEncodingApi
 

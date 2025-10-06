@@ -1,4 +1,4 @@
-package theoneclick.client.shared.network.dataSources
+package oneclick.client.shared.network.dataSources
 
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.preferences.core.PreferenceDataStoreFactory
@@ -12,8 +12,8 @@ import kotlinx.coroutines.flow.map
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
 import okio.Path
-import theoneclick.shared.dispatchers.platform.DispatchersProvider
-import theoneclick.shared.logging.AppLogger
+import oneclick.shared.dispatchers.platform.DispatchersProvider
+import oneclick.shared.logging.AppLogger
 
 interface Preferences {
     suspend fun <T> preference(key: String, serializer: KSerializer<T>): T?

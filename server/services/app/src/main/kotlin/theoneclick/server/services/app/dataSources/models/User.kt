@@ -1,9 +1,9 @@
-package theoneclick.server.services.app.dataSources.models
+package oneclick.server.services.app.dataSources.models
 
 import kotlinx.serialization.Serializable
-import theoneclick.server.shared.auth.models.HashedPassword
-import theoneclick.shared.contracts.auth.models.Username
-import theoneclick.shared.contracts.core.models.Uuid
+import oneclick.server.shared.auth.models.HashedPassword
+import oneclick.shared.contracts.auth.models.Username
+import oneclick.shared.contracts.core.models.Uuid
 
 @Serializable
 internal data class User(

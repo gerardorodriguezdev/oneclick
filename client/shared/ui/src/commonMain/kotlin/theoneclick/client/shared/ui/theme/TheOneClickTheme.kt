@@ -1,4 +1,4 @@
-package theoneclick.client.shared.ui.theme
+package oneclick.client.shared.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -8,7 +8,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun TheOneClickTheme(isDarkTheme: Boolean, content: @Composable () -> Unit) {
+fun OneClickTheme(isDarkTheme: Boolean, content: @Composable () -> Unit) {
     MaterialTheme(
         colorScheme = if (isDarkTheme) darkColorScheme() else lightColorScheme(),
         shapes = Shapes(

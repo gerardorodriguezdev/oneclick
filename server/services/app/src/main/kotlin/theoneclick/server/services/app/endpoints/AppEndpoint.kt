@@ -1,10 +1,10 @@
-package theoneclick.server.services.app.endpoints
+package oneclick.server.services.app.endpoints
 
 import io.ktor.http.*
 import io.ktor.server.http.content.*
 import io.ktor.server.routing.*
-import theoneclick.server.services.app.endpoints.AppEndpointConstants.fileNameContainsHashRegex
-import theoneclick.server.services.app.endpoints.AppEndpointConstants.isHtmlFileRegex
+import oneclick.server.services.app.endpoints.AppEndpointConstants.fileNameContainsHashRegex
+import oneclick.server.services.app.endpoints.AppEndpointConstants.isHtmlFileRegex
 
 internal fun Route.appEndpoint() {
     staticResources("/", "static") {
