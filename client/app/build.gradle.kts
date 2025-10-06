@@ -34,11 +34,11 @@ androidApp {
     applicationId = "oneclick.client.app"
     minSdkVersion = libs.versions.android.api.get().toInt()
     targetSdkVersion = libs.versions.android.api.get().toInt()
-    versionCode = 3
-    versionName = "1.3"
+    versionCode = 4
+    versionName = "1.4"
     testRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-    storeFile = file("local/production-keystore.jks")
+    storeFile = file(androidStringProvider("KEYSTORE_PATH"))
     storePassword = androidStringProvider("KEYSTORE_PASSWORD")
     keyAlias = androidStringProvider("KEY_ALIAS")
     keyPassword = androidStringProvider("KEY_PASSWORD")

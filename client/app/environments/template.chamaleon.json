@@ -26,6 +26,13 @@
       ]
     },
     {
+      "name": "KEYSTORE_PATH",
+      "propertyType": "String",
+      "supportedPlatforms": [
+        "android"
+      ]
+    },
+    {
       "name": "PROTOCOL",
       "propertyType": "String",
       "nullable": true

@@ -15,6 +15,10 @@
         "value": "Password123"
       },
       {
+        "name": "KEYSTORE_PATH",
+        "value": "local/debug-keystore.jks"
+      },
+      {
         "name": "PROTOCOL",
         "value": "https"
       },
