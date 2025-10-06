@@ -1,21 +1,21 @@
 [versions]
 docker-postgres-api = "15"
 docker-redis-api = "7"
-android-activity = "1.11.0"
+android-activity = "1.10.0"
 android-gradle-plugin = "8.11.2"
-android-api = "36"
+android-api = "35"
 android-datastore = "1.1.7"
 android-test-junit = "1.9.1"
 android-test-leak-canary = "2.14"
 android-test-navigation = "2.9.4"
+android-google-services = "4.4.3"
+android-firebase = "5.1.1"
 jvm-api = "21"
 jvm-bcrypt = "0.10.2"
 jvm-logback = "1.5.18"
 jvm-hiraki = "7.0.2"
 jvm-postgresql = "42.7.7"
 jvm-redis = "6.7.1.RELEASE"
-webpack-compression = "4.0.1"
-webpack-html = "5.6.4"
 kmp-kotlin-api = "2.2.20"
 kmp-compose = "1.8.2"
 kmp-coroutines = "1.10.2"
@@ -38,6 +38,8 @@ gradle-chamaleon = "1.0.15"
 gradle-docker-compose = "0.17.12"
 gradle-kaml = "0.96.0"
 gradle-jib = "3.4.5"
+webpack-compression = "4.0.1"
+webpack-html = "5.6.4"
 
 [libraries]
 android-activity = { module = "androidx.activity:activity-compose", version.ref = "android-activity" }
@@ -78,6 +80,8 @@ gradle-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:gradle-pl
 gradle-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kmp-serialization" }
 gradle-docker-compose = { module = "com.avast.gradle.docker-compose:com.avast.gradle.docker-compose.gradle.plugin", version.ref = "gradle-docker-compose" }
 gradle-kaml = { module = "com.charleskorn.kaml:kaml", version.ref = "gradle-kaml" }
+gradle-firebase = { module = "com.google.firebase.appdistribution:com.google.firebase.appdistribution.gradle.plugin", version.ref = "android-firebase" }
+gradle-google-services = { module = "com.google.gms.google-services:com.google.gms.google-services.gradle.plugin", version.ref = "android-google-services" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
@@ -89,7 +93,7 @@ kmp-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.
 kmp-build-config = { id = "com.codingfeline.buildkonfig", version.ref = "kmp-buildconfig" }
 kmp-sqldelight = { id = "app.cash.sqldelight", version.ref = "kmp-sqldelight" }
 kmp-poko = { id = "dev.drewhamilton.poko", version.ref = "kmp-poko" }
-gradle-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "gradle-detekt" }
-gradle-chamaleon = { id = "io.github.gerardorodriguezdev.chamaleon", version.ref = "gradle-chamaleon" }
-gradle-ksp = { id = "com.google.devtools.ksp", version.ref = "gradle-ksp" }
-gradle-jib = { id = "com.google.cloud.tools.jib", version.ref = "gradle-jib" }
+kmp-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "gradle-detekt" }
+kmp-chamaleon = { id = "io.github.gerardorodriguezdev.chamaleon", version.ref = "gradle-chamaleon" }
+kmp-ksp = { id = "com.google.devtools.ksp", version.ref = "gradle-ksp" }
+kmp-jib = { id = "com.google.cloud.tools.jib", version.ref = "gradle-jib" }

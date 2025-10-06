@@ -10,8 +10,8 @@ plugins {
     alias(libs.plugins.kmp.compose.jetbrains)
     alias(libs.plugins.kmp.serialization)
     alias(libs.plugins.kmp.build.config)
-    alias(libs.plugins.gradle.ksp)
-    alias(libs.plugins.gradle.chamaleon)
+    alias(libs.plugins.kmp.ksp)
+    alias(libs.plugins.kmp.chamaleon)
 }
 
 wasmWebsite {
@@ -31,14 +31,14 @@ androidApp {
     namespace = "oneclick.client.app"
     compileSdkVersion = libs.versions.android.api.get().toInt()
 
-    applicationId = "org.oneclick"
+    applicationId = "oneclick.client.app"
     minSdkVersion = libs.versions.android.api.get().toInt()
     targetSdkVersion = libs.versions.android.api.get().toInt()
-    versionCode = 1
-    versionName = "1.0"
+    versionCode = 3
+    versionName = "1.3"
     testRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-    storeFile = file("local/keystore.jks")
+    storeFile = file("local/production-keystore.jks")
     storePassword = androidStringProvider("KEYSTORE_PASSWORD")
     keyAlias = androidStringProvider("KEY_ALIAS")
     keyPassword = androidStringProvider("KEY_PASSWORD")

@@ -18,6 +18,8 @@ dependencies {
     implementation(libs.gradle.serialization)
     implementation(libs.gradle.docker.compose)
     implementation(libs.gradle.kaml)
+    implementation(libs.gradle.firebase)
+    implementation(libs.gradle.google.services)
     implementation(libs.jvm.chamaleon)
 
     testImplementation(libs.kmp.test)

@@ -6,9 +6,11 @@
 
 # Local
 **/local/
+**/release/
 local.properties
 production.environment.chamaleon.json
 staging.environment.chamaleon.json
+google-services.json
 
 # IntelliJ
 .idea

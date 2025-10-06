@@ -6,6 +6,6 @@ plugins {
     alias(libs.plugins.kmp.poko) apply false
     alias(libs.plugins.android.application) apply false
     alias(libs.plugins.android.library) apply false
-    alias(libs.plugins.gradle.ksp) apply false
-    alias(libs.plugins.gradle.jib) apply false
+    alias(libs.plugins.kmp.ksp) apply false
+    alias(libs.plugins.kmp.jib) apply false
 }
