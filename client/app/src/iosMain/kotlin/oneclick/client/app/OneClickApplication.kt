@@ -14,7 +14,7 @@ import oneclick.client.shared.di.iosCoreComponent
 import oneclick.client.shared.navigation.DefaultNavigationController
 import oneclick.client.shared.network.dataSources.IOSLocalTokenDataSource
 import oneclick.client.shared.network.dataSources.IOSPreferences
-import oneclick.client.shared.network.platform.IOSLogoutManager
+import oneclick.client.shared.network.IOSLogoutManager
 import oneclick.client.shared.network.platform.iosHttpClientEngine
 import oneclick.client.shared.notifications.DefaultNotificationsController
 import oneclick.shared.dispatchers.platform.dispatchersProvider

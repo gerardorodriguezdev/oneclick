@@ -4,7 +4,7 @@ import io.ktor.client.engine.*
 import io.ktor.http.*
 import oneclick.client.shared.navigation.NavigationController
 import oneclick.client.shared.network.dataSources.TokenDataSource
-import oneclick.client.shared.network.platform.IOSRemoteAuthenticationDataSource
+import oneclick.client.shared.network.IOSRemoteAuthenticationDataSource
 import oneclick.client.shared.network.platform.LogoutManager
 import oneclick.client.shared.network.platform.iosHttpClient
 import oneclick.client.shared.notifications.NotificationsController
