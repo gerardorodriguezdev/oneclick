@@ -11,12 +11,12 @@
             android:roundIcon="@mipmap/ic_launcher_round"
             android:supportsRtl="true"
             android:theme="@style/Theme.OneClickTheme"
-            android:name=".client.app.application.OneClickApplication"
+            android:name=".OneClickApplication"
             android:networkSecurityConfig="@xml/network_security_config">
 
         <activity
                 android:exported="true"
-                android:name=".client.app.MainActivity">
+                android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 

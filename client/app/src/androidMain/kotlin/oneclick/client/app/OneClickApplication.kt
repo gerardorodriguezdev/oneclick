@@ -1,10 +1,8 @@
-package oneclick.client.app.application
+package oneclick.client.app
 
 import android.app.Application
 import android.os.StrictMode
-import android.os.StrictMode.ThreadPolicy
-import android.os.StrictMode.VmPolicy
-import io.ktor.http.*
+import io.ktor.http.URLProtocol
 import oneclick.client.app.buildkonfig.BuildKonfig
 import oneclick.client.app.di.createAppComponent
 import oneclick.client.app.entrypoints.AppEntrypoint
@@ -64,14 +62,14 @@ class OneClickApplication : Application() {
 
     private fun setupStrictThreadPolicy() {
         StrictMode.setThreadPolicy(
-            ThreadPolicy.Builder()
+            StrictMode.ThreadPolicy.Builder()
                 .detections()
                 .penalties()
                 .build()
         )
     }
 
-    private fun ThreadPolicy.Builder.detections(): ThreadPolicy.Builder =
+    private fun StrictMode.ThreadPolicy.Builder.detections(): StrictMode.ThreadPolicy.Builder =
         apply {
             detectDiskWrites()
             detectCustomSlowCalls()
@@ -80,7 +78,7 @@ class OneClickApplication : Application() {
             // detectDiskReads() | Required to be disabled
         }
 
-    private fun ThreadPolicy.Builder.penalties(): ThreadPolicy.Builder =
+    private fun StrictMode.ThreadPolicy.Builder.penalties(): StrictMode.ThreadPolicy.Builder =
         apply {
             penaltyLog()
             if (BuildKonfig.IS_DEBUG) {
@@ -90,14 +88,14 @@ class OneClickApplication : Application() {
 
     private fun setupStrictVmPolicy() {
         StrictMode.setVmPolicy(
-            VmPolicy.Builder()
+            StrictMode.VmPolicy.Builder()
                 .detections()
                 .penalties()
                 .build()
         )
     }
 
-    private fun VmPolicy.Builder.detections(): VmPolicy.Builder =
+    private fun StrictMode.VmPolicy.Builder.detections(): StrictMode.VmPolicy.Builder =
         apply {
             detectUnsafeIntentLaunch()
             detectUntaggedSockets()
@@ -116,7 +114,7 @@ class OneClickApplication : Application() {
             }
         }
 
-    private fun VmPolicy.Builder.penalties(): VmPolicy.Builder = apply {
+    private fun StrictMode.VmPolicy.Builder.penalties(): StrictMode.VmPolicy.Builder = apply {
         penaltyLog()
 
         if (BuildKonfig.IS_DEBUG) {
