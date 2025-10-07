@@ -50,7 +50,7 @@ jobs:
       - name: Generate app environment
         if: env.BRANCH_NAME == 'production'
         run: |
-          ./gradlew :client:app:generateEnvironment -Pchamaleon.environment="production.jvm.properties[KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }},KEY_ALIAS=${{ secrets.KEY_ALIAS }},KEY_PASSWORD=${{ secrets.KEY_PASSWORD }},KEYSTORE_PATH=local/production-keystore.jks,PROTOCOL=https,HOST=${{ secrets.HOST }},PORT=null]"
+          ./gradlew :client:app:generateEnvironment -Pchamaleon.environment="production.android.properties[KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }},KEY_ALIAS=${{ secrets.KEY_ALIAS }},KEY_PASSWORD=${{ secrets.KEY_PASSWORD }},KEYSTORE_PATH=local/production-keystore.jks,PROTOCOL=https,HOST=${{ secrets.HOST }},PORT=null]"
 
       - name: Select server environment
         if: env.BRANCH_NAME == 'production'
