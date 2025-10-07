@@ -10,14 +10,14 @@ import oneclick.server.services.app.repositories.UsersRepository
 import oneclick.server.shared.auth.security.Encryptor
 import oneclick.server.shared.auth.security.JwtProvider
 import oneclick.server.shared.auth.security.UuidProvider
-import oneclick.server.shared.core.agent
+import oneclick.server.shared.core.clientType
 import oneclick.shared.contracts.auth.models.Jwt
 import oneclick.shared.contracts.auth.models.Password
 import oneclick.shared.contracts.auth.models.Username
 import oneclick.shared.contracts.auth.models.requests.RequestLoginRequest
 import oneclick.shared.contracts.auth.models.responses.RequestLoginResponse
 import oneclick.shared.contracts.core.models.Uuid
-import oneclick.shared.contracts.core.models.agents.Agent
+import oneclick.shared.contracts.core.models.ClientType
 import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 internal fun Routing.requestLoginEndpoint(
@@ -84,14 +84,14 @@ private suspend fun RoutingContext.respondJwt(
 }
 
 private suspend fun RoutingContext.respondJwt(jwt: Jwt) {
-    when (call.request.agent) {
-        Agent.MOBILE -> {
+    when (call.request.clientType) {
+        ClientType.MOBILE -> {
             call.respond(
                 RequestLoginResponse(jwt = jwt)
             )
         }
 
-        Agent.BROWSER -> {
+        ClientType.BROWSER -> {
             call.sessions.set(jwt)
             call.respond(HttpStatusCode.OK)
         }

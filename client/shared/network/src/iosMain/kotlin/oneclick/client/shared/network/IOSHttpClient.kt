@@ -3,15 +3,16 @@ package oneclick.client.shared.network.platform
 import io.ktor.client.*
 import io.ktor.client.engine.*
 import io.ktor.client.plugins.*
-import io.ktor.client.plugins.compression.ContentEncoding
+import io.ktor.client.plugins.compression.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import oneclick.client.shared.network.dataSources.TokenDataSource
+import oneclick.client.shared.network.extensions.clientType
 import oneclick.client.shared.network.plugins.LogoutProxy
 import oneclick.client.shared.network.plugins.TokenProxy
-import oneclick.shared.contracts.core.models.agents.Agent
+import oneclick.shared.contracts.core.models.ClientType
 import oneclick.shared.logging.AppLogger
 
 fun iosHttpClient(
@@ -43,7 +44,7 @@ fun iosHttpClient(
                 this.port = port
             }
 
-            userAgent(Agent.MOBILE.value)
+            clientType(ClientType.MOBILE)
         }
 
         install(TokenProxy) {

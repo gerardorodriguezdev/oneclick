@@ -1,11 +1,11 @@
-package oneclick.shared.contracts.core.models.agents
+package oneclick.shared.contracts.core.models
 
-enum class Agent(val value: String) {
+enum class ClientType(val value: String) {
     BROWSER("browser"),
     MOBILE("mobile");
 
-    companion object {
-        fun String?.toAgent(): Agent =
+    companion object Companion {
+        fun String?.toClientType(): ClientType =
             when (this) {
                 BROWSER.value -> BROWSER
                 MOBILE.value -> MOBILE

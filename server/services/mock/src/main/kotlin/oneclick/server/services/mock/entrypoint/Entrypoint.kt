@@ -10,12 +10,12 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import oneclick.server.services.mock.utils.mockHomes
 import oneclick.server.services.mock.utils.mockJwt
-import oneclick.server.shared.core.agent
+import oneclick.server.shared.core.clientType
 import oneclick.shared.contracts.auth.models.requests.RequestLoginRequest
 import oneclick.shared.contracts.auth.models.responses.RequestLoginResponse
 import oneclick.shared.contracts.auth.models.responses.UserLoggedResponse
 import oneclick.shared.contracts.core.models.NonNegativeInt
-import oneclick.shared.contracts.core.models.agents.Agent
+import oneclick.shared.contracts.core.models.ClientType
 import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import oneclick.shared.contracts.homes.models.responses.HomesResponse
 
@@ -42,9 +42,9 @@ private fun Application.configureRouting() {
         }
 
         post(ClientEndpoint.REQUEST_LOGIN.route) { _: RequestLoginRequest ->
-            when (call.request.agent) {
-                Agent.MOBILE -> call.respond(RequestLoginResponse(jwt = mockJwt()))
-                Agent.BROWSER -> call.respond(HttpStatusCode.OK)
+            when (call.request.clientType) {
+                ClientType.MOBILE -> call.respond(RequestLoginResponse(jwt = mockJwt()))
+                ClientType.BROWSER -> call.respond(HttpStatusCode.OK)
             }
         }
 

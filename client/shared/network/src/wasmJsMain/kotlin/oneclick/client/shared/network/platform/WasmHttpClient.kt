@@ -7,8 +7,9 @@ import io.ktor.client.plugins.compression.*
 import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
+import oneclick.client.shared.network.extensions.clientType
 import oneclick.client.shared.network.plugins.LogoutProxy
-import oneclick.shared.contracts.core.models.agents.Agent
+import oneclick.shared.contracts.core.models.ClientType
 
 fun wasmHttpClient(
     httpClientEngine: HttpClientEngine,
@@ -22,7 +23,7 @@ fun wasmHttpClient(
         install(DefaultRequest) {
             contentType(ContentType.Application.Json)
 
-            userAgent(Agent.BROWSER.value)
+            clientType(ClientType.BROWSER)
         }
 
         install(LogoutProxy) {

@@ -53,6 +53,7 @@ include(
     "shared:logging",
     "shared:dispatchers",
     "shared:timeProvider",
+    "shared:network",
     "shared:contracts:core",
     "shared:contracts:auth",
     "shared:contracts:homes",
