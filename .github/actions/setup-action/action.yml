@@ -6,9 +6,6 @@ runs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Validate gradle wrapper
-      uses: gradle/actions/wrapper-validation@v4
-
     - name: Setup java
       uses: actions/setup-java@v4
       with:
@@ -18,4 +15,5 @@ runs:
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
       with:
-        cache-read-only: true
+        validate-wrappers: true
+        gradle-version: '9.0.0'
