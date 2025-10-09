@@ -32,7 +32,7 @@
       },
       {
         "name": "IS_DEBUG",
-        "value": false
+        "value": true
       }
     ]
   },
@@ -53,7 +53,7 @@
       },
       {
         "name": "IS_DEBUG",
-        "value": false
+        "value": true
       }
     ]
   }
