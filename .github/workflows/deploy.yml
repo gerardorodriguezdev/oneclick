@@ -42,22 +42,23 @@ jobs:
       - name: Setup app files
         if: env.BRANCH_NAME == 'production'
         run: |
+          mkdir -p ./client/app/local
           echo "${{ secrets.GOOGLE_SERVICES_BASE64 }}" | base64 -d > ./client/app/google-services.json &
           echo "${{ secrets.SERVICE_ACCOUNT_CREDENTIALS_BASE64 }}" | base64 -d > ./client/app/service-account-credentials.json &
           echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > ./client/app/local/production-keystore.jks &
           wait
 
-      - name: Generate app environment
+      - name: Generate client environment
         if: env.BRANCH_NAME == 'production'
         run: |
           ./gradlew :client:app:generateEnvironment -Penvironment="production(android[KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }},KEY_ALIAS=${{ secrets.KEY_ALIAS }},KEY_PASSWORD=${{ secrets.KEY_PASSWORD }},KEYSTORE_PATH=local/production-keystore.jks,IS_DEBUG=false,PROTOCOL=https,HOST=${{ secrets.HOST }}]:native[IS_DEBUG=false,PROTOCOL=https,HOST=${{ secrets.HOST }}])"
 
-      - name: Select server environment
+      - name: Select client environment
         if: env.BRANCH_NAME == 'production'
         run: |
           ./gradlew :client:app:selectEnvironment -PnewSelectedEnvironment=production
 
-      - name: Publish server image
+      - name: Publish client image
         if: env.BRANCH_NAME == 'production'
         run: |
           ./gradlew :client:app:assembleRelease appDistributionUploadRelease appDistributionAddTesters --emails=${{ secrets.TESTER_EMAIL }}
