@@ -61,4 +61,4 @@ jobs:
       - name: Publish client image
         if: env.BRANCH_NAME == 'production'
         run: |
-          ./gradlew :client:app:assembleRelease appDistributionUploadRelease --serviceCredentialsFile="./client/app/service-account-credentials.json" --emails="${{ secrets.TESTER_EMAIL }}"
+          ./gradlew :client:app:assembleRelease appDistributionUploadRelease --serviceCredentialsFile="./client/app/service-account-credentials.json" --testers="${{ secrets.TESTER_EMAIL }}"
