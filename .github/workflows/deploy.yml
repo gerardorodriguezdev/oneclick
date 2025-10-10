@@ -1,4 +1,4 @@
-name: Deploy Workflow
+name: Deploy
 
 on:
   push:
@@ -61,4 +61,4 @@ jobs:
       - name: Publish client image
         if: env.BRANCH_NAME == 'production'
         run: |
-          ./gradlew :client:app:assembleRelease appDistributionUploadRelease appDistributionAddTesters --emails=${{ secrets.TESTER_EMAIL }}
+          ./gradlew :client:app:assembleRelease appDistributionUploadRelease appDistributionAddTesters --emails=${{ secrets.TESTER_EMAIL }} --projectNumber=${{ secrets.PROJECT_NUMBER }}
