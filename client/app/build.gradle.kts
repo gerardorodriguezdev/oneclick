@@ -34,8 +34,8 @@ androidApp {
     applicationId = "oneclick.client.app"
     minSdkVersion = libs.versions.android.api.get().toInt()
     targetSdkVersion = libs.versions.android.api.get().toInt()
-    versionCode = 4
-    versionName = "1.4"
+    versionCode = 5
+    versionName = "1.5"
     testRunner = "androidx.test.runner.AndroidJUnitRunner"
 
     storeFile = file(androidStringProvider("KEYSTORE_PATH"))

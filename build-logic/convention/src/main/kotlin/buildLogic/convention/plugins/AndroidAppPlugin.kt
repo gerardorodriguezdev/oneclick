@@ -90,7 +90,6 @@ class AndroidAppPlugin : Plugin<Project> {
                             )
                             firebaseAppDistribution {
                                 artifactType = "APK"
-                                serviceCredentialsFile = "service-account-credentials.json"
                             }
                         }
                     }
