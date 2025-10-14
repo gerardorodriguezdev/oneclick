@@ -58,6 +58,11 @@ gradlePlugin {
             implementationClass = "buildLogic.convention.plugins.IOSAppPlugin"
         }
 
+        register("jvm-app") {
+            id = "oneclick.jvm.app"
+            implementationClass = "buildLogic.convention.plugins.JvmAppPlugin"
+        }
+
         register("jvm-library") {
             id = "oneclick.jvm.library"
             implementationClass = "buildLogic.convention.plugins.JvmLibraryPlugin"

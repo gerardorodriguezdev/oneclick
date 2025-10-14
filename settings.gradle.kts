@@ -41,6 +41,7 @@ dependencyResolutionManagement {
 
 include(
     "client:app",
+    "client:home",
     "client:shared:di",
     "client:shared:ui",
     "client:shared:navigation",
