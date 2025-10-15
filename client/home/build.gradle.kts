@@ -7,3 +7,10 @@ jvmApp {
     jvmTarget = libs.versions.jvm.api.get().toInt()
     mainClass = "oneclick.client.app.home.ApplicationKt"
 }
+
+kotlin {
+    dependencies  {
+        implementation(projects.shared.contracts.core)
+        implementation(projects.shared.contracts.homes)
+    }
+}
