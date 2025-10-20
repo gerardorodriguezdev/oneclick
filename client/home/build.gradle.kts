@@ -12,5 +12,6 @@ kotlin {
     dependencies  {
         implementation(projects.shared.contracts.core)
         implementation(projects.shared.contracts.homes)
+        implementation(libs.kmp.coroutines)
     }
 }

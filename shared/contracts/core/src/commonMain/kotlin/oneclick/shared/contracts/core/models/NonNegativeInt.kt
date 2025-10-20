@@ -20,6 +20,8 @@ class NonNegativeInt private constructor(val value: Int) : Comparable<NonNegativ
 
         fun isValid(value: Int): Boolean = value >= 0
 
+        fun String.toNonNegativeInt(): NonNegativeInt? = toIntOrNull()?.toNonNegativeInt()
+
         fun Int.toNonNegativeInt(): NonNegativeInt? = if (isValid(this)) NonNegativeInt(this) else null
 
         fun unsafe(value: Int): NonNegativeInt = NonNegativeInt(value)
