@@ -6,7 +6,7 @@ import oneclick.client.shared.navigation.NavigationController
 import oneclick.client.shared.network.dataSources.TokenDataSource
 import oneclick.client.shared.network.IOSRemoteAuthenticationDataSource
 import oneclick.client.shared.network.platform.LogoutManager
-import oneclick.client.shared.network.platform.iosHttpClient
+import oneclick.client.shared.network.iosHttpClient
 import oneclick.client.shared.notifications.NotificationsController
 import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.logging.AppLogger

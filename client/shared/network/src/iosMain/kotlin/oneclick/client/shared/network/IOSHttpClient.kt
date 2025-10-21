@@ -1,4 +1,4 @@
-package oneclick.client.shared.network.platform
+package oneclick.client.shared.network
 
 import io.ktor.client.*
 import io.ktor.client.engine.*
@@ -10,6 +10,7 @@ import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
 import oneclick.client.shared.network.dataSources.TokenDataSource
 import oneclick.client.shared.network.extensions.clientType
+import oneclick.client.shared.network.platform.LogoutManager
 import oneclick.client.shared.network.plugins.LogoutProxy
 import oneclick.client.shared.network.plugins.TokenProxy
 import oneclick.shared.contracts.core.models.ClientType

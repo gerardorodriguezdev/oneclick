@@ -1,4 +1,4 @@
-package oneclick.client.shared.network.platform
+package oneclick.client.shared.network
 
 import io.ktor.client.engine.*
 import io.ktor.client.engine.darwin.*
