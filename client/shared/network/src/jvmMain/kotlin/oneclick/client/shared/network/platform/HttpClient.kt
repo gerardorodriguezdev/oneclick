@@ -15,10 +15,11 @@ import oneclick.client.shared.network.plugins.TokenProxy
 import oneclick.shared.contracts.core.models.ClientType
 import oneclick.shared.logging.AppLogger
 
-fun androidHttpClient(
+fun httpClient(
     urlProtocol: URLProtocol?,
     host: String?,
     port: Int?,
+    clientType: ClientType,
     appLogger: AppLogger,
     httpClientEngine: HttpClientEngine,
     tokenDataSource: TokenDataSource,
@@ -44,7 +45,7 @@ fun androidHttpClient(
                 this.port = port
             }
 
-            clientType(ClientType.MOBILE)
+            clientType(clientType)
         }
 
         install(TokenProxy) {

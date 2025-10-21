@@ -25,6 +25,7 @@ kotlin {
                 implementation(projects.client.shared.navigation)
                 implementation(projects.client.shared.notifications)
                 implementation(projects.shared.logging)
+                implementation(projects.shared.contracts.core)
 
                 project.dependencies {
                     kspAndroid(libs.gradle.ksp.kotlin.inject)

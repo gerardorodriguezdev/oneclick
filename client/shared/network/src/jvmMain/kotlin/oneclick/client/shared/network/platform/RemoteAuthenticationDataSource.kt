@@ -16,7 +16,7 @@ import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.logging.AppLogger
 
-class AndroidRemoteAuthenticationDataSource(
+class RemoteAuthenticationDataSource(
     private val httpClient: HttpClient,
     private val dispatchersProvider: DispatchersProvider,
     private val tokenDataSource: TokenDataSource,
