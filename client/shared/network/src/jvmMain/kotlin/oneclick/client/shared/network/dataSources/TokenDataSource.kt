@@ -8,7 +8,7 @@ interface TokenDataSource {
     suspend fun clear(): Boolean
 }
 
-internal class AndroidMemoryTokenDataSource : TokenDataSource {
+internal class MemoryTokenDataSource : TokenDataSource {
     private var token: String? = null
 
     override suspend fun token(): String? = token
@@ -23,7 +23,7 @@ internal class AndroidMemoryTokenDataSource : TokenDataSource {
     }
 }
 
-class AndroidLocalTokenDataSource(
+class LocalTokenDataSource(
     private val encryptedPreferences: EncryptedPreferences,
 ) : TokenDataSource {
     override suspend fun token(): String? =
@@ -34,7 +34,7 @@ class AndroidLocalTokenDataSource(
     override suspend fun set(token: String): Boolean =
         encryptedPreferences.putPreference(TOKEN_KEY, token, String.serializer())
 
-    private companion object {
+    private companion object Companion {
         const val TOKEN_KEY = "token"
     }
 }

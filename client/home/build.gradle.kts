@@ -10,8 +10,12 @@ jvmApp {
 
 kotlin {
     dependencies  {
+        implementation(ktorLibs.client.core)
+        implementation(libs.kmp.coroutines)
         implementation(projects.shared.contracts.core)
         implementation(projects.shared.contracts.homes)
-        implementation(libs.kmp.coroutines)
+        implementation(projects.shared.dispatchers)
+        implementation(projects.shared.logging)
+        implementation(projects.shared.network)
     }
 }

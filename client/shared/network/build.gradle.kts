@@ -2,6 +2,7 @@ plugins {
     id("oneclick.wasm.library")
     id("oneclick.android.library")
     id("oneclick.ios.library")
+    id("oneclick.jvm.library")
 }
 
 androidLibrary {
@@ -28,7 +29,6 @@ kotlin {
                 implementation(projects.shared.timeProvider)
                 implementation(projects.shared.logging)
                 implementation(projects.shared.network)
-                implementation(projects.client.shared.navigation)
             }
         }
 
@@ -40,6 +40,10 @@ kotlin {
         }
 
         androidMain {
+            dependsOn(jvmMain.get())
+        }
+
+        jvmMain {
             dependencies {
                 implementation(ktorLibs.client.okhttp)
                 implementation(libs.kmp.datastore)

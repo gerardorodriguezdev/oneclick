@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
-import oneclick.client.shared.network.security.Encryptor
+import oneclick.client.shared.network.security.base.Encryptor
 import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.logging.AppLogger
 import java.io.File
@@ -22,7 +22,7 @@ interface EncryptedPreferences {
     suspend fun clearPreference(key: String): Boolean
 }
 
-class AndroidEncryptedPreferences(
+class DataStoreEncryptedPreferences(
     preferencesFileProvider: () -> File,
     dispatchersProvider: DispatchersProvider,
     private val encryptor: Encryptor,
