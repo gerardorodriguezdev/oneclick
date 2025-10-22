@@ -15,12 +15,6 @@ import okio.Path
 import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.logging.AppLogger
 
-interface Preferences {
-    suspend fun <T> preference(key: String, serializer: KSerializer<T>): T?
-    suspend fun <T> putPreference(key: String, value: T, serializer: KSerializer<T>): Boolean
-    suspend fun clearPreference(key: String): Boolean
-}
-
 class IOSPreferences(
     preferencesFileProvider: () -> Path,
     dispatchersProvider: DispatchersProvider,

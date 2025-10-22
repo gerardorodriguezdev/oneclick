@@ -32,8 +32,13 @@ kotlin {
             }
         }
 
+        val native by sourceSets.creating {
+            dependsOn(commonMain.get())
+        }
+
         iosMain {
             dependencies {
+                dependsOn(native)
                 implementation(ktorLibs.client.darwin)
                 implementation(libs.kmp.datastore)
             }
@@ -41,6 +46,7 @@ kotlin {
 
         jvmMain {
             dependencies {
+                dependsOn(native)
                 implementation(ktorLibs.client.okhttp)
                 implementation(libs.kmp.datastore)
                 implementation(libs.kmp.datastore)

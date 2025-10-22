@@ -1,4 +1,4 @@
-package oneclick.client.shared.network.dataSources
+package oneclick.shared.network.dataSources
 
 import kotlinx.serialization.builtins.serializer
 
@@ -24,17 +24,17 @@ internal class MemoryTokenDataSource : TokenDataSource {
 }
 
 class LocalTokenDataSource(
-    private val encryptedPreferences: EncryptedPreferences,
+    private val preferences: Preferences,
 ) : TokenDataSource {
     override suspend fun token(): String? =
-        encryptedPreferences.preference(TOKEN_KEY, String.serializer())
+        preferences.preference(TOKEN_KEY, String.serializer())
 
-    override suspend fun clear(): Boolean = encryptedPreferences.clearPreference(TOKEN_KEY)
+    override suspend fun clear(): Boolean = preferences.clearPreference(TOKEN_KEY)
 
     override suspend fun set(token: String): Boolean =
-        encryptedPreferences.putPreference(TOKEN_KEY, token, String.serializer())
+        preferences.putPreference(TOKEN_KEY, token, String.serializer())
 
-    private companion object Companion {
+    private companion object {
         const val TOKEN_KEY = "token"
     }
 }

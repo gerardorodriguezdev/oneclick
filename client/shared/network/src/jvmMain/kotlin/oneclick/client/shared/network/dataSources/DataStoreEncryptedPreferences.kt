@@ -11,23 +11,18 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.KSerializer
 import kotlinx.serialization.json.Json
-import oneclick.client.shared.network.security.base.Encryptor
 import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.logging.AppLogger
+import oneclick.shared.network.dataSources.Preferences
+import oneclick.shared.security.encryption.base.Encryptor
 import java.io.File
-
-interface EncryptedPreferences {
-    suspend fun <T> preference(key: String, serializer: KSerializer<T>): T?
-    suspend fun <T> putPreference(key: String, value: T, serializer: KSerializer<T>): Boolean
-    suspend fun clearPreference(key: String): Boolean
-}
 
 class DataStoreEncryptedPreferences(
     preferencesFileProvider: () -> File,
     dispatchersProvider: DispatchersProvider,
     private val encryptor: Encryptor,
     private val appLogger: AppLogger,
-) : EncryptedPreferences {
+) : Preferences {
     private val dataStore = PreferenceDataStoreFactory.create(
         produceFile = preferencesFileProvider,
         corruptionHandler = ReplaceFileCorruptionHandler { emptyPreferences() },
@@ -41,8 +36,7 @@ class DataStoreEncryptedPreferences(
                 val key = stringPreferencesKey(key)
                 val value = preferences[key] ?: return@map null
                 val valueByteArray = value.toByteArray(Charsets.UTF_8)
-                val decryptedValue = encryptor.decrypt(valueByteArray).getOrThrow()
-                val decryptedValueString = decryptedValue?.toString(Charsets.UTF_8) ?: return@map null
+                val decryptedValueString = encryptor.decrypt(valueByteArray).getOrThrow()
                 val decodedValue = Json.decodeFromString(serializer, decryptedValueString)
                 decodedValue
             }
@@ -62,8 +56,7 @@ class DataStoreEncryptedPreferences(
             dataStore
                 .edit { preferences ->
                     val valueString = Json.encodeToString(serializer, value)
-                    val valueByteArray = valueString.toByteArray(Charsets.UTF_8)
-                    val encryptedValue = encryptor.encrypt(valueByteArray).getOrThrow()
+                    val encryptedValue = encryptor.encrypt(valueString).getOrThrow()
                     val key = stringPreferencesKey(key)
                     preferences[key] = encryptedValue.toString(Charsets.UTF_8)
                 }

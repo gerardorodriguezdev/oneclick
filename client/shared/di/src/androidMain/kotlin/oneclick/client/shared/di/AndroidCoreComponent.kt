@@ -3,7 +3,7 @@ package oneclick.client.shared.di
 import io.ktor.client.engine.*
 import io.ktor.http.*
 import oneclick.client.shared.navigation.NavigationController
-import oneclick.client.shared.network.dataSources.TokenDataSource
+import oneclick.shared.network.dataSources.TokenDataSource
 import oneclick.client.shared.network.platform.LogoutManager
 import oneclick.client.shared.network.platform.RemoteAuthenticationDataSource
 import oneclick.client.shared.network.platform.httpClient
