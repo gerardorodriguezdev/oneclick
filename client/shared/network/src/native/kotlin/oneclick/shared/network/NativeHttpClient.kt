@@ -1,4 +1,4 @@
-package oneclick.client.shared.network
+package oneclick.shared.network
 
 import io.ktor.client.*
 import io.ktor.client.engine.*
@@ -8,18 +8,19 @@ import io.ktor.client.plugins.contentnegotiation.*
 import io.ktor.client.plugins.logging.*
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
-import oneclick.client.shared.network.dataSources.TokenDataSource
 import oneclick.client.shared.network.extensions.clientType
 import oneclick.client.shared.network.platform.LogoutManager
 import oneclick.client.shared.network.plugins.LogoutProxy
-import oneclick.client.shared.network.plugins.TokenProxy
 import oneclick.shared.contracts.core.models.ClientType
 import oneclick.shared.logging.AppLogger
+import oneclick.shared.network.dataSources.TokenDataSource
+import oneclick.shared.network.plugins.TokenProxy
 
-fun iosHttpClient(
+fun nativeHttpClient(
     urlProtocol: URLProtocol?,
     host: String?,
     port: Int?,
+    clientType: ClientType,
     appLogger: AppLogger,
     httpClientEngine: HttpClientEngine,
     tokenDataSource: TokenDataSource,
@@ -45,7 +46,7 @@ fun iosHttpClient(
                 this.port = port
             }
 
-            clientType(ClientType.MOBILE)
+            clientType(clientType)
         }
 
         install(TokenProxy) {
