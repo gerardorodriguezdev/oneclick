@@ -22,7 +22,7 @@ interface JwtProvider {
     fun userId(jwtUserId: JwtUserId): Uuid?
 }
 
-class DefaultJwtProvider(
+class EncryptedJwtProvider(
     override val jwtRealm: String,
     private val jwtAudience: String,
     private val jwtIssuer: String,

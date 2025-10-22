@@ -33,7 +33,7 @@ fun main() {
     val logger = KtorSimpleLogger("oneclick.defaultlogger")
     val dispatchersProvider = dispatchersProvider()
     val uuidProvider = DefaultUuidProvider()
-    val jwtProvider = DefaultJwtProvider(
+    val jwtProvider = EncryptedJwtProvider(
         jwtRealm = "Oneclick api",
         jwtAudience = environment.jwtAudience,
         jwtIssuer = environment.baseUrl,
