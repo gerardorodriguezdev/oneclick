@@ -1,14 +1,14 @@
-package oneclick.client.shared.network.platform
+package oneclick.shared.network.dataSources
 
 import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
 import kotlinx.coroutines.withContext
-import oneclick.client.shared.network.dataSources.TokenDataSource
 import oneclick.client.shared.network.models.LogoutResult
 import oneclick.client.shared.network.models.RequestLoginResult
 import oneclick.client.shared.network.models.UserLoggedResult
+import oneclick.client.shared.network.platform.AuthenticationDataSource
 import oneclick.shared.contracts.auth.models.requests.RequestLoginRequest
 import oneclick.shared.contracts.auth.models.responses.RequestLoginResponse
 import oneclick.shared.contracts.auth.models.responses.UserLoggedResponse

@@ -4,7 +4,7 @@ import io.ktor.client.engine.*
 import io.ktor.http.*
 import oneclick.client.shared.navigation.NavigationController
 import oneclick.client.shared.network.platform.LogoutManager
-import oneclick.client.shared.network.platform.RemoteAuthenticationDataSource
+import oneclick.shared.network.dataSources.RemoteAuthenticationDataSource
 import oneclick.client.shared.notifications.NotificationsController
 import oneclick.shared.contracts.core.models.ClientType
 import oneclick.shared.dispatchers.platform.DispatchersProvider
