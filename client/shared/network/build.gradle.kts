@@ -13,6 +13,8 @@ androidLibrary {
 }
 
 kotlin {
+    applyDefaultHierarchyTemplate()
+
     sourceSets {
         commonMain {
             dependencies {
@@ -37,16 +39,18 @@ kotlin {
         }
 
         iosMain {
+            dependsOn(native)
+
             dependencies {
-                dependsOn(native)
                 implementation(ktorLibs.client.darwin)
                 implementation(libs.kmp.datastore)
             }
         }
 
         jvmMain {
+            dependsOn(native)
+
             dependencies {
-                dependsOn(native)
                 implementation(ktorLibs.client.okhttp)
                 implementation(libs.kmp.datastore)
                 implementation(libs.kmp.datastore)

@@ -8,6 +8,9 @@ import oneclick.client.app.entrypoints.AppEntrypoint
 import oneclick.client.app.mappers.urlProtocol
 import oneclick.client.shared.di.iosCoreComponent
 import oneclick.client.shared.navigation.DefaultNavigationController
+import oneclick.client.shared.network.dataSources.IOSPreferences
+import oneclick.client.shared.network.dataSources.LocalTokenDataSource
+import oneclick.client.shared.network.iosHttpClientEngine
 import oneclick.client.shared.notifications.DefaultNotificationsController
 import oneclick.shared.dispatchers.platform.dispatchersProvider
 import oneclick.shared.logging.EmptyAppLogger
@@ -38,7 +41,7 @@ internal object OneClickApplication {
             appLogger = appLogger,
             dispatchersProvider = dispatchersProvider,
         )
-        val tokenDataSource = IOSLocalTokenDataSource(preferences)
+        val tokenDataSource = LocalTokenDataSource(preferences)
         val navigationController = DefaultNavigationController()
         val coreComponent = iosCoreComponent(
             urlProtocol = BuildKonfig.urlProtocol(),
