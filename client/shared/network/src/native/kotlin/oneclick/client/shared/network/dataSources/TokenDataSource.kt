@@ -1,4 +1,4 @@
-package oneclick.shared.network.dataSources
+package oneclick.client.shared.network.dataSources
 
 import kotlinx.serialization.builtins.serializer
 

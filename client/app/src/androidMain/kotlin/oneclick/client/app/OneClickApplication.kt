@@ -15,7 +15,7 @@ import oneclick.client.shared.notifications.DefaultNotificationsController
 import oneclick.shared.dispatchers.platform.dispatchersProvider
 import oneclick.shared.logging.EmptyAppLogger
 import oneclick.shared.logging.appLogger
-import oneclick.shared.network.dataSources.LocalTokenDataSource
+import oneclick.client.shared.network.dataSources.LocalTokenDataSource
 import oneclick.shared.security.DefaultSecureRandomProvider
 import oneclick.shared.security.encryption.AndroidKeystoreEncryptor
 import oneclick.shared.timeProvider.SystemTimeProvider

@@ -1,9 +1,9 @@
-package oneclick.shared.network.plugins
+package oneclick.client.shared.network.plugins
 
 import io.ktor.client.plugins.api.*
 import io.ktor.http.*
-import oneclick.shared.network.dataSources.MemoryTokenDataSource
-import oneclick.shared.network.dataSources.TokenDataSource
+import oneclick.client.shared.network.dataSources.MemoryTokenDataSource
+import oneclick.client.shared.network.dataSources.TokenDataSource
 
 internal val TokenProxy = createClientPlugin("TokenProxy", ::TokenManagerConfiguration) {
     val tokenDataSource = pluginConfig.tokenDataSource

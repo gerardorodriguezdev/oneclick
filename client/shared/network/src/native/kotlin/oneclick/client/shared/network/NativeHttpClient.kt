@@ -1,4 +1,4 @@
-package oneclick.shared.network
+package oneclick.client.shared.network
 
 import io.ktor.client.*
 import io.ktor.client.engine.*
@@ -13,8 +13,8 @@ import oneclick.client.shared.network.platform.LogoutManager
 import oneclick.client.shared.network.plugins.LogoutProxy
 import oneclick.shared.contracts.core.models.ClientType
 import oneclick.shared.logging.AppLogger
-import oneclick.shared.network.dataSources.TokenDataSource
-import oneclick.shared.network.plugins.TokenProxy
+import oneclick.client.shared.network.dataSources.TokenDataSource
+import oneclick.client.shared.network.plugins.TokenProxy
 
 fun nativeHttpClient(
     urlProtocol: URLProtocol?,
