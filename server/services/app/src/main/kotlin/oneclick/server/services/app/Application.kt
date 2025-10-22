@@ -13,10 +13,14 @@ import oneclick.server.services.app.repositories.DefaultHomesRepository
 import oneclick.server.services.app.repositories.DefaultUsersRepository
 import oneclick.server.services.app.repositories.HomesRepository
 import oneclick.server.services.app.repositories.UsersRepository
-import oneclick.server.shared.auth.security.*
+import oneclick.server.shared.auth.security.DefaultJwtProvider
+import oneclick.server.shared.auth.security.DefaultUuidProvider
+import oneclick.server.shared.auth.security.JwtProvider
+import oneclick.server.shared.auth.security.KtorKeystoreEncryptor
 import oneclick.server.shared.db.databaseDriver
 import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.dispatchers.platform.dispatchersProvider
+import oneclick.shared.security.DefaultSecureRandomProvider
 import oneclick.shared.timeProvider.SystemTimeProvider
 import oneclick.shared.timeProvider.TimeProvider
 
@@ -24,7 +28,7 @@ fun main() {
     val environment = Environment()
     val jvmSecureRandomProvider = DefaultSecureRandomProvider()
     val timeProvider = SystemTimeProvider()
-    val encryptor = DefaultEncryptor(
+    val encryptor = KtorKeystoreEncryptor(
         secretEncryptionKey = environment.secretEncryptionKey,
         secureRandomProvider = jvmSecureRandomProvider,
     )
