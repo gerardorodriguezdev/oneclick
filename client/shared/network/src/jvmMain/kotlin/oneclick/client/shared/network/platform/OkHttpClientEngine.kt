@@ -2,11 +2,12 @@ package oneclick.client.shared.network.platform
 
 import io.ktor.client.engine.*
 import io.ktor.client.engine.okhttp.*
-import oneclick.shared.timeProvider.TimeProvider
+import okhttp3.OkHttpClient
 
-fun jvmHttpClientEngine(timeProvider: TimeProvider): HttpClientEngine =
+fun okhttpHttpClientEngine(block: OkHttpClient.Builder.() -> Unit = {}): HttpClientEngine =
     OkHttp.create {
         config {
             followRedirects(false)
+            block()
         }
     }

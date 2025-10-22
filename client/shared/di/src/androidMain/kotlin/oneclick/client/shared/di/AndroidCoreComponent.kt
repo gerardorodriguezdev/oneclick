@@ -3,14 +3,14 @@ package oneclick.client.shared.di
 import io.ktor.client.engine.*
 import io.ktor.http.*
 import oneclick.client.shared.navigation.NavigationController
-import oneclick.shared.network.dataSources.TokenDataSource
 import oneclick.client.shared.network.platform.LogoutManager
 import oneclick.client.shared.network.platform.RemoteAuthenticationDataSource
-import oneclick.client.shared.network.platform.httpClient
 import oneclick.client.shared.notifications.NotificationsController
 import oneclick.shared.contracts.core.models.ClientType
 import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.logging.AppLogger
+import oneclick.shared.network.dataSources.TokenDataSource
+import oneclick.shared.network.nativeHttpClient
 
 fun androidCoreComponent(
     urlProtocol: URLProtocol?,
@@ -24,7 +24,7 @@ fun androidCoreComponent(
     logoutManager: LogoutManager,
     notificationsController: NotificationsController,
 ): CoreComponent {
-    val httpClient = httpClient(
+    val httpClient = nativeHttpClient(
         urlProtocol = urlProtocol,
         host = host,
         port = port,

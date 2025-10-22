@@ -2,24 +2,20 @@ package oneclick.client.shared.network.platform
 
 import android.net.TrafficStats
 import io.ktor.client.engine.*
-import io.ktor.client.engine.okhttp.*
 import oneclick.shared.timeProvider.TimeProvider
 import java.net.InetAddress
 import java.net.Socket
 import javax.net.SocketFactory
 
 fun androidHttpClientEngine(timeProvider: TimeProvider): HttpClientEngine =
-    OkHttp.create {
-        config {
-            followRedirects(false)
-            socketFactory(
-                DelegatingSocketFactory(
-                    configureSocket = {
-                        TrafficStats.setThreadStatsTag(timeProvider.currentTimeMillis().toInt())
-                    }
-                )
+    okhttpHttpClientEngine {
+        socketFactory(
+            DelegatingSocketFactory(
+                configureSocket = {
+                    TrafficStats.setThreadStatsTag(timeProvider.currentTimeMillis().toInt())
+                }
             )
-        }
+        )
     }
 
 private class DelegatingSocketFactory(
