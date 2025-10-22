@@ -13,11 +13,11 @@ import oneclick.shared.contracts.homes.models.DeviceName.Companion.toDeviceName
 import oneclick.shared.contracts.homes.models.DeviceType
 import oneclick.shared.contracts.homes.models.DeviceType.Companion.toDeviceType
 
-interface ConnectionDeserializer {
+internal interface ConnectionDeserializer {
     fun deserialize(stream: Flow<Char>): Flow<Device>
 }
 
-class DefaultConnectionDeserializer(private val lineDeserializer: LineDeserializer) : ConnectionDeserializer {
+internal class DefaultConnectionDeserializer(private val lineDeserializer: LineDeserializer) : ConnectionDeserializer {
     override fun deserialize(stream: Flow<Char>): Flow<Device> =
         stream
             .combineCharsIntoStrings()

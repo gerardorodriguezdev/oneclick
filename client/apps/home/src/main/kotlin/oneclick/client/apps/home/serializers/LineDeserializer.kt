@@ -2,7 +2,7 @@ package oneclick.client.apps.home.serializers
 
 import oneclick.client.apps.home.serializers.LineDeserializer.Entry
 
-interface LineDeserializer {
+internal interface LineDeserializer {
     fun deserialize(data: String): Map<String, Entry>
 
     data class Entry(
@@ -11,7 +11,7 @@ interface LineDeserializer {
     )
 }
 
-class DefaultLineDeserializer : LineDeserializer {
+internal class DefaultLineDeserializer : LineDeserializer {
     override fun deserialize(data: String): Map<String, Entry> = data.toEntries()
 
     private fun String.toEntries(): Map<String, Entry> {

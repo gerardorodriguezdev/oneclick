@@ -5,4 +5,5 @@ enum class ClientEndpoint(val route: String) {
     REQUEST_LOGIN("/api/request-login"),
     HOMES("/api/homes-list"),
     LOGOUT("/api/logout"),
+    SAVE_DEVICE("/api/save-device"),
 }
