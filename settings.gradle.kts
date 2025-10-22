@@ -40,6 +40,17 @@ dependencyResolutionManagement {
 }
 
 include(
+    "shared:logging",
+    "shared:dispatchers",
+    "shared:timeProvider",
+    "shared:network",
+    "shared:security",
+    "shared:contracts:core",
+    "shared:contracts:auth",
+    "shared:contracts:homes",
+)
+
+include(
     "client:app",
     "client:home",
     "client:shared:di",
@@ -48,16 +59,6 @@ include(
     "client:shared:network",
     "client:shared:notifications",
     "client:features:home",
-)
-
-include(
-    "shared:logging",
-    "shared:dispatchers",
-    "shared:timeProvider",
-    "shared:network",
-    "shared:contracts:core",
-    "shared:contracts:auth",
-    "shared:contracts:homes",
 )
 
 include(

@@ -69,6 +69,7 @@ dependencies {
     implementation(projects.shared.contracts.homes)
     implementation(projects.shared.timeProvider)
     implementation(projects.shared.dispatchers)
+    implementation(projects.shared.security)
     implementation(projects.server.shared.core)
     implementation(projects.server.shared.auth)
     implementation(projects.server.shared.db)

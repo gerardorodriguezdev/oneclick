@@ -14,6 +14,7 @@ kotlin {
                 implementation(ktorLibs.serialization.kotlinx.json)
                 implementation(projects.shared.timeProvider)
                 implementation(projects.shared.dispatchers)
+                implementation(projects.shared.security)
                 implementation(projects.shared.contracts.core)
                 implementation(projects.shared.contracts.auth)
                 runtimeOnly(libs.kmp.poko)
