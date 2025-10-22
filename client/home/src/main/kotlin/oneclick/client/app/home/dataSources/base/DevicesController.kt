@@ -1,10 +1,10 @@
 package oneclick.client.app.home.dataSources.base
 
 import kotlinx.coroutines.flow.Flow
-import oneclick.client.app.home.models.DeviceId
-import oneclick.client.app.home.models.DevicePassword
+import oneclick.shared.contracts.auth.models.Password
+import oneclick.shared.contracts.core.models.Uuid
 
 interface DevicesController {
-    fun scan(): Flow<DeviceId>
-    fun connect(deviceId: DeviceId, devicePassword: DevicePassword): Flow<Char>
+    fun scan(): Flow<Uuid>
+    fun connect(id: Uuid, password: Password): Flow<Char>
 }

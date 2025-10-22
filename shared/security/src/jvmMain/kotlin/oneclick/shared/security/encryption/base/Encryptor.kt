@@ -17,7 +17,6 @@ abstract class BaseEncryptor(
 
     protected abstract fun secretKey(): Key
 
-    //TODO: Return bases
     override fun encrypt(input: String): Result<ByteArray> =
         runCatching {
             val secretKey = secretKey()

@@ -13,6 +13,7 @@ kotlin {
         implementation(ktorLibs.client.core)
         implementation(libs.kmp.coroutines)
         implementation(projects.shared.contracts.core)
+        implementation(projects.shared.contracts.auth)
         implementation(projects.shared.contracts.homes)
         implementation(projects.shared.dispatchers)
         implementation(projects.shared.logging)
