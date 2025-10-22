@@ -2,22 +2,22 @@ package oneclick.client.app
 
 import android.app.Application
 import android.os.StrictMode
-import io.ktor.http.URLProtocol
+import io.ktor.http.*
 import oneclick.client.app.buildkonfig.BuildKonfig
 import oneclick.client.app.di.createAppComponent
 import oneclick.client.app.entrypoints.AppEntrypoint
 import oneclick.client.app.mappers.urlProtocol
 import oneclick.client.shared.di.androidCoreComponent
 import oneclick.client.shared.navigation.DefaultNavigationController
-import oneclick.client.shared.network.dataSources.AndroidEncryptedPreferences
-import oneclick.client.shared.network.dataSources.AndroidLocalTokenDataSource
-import oneclick.client.shared.network.platform.AndroidLogoutManager
+import oneclick.client.shared.network.dataSources.DataStoreEncryptedPreferences
+import oneclick.client.shared.network.dataSources.LocalTokenDataSource
 import oneclick.client.shared.network.platform.androidHttpClientEngine
-import oneclick.client.shared.network.security.AndroidEncryptor
 import oneclick.client.shared.notifications.DefaultNotificationsController
 import oneclick.shared.dispatchers.platform.dispatchersProvider
 import oneclick.shared.logging.EmptyAppLogger
 import oneclick.shared.logging.appLogger
+import oneclick.shared.security.DefaultSecureRandomProvider
+import oneclick.shared.security.encryption.AndroidKeystoreEncryptor
 import oneclick.shared.timeProvider.SystemTimeProvider
 
 class OneClickApplication : Application() {
@@ -29,17 +29,18 @@ class OneClickApplication : Application() {
         setupStrictVmPolicy()
         super.onCreate()
 
+        val secureRandomProvider = DefaultSecureRandomProvider()
         val appLogger = if (BuildKonfig.IS_DEBUG) appLogger() else EmptyAppLogger()
         val dispatchersProvider = dispatchersProvider()
-        val encryptedPreferences = AndroidEncryptedPreferences(
+        val encryptedPreferences = DataStoreEncryptedPreferences(
             preferencesFileProvider = {
                 filesDir.resolve("settings.preferences_pb")
             },
             appLogger = appLogger,
             dispatchersProvider = dispatchersProvider,
-            encryptor = AndroidEncryptor(),
+            encryptor = AndroidKeystoreEncryptor(secureRandomProvider),
         )
-        val tokenDataSource = AndroidLocalTokenDataSource(encryptedPreferences)
+        val tokenDataSource = LocalTokenDataSource(encryptedPreferences)
         val navigationController = DefaultNavigationController()
         val coreComponent = androidCoreComponent(
             urlProtocol = BuildKonfig.urlProtocol(),

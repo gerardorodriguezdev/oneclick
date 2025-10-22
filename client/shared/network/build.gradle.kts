@@ -39,15 +39,18 @@ kotlin {
             }
         }
 
-        androidMain {
-            dependsOn(jvmMain.get())
-        }
-
         jvmMain {
             dependencies {
                 implementation(ktorLibs.client.okhttp)
                 implementation(libs.kmp.datastore)
+                implementation(libs.kmp.datastore)
+                implementation(projects.shared.security)
             }
+        }
+
+
+        androidMain {
+            dependsOn(jvmMain.get())
         }
     }
 }

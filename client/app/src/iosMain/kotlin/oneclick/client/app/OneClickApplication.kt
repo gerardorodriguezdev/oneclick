@@ -2,24 +2,20 @@ package oneclick.client.app
 
 import kotlinx.cinterop.ExperimentalForeignApi
 import okio.Path.Companion.toPath
-import platform.Foundation.NSDocumentDirectory
-import platform.Foundation.NSFileManager
-import platform.Foundation.NSURL
-import platform.Foundation.NSUserDomainMask
 import oneclick.client.app.buildkonfig.BuildKonfig
 import oneclick.client.app.di.createAppComponent
 import oneclick.client.app.entrypoints.AppEntrypoint
 import oneclick.client.app.mappers.urlProtocol
 import oneclick.client.shared.di.iosCoreComponent
 import oneclick.client.shared.navigation.DefaultNavigationController
-import oneclick.client.shared.network.dataSources.IOSLocalTokenDataSource
-import oneclick.client.shared.network.dataSources.IOSPreferences
-import oneclick.client.shared.network.IOSLogoutManager
-import oneclick.client.shared.network.platform.iosHttpClientEngine
 import oneclick.client.shared.notifications.DefaultNotificationsController
 import oneclick.shared.dispatchers.platform.dispatchersProvider
 import oneclick.shared.logging.EmptyAppLogger
 import oneclick.shared.logging.appLogger
+import platform.Foundation.NSDocumentDirectory
+import platform.Foundation.NSFileManager
+import platform.Foundation.NSURL
+import platform.Foundation.NSUserDomainMask
 
 @OptIn(ExperimentalForeignApi::class)
 internal object OneClickApplication {

@@ -112,6 +112,7 @@ kotlin {
                 implementation(libs.android.activity)
                 implementation(ktorLibs.client.okhttp)
                 implementation(libs.kmp.datastore)
+                implementation(projects.shared.security)
             }
         }
 
