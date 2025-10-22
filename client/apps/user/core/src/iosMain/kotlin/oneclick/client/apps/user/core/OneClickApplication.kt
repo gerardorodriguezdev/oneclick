@@ -1,0 +1,64 @@
+package oneclick.client.apps.user.core
+
+import kotlinx.cinterop.ExperimentalForeignApi
+import okio.Path.Companion.toPath
+import oneclick.client.apps.user.core.buildkonfig.BuildKonfig
+import oneclick.client.apps.user.core.di.createAppComponent
+import oneclick.client.apps.user.core.entrypoints.AppEntrypoint
+import oneclick.client.apps.user.core.mappers.urlProtocol
+import oneclick.client.shared.di.iosCoreComponent
+import oneclick.client.shared.navigation.DefaultNavigationController
+import oneclick.client.shared.network.dataSources.IOSPreferences
+import oneclick.client.shared.network.dataSources.LocalTokenDataSource
+import oneclick.client.shared.network.iosHttpClientEngine
+import oneclick.client.shared.notifications.DefaultNotificationsController
+import oneclick.shared.dispatchers.platform.dispatchersProvider
+import oneclick.shared.logging.EmptyAppLogger
+import oneclick.shared.logging.appLogger
+import platform.Foundation.NSDocumentDirectory
+import platform.Foundation.NSFileManager
+import platform.Foundation.NSURL
+import platform.Foundation.NSUserDomainMask
+
+@OptIn(ExperimentalForeignApi::class)
+internal object OneClickApplication {
+    val appEntrypoint: AppEntrypoint
+
+    init {
+        val appLogger = if (BuildKonfig.IS_DEBUG) appLogger() else EmptyAppLogger()
+        val dispatchersProvider = dispatchersProvider()
+        val preferences = IOSPreferences(
+            preferencesFileProvider = {
+                val documentDirectory: NSURL? = NSFileManager.defaultManager.URLForDirectory(
+                    directory = NSDocumentDirectory,
+                    inDomain = NSUserDomainMask,
+                    appropriateForURL = null,
+                    create = false,
+                    error = null,
+                )
+                (requireNotNull(documentDirectory).path + "/settings.preferences_pb").toPath()
+            },
+            appLogger = appLogger,
+            dispatchersProvider = dispatchersProvider,
+        )
+        val tokenDataSource = LocalTokenDataSource(preferences)
+        val navigationController = DefaultNavigationController()
+        val coreComponent = iosCoreComponent(
+            urlProtocol = BuildKonfig.urlProtocol(),
+            host = BuildKonfig.HOST,
+            port = BuildKonfig.PORT,
+            appLogger = appLogger,
+            httpClientEngine = iosHttpClientEngine(),
+            tokenDataSource = tokenDataSource,
+            dispatchersProvider = dispatchersProvider(),
+            navigationController = navigationController,
+            logoutManager = IOSLogoutManager(
+                navigationController = navigationController,
+                tokenDataSource = tokenDataSource,
+            ),
+            notificationsController = DefaultNotificationsController(),
+        )
+        val appComponent = createAppComponent(coreComponent)
+        appEntrypoint = AppEntrypoint(appComponent = appComponent, coreComponent = coreComponent)
+    }
+}

@@ -73,7 +73,7 @@ dependencies {
     implementation(projects.server.shared.core)
     implementation(projects.server.shared.auth)
     implementation(projects.server.shared.db)
-    consumeWasmWebsite(projects.client.app.path)
+    consumeWasmWebsite(projects.client.apps.user.core.path)
 
     testImplementation(ktorLibs.server.testHost)
     testImplementation(ktorLibs.client.core)

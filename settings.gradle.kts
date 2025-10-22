@@ -51,14 +51,14 @@ include(
 )
 
 include(
-    "client:app",
-    "client:home",
+    "client:apps:user:core",
+    "client:apps:user:features:home",
+    "client:apps:home",
     "client:shared:di",
     "client:shared:ui",
     "client:shared:navigation",
     "client:shared:network",
     "client:shared:notifications",
-    "client:features:home",
 )
 
 include(

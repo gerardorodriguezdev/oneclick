@@ -42,10 +42,10 @@ jobs:
       - name: Setup app files
         if: env.BRANCH_NAME == 'production'
         run: |
-          mkdir -p ./client/app/local
-          echo "${{ secrets.GOOGLE_SERVICES_BASE64 }}" | base64 -d > ./client/app/google-services.json &
-          echo "${{ secrets.SERVICE_ACCOUNT_CREDENTIALS_BASE64 }}" | base64 -d > ./client/app/service-account-credentials.json &
-          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > ./client/app/local/production-keystore.jks &
+          mkdir -p ./client/apps/user/core/local
+          echo "${{ secrets.GOOGLE_SERVICES_BASE64 }}" | base64 -d > ./client/apps/user/core/google-services.json &
+          echo "${{ secrets.SERVICE_ACCOUNT_CREDENTIALS_BASE64 }}" | base64 -d > ./client/apps/user/core/service-account-credentials.json &
+          echo "${{ secrets.KEYSTORE_BASE64 }}" | base64 -d > ./client/apps/user/core/local/production-keystore.jks &
           wait
 
       - name: Generate client environment
@@ -61,4 +61,4 @@ jobs:
       - name: Publish client image
         if: env.BRANCH_NAME == 'production'
         run: |
-          ./gradlew :client:app:assembleRelease appDistributionUploadRelease --serviceCredentialsFile="./client/app/service-account-credentials.json" --testers="${{ secrets.TESTER_EMAIL }}"
+          ./gradlew :client:app:assembleRelease appDistributionUploadRelease --serviceCredentialsFile="./client/apps/user/core/service-account-credentials.json" --testers="${{ secrets.TESTER_EMAIL }}"
