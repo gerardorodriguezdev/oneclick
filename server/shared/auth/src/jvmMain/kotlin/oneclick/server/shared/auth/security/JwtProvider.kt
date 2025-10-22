@@ -7,6 +7,7 @@ import oneclick.server.shared.auth.models.JwtUserId
 import oneclick.shared.contracts.auth.models.Jwt
 import oneclick.shared.contracts.core.models.Uuid
 import oneclick.shared.contracts.core.models.Uuid.Companion.toUuid
+import oneclick.shared.security.encryption.base.Encryptor
 import oneclick.shared.timeProvider.TimeProvider
 import java.util.*
 

@@ -7,8 +7,8 @@ import io.ktor.server.sessions.*
 import oneclick.server.services.app.dataSources.base.UsersDataSource
 import oneclick.server.services.app.dataSources.models.User
 import oneclick.server.services.app.repositories.UsersRepository
-import oneclick.server.shared.auth.security.Encryptor
 import oneclick.server.shared.auth.security.JwtProvider
+import oneclick.server.shared.auth.security.PasswordManager
 import oneclick.server.shared.auth.security.UuidProvider
 import oneclick.server.shared.core.clientType
 import oneclick.shared.contracts.auth.models.Jwt
@@ -22,7 +22,7 @@ import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
 internal fun Routing.requestLoginEndpoint(
     usersRepository: UsersRepository,
-    encryptor: Encryptor,
+    passwordManager: PasswordManager,
     jwtProvider: JwtProvider,
     uuidProvider: UuidProvider,
 ) {
@@ -35,13 +35,13 @@ internal fun Routing.requestLoginEndpoint(
             user == null -> registerUser(
                 username = username,
                 password = password,
-                encryptor = encryptor,
+                passwordManager = passwordManager,
                 jwtProvider = jwtProvider,
                 uuidProvider = uuidProvider,
                 usersRepository = usersRepository,
             )
 
-            !encryptor.verifyPassword(
+            !passwordManager.verifyPassword(
                 password = password,
                 hashedPassword = user.hashedPassword
             ) -> handleError()
@@ -57,7 +57,7 @@ internal fun Routing.requestLoginEndpoint(
 private suspend fun RoutingContext.registerUser(
     username: Username,
     password: Password,
-    encryptor: Encryptor,
+    passwordManager: PasswordManager,
     jwtProvider: JwtProvider,
     uuidProvider: UuidProvider,
     usersRepository: UsersRepository,
@@ -65,7 +65,7 @@ private suspend fun RoutingContext.registerUser(
     val newUser = User(
         userId = uuidProvider.uuid(),
         username = username,
-        hashedPassword = encryptor.hashPassword(password),
+        hashedPassword = passwordManager.hashPassword(password),
     )
     usersRepository.saveUser(newUser)
 

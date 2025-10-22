@@ -13,7 +13,6 @@ import oneclick.client.app.di.createAppComponent
 import oneclick.client.app.entrypoints.AppEntrypoint
 import oneclick.client.shared.di.wasmCoreComponent
 import oneclick.client.shared.navigation.DefaultNavigationController
-import oneclick.client.shared.network.platform.WasmLogoutManager
 import oneclick.client.shared.notifications.DefaultNotificationsController
 import oneclick.shared.dispatchers.platform.dispatchersProvider
 import oneclick.shared.logging.EmptyAppLogger

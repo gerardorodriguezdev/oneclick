@@ -6,13 +6,13 @@ import oneclick.server.services.app.dataSources.base.InvalidJwtDataSource
 import oneclick.server.services.app.endpoints.*
 import oneclick.server.services.app.repositories.HomesRepository
 import oneclick.server.services.app.repositories.UsersRepository
-import oneclick.server.shared.auth.security.Encryptor
 import oneclick.server.shared.auth.security.JwtProvider
+import oneclick.server.shared.auth.security.PasswordManager
 import oneclick.server.shared.auth.security.UuidProvider
 
 internal fun Application.configureRouting(
     usersRepository: UsersRepository,
-    encryptor: Encryptor,
+    passwordManager: PasswordManager,
     jwtProvider: JwtProvider,
     uuidProvider: UuidProvider,
     homesRepository: HomesRepository,
@@ -24,7 +24,7 @@ internal fun Application.configureRouting(
         logoutEndpoint(invalidJwtDataSource = invalidJwtDataSource)
         requestLoginEndpoint(
             usersRepository = usersRepository,
-            encryptor = encryptor,
+            passwordManager = passwordManager,
             jwtProvider = jwtProvider,
             uuidProvider = uuidProvider,
         )

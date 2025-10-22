@@ -14,7 +14,7 @@ class FileKeystoreEncryptor(
     private val keyStorePassword: CharArray,
     secureRandomProvider: SecureRandomProvider
 ) : BaseEncryptor(secureRandomProvider) {
-    override val transformation: String = "$ALGORITHM/CBC/PKCS7Padding"
+    override val transformation: String = "$ALGORITHM/CBC/PKCS5Padding"
     private val keyStore: KeyStore = KeyStore.getInstance(KeyStore.getDefaultType())
 
     init {

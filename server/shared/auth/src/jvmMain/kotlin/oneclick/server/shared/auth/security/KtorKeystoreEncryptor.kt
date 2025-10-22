@@ -10,7 +10,7 @@ class KtorKeystoreEncryptor(
     private val secretEncryptionKey: String,
     secureRandomProvider: SecureRandomProvider
 ) : BaseEncryptor(secureRandomProvider) {
-    override val transformation: String = "$ALGORITHM/CBC/PKCS7Padding"
+    override val transformation: String = "$ALGORITHM/CBC/PKCS5Padding"
 
     override fun secretKey(): Key = SecretKeySpec(hex(secretEncryptionKey), ALGORITHM)
 

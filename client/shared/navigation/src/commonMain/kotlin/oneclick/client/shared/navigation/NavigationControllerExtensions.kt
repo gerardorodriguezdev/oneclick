@@ -5,6 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.navigation.NavHostController
 import oneclick.client.shared.navigation.NavigationController.NavigationEvent.Navigate
+import oneclick.client.shared.navigation.models.routes.AppRoute
 import oneclick.client.shared.navigation.models.routes.base.Route
 
 fun popUpToInclusive(
@@ -16,6 +17,16 @@ fun popUpToInclusive(
         isInclusive = true,
         saveState = saveState,
     )
+
+suspend fun NavigationController.logout() {
+    sendNavigationEvent(
+        Navigate(
+            destinationRoute = AppRoute.Login,
+            launchSingleTop = true,
+            popUpTo = popUpToInclusive(startRoute = AppRoute.Home)
+        )
+    )
+}
 
 @Composable
 fun RegisterNavigationControllerObserver(

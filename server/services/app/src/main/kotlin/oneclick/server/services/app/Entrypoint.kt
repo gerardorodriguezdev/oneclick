@@ -34,7 +34,7 @@ private fun Application.configureModules(dependencies: Dependencies) {
     configureShutdown(dependencies.onShutdown)
     configureRouting(
         usersRepository = dependencies.usersRepository,
-        encryptor = dependencies.encryptor,
+        passwordManager = dependencies.passwordManager,
         jwtProvider = dependencies.jwtProvider,
         uuidProvider = dependencies.uuidProvider,
         homesRepository = dependencies.homesRepository,
