@@ -22,6 +22,8 @@ internal interface CommandsHandler {
         data object Logout : Command
         data object Scan : Command
         data class Connect(val id: Uuid, val password: Password) : Command
+        data class Disconnect(val id: Uuid) : Command
+        data class Remove(val id: Uuid) : Command
     }
 }
 
@@ -38,6 +40,8 @@ internal class DefaultCommandsHandler(
             is Logout -> command.handle()
             is Scan -> command.handle()
             is Connect -> command.handle()
+            is Disconnect -> command.handle()
+            is Remove -> command.handle()
         }
     }
 
@@ -83,5 +87,23 @@ internal class DefaultCommandsHandler(
                 password = password,
             )
             .collect { device -> devicesStore.updateDevice(device) }
+    }
+
+    private suspend fun Disconnect.handle() {
+        val result = devicesController.disconnect(id = id)
+        if (result) {
+            notificationsController.showSuccessNotification("Device disconnected")
+        } else {
+            notificationsController.showErrorNotification("Error disconnecting device")
+        }
+    }
+
+    private suspend fun Remove.handle() {
+        val result = devicesController.remove(id = id)
+        if (result) {
+            notificationsController.showSuccessNotification("Device removed")
+        } else {
+            notificationsController.showErrorNotification("Error removing device")
+        }
     }
 }
