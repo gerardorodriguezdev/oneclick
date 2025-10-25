@@ -56,7 +56,6 @@ internal class DefaultCommandsHandler(
         }
     }
 
-    //TODO: Clear device store on logout
     private suspend fun Logout.handle() {
         val result = authenticationDataSource.logout()
         when (result) {
@@ -67,11 +66,16 @@ internal class DefaultCommandsHandler(
 
     private suspend fun Scan.handle() {
         val devices = devicesController.scan()
-        devices.forEach { device ->
-            notificationsController.showSuccessNotification("Device found with id: ${device.value}")
+        if (devices.isEmpty()) {
+            notificationsController.showErrorNotification("No devices found")
+        } else {
+            devices.forEach { device ->
+                notificationsController.showSuccessNotification("Device found with id: ${device.value}")
+            }
         }
     }
 
+    //TODO: This is kept forever
     private suspend fun Connect.handle() {
         devicesController
             .connect(

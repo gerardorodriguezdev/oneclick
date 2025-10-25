@@ -8,4 +8,12 @@ import oneclick.shared.contracts.homes.models.Device
 internal interface DevicesController {
     suspend fun scan(): List<Uuid>
     fun connect(id: Uuid, password: Password): Flow<Device>
+
+    fun authenticatedDevices(): List<AuthenticatedDevice>
+    fun reconnect(id: Uuid): Flow<Device>
+
+    data class AuthenticatedDevice(
+        val id: Uuid,
+        val isConnected: Boolean,
+    )
 }
