@@ -1,12 +1,12 @@
 package oneclick.client.apps.home.dataSources.base
 
-import oneclick.shared.contracts.homes.models.requests.SyncDeviceRequest
+import oneclick.shared.contracts.homes.models.requests.SyncDevicesRequest
 
 internal interface HomeDataSource {
-    suspend fun syncDevice(request: SyncDeviceRequest): SyncDeviceResult
+    suspend fun syncDevices(request: SyncDevicesRequest): SyncDevicesResult
 
-    sealed interface SyncDeviceResult {
-        data object Success : SyncDeviceResult
-        data object Error : SyncDeviceResult
+    sealed interface SyncDevicesResult {
+        data object Success : SyncDevicesResult
+        data object Error : SyncDevicesResult
     }
 }

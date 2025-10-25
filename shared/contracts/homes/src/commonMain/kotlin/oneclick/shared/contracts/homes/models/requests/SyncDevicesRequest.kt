@@ -4,6 +4,6 @@ import kotlinx.serialization.Serializable
 import oneclick.shared.contracts.homes.models.Device
 
 @Serializable
-data class SyncDeviceRequest(
-    val device: Device,
+data class SyncDevicesRequest(
+    val devices: List<Device>,
 )
