@@ -1,10 +1,9 @@
-package oneclick.client.apps.home.serializers
+package oneclick.client.apps.home.dataSources.serializers
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
-import oneclick.client.apps.home.serializers.LineDeserializer.Entry
 import oneclick.shared.contracts.core.models.NonNegativeInt.Companion.toNonNegativeInt
 import oneclick.shared.contracts.core.models.PositiveIntRange.Companion.positiveIntRange
 import oneclick.shared.contracts.core.models.Uuid.Companion.toUuid
@@ -13,15 +12,22 @@ import oneclick.shared.contracts.homes.models.DeviceName.Companion.toDeviceName
 import oneclick.shared.contracts.homes.models.DeviceType
 import oneclick.shared.contracts.homes.models.DeviceType.Companion.toDeviceType
 
-internal interface ConnectionDeserializer {
-    fun deserialize(stream: Flow<Char>): Flow<Device>
-}
+internal object ConnectionDeserializer {
+    private const val ENTRY_SEPARATOR = ";"
+    private const val ENTRY_KEY_VALUE_SEPARATOR = "="
+    private const val MESSAGE_SEPARATOR = '&'
 
-internal class DefaultConnectionDeserializer(private val lineDeserializer: LineDeserializer) : ConnectionDeserializer {
-    override fun deserialize(stream: Flow<Char>): Flow<Device> =
-        stream
-            .combineCharsIntoStrings()
-            .map { data -> lineDeserializer.deserialize(data) }
+    private const val DEVICE_ID_KEY = "id"
+    private const val TYPE_KEY = "type"
+    private const val DEVICE_NAME_KEY = "name"
+
+    private const val RANGE_START_KEY = "range_start"
+    private const val RANGE_END_KEY = "range_end"
+    private const val LEVEL_KEY = "level"
+
+    fun Flow<Char>.deserialize(): Flow<Device> =
+        combineCharsIntoStrings()
+            .map { data -> data.toEntries() }
             .map { entries -> entries.toDevice() }
             .filterNotNull()
 
@@ -37,6 +43,18 @@ internal class DefaultConnectionDeserializer(private val lineDeserializer: LineD
                 }
             }
         }
+
+    private fun String.toEntries(): Map<String, Entry> {
+        val entriesStrings = split(ENTRY_SEPARATOR)
+
+        val entries = entriesStrings
+            .map { entryString ->
+                val (key, value) = entryString.split(ENTRY_KEY_VALUE_SEPARATOR)
+                Entry(key = key, value = value)
+            }
+
+        return entries.associateBy { entry -> entry.key }
+    }
 
     private fun Map<String, Entry>.toDevice(): Device? {
         val id = get(DEVICE_ID_KEY)?.value?.toUuid() ?: return null
@@ -60,15 +78,8 @@ internal class DefaultConnectionDeserializer(private val lineDeserializer: LineD
         }
     }
 
-    private companion object {
-        const val MESSAGE_SEPARATOR = '&'
-
-        const val DEVICE_ID_KEY = "id"
-        const val TYPE_KEY = "type"
-        const val DEVICE_NAME_KEY = "name"
-
-        const val RANGE_START_KEY = "range_start"
-        const val RANGE_END_KEY = "range_end"
-        const val LEVEL_KEY = "level"
-    }
+    private data class Entry(
+        val key: String,
+        val value: String,
+    )
 }

@@ -12,6 +12,8 @@ kotlin {
     dependencies  {
         implementation(ktorLibs.client.core)
         implementation(libs.kmp.coroutines)
+        implementation(projects.client.shared.network)
+        implementation(projects.client.shared.notifications)
         implementation(projects.shared.contracts.core)
         implementation(projects.shared.contracts.auth)
         implementation(projects.shared.contracts.homes)
