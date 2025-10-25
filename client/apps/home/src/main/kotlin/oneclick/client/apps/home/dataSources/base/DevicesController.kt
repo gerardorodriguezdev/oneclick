@@ -1,20 +1,16 @@
 package oneclick.client.apps.home.dataSources.base
 
-import kotlinx.coroutines.flow.Flow
 import oneclick.shared.contracts.auth.models.Password
 import oneclick.shared.contracts.core.models.Uuid
-import oneclick.shared.contracts.homes.models.Device
 
-//TODO: Handle error connecting + reconnecting
+//TODO: Internally manage connections + update on devices store
 internal interface DevicesController {
     suspend fun scan(): List<Uuid>
-    fun connect(id: Uuid, password: Password): Flow<Device>
-
-    fun authenticatedDevices(): List<AuthenticatedDevice>
-    fun reconnect(id: Uuid): Flow<Device>
-
-    fun disconnect(id: Uuid): Boolean
-    fun remove(id: Uuid): Boolean
+    suspend fun connect(id: Uuid, password: Password): Boolean
+    suspend fun disconnect(id: Uuid): Boolean
+    suspend fun remove(id: Uuid): Boolean
+    suspend fun reconnect(id: Uuid): Boolean
+    suspend fun authenticatedDevices(): List<AuthenticatedDevice>
 
     data class AuthenticatedDevice(
         val id: Uuid,

@@ -3,7 +3,6 @@ package oneclick.client.apps.home
 import oneclick.client.apps.home.CommandsHandler.Command
 import oneclick.client.apps.home.CommandsHandler.Command.*
 import oneclick.client.apps.home.dataSources.base.DevicesController
-import oneclick.client.apps.home.dataSources.base.DevicesStore
 import oneclick.client.shared.network.models.LogoutResult
 import oneclick.client.shared.network.models.RequestLoginResult.Error
 import oneclick.client.shared.network.models.RequestLoginResult.ValidLogin
@@ -29,9 +28,8 @@ internal interface CommandsHandler {
 
 internal class DefaultCommandsHandler(
     private val authenticationDataSource: AuthenticationDataSource,
-    private val notificationsController: NotificationsController,
+    private val notificationsController: NotificationsController, //TODO: Needs to be immediate
     private val devicesController: DevicesController,
-    private val devicesStore: DevicesStore,
 ) : CommandsHandler {
 
     override suspend fun execute(command: Command) {
@@ -79,19 +77,21 @@ internal class DefaultCommandsHandler(
         }
     }
 
-    //TODO: This is kept forever
     private suspend fun Connect.handle() {
-        devicesController
-            .connect(
-                id = id,
-                password = password,
-            )
-            .collect { device -> devicesStore.updateDevice(device) }
+        val connectedResult = devicesController.connect(
+            id = id,
+            password = password,
+        )
+        if (connectedResult) {
+            notificationsController.showSuccessNotification("Device connected")
+        } else {
+            notificationsController.showErrorNotification("Error connecting device")
+        }
     }
 
     private suspend fun Disconnect.handle() {
-        val result = devicesController.disconnect(id = id)
-        if (result) {
+        val disconnectedResult = devicesController.disconnect(id = id)
+        if (disconnectedResult) {
             notificationsController.showSuccessNotification("Device disconnected")
         } else {
             notificationsController.showErrorNotification("Error disconnecting device")
@@ -99,8 +99,8 @@ internal class DefaultCommandsHandler(
     }
 
     private suspend fun Remove.handle() {
-        val result = devicesController.remove(id = id)
-        if (result) {
+        val removedResult = devicesController.remove(id = id)
+        if (removedResult) {
             notificationsController.showSuccessNotification("Device removed")
         } else {
             notificationsController.showErrorNotification("Error removing device")
