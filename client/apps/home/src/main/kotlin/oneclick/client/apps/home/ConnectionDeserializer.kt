@@ -4,6 +4,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.filterNotNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
+import oneclick.client.apps.home.models.Entry
 import oneclick.shared.contracts.core.models.NonNegativeInt.Companion.toNonNegativeInt
 import oneclick.shared.contracts.core.models.PositiveIntRange
 import oneclick.shared.contracts.core.models.Uuid.Companion.toUuid
@@ -66,7 +67,8 @@ internal object ConnectionDeserializer {
             DeviceType.WATER_SENSOR -> {
                 val rangeState = get(RANGE_START_KEY)?.value?.toNonNegativeInt() ?: return null
                 val rangeEnd = get(RANGE_END_KEY)?.value?.toNonNegativeInt() ?: return null
-                val range = PositiveIntRange.Companion.positiveIntRange(start = rangeState, end = rangeEnd) ?: return null
+                val range =
+                    PositiveIntRange.Companion.positiveIntRange(start = rangeState, end = rangeEnd) ?: return null
                 val level = get(LEVEL_KEY)?.value?.toNonNegativeInt() ?: return null
 
                 Device.WaterSensor.waterSensor(
@@ -78,9 +80,4 @@ internal object ConnectionDeserializer {
             }
         }
     }
-
-    private data class Entry(
-        val key: String,
-        val value: String,
-    )
 }
