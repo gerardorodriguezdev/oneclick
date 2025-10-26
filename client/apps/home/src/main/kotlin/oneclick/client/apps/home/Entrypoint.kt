@@ -3,6 +3,7 @@ package oneclick.client.apps.home
 import kotlinx.coroutines.*
 import oneclick.client.apps.home.commands.CommandsHandler
 import oneclick.client.apps.home.commands.CommandsParser
+import oneclick.client.apps.home.commands.CommandsParser.CommandParserResult
 import oneclick.client.apps.home.dataSources.base.DevicesStore
 import oneclick.client.apps.home.dataSources.base.HomeDataSource
 import oneclick.client.shared.network.models.UserLoggedResult
@@ -29,8 +30,11 @@ internal class Entrypoint(
                 while (isActive) {
                     print("> ")
                     val commandString = readlnOrNull()?.trim() ?: continue
-                    val command = CommandsParser.parse(commandString) ?: continue
-                    commandsHandler.execute(command)
+                    val commandResult = CommandsParser.parse(commandString)
+                    when (commandResult) {
+                        is CommandParserResult.Success -> commandsHandler.execute(commandResult.command)
+                        is CommandParserResult.Error -> logger.e(commandResult.message)
+                    }
                 }
             }
 

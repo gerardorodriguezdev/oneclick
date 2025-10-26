@@ -1,6 +1,8 @@
 package oneclick.client.apps.home.commands
 
 import oneclick.client.apps.home.commands.CommandsHandler.Command
+import oneclick.client.apps.home.commands.CommandsParser.CommandParserResult.Error
+import oneclick.client.apps.home.commands.CommandsParser.CommandParserResult.Success
 import oneclick.client.apps.home.models.Entry
 import oneclick.shared.contracts.auth.models.Password.Companion.toPassword
 import oneclick.shared.contracts.auth.models.Username.Companion.toUsername
@@ -21,12 +23,11 @@ internal object CommandsParser {
     private const val ARG_SEPARATOR = "--"
     private const val ARG_VALUE_SEPARATOR = "="
 
-    //TODO: Errors -> string empty, invalid key, invalid args
-    fun parse(string: String): Command? {
+    fun parse(string: String): CommandParserResult {
         val stringWithoutSpaces = string.replace(" ", "")
         val entries = stringWithoutSpaces.split(ARG_SEPARATOR)
 
-        val keyString = entries.firstOrNull() ?: return null
+        val keyString = entries.firstOrNull() ?: return Error("No command key found")
         val argumentsStrings = entries.drop(1)
 
         return toCommand(keyString = keyString, argumentsEntries = argumentsStrings.toArgumentEntries())
@@ -41,33 +42,40 @@ internal object CommandsParser {
         return argumentsEntries.associateBy { entry -> entry.key }
     }
 
-    private fun toCommand(keyString: String, argumentsEntries: Map<String, Entry>): Command? {
+    private fun toCommand(keyString: String, argumentsEntries: Map<String, Entry>): CommandParserResult {
         return when (keyString) {
             LOGIN_KEY -> {
-                val username = argumentsEntries[USERNAME_ARG]?.value?.toUsername() ?: return null
-                val password = argumentsEntries[PASSWORD_ARG]?.value?.toPassword() ?: return null
-                Command.Login(username = username, password = password)
+                val username = argumentsEntries[USERNAME_ARG]?.value?.toUsername() ?: return Error("Invalid username")
+                val password = argumentsEntries[PASSWORD_ARG]?.value?.toPassword() ?: return Error("Invalid password")
+                Command.Login(username = username, password = password).toSuccess()
             }
 
-            LOGOUT_KEY -> Command.Logout
-            SCAN_KEY -> Command.Scan
+            LOGOUT_KEY -> Command.Logout.toSuccess()
+            SCAN_KEY -> Command.Scan.toSuccess()
             CONNECT_KEY -> {
-                val id = argumentsEntries[DEVICE_ID_ARG]?.value?.toUuid() ?: return null
-                val password = argumentsEntries[PASSWORD_ARG]?.value?.toPassword() ?: return null
-                Command.Connect(id = id, password = password)
+                val id = argumentsEntries[DEVICE_ID_ARG]?.value?.toUuid() ?: return Error("Invalid id")
+                val password = argumentsEntries[PASSWORD_ARG]?.value?.toPassword() ?: return Error("Invalid password")
+                Command.Connect(id = id, password = password).toSuccess()
             }
 
             DISCONNECT_KEY -> {
-                val id = argumentsEntries[DEVICE_ID_ARG]?.value?.toUuid() ?: return null
-                Command.Disconnect(id = id)
+                val id = argumentsEntries[DEVICE_ID_ARG]?.value?.toUuid() ?: return Error("Invalid id")
+                Command.Disconnect(id = id).toSuccess()
             }
 
             REMOVE_KEY -> {
-                val id = argumentsEntries[DEVICE_ID_ARG]?.value?.toUuid() ?: return null
-                Command.Remove(id = id)
+                val id = argumentsEntries[DEVICE_ID_ARG]?.value?.toUuid() ?: return Error("Invalid id")
+                Command.Remove(id = id).toSuccess()
             }
 
-            else -> return null
+            else -> Error("No command key found")
         }
+    }
+
+    private fun Command.toSuccess(): Success = Success(this)
+
+    sealed interface CommandParserResult {
+        data class Success(val command: Command) : CommandParserResult
+        data class Error(val message: String) : CommandParserResult
     }
 }
