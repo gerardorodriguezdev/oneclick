@@ -18,14 +18,15 @@ internal class Entrypoint(
     private val homeDataSource: HomeDataSource,
     private val devicesController: DevicesController,
     private val logger: AppLogger,
-    private val commandsParser: CommandsParser,
+    private val commandsParser: CommandsParser, //TODO: Maybe merge with commandsHandler
     private val commandsHandler: CommandsHandler,
 ) {
     fun start() = runBlocking<Unit> {
         withContext(dispatchersProvider.io()) {
             launch {
                 while (isActive) {
-                    val commandString = readlnOrNull() ?: continue
+                    print("> ") //TODO: Maybe delegate
+                    val commandString = readlnOrNull()?.trim() ?: continue
                     val command = commandsParser.parse(commandString) ?: continue
                     commandsHandler.execute(command)
                 }
