@@ -5,7 +5,7 @@ import oneclick.shared.contracts.core.models.Uuid
 import oneclick.shared.contracts.homes.models.Device
 import java.util.concurrent.ConcurrentHashMap
 
-internal class MemoryDeviceStore : DevicesStore {
+internal class MemoryDevicesStore : DevicesStore {
     private val devices = ConcurrentHashMap<Uuid, Device>()
 
     override fun updateDevice(device: Device) {

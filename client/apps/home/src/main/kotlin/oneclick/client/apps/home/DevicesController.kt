@@ -1,4 +1,4 @@
-package oneclick.client.apps.home.dataSources.base
+package oneclick.client.apps.home
 
 import oneclick.shared.contracts.auth.models.Password
 import oneclick.shared.contracts.core.models.Uuid

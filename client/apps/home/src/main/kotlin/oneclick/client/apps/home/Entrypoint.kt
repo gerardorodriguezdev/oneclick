@@ -1,26 +1,55 @@
 package oneclick.client.apps.home
 
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import oneclick.client.apps.home.dataSources.base.DevicesController
+import kotlinx.coroutines.*
+import oneclick.client.apps.home.commands.CommandsHandler
+import oneclick.client.apps.home.commands.CommandsParser
+import oneclick.client.apps.home.DevicesController
 import oneclick.client.apps.home.dataSources.base.DevicesStore
 import oneclick.client.apps.home.dataSources.base.HomeDataSource
 import oneclick.client.shared.network.models.UserLoggedResult
 import oneclick.client.shared.network.platform.AuthenticationDataSource
 import oneclick.client.shared.notifications.NotificationsController
 import oneclick.shared.contracts.homes.models.requests.SyncDevicesRequest
+import oneclick.shared.dispatchers.platform.DispatchersProvider
 
-internal class Loops(
+internal class Entrypoint(
+    private val dispatchersProvider: DispatchersProvider,
     private val authenticationDataSource: AuthenticationDataSource,
     private val devicesStore: DevicesStore,
     private val homeDataSource: HomeDataSource,
     private val devicesController: DevicesController,
     private val notificationsController: NotificationsController,
+    private val commandsParser: CommandsParser,
+    private val commandsHandler: CommandsHandler,
 ) {
-    //TODO: Add interval
-    suspend fun syncLoop() {
+    fun start() = runBlocking<Unit> {
+        withContext(dispatchersProvider.io()) {
+            launch {
+                while (isActive) {
+                    val commandString = readlnOrNull() ?: continue
+                    val command = commandsParser.parse(commandString) ?: continue
+                    commandsHandler.execute(command)
+                }
+            }
+
+            launch {
+                while (isActive) {
+                    sync()
+                    delay(1_000)
+                }
+            }
+
+            launch {
+                while (isActive) {
+                    reconnect()
+                    delay(30_000)
+                }
+            }
+        }
+    }
+
+    //TODO: Allow cancellation
+    suspend fun sync() {
         val isUserLogged = authenticationDataSource.isUserLogged() == UserLoggedResult.Logged
         if (isUserLogged) {
             val devices = devicesStore.getDevices()
@@ -30,8 +59,8 @@ internal class Loops(
         }
     }
 
-    //TODO: Add interval
-    suspend fun reconnectLoop() {
+    //TODO: Allow cancellation
+    suspend fun reconnect() {
         val authenticatedDevices = devicesController.authenticatedDevices()
         if (authenticatedDevices.isNotEmpty()) {
             val notConnectedDevices =

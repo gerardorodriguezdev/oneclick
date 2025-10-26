@@ -1,8 +1,6 @@
-package oneclick.client.apps.home
+package oneclick.client.apps.home.commands
 
-import oneclick.client.apps.home.CommandsHandler.Command
-import oneclick.client.apps.home.CommandsHandler.Command.*
-import oneclick.client.apps.home.dataSources.base.DevicesController
+import oneclick.client.apps.home.DevicesController
 import oneclick.client.shared.network.models.LogoutResult
 import oneclick.client.shared.network.models.RequestLoginResult.Error
 import oneclick.client.shared.network.models.RequestLoginResult.ValidLogin
@@ -32,18 +30,18 @@ internal class DefaultCommandsHandler(
     private val devicesController: DevicesController,
 ) : CommandsHandler {
 
-    override suspend fun execute(command: Command) {
+    override suspend fun execute(command: CommandsHandler.Command) {
         when (command) {
-            is Login -> command.handle()
-            is Logout -> command.handle()
-            is Scan -> command.handle()
-            is Connect -> command.handle()
-            is Disconnect -> command.handle()
-            is Remove -> command.handle()
+            is CommandsHandler.Command.Login -> command.handle()
+            is CommandsHandler.Command.Logout -> command.handle()
+            is CommandsHandler.Command.Scan -> command.handle()
+            is CommandsHandler.Command.Connect -> command.handle()
+            is CommandsHandler.Command.Disconnect -> command.handle()
+            is CommandsHandler.Command.Remove -> command.handle()
         }
     }
 
-    private suspend fun Login.handle() {
+    private suspend fun CommandsHandler.Command.Login.handle() {
         val result = authenticationDataSource
             .login(
                 request = RequestLoginRequest(
@@ -58,7 +56,7 @@ internal class DefaultCommandsHandler(
         }
     }
 
-    private suspend fun Logout.handle() {
+    private suspend fun CommandsHandler.Command.Logout.handle() {
         val result = authenticationDataSource.logout()
         when (result) {
             is LogoutResult.Success -> notificationsController.showSuccessNotification("Logout successful")
@@ -66,7 +64,7 @@ internal class DefaultCommandsHandler(
         }
     }
 
-    private suspend fun Scan.handle() {
+    private suspend fun CommandsHandler.Command.Scan.handle() {
         val devices = devicesController.scan()
         if (devices.isEmpty()) {
             notificationsController.showErrorNotification("No devices found")
@@ -77,7 +75,7 @@ internal class DefaultCommandsHandler(
         }
     }
 
-    private suspend fun Connect.handle() {
+    private suspend fun CommandsHandler.Command.Connect.handle() {
         val connectedResult = devicesController.connect(
             id = id,
             password = password,
@@ -89,7 +87,7 @@ internal class DefaultCommandsHandler(
         }
     }
 
-    private suspend fun Disconnect.handle() {
+    private suspend fun CommandsHandler.Command.Disconnect.handle() {
         val disconnectedResult = devicesController.disconnect(id = id)
         if (disconnectedResult) {
             notificationsController.showSuccessNotification("Device disconnected")
@@ -98,7 +96,7 @@ internal class DefaultCommandsHandler(
         }
     }
 
-    private suspend fun Remove.handle() {
+    private suspend fun CommandsHandler.Command.Remove.handle() {
         val removedResult = devicesController.remove(id = id)
         if (removedResult) {
             notificationsController.showSuccessNotification("Device removed")
