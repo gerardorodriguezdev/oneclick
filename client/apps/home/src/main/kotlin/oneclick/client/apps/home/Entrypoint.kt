@@ -3,14 +3,13 @@ package oneclick.client.apps.home
 import kotlinx.coroutines.*
 import oneclick.client.apps.home.commands.CommandsHandler
 import oneclick.client.apps.home.commands.CommandsParser
-import oneclick.client.apps.home.DevicesController
 import oneclick.client.apps.home.dataSources.base.DevicesStore
 import oneclick.client.apps.home.dataSources.base.HomeDataSource
 import oneclick.client.shared.network.models.UserLoggedResult
 import oneclick.client.shared.network.platform.AuthenticationDataSource
-import oneclick.client.shared.notifications.NotificationsController
 import oneclick.shared.contracts.homes.models.requests.SyncDevicesRequest
 import oneclick.shared.dispatchers.platform.DispatchersProvider
+import oneclick.shared.logging.AppLogger
 
 internal class Entrypoint(
     private val dispatchersProvider: DispatchersProvider,
@@ -18,7 +17,7 @@ internal class Entrypoint(
     private val devicesStore: DevicesStore,
     private val homeDataSource: HomeDataSource,
     private val devicesController: DevicesController,
-    private val notificationsController: NotificationsController,
+    private val logger: AppLogger,
     private val commandsParser: CommandsParser,
     private val commandsHandler: CommandsHandler,
 ) {
@@ -76,9 +75,9 @@ internal class Entrypoint(
                     async {
                         val reconnectedResult = devicesController.reconnect(device.id)
                         if (reconnectedResult) {
-                            notificationsController.showSuccessNotification("Device reconnected")
+                            logger.i("Device reconnected")
                         } else {
-                            notificationsController.showErrorNotification("Error reconnecting device")
+                            logger.e("Error reconnecting device")
                         }
                     }
                 }.awaitAll()

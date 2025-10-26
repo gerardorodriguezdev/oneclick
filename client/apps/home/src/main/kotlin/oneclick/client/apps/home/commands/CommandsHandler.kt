@@ -5,11 +5,11 @@ import oneclick.client.shared.network.models.LogoutResult
 import oneclick.client.shared.network.models.RequestLoginResult.Error
 import oneclick.client.shared.network.models.RequestLoginResult.ValidLogin
 import oneclick.client.shared.network.platform.AuthenticationDataSource
-import oneclick.client.shared.notifications.NotificationsController
 import oneclick.shared.contracts.auth.models.Password
 import oneclick.shared.contracts.auth.models.Username
 import oneclick.shared.contracts.auth.models.requests.RequestLoginRequest
 import oneclick.shared.contracts.core.models.Uuid
+import oneclick.shared.logging.AppLogger
 
 internal interface CommandsHandler {
     suspend fun execute(command: Command)
@@ -26,7 +26,7 @@ internal interface CommandsHandler {
 
 internal class DefaultCommandsHandler(
     private val authenticationDataSource: AuthenticationDataSource,
-    private val notificationsController: NotificationsController, //TODO: Needs to be immediate
+    private val logger: AppLogger,
     private val devicesController: DevicesController,
 ) : CommandsHandler {
 
@@ -51,26 +51,26 @@ internal class DefaultCommandsHandler(
             )
 
         when (result) {
-            is ValidLogin -> notificationsController.showSuccessNotification("Login successful")
-            is Error -> notificationsController.showErrorNotification("Login failed")
+            is ValidLogin -> logger.i("Login successful")
+            is Error -> logger.e("Login failed")
         }
     }
 
     private suspend fun CommandsHandler.Command.Logout.handle() {
         val result = authenticationDataSource.logout()
         when (result) {
-            is LogoutResult.Success -> notificationsController.showSuccessNotification("Logout successful")
-            is LogoutResult.Error -> notificationsController.showErrorNotification("Logout failed")
+            is LogoutResult.Success -> logger.i("Logout successful")
+            is LogoutResult.Error -> logger.e("Logout failed")
         }
     }
 
     private suspend fun CommandsHandler.Command.Scan.handle() {
         val devices = devicesController.scan()
         if (devices.isEmpty()) {
-            notificationsController.showErrorNotification("No devices found")
+            logger.e("No devices found")
         } else {
             devices.forEach { device ->
-                notificationsController.showSuccessNotification("Device found with id: ${device.value}")
+                logger.i("Device found with id: ${device.value}")
             }
         }
     }
@@ -81,27 +81,27 @@ internal class DefaultCommandsHandler(
             password = password,
         )
         if (connectedResult) {
-            notificationsController.showSuccessNotification("Device connected")
+            logger.i("Device connected")
         } else {
-            notificationsController.showErrorNotification("Error connecting device")
+            logger.e("Error connecting device")
         }
     }
 
     private suspend fun CommandsHandler.Command.Disconnect.handle() {
         val disconnectedResult = devicesController.disconnect(id = id)
         if (disconnectedResult) {
-            notificationsController.showSuccessNotification("Device disconnected")
+            logger.i("Device disconnected")
         } else {
-            notificationsController.showErrorNotification("Error disconnecting device")
+            logger.e("Error disconnecting device")
         }
     }
 
     private suspend fun CommandsHandler.Command.Remove.handle() {
         val removedResult = devicesController.remove(id = id)
         if (removedResult) {
-            notificationsController.showSuccessNotification("Device removed")
+            logger.i("Device removed")
         } else {
-            notificationsController.showErrorNotification("Error removing device")
+            logger.e("Error removing device")
         }
     }
 }
