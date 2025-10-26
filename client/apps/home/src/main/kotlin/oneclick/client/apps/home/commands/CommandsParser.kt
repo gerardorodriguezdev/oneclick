@@ -21,6 +21,7 @@ internal object CommandsParser {
     private const val ARG_SEPARATOR = "--"
     private const val ARG_VALUE_SEPARATOR = "="
 
+    //TODO: Errors -> string empty, invalid key, invalid args
     fun parse(string: String): Command? {
         val stringWithoutSpaces = string.replace(" ", "")
         val entries = stringWithoutSpaces.split(ARG_SEPARATOR)

@@ -18,37 +18,40 @@ internal class Entrypoint(
     private val homeDataSource: HomeDataSource,
     private val devicesController: DevicesController,
     private val logger: AppLogger,
-    private val commandsParser: CommandsParser, //TODO: Maybe merge with commandsHandler
     private val commandsHandler: CommandsHandler,
 ) {
+    private var syncJob: Job? = null
+    private var reconnectJob: Job? = null
+
     fun start() = runBlocking<Unit> {
         withContext(dispatchersProvider.io()) {
             launch {
                 while (isActive) {
-                    print("> ") //TODO: Maybe delegate
+                    print("> ")
                     val commandString = readlnOrNull()?.trim() ?: continue
-                    val command = commandsParser.parse(commandString) ?: continue
+                    val command = CommandsParser.parse(commandString) ?: continue
                     commandsHandler.execute(command)
                 }
             }
 
             launch {
                 while (isActive) {
-                    sync()
+                    syncJob?.cancel()
+                    syncJob = launch { sync() }
                     delay(1_000)
                 }
             }
 
             launch {
                 while (isActive) {
-                    reconnect()
+                    reconnectJob?.cancel()
+                    reconnectJob = launch { reconnect() }
                     delay(30_000)
                 }
             }
         }
     }
 
-    //TODO: Allow cancellation
     suspend fun sync() {
         val isUserLogged = authenticationDataSource.isUserLogged() == UserLoggedResult.Logged
         if (isUserLogged) {
@@ -59,7 +62,6 @@ internal class Entrypoint(
         }
     }
 
-    //TODO: Allow cancellation
     suspend fun reconnect() {
         val authenticatedDevices = devicesController.authenticatedDevices()
         if (authenticatedDevices.isNotEmpty()) {

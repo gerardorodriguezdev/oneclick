@@ -13,7 +13,6 @@ import oneclick.shared.contracts.homes.models.DeviceName.Companion.toDeviceName
 import oneclick.shared.contracts.homes.models.DeviceType
 import oneclick.shared.contracts.homes.models.DeviceType.Companion.toDeviceType
 
-//TODO: Move to devices controller
 internal object ConnectionDeserializer {
     private const val ENTRY_SEPARATOR = ";"
     private const val ENTRY_KEY_VALUE_SEPARATOR = "="
