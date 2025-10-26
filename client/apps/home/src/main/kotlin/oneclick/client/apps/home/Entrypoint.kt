@@ -38,7 +38,7 @@ internal class Entrypoint(
                 while (isActive) {
                     syncJob?.cancel()
                     syncJob = launch { sync() }
-                    delay(1_000)
+                    delay(SYNC_INTERVAL)
                 }
             }
 
@@ -46,7 +46,7 @@ internal class Entrypoint(
                 while (isActive) {
                     reconnectJob?.cancel()
                     reconnectJob = launch { reconnect() }
-                    delay(30_000)
+                    delay(RECONNECT_INTERVAL)
                 }
             }
         }
@@ -86,5 +86,10 @@ internal class Entrypoint(
                 }.awaitAll()
             }
         }
+    }
+
+    private companion object {
+        const val SYNC_INTERVAL = 1_000L
+        const val RECONNECT_INTERVAL = 30_000L
     }
 }
