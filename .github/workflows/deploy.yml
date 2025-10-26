@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - production
-      - staging
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.head_ref || github.ref }}
@@ -40,7 +39,6 @@ jobs:
           ./gradlew :server:services:app:publishImage
 
       - name: Setup app files
-        if: env.BRANCH_NAME == 'production'
         run: |
           mkdir -p ./client/apps/user/core/local
           echo "${{ secrets.GOOGLE_SERVICES_BASE64 }}" | base64 -d > ./client/apps/user/core/google-services.json &
@@ -49,16 +47,13 @@ jobs:
           wait
 
       - name: Generate client environment
-        if: env.BRANCH_NAME == 'production'
         run: |
           ./gradlew :client:app:generateEnvironment -Penvironment="production(android[KEYSTORE_PASSWORD=${{ secrets.KEYSTORE_PASSWORD }},KEY_ALIAS=${{ secrets.KEY_ALIAS }},KEY_PASSWORD=${{ secrets.KEY_PASSWORD }},KEYSTORE_PATH=local/production-keystore.jks,IS_DEBUG=false,PROTOCOL=https,HOST=${{ secrets.HOST }}]:native[IS_DEBUG=false,PROTOCOL=https,HOST=${{ secrets.HOST }}])"
 
       - name: Select client environment
-        if: env.BRANCH_NAME == 'production'
         run: |
           ./gradlew :client:app:selectEnvironment -PnewSelectedEnvironment=production
 
       - name: Publish client image
-        if: env.BRANCH_NAME == 'production'
         run: |
           ./gradlew :client:app:assembleRelease appDistributionUploadRelease --serviceCredentialsFile="./client/apps/user/core/service-account-credentials.json" --testers="${{ secrets.TESTER_EMAIL }}"
