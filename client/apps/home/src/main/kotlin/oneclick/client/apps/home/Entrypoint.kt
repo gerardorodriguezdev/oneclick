@@ -28,13 +28,7 @@ internal class Entrypoint(
         withContext(dispatchersProvider.io()) {
             launch {
                 while (isActive) {
-                    print("> ")
-                    val commandString = readlnOrNull()?.trim() ?: continue
-                    val commandResult = CommandsParser.parse(commandString)
-                    when (commandResult) {
-                        is CommandParserResult.Success -> commandsHandler.execute(commandResult.command)
-                        is CommandParserResult.Error -> logger.e(commandResult.message)
-                    }
+                    commands()
                 }
             }
 
@@ -52,6 +46,18 @@ internal class Entrypoint(
                     reconnectJob = launch { reconnect() }
                     delay(RECONNECT_INTERVAL)
                 }
+            }
+        }
+    }
+
+    private suspend fun commands() {
+        print("> ")
+        val commandString = readlnOrNull()?.trim()
+        if (!commandString.isNullOrEmpty()) {
+            val commandResult = CommandsParser.parse(commandString)
+            when (commandResult) {
+                is CommandParserResult.Success -> commandsHandler.execute(commandResult.command)
+                is CommandParserResult.Error -> logger.e(commandResult.message)
             }
         }
     }
