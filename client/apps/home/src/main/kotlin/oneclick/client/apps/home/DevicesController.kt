@@ -2,12 +2,13 @@ package oneclick.client.apps.home
 
 import com.juul.kable.Advertisement
 import com.juul.kable.State
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import oneclick.client.apps.home.dataSources.base.DevicesStore
 import oneclick.client.apps.home.devices.WaterSensor
+import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.logging.AppLogger
 
 internal interface DevicesController {
@@ -17,7 +18,10 @@ internal interface DevicesController {
 internal class BluetoothDevicesController(
     private val appLogger: AppLogger,
     private val devicesStore: DevicesStore,
+    dispatchersProvider: DispatchersProvider,
 ) : DevicesController {
+
+    private val ioScope = CoroutineScope(dispatchersProvider.io())
 
     override suspend fun scan(): Boolean {
         try {
@@ -33,9 +37,8 @@ internal class BluetoothDevicesController(
                 return false
             } else {
                 advertisements.forEach { advertisement ->
-                    val waterSensor = WaterSensor(advertisement)
-
-                    coroutineScope {
+                    ioScope.launch {
+                        val waterSensor = WaterSensor(advertisement)
                         launch {
                             var connectionDelay = STARTING_CONNECTION_DELAY
                             waterSensor.connection.collect { state ->
@@ -51,9 +54,7 @@ internal class BluetoothDevicesController(
                                 }
                             }
                         }
-                    }
 
-                    coroutineScope {
                         launch {
                             waterSensor.state.collect { device ->
                                 devicesStore.updateDevice(device)

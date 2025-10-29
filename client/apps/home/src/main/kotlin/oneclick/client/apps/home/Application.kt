@@ -78,6 +78,7 @@ fun main() {
         devicesController = BluetoothDevicesController(
             appLogger = appLogger,
             devicesStore = devicesStore,
+            dispatchersProvider = dispatchersProvider,
         )
     ).start()
 }
