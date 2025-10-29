@@ -17,8 +17,6 @@ import oneclick.shared.security.DefaultSecureRandomProvider
 import oneclick.shared.security.encryption.FileKeystoreEncryptor
 import java.io.File
 
-//TODO: Edge case when start and device offlline so never connected
-//TODO: Pairing password stuff?
 fun main() {
     runBlocking {
         val environment = Environment()

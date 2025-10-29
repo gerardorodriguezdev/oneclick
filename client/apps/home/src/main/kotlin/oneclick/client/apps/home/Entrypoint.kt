@@ -40,7 +40,14 @@ internal class Entrypoint(
             }
 
             launch {
-                devicesController.scan()
+                var shouldScan = true
+                var scanDelay = STARTING_SCAN_INTERVAL
+
+                while (shouldScan && isActive) {
+                    shouldScan = !devicesController.scan()
+                    delay(scanDelay)
+                    scanDelay *= 2
+                }
             }
         }
     }
@@ -69,5 +76,6 @@ internal class Entrypoint(
 
     private companion object {
         const val SYNC_INTERVAL = 1_000L
+        const val STARTING_SCAN_INTERVAL = 1_000L
     }
 }

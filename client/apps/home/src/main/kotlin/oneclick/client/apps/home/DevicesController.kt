@@ -11,7 +11,7 @@ import oneclick.client.apps.home.devices.WaterSensor
 import oneclick.shared.logging.AppLogger
 
 internal interface DevicesController {
-    suspend fun scan()
+    suspend fun scan(): Boolean
 }
 
 internal class BluetoothDevicesController(
@@ -19,7 +19,7 @@ internal class BluetoothDevicesController(
     private val devicesStore: DevicesStore,
 ) : DevicesController {
 
-    override suspend fun scan() {
+    override suspend fun scan(): Boolean {
         try {
             val advertisements = mutableListOf<Advertisement>()
             withTimeoutOrNull(SCAN_TIMEOUT) {
@@ -30,20 +30,21 @@ internal class BluetoothDevicesController(
 
             if (advertisements.isEmpty()) {
                 appLogger.i("No advertisements found")
+                return false
             } else {
                 advertisements.forEach { advertisement ->
                     val waterSensor = WaterSensor(advertisement)
 
                     coroutineScope {
                         launch {
-                            var scanDelay = STARTING_SCAN_DELAY
+                            var connectionDelay = STARTING_CONNECTION_DELAY
                             waterSensor.connection.collect { state ->
                                 when (state) {
-                                    is State.Connected -> scanDelay = STARTING_SCAN_DELAY
+                                    is State.Connected -> connectionDelay = STARTING_CONNECTION_DELAY
                                     is State.Disconnected -> {
                                         waterSensor.connect()
-                                        scanDelay *= 2
-                                        delay(scanDelay)
+                                        delay(connectionDelay)
+                                        connectionDelay *= 2
                                     }
 
                                     else -> Unit
@@ -53,19 +54,23 @@ internal class BluetoothDevicesController(
                     }
 
                     coroutineScope {
-                        waterSensor.state.collect { device ->
-                            devicesStore.updateDevice(device)
+                        launch {
+                            waterSensor.state.collect { device ->
+                                devicesStore.updateDevice(device)
+                            }
                         }
                     }
                 }
+                return true
             }
         } catch (error: Exception) {
             appLogger.e("Exception '${error.stackTraceToString()}' while scanning devices")
+            return false
         }
     }
 
     private companion object {
         const val SCAN_TIMEOUT = 10_000L
-        const val STARTING_SCAN_DELAY = 1_000L
+        const val STARTING_CONNECTION_DELAY = 1_000L
     }
 }
