@@ -4,6 +4,14 @@
   ],
   "propertyDefinitions": [
     {
+      "name": "KEYSTORE_PATH",
+      "propertyType": "String"
+    },
+    {
+      "name": "KEYSTORE_PASSWORD",
+      "propertyType": "String"
+    },
+    {
       "name": "PROTOCOL",
       "propertyType": "String"
     },

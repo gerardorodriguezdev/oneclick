@@ -3,6 +3,14 @@
     "platformType": "jvm",
     "properties": [
       {
+        "name": "KEYSTORE_PATH",
+        "value": "local/debug-keystore.jks"
+      },
+      {
+        "name": "KEYSTORE_PASSWORD",
+        "value": "Password123"
+      },
+      {
         "name": "PROTOCOL",
         "value": "http"
       },

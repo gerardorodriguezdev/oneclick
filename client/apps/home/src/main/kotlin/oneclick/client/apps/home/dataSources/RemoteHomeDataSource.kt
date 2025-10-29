@@ -28,7 +28,7 @@ internal class RemoteHomeDataSource(
                     else -> SyncDevicesResult.Error
                 }
             } catch (error: Exception) {
-                appLogger.e("Exception caught '${error.stackTraceToString()}' while syncing devices")
+                appLogger.e("Exception '${error.stackTraceToString()}' while syncing devices")
                 SyncDevicesResult.Error
             }
         }
