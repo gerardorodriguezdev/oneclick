@@ -22,7 +22,6 @@ internal class Entrypoint(
     private val commandsHandler: CommandsHandler,
 ) {
     private var syncJob: Job? = null
-    private var reconnectJob: Job? = null
 
     fun start() = runBlocking<Unit> {
         withContext(dispatchersProvider.io()) {
@@ -41,11 +40,7 @@ internal class Entrypoint(
             }
 
             launch {
-                while (isActive) {
-                    reconnectJob?.cancel()
-                    reconnectJob = launch { reconnect() }
-                    delay(RECONNECT_INTERVAL)
-                }
+                devicesController.scan()
             }
         }
     }
@@ -72,34 +67,7 @@ internal class Entrypoint(
         }
     }
 
-    suspend fun reconnect() {
-        val authenticatedDevices = devicesController.authenticatedDevices()
-        if (authenticatedDevices.isNotEmpty()) {
-            val notConnectedDevices =
-                authenticatedDevices.filter { authenticatedDevice -> !authenticatedDevice.isConnected }
-            notConnectedDevices.reconnectAll()
-        }
-    }
-
-    private suspend fun List<DevicesController.AuthenticatedDevice>.reconnectAll() {
-        coroutineScope {
-            launch {
-                map { device ->
-                    async {
-                        val reconnectedResult = devicesController.reconnect(device.id)
-                        if (reconnectedResult) {
-                            logger.i("Device reconnected")
-                        } else {
-                            logger.e("Error reconnecting device")
-                        }
-                    }
-                }.awaitAll()
-            }
-        }
-    }
-
     private companion object {
         const val SYNC_INTERVAL = 1_000L
-        const val RECONNECT_INTERVAL = 30_000L
     }
 }
