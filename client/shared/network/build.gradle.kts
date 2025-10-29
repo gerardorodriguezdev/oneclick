@@ -57,10 +57,5 @@ kotlin {
                 implementation(projects.shared.security)
             }
         }
-
-
-        androidMain {
-            dependsOn(jvmMain.get())
-        }
     }
 }

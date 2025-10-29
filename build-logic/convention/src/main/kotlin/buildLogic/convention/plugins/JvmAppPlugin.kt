@@ -2,6 +2,7 @@ package buildLogic.convention.plugins
 
 import buildLogic.convention.extensions.plugins.JvmAppExtension
 import buildLogic.convention.extensions.toJavaLanguageVersion
+import buildLogic.convention.extensions.toMap
 import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.ChamaleonGradlePlugin
 import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.extensions.ChamaleonExtension
 import org.gradle.api.Plugin
@@ -69,19 +70,6 @@ class JvmAppPlugin : Plugin<Project> {
             }
         }
     }
-
-    private fun ChamaleonExtension?.toMap(): Map<String, String> =
-        if (this == null) {
-            emptyMap()
-        } else {
-            buildMap {
-                selectedEnvironmentOrNull()?.jvmPlatformOrNull?.properties?.forEach { (key, value) ->
-                    value.value?.toString()?.let { valueString ->
-                        put(key, valueString)
-                    }
-                }
-            }
-        }
 
     private companion object Companion {
         const val RUN_TASK_NAME = "run"

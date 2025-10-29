@@ -1,8 +1,11 @@
 package buildLogic.convention.extensions
 
+import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.extensions.ChamaleonExtension
 import org.gradle.api.JavaVersion
 import org.gradle.api.provider.Provider
 import org.gradle.jvm.toolchain.JavaLanguageVersion
+import kotlin.collections.component1
+import kotlin.collections.component2
 
 internal fun Int.toJavaVersion(): JavaVersion =
     when (this) {
@@ -16,3 +19,16 @@ internal fun Provider<Int>.toJavaVersion(): Provider<JavaVersion> =
 
 internal fun Provider<Int>.toJavaLanguageVersion(): Provider<JavaLanguageVersion> =
     map { jvmApi -> JavaLanguageVersion.of(jvmApi) }
+
+internal fun ChamaleonExtension?.toMap(): Map<String, String> =
+    if (this == null) {
+        emptyMap()
+    } else {
+        buildMap {
+            selectedEnvironmentOrNull()?.jvmPlatformOrNull?.properties?.forEach { (key, value) ->
+                value.value?.toString()?.let { valueString ->
+                    put(key, valueString)
+                }
+            }
+        }
+    }

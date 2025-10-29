@@ -1,0 +1,20 @@
+{
+  "supportedPlatforms": [
+    "jvm"
+  ],
+  "propertyDefinitions": [
+    {
+      "name": "PROTOCOL",
+      "propertyType": "String"
+    },
+    {
+      "name": "HOST",
+      "propertyType": "String"
+    },
+    {
+      "name": "PORT",
+      "propertyType": "String",
+      "nullable": true
+    }
+  ]
+}

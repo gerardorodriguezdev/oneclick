@@ -16,6 +16,7 @@ jvm-logback = "1.5.19"
 jvm-hiraki = "7.0.2"
 jvm-postgresql = "42.7.8"
 jvm-redis = "6.7.1.RELEASE"
+kmp-kable = "0.40.0"
 kmp-kotlin-api = "2.2.20"
 kmp-compose = "1.9.0"
 kmp-coroutines = "1.10.2"
@@ -54,6 +55,7 @@ jvm-redis = { module = "io.lettuce:lettuce-core", version.ref = "jvm-redis" }
 jvm-reactive = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-reactive", version.ref = "kmp-coroutines" }
 jvm-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:chamaleon-core", version.ref = "gradle-chamaleon" }
 jvm-postgresql = { module = "org.postgresql:postgresql", version.ref = "jvm-postgresql" }
+kmp-kable = { module = "com.juul.kable:kable-core", version.ref = "kmp-kable" }
 kmp-datastore = { module = "androidx.datastore:datastore-preferences", version.ref = "android-datastore" }
 kmp-coroutines = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kmp-coroutines" }
 kmp-navigation = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "kmp-navigation" }

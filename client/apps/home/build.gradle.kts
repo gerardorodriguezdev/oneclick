@@ -1,6 +1,5 @@
 plugins {
     id("oneclick.jvm.app")
-    alias(libs.plugins.kmp.chamaleon)
 }
 
 jvmApp {
@@ -12,6 +11,7 @@ kotlin {
     dependencies  {
         implementation(ktorLibs.client.core)
         implementation(libs.kmp.coroutines)
+        implementation(libs.kmp.kable)
         implementation(projects.client.shared.network)
         implementation(projects.shared.logging)
         implementation(projects.shared.contracts.core)
@@ -20,5 +20,6 @@ kotlin {
         implementation(projects.shared.dispatchers)
         implementation(projects.shared.logging)
         implementation(projects.shared.network)
+        implementation(projects.shared.security)
     }
 }

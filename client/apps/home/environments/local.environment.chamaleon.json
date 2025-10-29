@@ -1,0 +1,19 @@
+[
+  {
+    "platformType": "jvm",
+    "properties": [
+      {
+        "name": "PROTOCOL",
+        "value": "http"
+      },
+      {
+        "name": "HOST",
+        "value": "localhost"
+      },
+      {
+        "name": "PORT",
+        "value": "8080"
+      }
+    ]
+  }
+]

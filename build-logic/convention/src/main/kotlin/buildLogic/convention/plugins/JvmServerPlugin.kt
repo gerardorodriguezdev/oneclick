@@ -3,6 +3,7 @@ package buildLogic.convention.plugins
 import buildLogic.convention.extensions.plugins.JvmServerExtension
 import buildLogic.convention.extensions.toJavaLanguageVersion
 import buildLogic.convention.extensions.toJavaVersion
+import buildLogic.convention.extensions.toMap
 import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput
 import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput.App
 import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigTask
@@ -174,19 +175,6 @@ class JvmServerPlugin : Plugin<Project> {
             dependsOn(loadImageTask)
         }
     }
-
-    private fun ChamaleonExtension?.toMap(): Map<String, String> =
-        if (this == null) {
-            emptyMap()
-        } else {
-            buildMap {
-                selectedEnvironmentOrNull()?.jvmPlatformOrNull?.properties?.forEach { (key, value) ->
-                    value.value?.toString()?.let { valueString ->
-                        put(key, valueString)
-                    }
-                }
-            }
-        }
 
     private fun Project.externalRegistryProject(
         imageRegistryUrl: Provider<String>,

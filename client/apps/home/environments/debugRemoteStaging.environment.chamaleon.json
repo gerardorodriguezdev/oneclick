@@ -1,0 +1,19 @@
+[
+  {
+    "platformType": "jvm",
+    "properties": [
+      {
+        "name": "PROTOCOL",
+        "value": "https"
+      },
+      {
+        "name": "HOST",
+        "value": "oneclick-staging.up.railway.app"
+      },
+      {
+        "name": "PORT",
+        "value": null
+      }
+    ]
+  }
+]

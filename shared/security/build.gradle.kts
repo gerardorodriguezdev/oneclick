@@ -13,11 +13,3 @@ androidLibrary {
     minSdkVersion = libs.versions.android.api.get().toInt()
     composeEnabled = false
 }
-
-kotlin {
-    sourceSets {
-        androidMain {
-            dependsOn(jvmMain.get())
-        }
-    }
-}
