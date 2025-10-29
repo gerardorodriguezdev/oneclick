@@ -2,6 +2,7 @@ package oneclick.shared.security.encryption
 
 import oneclick.shared.security.SecureRandomProvider
 import oneclick.shared.security.encryption.base.BaseEncryptor
+import java.io.File
 import java.io.FileInputStream
 import java.io.FileOutputStream
 import java.security.Key
@@ -18,7 +19,11 @@ class FileKeystoreEncryptor(
     private val keyStore: KeyStore = KeyStore.getInstance(KeyStore.getDefaultType())
 
     init {
-        keyStore.load(FileInputStream(keyStorePath), keyStorePassword)
+        if (File(keyStorePath).exists()) {
+            keyStore.load(FileInputStream(keyStorePath), keyStorePassword)
+        } else {
+            keyStore.load(null, keyStorePassword)
+        }
     }
 
     override fun secretKey(): Key {

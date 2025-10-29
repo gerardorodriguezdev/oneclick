@@ -18,71 +18,69 @@ import oneclick.shared.security.encryption.FileKeystoreEncryptor
 import java.io.File
 
 fun main() {
-    runBlocking {
-        val environment = Environment()
-        val dispatchersProvider = dispatchersProvider()
-        val appLogger = appLogger()
-        val secureRandomProvider = DefaultSecureRandomProvider()
-        val tokenDataSource = LocalTokenDataSource(
-            preferences = DataStoreEncryptedPreferences(
-                preferencesFileProvider = {
-                    val localDirectory = File("local")
-                    if (!localDirectory.exists()) localDirectory.mkdirs()
+    val environment = Environment()
+    val dispatchersProvider = dispatchersProvider()
+    val appLogger = appLogger()
+    val secureRandomProvider = DefaultSecureRandomProvider()
+    val tokenDataSource = LocalTokenDataSource(
+        preferences = DataStoreEncryptedPreferences(
+            preferencesFileProvider = {
+                val localDirectory = File("local")
+                if (!localDirectory.exists()) localDirectory.mkdirs()
 
-                    val preferencesFile = File(localDirectory, "settings.preferences_pb")
-                    if (!preferencesFile.exists()) preferencesFile.createNewFile()
-                    preferencesFile
-                },
-                appLogger = appLogger,
-                dispatchersProvider = dispatchersProvider,
-                encryptor = FileKeystoreEncryptor(
-                    keyStorePath = environment.keyStorePath,
-                    keyStorePassword = environment.keyStorePassword.toCharArray(),
-                    secureRandomProvider = secureRandomProvider,
-                ),
-            )
-        )
-        val devicesStore = MemoryDevicesStore()
-        val httpClient = nativeHttpClient(
+                val preferencesFile = File(localDirectory, "settings.preferences_pb")
+                if (!preferencesFile.exists()) preferencesFile.createNewFile()
+                preferencesFile
+            },
             appLogger = appLogger,
-            urlProtocol = environment.protocol.urlProtocol(),
-            host = environment.host,
-            port = environment.port,
-            clientType = ClientType.DESKTOP,
-            httpClientEngine = okhttpHttpClientEngine(),
-            tokenDataSource = tokenDataSource,
-            logoutManager = HomeLogoutManager(
-                devicesStore = devicesStore,
-                tokenDataSource = tokenDataSource,
+            dispatchersProvider = dispatchersProvider,
+            encryptor = FileKeystoreEncryptor(
+                keyStorePath = environment.keyStorePath,
+                keyStorePassword = environment.keyStorePassword.toCharArray(),
+                secureRandomProvider = secureRandomProvider,
             ),
         )
-        val authenticationDataSource = RemoteAuthenticationDataSource(
-            dispatchersProvider = dispatchersProvider,
-            httpClient = httpClient,
-            tokenDataSource = tokenDataSource,
-            appLogger = appLogger,
-        )
-        val homeDataSource = RemoteHomeDataSource(
-            httpClient = httpClient,
-            dispatchersProvider = dispatchersProvider,
-            appLogger = appLogger,
-        )
-        Entrypoint(
-            dispatchersProvider = dispatchersProvider,
-            authenticationDataSource = authenticationDataSource,
+    )
+    val devicesStore = MemoryDevicesStore()
+    val httpClient = nativeHttpClient(
+        appLogger = appLogger,
+        urlProtocol = environment.protocol.urlProtocol(),
+        host = environment.host,
+        port = environment.port,
+        clientType = ClientType.DESKTOP,
+        httpClientEngine = okhttpHttpClientEngine(),
+        tokenDataSource = tokenDataSource,
+        logoutManager = HomeLogoutManager(
             devicesStore = devicesStore,
-            homeDataSource = homeDataSource,
+            tokenDataSource = tokenDataSource,
+        ),
+    )
+    val authenticationDataSource = RemoteAuthenticationDataSource(
+        dispatchersProvider = dispatchersProvider,
+        httpClient = httpClient,
+        tokenDataSource = tokenDataSource,
+        appLogger = appLogger,
+    )
+    val homeDataSource = RemoteHomeDataSource(
+        httpClient = httpClient,
+        dispatchersProvider = dispatchersProvider,
+        appLogger = appLogger,
+    )
+    Entrypoint(
+        dispatchersProvider = dispatchersProvider,
+        authenticationDataSource = authenticationDataSource,
+        devicesStore = devicesStore,
+        homeDataSource = homeDataSource,
+        logger = appLogger,
+        commandsHandler = DefaultCommandsHandler(
+            authenticationDataSource = authenticationDataSource,
             logger = appLogger,
-            commandsHandler = DefaultCommandsHandler(
-                authenticationDataSource = authenticationDataSource,
-                logger = appLogger,
-            ),
-            devicesController = BluetoothDevicesController(
-                appLogger = appLogger,
-                devicesStore = devicesStore,
-            )
-        ).start()
-    }
+        ),
+        devicesController = BluetoothDevicesController(
+            appLogger = appLogger,
+            devicesStore = devicesStore,
+        )
+    ).start()
 }
 
 private data class Environment(

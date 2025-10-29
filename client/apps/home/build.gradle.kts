@@ -4,7 +4,7 @@ plugins {
 
 jvmApp {
     jvmTarget = libs.versions.jvm.api.get().toInt()
-    mainClass = "oneclick.client.app.home.ApplicationKt"
+    mainClass = "oneclick.client.apps.home.ApplicationKt"
 }
 
 kotlin {
