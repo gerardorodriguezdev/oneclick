@@ -1,6 +1,5 @@
 package oneclick.client.apps.home
 
-import kotlinx.coroutines.runBlocking
 import oneclick.client.apps.home.commands.DefaultCommandsHandler
 import oneclick.client.apps.home.dataSources.MemoryDevicesStore
 import oneclick.client.apps.home.dataSources.RemoteHomeDataSource

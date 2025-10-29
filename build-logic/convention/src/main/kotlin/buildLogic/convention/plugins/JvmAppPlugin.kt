@@ -62,6 +62,8 @@ class JvmAppPlugin : Plugin<Project> {
     private fun Project.registerTasks(chamaleonExtension: ChamaleonExtension?) {
         val environmentVariablesProvider = provider { chamaleonExtension.toMap() }
         tasks.named<JavaExec>(RUN_TASK_NAME) {
+            standardInput = System.`in`
+
             dependsOn(tasks.named<Jar>(JVM_JAR_TASK_NAME))
             classpath(tasks.named<Jar>(JVM_JAR_TASK_NAME))
 
