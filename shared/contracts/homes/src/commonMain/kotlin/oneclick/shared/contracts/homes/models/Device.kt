@@ -10,7 +10,6 @@ import oneclick.shared.contracts.core.models.Uuid
 @Serializable
 sealed class Device : KeyProvider {
     abstract val id: Uuid
-    abstract val name: DeviceName
 
     override val key: String
         get() = id.value
@@ -19,7 +18,6 @@ sealed class Device : KeyProvider {
     @Serializable
     class WaterSensor private constructor(
         override val id: Uuid,
-        override val name: DeviceName,
         val range: PositiveIntRange,
         val level: NonNegativeInt,
     ) : Device() {
@@ -42,7 +40,6 @@ sealed class Device : KeyProvider {
                 if (isValid(level, range)) {
                     WaterSensor(
                         id = id,
-                        name = name,
                         range = range,
                         level = level,
                     )
@@ -52,13 +49,11 @@ sealed class Device : KeyProvider {
 
             fun unsafe(
                 id: Uuid,
-                name: DeviceName,
                 range: PositiveIntRange,
                 level: NonNegativeInt
             ): WaterSensor =
                 WaterSensor(
                     id = id,
-                    name = name,
                     range = range,
                     level = level,
                 )
