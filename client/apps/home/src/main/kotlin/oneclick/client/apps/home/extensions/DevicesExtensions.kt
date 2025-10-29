@@ -5,11 +5,10 @@ import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid
 
 @OptIn(ExperimentalUuidApi::class)
-internal fun scanner(serviceMostSignificantBits: Long): Scanner<PlatformAdvertisement> = Scanner {
+internal fun scanner(serviceUuid: Uuid): Scanner<PlatformAdvertisement> = Scanner {
     filters {
         match {
-            name = Filter.Name.Prefix("OneClick")
-            services = listOf(Bluetooth.BaseUuid + serviceMostSignificantBits)
+            services = listOf(serviceUuid)
         }
     }
 }
@@ -25,3 +24,13 @@ internal fun serialNumberCharacteristic(serviceUuid: Uuid) = characteristicOf(
     service = serviceUuid,
     characteristic = Uuid.characteristic("serial_number_string")
 )
+
+internal fun ByteArray.toSerialNumber(): String = decodeToString()
+
+internal fun ByteArray.toHumidity(): Int {
+    if (size < 2) throw IllegalArgumentException("Humidity data must be at least 2 bytes")
+    val lowByte = get(0).toInt() and 0xFF
+    val highByte = get(1).toInt() and 0xFF
+    val value = lowByte or (highByte shl 8)
+    return value / 100
+}

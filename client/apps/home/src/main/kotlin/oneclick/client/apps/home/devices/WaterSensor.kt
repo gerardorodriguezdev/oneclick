@@ -6,9 +6,7 @@ import com.juul.kable.Peripheral
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import oneclick.client.apps.home.devices.base.BaseUuid
-import oneclick.client.apps.home.extensions.humidityCharacteristic
-import oneclick.client.apps.home.extensions.scanner
-import oneclick.client.apps.home.extensions.serialNumberCharacteristic
+import oneclick.client.apps.home.extensions.*
 import oneclick.shared.contracts.core.models.NonNegativeInt
 import oneclick.shared.contracts.core.models.PositiveIntRange
 import oneclick.shared.contracts.core.models.Uuid
@@ -39,14 +37,19 @@ internal class WaterSensor(advertisement: Advertisement) {
             val scope = peripheral.connect()
             scope.launch {
                 peripheral.observe(humidityCharacteristic)
-                    .map { byteArray -> byteArray.first().toInt() }
+                    .map { byteArray -> byteArray.toHumidity() }
                     .collect { humidity -> this@WaterSensor.humidity.value = humidity }
             }
 
             scope.launch {
                 val serialNumberByteArray = peripheral.read(serialNumberCharacteristic)
-                val serialNumberString = serialNumberByteArray.decodeToString()
+                val humidityByteArray = peripheral.read(humidityCharacteristic)
+
+                val serialNumberString = serialNumberByteArray.toSerialNumber()
+                val humidityInt = humidityByteArray.toHumidity()
+
                 serialNumber.value = Uuid.unsafe(serialNumberString)
+                humidity.value = humidityInt
             }
         } catch (_: Exception) {
             peripheral.disconnect()
@@ -64,7 +67,7 @@ internal class WaterSensor(advertisement: Advertisement) {
         private val humidityCharacteristic = humidityCharacteristic(serviceUuid)
         private val serialNumberCharacteristic = serialNumberCharacteristic(serviceUuid)
 
-        val scanner = scanner(WATER_SENSOR_MOST_SIGNIFICANT_BITS)
+        val scanner = scanner(serviceUuid)
 
         private val range = PositiveIntRange.unsafe(
             start = NonNegativeInt.zero,
