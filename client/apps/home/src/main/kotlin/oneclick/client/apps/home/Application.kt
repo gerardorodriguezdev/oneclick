@@ -83,6 +83,7 @@ fun main() {
 }
 
 private data class Environment(
+    val homeId: String = System.getenv("HOME_ID"),
     val keyStorePath: String = System.getenv("KEYSTORE_PATH"),
     val keyStorePassword: String = System.getenv("KEYSTORE_PASSWORD"),
     val protocol: String = System.getenv("PROTOCOL"),

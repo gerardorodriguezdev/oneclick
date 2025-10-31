@@ -4,6 +4,10 @@
   ],
   "propertyDefinitions": [
     {
+      "name": "HOME_ID",
+      "propertyType": "String"
+    },
+    {
       "name": "KEYSTORE_PATH",
       "propertyType": "String"
     },

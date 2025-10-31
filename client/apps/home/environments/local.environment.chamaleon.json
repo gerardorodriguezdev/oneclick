@@ -3,6 +3,10 @@
     "platformType": "jvm",
     "properties": [
       {
+        "name": "HOME_ID",
+        "value": "1837a1eb-7de1-4423-bd5d-968821f41a01"
+      },
+      {
         "name": "KEYSTORE_PATH",
         "value": "local/debug-keystore.jks"
       },
