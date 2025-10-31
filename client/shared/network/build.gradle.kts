@@ -47,15 +47,23 @@ kotlin {
             }
         }
 
-        jvmMain {
+        val jvmAndroidMain by sourceSets.creating {
+            dependsOn(commonMain.get())
             dependsOn(native)
-
             dependencies {
                 implementation(ktorLibs.client.okhttp)
                 implementation(libs.kmp.datastore)
                 implementation(libs.kmp.datastore)
                 implementation(projects.shared.security)
             }
+        }
+
+        jvmMain {
+            dependsOn(jvmAndroidMain)
+        }
+
+        androidMain {
+            dependsOn(jvmAndroidMain)
         }
     }
 }

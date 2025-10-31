@@ -48,7 +48,6 @@ private fun Device.toUiDevice(): UiDevice =
     when (this) {
         is Device.WaterSensor -> UiWaterSensor(
             id = id.value,
-            name = name.value,
             level = level.toString(),
         )
     }

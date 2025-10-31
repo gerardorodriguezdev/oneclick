@@ -117,7 +117,6 @@ private fun DeviceCard(device: UiDevice) {
             Body(
                 text = stringResource(
                     Res.string.homesListScreen_deviceName_room,
-                    device.name
                 )
             )
 
@@ -194,11 +193,9 @@ internal data class HomesListScreenState(
         ) {
             sealed interface UiDevice {
                 val id: String
-                val name: String
 
                 data class UiWaterSensor(
                     override val id: String,
-                    override val name: String,
                     val level: String,
                 ) : UiDevice
             }

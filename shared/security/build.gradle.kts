@@ -13,3 +13,19 @@ androidLibrary {
     minSdkVersion = libs.versions.android.api.get().toInt()
     composeEnabled = false
 }
+
+kotlin {
+    sourceSets {
+        val jvmAndroidMain by sourceSets.creating {
+            dependsOn(commonMain.get())
+        }
+
+        val jvmMain by getting {
+            dependsOn(jvmAndroidMain)
+        }
+
+        val androidMain by getting {
+            dependsOn(jvmAndroidMain)
+        }
+    }
+}
