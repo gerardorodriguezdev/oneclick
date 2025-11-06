@@ -17,7 +17,7 @@ class JwtId private constructor(val value: String) {
 
         private fun isValid(value: String): Boolean = REGEX.matches(value)
 
-        fun String.toUserJwtId(): JwtId? = if (isValid(this)) JwtId(this) else null
+        fun String.toJwtId(): JwtId? = if (isValid(this)) JwtId(this) else null
 
         fun unsafe(value: String): JwtId = JwtId(value)
     }

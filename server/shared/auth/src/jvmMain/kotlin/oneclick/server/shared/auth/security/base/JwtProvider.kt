@@ -8,6 +8,7 @@ import oneclick.server.shared.auth.models.JwtId
 import oneclick.server.shared.auth.security.UuidProvider
 import oneclick.shared.contracts.auth.models.Jwt
 import oneclick.shared.contracts.core.models.Uuid
+import oneclick.shared.contracts.core.models.Uuid.Companion.toUuid
 import oneclick.shared.security.encryption.base.Encryptor
 import oneclick.shared.timeProvider.TimeProvider
 import java.util.*
@@ -56,5 +57,11 @@ abstract class BaseEncryptedJwtProvider(
         val encryptedId = encryptor.encrypt(id.value).getOrThrow()
         val encodedIdString = Base64.getEncoder().encodeToString(encryptedId)
         return JwtId.unsafe(encodedIdString)
+    }
+
+    fun id(jwtId: JwtId): Uuid? {
+        val decodedUserIdString = Base64.getDecoder().decode(jwtId.value)
+        val decryptedUserIdString = encryptor.decrypt(decodedUserIdString).getOrNull() ?: return null
+        return decryptedUserIdString.toUuid()
     }
 }

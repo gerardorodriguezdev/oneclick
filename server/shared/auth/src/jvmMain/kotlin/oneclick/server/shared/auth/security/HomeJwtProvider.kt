@@ -40,8 +40,8 @@ class HomeJwtProvider(
         )
 
     companion object {
-        private const val USER_ID_CLAIM = "userId"
-        private const val HOME_ID_CLAIM = "homeId"
+        const val USER_ID_CLAIM = "userId"
+        const val HOME_ID_CLAIM = "homeId"
         const val JWT_EXPIRATION_TIME = 1000 * 60 * 60 * 24 * 30L
     }
 }

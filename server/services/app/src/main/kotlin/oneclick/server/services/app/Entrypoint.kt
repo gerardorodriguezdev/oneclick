@@ -23,6 +23,8 @@ private fun Application.configureModules(dependencies: Dependencies) {
     configureAuthentication(
         logger = dependencies.logger,
         invalidJwtDataSource = dependencies.invalidJwtDataSource,
+        userJwtProvider = dependencies.userJwtProvider,
+        homeJwtProvider = dependencies.homeJwtProvider,
     )
     configureStatusPages(dependencies.logger)
     configureRequestValidation()
