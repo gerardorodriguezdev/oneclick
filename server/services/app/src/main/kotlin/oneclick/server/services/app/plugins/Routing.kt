@@ -31,7 +31,7 @@ internal fun Application.configureRouting(
             uuidProvider = uuidProvider,
         )
         userHomesEndpoint(homesRepository = homesRepository)
-        syncDevicesEndpoint(homesRepository = homesRepository)
+        homeSyncDevicesEndpoint(homesRepository = homesRepository)
         appEndpoint()
     }
 }
