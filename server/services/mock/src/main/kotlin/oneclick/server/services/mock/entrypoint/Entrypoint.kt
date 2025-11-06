@@ -11,11 +11,11 @@ import io.ktor.server.routing.*
 import oneclick.server.services.mock.utils.mockHomes
 import oneclick.server.services.mock.utils.mockJwt
 import oneclick.server.shared.core.clientType
-import oneclick.shared.contracts.auth.models.requests.RequestLoginRequest
+import oneclick.shared.contracts.auth.models.requests.UserRequestLoginRequest
+import oneclick.shared.contracts.auth.models.responses.IsLoggedResponse
 import oneclick.shared.contracts.auth.models.responses.RequestLoginResponse
-import oneclick.shared.contracts.auth.models.responses.UserLoggedResponse
-import oneclick.shared.contracts.core.models.NonNegativeInt
 import oneclick.shared.contracts.core.models.ClientType
+import oneclick.shared.contracts.core.models.NonNegativeInt
 import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import oneclick.shared.contracts.homes.models.responses.HomesResponse
 
@@ -37,18 +37,19 @@ private fun Application.configureContentNegotiation() {
 
 private fun Application.configureRouting() {
     routing {
-        get(ClientEndpoint.IS_USER_LOGGED.route) {
-            call.respond<UserLoggedResponse>(UserLoggedResponse.Logged)
+        get(ClientEndpoint.IS_LOGGED.route) {
+            call.respond<IsLoggedResponse>(IsLoggedResponse.Logged)
         }
 
-        post(ClientEndpoint.REQUEST_LOGIN.route) { _: RequestLoginRequest ->
+        post(ClientEndpoint.USER_REQUEST_LOGIN.route) { _: UserRequestLoginRequest ->
             when (call.request.clientType) {
                 ClientType.MOBILE -> call.respond(RequestLoginResponse(jwt = mockJwt()))
                 ClientType.BROWSER -> call.respond(HttpStatusCode.OK)
+                else -> call.respond(HttpStatusCode.BadRequest)
             }
         }
 
-        post(ClientEndpoint.HOMES.route) {
+        post(ClientEndpoint.USER_HOMES.route) {
             call.respond(
                 HomesResponse(
                     data = HomesResponse.Data(

@@ -19,9 +19,8 @@ internal fun server(dependencies: Dependencies): EmbeddedServer<NettyApplication
 private fun Application.configureModules(dependencies: Dependencies) {
     configureCallLogging(logger = dependencies.logger, timeProvider = dependencies.timeProvider)
     configureSerialization()
-    configureSessions(dependencies.jwtProvider)
+    configureSessions()
     configureAuthentication(
-        jwtProvider = dependencies.jwtProvider,
         logger = dependencies.logger,
         invalidJwtDataSource = dependencies.invalidJwtDataSource,
     )
@@ -35,9 +34,10 @@ private fun Application.configureModules(dependencies: Dependencies) {
     configureRouting(
         usersRepository = dependencies.usersRepository,
         passwordManager = dependencies.passwordManager,
-        jwtProvider = dependencies.jwtProvider,
         uuidProvider = dependencies.uuidProvider,
         homesRepository = dependencies.homesRepository,
         invalidJwtDataSource = dependencies.invalidJwtDataSource,
+        userJwtProvider = dependencies.userJwtProvider,
+        homeJwtProvider = dependencies.homeJwtProvider,
     )
 }
