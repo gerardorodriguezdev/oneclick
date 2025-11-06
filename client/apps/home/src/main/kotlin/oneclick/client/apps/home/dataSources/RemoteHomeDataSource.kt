@@ -19,7 +19,7 @@ internal class RemoteHomeDataSource(
     override suspend fun syncDevices(request: SyncDevicesRequest): SyncDevicesResult =
         withContext(dispatchersProvider.io()) {
             try {
-                val response = httpClient.post(ClientEndpoint.SYNC_DEVICES.route) {
+                val response = httpClient.post(ClientEndpoint.HOME_SYNC_DEVICES.route) {
                     setBody(request)
                 }
 

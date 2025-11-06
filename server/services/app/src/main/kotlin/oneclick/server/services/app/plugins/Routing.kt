@@ -6,29 +6,31 @@ import oneclick.server.services.app.dataSources.base.InvalidJwtDataSource
 import oneclick.server.services.app.endpoints.*
 import oneclick.server.services.app.repositories.HomesRepository
 import oneclick.server.services.app.repositories.UsersRepository
-import oneclick.server.shared.auth.security.JwtProvider
+import oneclick.server.shared.auth.security.HomeJwtProvider
 import oneclick.server.shared.auth.security.PasswordManager
+import oneclick.server.shared.auth.security.UserJwtProvider
 import oneclick.server.shared.auth.security.UuidProvider
 
 internal fun Application.configureRouting(
     usersRepository: UsersRepository,
     passwordManager: PasswordManager,
-    jwtProvider: JwtProvider,
+    userJwtProvider: UserJwtProvider,
+    homeJwtProvider: HomeJwtProvider,
     uuidProvider: UuidProvider,
     homesRepository: HomesRepository,
     invalidJwtDataSource: InvalidJwtDataSource,
 ) {
     routing {
         healthzEndpoint()
-        isUserLoggedEndpoint()
+        isLoggedEndpoint()
         logoutEndpoint(invalidJwtDataSource = invalidJwtDataSource)
-        requestLoginEndpoint(
+        userRequestLoginEndpoint(
             usersRepository = usersRepository,
             passwordManager = passwordManager,
-            jwtProvider = jwtProvider,
+            userJwtProvider = userJwtProvider,
             uuidProvider = uuidProvider,
         )
-        homesListEndpoint(homesRepository = homesRepository)
+        userHomesEndpoint(homesRepository = homesRepository)
         syncDevicesEndpoint(homesRepository = homesRepository)
         appEndpoint()
     }

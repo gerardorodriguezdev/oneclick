@@ -7,28 +7,28 @@ import io.ktor.server.sessions.*
 import oneclick.server.services.app.dataSources.base.UsersDataSource
 import oneclick.server.services.app.dataSources.models.User
 import oneclick.server.services.app.repositories.UsersRepository
-import oneclick.server.shared.auth.security.JwtProvider
 import oneclick.server.shared.auth.security.PasswordManager
+import oneclick.server.shared.auth.security.UserJwtProvider
 import oneclick.server.shared.auth.security.UuidProvider
 import oneclick.server.shared.core.clientType
 import oneclick.shared.contracts.auth.models.Jwt
 import oneclick.shared.contracts.auth.models.Password
 import oneclick.shared.contracts.auth.models.Username
-import oneclick.shared.contracts.auth.models.requests.RequestLoginRequest
+import oneclick.shared.contracts.auth.models.requests.UserRequestLoginRequest
 import oneclick.shared.contracts.auth.models.responses.RequestLoginResponse
 import oneclick.shared.contracts.core.models.ClientType
-import oneclick.shared.contracts.core.models.Uuid
 import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 
-internal fun Routing.requestLoginEndpoint(
+internal fun Routing.userRequestLoginEndpoint(
     usersRepository: UsersRepository,
     passwordManager: PasswordManager,
-    jwtProvider: JwtProvider,
     uuidProvider: UuidProvider,
+    userJwtProvider: UserJwtProvider,
 ) {
-    post(ClientEndpoint.REQUEST_LOGIN.route) { requestLoginRequest: RequestLoginRequest ->
-        val username = requestLoginRequest.username
-        val password = requestLoginRequest.password
+    post(ClientEndpoint.USER_REQUEST_LOGIN.route) { userRequestLoginRequest: UserRequestLoginRequest ->
+        val username = userRequestLoginRequest.username
+        val password = userRequestLoginRequest.password
+        val clientType = call.request.clientType
         val user = usersRepository.user(UsersDataSource.Findable.ByUsername(username))
 
         when {
@@ -36,9 +36,10 @@ internal fun Routing.requestLoginEndpoint(
                 username = username,
                 password = password,
                 passwordManager = passwordManager,
-                jwtProvider = jwtProvider,
                 uuidProvider = uuidProvider,
+                userJwtProvider = userJwtProvider,
                 usersRepository = usersRepository,
+                clientType = clientType,
             )
 
             !passwordManager.verifyPassword(
@@ -46,10 +47,7 @@ internal fun Routing.requestLoginEndpoint(
                 hashedPassword = user.hashedPassword
             ) -> handleError()
 
-            else -> respondJwt(
-                userId = user.userId,
-                jwtProvider = jwtProvider,
-            )
+            else -> respondJwt(jwt = userJwtProvider.jwt(user.userId), clientType = clientType)
         }
     }
 }
@@ -57,8 +55,9 @@ internal fun Routing.requestLoginEndpoint(
 private suspend fun RoutingContext.registerUser(
     username: Username,
     password: Password,
+    clientType: ClientType,
     passwordManager: PasswordManager,
-    jwtProvider: JwtProvider,
+    userJwtProvider: UserJwtProvider,
     uuidProvider: UuidProvider,
     usersRepository: UsersRepository,
 ) {
@@ -68,23 +67,12 @@ private suspend fun RoutingContext.registerUser(
         hashedPassword = passwordManager.hashPassword(password),
     )
     usersRepository.saveUser(newUser)
-
-    respondJwt(
-        userId = newUser.userId,
-        jwtProvider = jwtProvider,
-    )
+    val jwt = userJwtProvider.jwt(newUser.userId)
+    respondJwt(jwt = jwt, clientType = clientType)
 }
 
-private suspend fun RoutingContext.respondJwt(
-    userId: Uuid,
-    jwtProvider: JwtProvider,
-) {
-    val jwt = jwtProvider.jwt(userId)
-    respondJwt(jwt)
-}
-
-private suspend fun RoutingContext.respondJwt(jwt: Jwt) {
-    when (call.request.clientType) {
+private suspend fun RoutingContext.respondJwt(jwt: Jwt, clientType: ClientType) {
+    when (clientType) {
         ClientType.MOBILE -> {
             call.respond(
                 RequestLoginResponse(jwt = jwt)
@@ -96,11 +84,7 @@ private suspend fun RoutingContext.respondJwt(jwt: Jwt) {
             call.respond(HttpStatusCode.OK)
         }
 
-        ClientType.DESKTOP -> {
-            call.respond(
-                RequestLoginResponse(jwt = jwt)
-            )
-        }
+        else -> handleError()
     }
 }
 

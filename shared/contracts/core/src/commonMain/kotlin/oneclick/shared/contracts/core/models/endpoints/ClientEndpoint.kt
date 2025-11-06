@@ -1,9 +1,12 @@
 package oneclick.shared.contracts.core.models.endpoints
 
 enum class ClientEndpoint(val route: String) {
-    IS_USER_LOGGED("/api/is-user-logged"),
-    REQUEST_LOGIN("/api/request-login"),
-    HOMES("/api/homes-list"),
+    USER_REQUEST_LOGIN("/api/user/request-login"),
+    USER_HOMES("/api/user/homes"),
+
+    HOME_REQUEST_LOGIN("/api/home/request-login"),
+    HOME_SYNC_DEVICES("/api/home/sync-devices"),
+
+    IS_LOGGED("/api/is-logged"),
     LOGOUT("/api/logout"),
-    SYNC_DEVICES("/api/sync-devices"),
 }

@@ -13,9 +13,9 @@ import oneclick.shared.contracts.homes.models.requests.HomesRequest
 import oneclick.shared.contracts.homes.models.responses.HomesResponse
 import oneclick.shared.contracts.homes.models.responses.HomesResponse.Data
 
-internal fun Routing.homesListEndpoint(homesRepository: HomesRepository) {
+internal fun Routing.userHomesEndpoint(homesRepository: HomesRepository) {
     userAuthentication {
-        post(ClientEndpoint.HOMES.route) { homesRequest: HomesRequest ->
+        post(ClientEndpoint.USER_HOMES.route) { homesRequest: HomesRequest ->
             val userId = requireUserJwtCredentials().userId
             handleUserAvailable(
                 userId = userId,
