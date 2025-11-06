@@ -3,11 +3,11 @@ package oneclick.shared.contracts.auth.models.responses
 import kotlinx.serialization.Serializable
 
 @Serializable
-sealed interface UserLoggedResponse {
+sealed interface IsLoggedResponse {
 
     @Serializable
-    data object Logged : UserLoggedResponse
+    data object Logged : IsLoggedResponse
 
     @Serializable
-    data object NotLogged : UserLoggedResponse
+    data object NotLogged : IsLoggedResponse
 }

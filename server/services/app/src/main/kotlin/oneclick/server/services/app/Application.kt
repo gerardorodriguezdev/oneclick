@@ -33,10 +33,17 @@ fun main() {
     val logger = KtorSimpleLogger("oneclick.defaultlogger")
     val dispatchersProvider = dispatchersProvider()
     val uuidProvider = DefaultUuidProvider()
-    val jwtProvider = EncryptedJwtProvider(
-        jwtRealm = "Oneclick api",
-        jwtAudience = environment.jwtAudience,
-        jwtIssuer = environment.baseUrl,
+    val userJwtProvider = UserJwtProvider(
+        audience = environment.jwtAudience,
+        issuer = environment.baseUrl,
+        secretSignKey = environment.secretSignKey,
+        timeProvider = timeProvider,
+        encryptor = encryptor,
+        uuidProvider = uuidProvider,
+    )
+    val homeJwtProvider = HomeJwtProvider(
+        audience = environment.jwtAudience,
+        issuer = environment.baseUrl,
         secretSignKey = environment.secretSignKey,
         timeProvider = timeProvider,
         encryptor = encryptor,
@@ -45,7 +52,6 @@ fun main() {
     val repositories = if (environment.useMemoryDataSources) {
         memoryRepositories(
             timeProvider = timeProvider,
-            jwtProvider = jwtProvider
         )
     } else {
         databaseRepositories(
@@ -55,7 +61,6 @@ fun main() {
             redisUrl = environment.redisUrl,
             logger = logger,
             dispatchersProvider = dispatchersProvider,
-            jwtProvider = jwtProvider,
         )
     }
     val dependencies = Dependencies(
@@ -65,7 +70,8 @@ fun main() {
         passwordManager = passwordManager,
         timeProvider = timeProvider,
         logger = logger,
-        jwtProvider = jwtProvider,
+        userJwtProvider = userJwtProvider,
+        homeJwtProvider = homeJwtProvider,
         onShutdown = repositories.onShutdown,
         usersRepository = repositories.usersRepository,
         homesRepository = repositories.homesRepository,
@@ -76,10 +82,7 @@ fun main() {
     server(dependencies = dependencies).start(wait = true)
 }
 
-private fun memoryRepositories(
-    timeProvider: TimeProvider,
-    jwtProvider: JwtProvider,
-): Repositories {
+private fun memoryRepositories(timeProvider: TimeProvider): Repositories {
     val memoryUsersDataSource = MemoryUsersDataSource()
     val usersRepository = DefaultUsersRepository(
         diskUsersDataSource = memoryUsersDataSource,
@@ -93,7 +96,6 @@ private fun memoryRepositories(
     )
 
     val memoryInvalidJwtDataSource = MemoryInvalidJwtDataSource(
-        jwtExpirationTime = jwtProvider.jwtExpirationTimeInMillis,
         timeProvider = timeProvider,
     )
 
@@ -113,7 +115,6 @@ private fun databaseRepositories(
     redisUrl: String,
     logger: Logger,
     dispatchersProvider: DispatchersProvider,
-    jwtProvider: JwtProvider,
 ): Repositories {
     val databaseDriver = databaseDriver(
         jdbcUrl = jdbcUrl,
@@ -152,7 +153,6 @@ private fun databaseRepositories(
     val invalidJwtDataSource = RedisInvalidJwtDataSource(
         syncCommands = redisConnection.coroutines(),
         dispatchersProvider = dispatchersProvider,
-        jwtExpirationTime = jwtProvider.jwtExpirationTimeInMillis,
     )
 
     return Repositories(

@@ -2,14 +2,15 @@ package oneclick.server.services.app.plugins
 
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
-import oneclick.server.shared.auth.security.JwtProvider
+import oneclick.server.services.app.plugins.authentication.AuthenticationType
+import oneclick.server.shared.auth.security.UserJwtProvider
 import oneclick.shared.contracts.auth.models.Jwt
 
-internal fun Application.configureSessions(jwtProvider: JwtProvider) {
+internal fun Application.configureSessions() {
     install(Sessions) {
-        cookie<Jwt>(jwtProvider.jwtSessionName) {
+        cookie<Jwt>(AuthenticationType.USER_SESSION.value) {
             cookie.path = "/"
-            cookie.maxAgeInSeconds = jwtProvider.jwtExpirationTimeInMillis
+            cookie.maxAgeInSeconds = UserJwtProvider.JWT_EXPIRATION_TIME
             cookie.secure = true
             cookie.httpOnly = true
         }

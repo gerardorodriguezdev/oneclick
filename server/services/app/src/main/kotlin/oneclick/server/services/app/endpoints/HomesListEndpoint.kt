@@ -3,8 +3,8 @@ package oneclick.server.services.app.endpoints
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import oneclick.server.services.app.dataSources.models.HomesEntry
-import oneclick.server.services.app.plugins.authentication.defaultAuthentication
-import oneclick.server.services.app.plugins.authentication.requireJwtCredentials
+import oneclick.server.services.app.plugins.authentication.requireUserJwtCredentials
+import oneclick.server.services.app.plugins.authentication.userAuthentication
 import oneclick.server.services.app.repositories.HomesRepository
 import oneclick.shared.contracts.core.models.PaginationResult
 import oneclick.shared.contracts.core.models.Uuid
@@ -14,9 +14,9 @@ import oneclick.shared.contracts.homes.models.responses.HomesResponse
 import oneclick.shared.contracts.homes.models.responses.HomesResponse.Data
 
 internal fun Routing.homesListEndpoint(homesRepository: HomesRepository) {
-    defaultAuthentication {
+    userAuthentication {
         post(ClientEndpoint.HOMES.route) { homesRequest: HomesRequest ->
-            val userId = requireJwtCredentials().userId
+            val userId = requireUserJwtCredentials().userId
             handleUserAvailable(
                 userId = userId,
                 homesRepository = homesRepository,
