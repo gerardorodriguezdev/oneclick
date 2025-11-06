@@ -8,8 +8,8 @@ import kotlinx.coroutines.withContext
 import oneclick.client.shared.network.models.LogoutResult
 import oneclick.client.shared.network.models.RequestLoginResult
 import oneclick.client.shared.network.models.UserLoggedResult
-import oneclick.shared.contracts.auth.models.requests.RequestLoginRequest
-import oneclick.shared.contracts.auth.models.responses.UserLoggedResponse
+import oneclick.shared.contracts.auth.models.requests.LoginRequest
+import oneclick.shared.contracts.auth.models.responses.IsLoggedResponse
 import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.logging.AppLogger
@@ -23,7 +23,7 @@ class WasmRemoteAuthenticationDataSource(
     override suspend fun isUserLogged(): UserLoggedResult =
         withContext(dispatchersProvider.io()) {
             try {
-                val response: UserLoggedResponse = httpClient.get(ClientEndpoint.IS_USER_LOGGED.route).body()
+                val response: IsLoggedResponse = httpClient.get(ClientEndpoint.IS_LOGGED.route).body()
                 response.toUserLoggedResult()
             } catch (error: Exception) {
                 appLogger.e("Exception '${error.stackTraceToString()}' while checking if user is logged")
@@ -31,16 +31,16 @@ class WasmRemoteAuthenticationDataSource(
             }
         }
 
-    private fun UserLoggedResponse.toUserLoggedResult(): UserLoggedResult =
+    private fun IsLoggedResponse.toUserLoggedResult(): UserLoggedResult =
         when (this) {
-            is UserLoggedResponse.Logged -> UserLoggedResult.Logged
-            is UserLoggedResponse.NotLogged -> UserLoggedResult.NotLogged
+            is IsLoggedResponse.Logged -> UserLoggedResult.Logged
+            is IsLoggedResponse.NotLogged -> UserLoggedResult.NotLogged
         }
 
-    override suspend fun login(request: RequestLoginRequest): RequestLoginResult =
+    override suspend fun login(request: LoginRequest): RequestLoginResult =
         withContext(dispatchersProvider.io()) {
             try {
-                val response = httpClient.post(ClientEndpoint.REQUEST_LOGIN.route) {
+                val response = httpClient.post(ClientEndpoint.USER_REQUEST_LOGIN.route) {
                     setBody(request)
                 }
 

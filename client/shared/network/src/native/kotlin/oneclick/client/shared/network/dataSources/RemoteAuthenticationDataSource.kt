@@ -9,9 +9,9 @@ import oneclick.client.shared.network.models.LogoutResult
 import oneclick.client.shared.network.models.RequestLoginResult
 import oneclick.client.shared.network.models.UserLoggedResult
 import oneclick.client.shared.network.platform.AuthenticationDataSource
-import oneclick.shared.contracts.auth.models.requests.RequestLoginRequest
+import oneclick.shared.contracts.auth.models.requests.LoginRequest
+import oneclick.shared.contracts.auth.models.responses.IsLoggedResponse
 import oneclick.shared.contracts.auth.models.responses.RequestLoginResponse
-import oneclick.shared.contracts.auth.models.responses.UserLoggedResponse
 import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
 import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.logging.AppLogger
@@ -30,11 +30,11 @@ class RemoteAuthenticationDataSource(
                     return@withContext UserLoggedResult.NotLogged
                 }
 
-                val response = httpClient.get(ClientEndpoint.IS_USER_LOGGED.route)
+                val response = httpClient.get(ClientEndpoint.IS_LOGGED.route)
                 when (response.status) {
                     HttpStatusCode.OK -> {
-                        val isUserLoggedResponse: UserLoggedResponse = response.body()
-                        isUserLoggedResponse.toUserLoggedResult()
+                        val isLoggedResponse: IsLoggedResponse = response.body()
+                        isLoggedResponse.toUserLoggedResult()
                     }
 
                     else -> UserLoggedResult.UnknownError
@@ -45,16 +45,21 @@ class RemoteAuthenticationDataSource(
             }
         }
 
-    private fun UserLoggedResponse.toUserLoggedResult(): UserLoggedResult =
+    private fun IsLoggedResponse.toUserLoggedResult(): UserLoggedResult =
         when (this) {
-            is UserLoggedResponse.Logged -> UserLoggedResult.Logged
-            is UserLoggedResponse.NotLogged -> UserLoggedResult.NotLogged
+            is IsLoggedResponse.Logged -> UserLoggedResult.Logged
+            is IsLoggedResponse.NotLogged -> UserLoggedResult.NotLogged
         }
 
-    override suspend fun login(request: RequestLoginRequest): RequestLoginResult =
+    override suspend fun login(request: LoginRequest): RequestLoginResult =
         withContext(dispatchersProvider.io()) {
             try {
-                val response = httpClient.post(ClientEndpoint.REQUEST_LOGIN.route) {
+                val route = when (request) {
+                    is LoginRequest.UserRequestLoginRequest -> ClientEndpoint.USER_REQUEST_LOGIN.route
+                    is LoginRequest.HomeRequestLoginRequest -> ClientEndpoint.HOME_REQUEST_LOGIN.route
+                }
+
+                val response = httpClient.post(route) {
                     setBody(request)
                 }
 

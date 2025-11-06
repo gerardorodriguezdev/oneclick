@@ -6,7 +6,8 @@ import oneclick.client.shared.network.models.RequestLoginResult.ValidLogin
 import oneclick.client.shared.network.platform.AuthenticationDataSource
 import oneclick.shared.contracts.auth.models.Password
 import oneclick.shared.contracts.auth.models.Username
-import oneclick.shared.contracts.auth.models.requests.RequestLoginRequest
+import oneclick.shared.contracts.auth.models.requests.LoginRequest.HomeRequestLoginRequest
+import oneclick.shared.contracts.core.models.Uuid
 import oneclick.shared.logging.AppLogger
 
 internal interface CommandsHandler {
@@ -21,6 +22,7 @@ internal interface CommandsHandler {
 internal class DefaultCommandsHandler(
     private val authenticationDataSource: AuthenticationDataSource,
     private val logger: AppLogger,
+    private val homeId: Uuid,
 ) : CommandsHandler {
 
     override suspend fun execute(command: CommandsHandler.Command) {
@@ -33,9 +35,10 @@ internal class DefaultCommandsHandler(
     private suspend fun CommandsHandler.Command.Login.handle() {
         val result = authenticationDataSource
             .login(
-                request = RequestLoginRequest(
+                request = HomeRequestLoginRequest(
                     username = username,
                     password = password,
+                    homeId = homeId,
                 )
             )
 

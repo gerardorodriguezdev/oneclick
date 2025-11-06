@@ -20,7 +20,7 @@ import oneclick.client.shared.network.platform.AuthenticationDataSource
 import oneclick.client.shared.notifications.NotificationsController
 import oneclick.shared.contracts.auth.models.Password.Companion.toPassword
 import oneclick.shared.contracts.auth.models.Username.Companion.toUsername
-import oneclick.shared.contracts.auth.models.requests.RequestLoginRequest
+import oneclick.shared.contracts.auth.models.requests.LoginRequest.UserRequestLoginRequest
 import org.jetbrains.compose.resources.getString
 
 @Inject
@@ -67,7 +67,7 @@ class LoginViewModel(
 
             val requestLoginResult = authenticationDataSource
                 .login(
-                    request = RequestLoginRequest(
+                    request = UserRequestLoginRequest(
                         username = requireNotNull(loginViewModelState.value.username?.toUsername()),
                         password = requireNotNull(loginViewModelState.value.password?.toPassword()),
                     )

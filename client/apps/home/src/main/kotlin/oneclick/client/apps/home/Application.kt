@@ -10,6 +10,7 @@ import oneclick.client.shared.network.extensions.urlProtocol
 import oneclick.client.shared.network.nativeHttpClient
 import oneclick.client.shared.network.platform.okhttpHttpClientEngine
 import oneclick.shared.contracts.core.models.ClientType
+import oneclick.shared.contracts.core.models.Uuid
 import oneclick.shared.dispatchers.platform.dispatchersProvider
 import oneclick.shared.logging.appLogger
 import oneclick.shared.security.DefaultSecureRandomProvider
@@ -74,6 +75,7 @@ fun main() {
         commandsHandler = DefaultCommandsHandler(
             authenticationDataSource = authenticationDataSource,
             logger = appLogger,
+            homeId = environment.homeId,
         ),
         devicesController = BluetoothDevicesController(
             appLogger = appLogger,
@@ -83,7 +85,7 @@ fun main() {
 }
 
 private data class Environment(
-    val homeId: String = System.getenv("HOME_ID"),
+    val homeId: Uuid = Uuid.unsafe(System.getenv("HOME_ID")),
     val keyStorePath: String = System.getenv("KEYSTORE_PATH"),
     val keyStorePassword: String = System.getenv("KEYSTORE_PASSWORD"),
     val protocol: String = System.getenv("PROTOCOL"),

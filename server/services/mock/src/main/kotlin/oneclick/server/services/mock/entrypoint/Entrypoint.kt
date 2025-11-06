@@ -11,7 +11,7 @@ import io.ktor.server.routing.*
 import oneclick.server.services.mock.utils.mockHomes
 import oneclick.server.services.mock.utils.mockJwt
 import oneclick.server.shared.core.clientType
-import oneclick.shared.contracts.auth.models.requests.UserRequestLoginRequest
+import oneclick.shared.contracts.auth.models.requests.LoginRequest.UserRequestLoginRequest
 import oneclick.shared.contracts.auth.models.responses.IsLoggedResponse
 import oneclick.shared.contracts.auth.models.responses.RequestLoginResponse
 import oneclick.shared.contracts.core.models.ClientType

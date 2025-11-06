@@ -11,8 +11,12 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 import io.ktor.util.logging.*
 import oneclick.server.services.app.dataSources.base.InvalidJwtDataSource
-import oneclick.server.shared.auth.models.JwtUserId.Companion.toJwtUserId
-import oneclick.server.shared.auth.security.JwtProvider
+import oneclick.server.services.app.plugins.authentication.AuthenticationConstants.JWT_REALM
+import oneclick.server.services.app.plugins.authentication.JwtCredentials.HomeJwtCredentials
+import oneclick.server.services.app.plugins.authentication.JwtCredentials.UserJwtCredentials
+import oneclick.server.shared.auth.models.JwtId.Companion.toJwtId
+import oneclick.server.shared.auth.security.HomeJwtProvider
+import oneclick.server.shared.auth.security.UserJwtProvider
 import oneclick.shared.contracts.auth.models.Jwt
 import oneclick.shared.contracts.core.models.Uuid
 import oneclick.shared.contracts.core.models.Uuid.Companion.toUuid
@@ -20,25 +24,43 @@ import java.util.*
 import kotlin.io.encoding.ExperimentalEncodingApi
 
 internal fun Application.configureAuthentication(
-    jwtProvider: JwtProvider,
     logger: Logger,
     invalidJwtDataSource: InvalidJwtDataSource,
+    userJwtProvider: UserJwtProvider,
+    homeJwtProvider: HomeJwtProvider,
 ) {
     install(Authentication) {
-        registerJwtSessionsAuthentication(jwtProvider, logger, invalidJwtDataSource)
-        registerJwtAuthentication(jwtProvider, invalidJwtDataSource)
+        AuthenticationType.entries.forEach { authenticationType ->
+            when (authenticationType) {
+                AuthenticationType.USER_SESSION -> registerUserSessionAuthentication(
+                    userJwtProvider = userJwtProvider,
+                    logger = logger,
+                    invalidJwtDataSource = invalidJwtDataSource,
+                )
+
+                AuthenticationType.USER_JWT -> registerUserJwtAuthentication(
+                    userJwtProvider = userJwtProvider,
+                    invalidJwtDataSource = invalidJwtDataSource,
+                )
+
+                AuthenticationType.HOME_JWT -> registerHomeJwtAuthentication(
+                    homeJwtProvider = homeJwtProvider,
+                    invalidJwtDataSource = invalidJwtDataSource
+                )
+            }
+        }
     }
 }
 
-private fun AuthenticationConfig.registerJwtSessionsAuthentication(
-    jwtProvider: JwtProvider,
+private fun AuthenticationConfig.registerUserSessionAuthentication(
+    userJwtProvider: UserJwtProvider,
     logger: Logger,
     invalidJwtDataSource: InvalidJwtDataSource,
 ) {
-    session<Jwt>(AuthenticationConstants.JWT_SESSION_AUTHENTICATION) {
+    session<Jwt>(AuthenticationType.USER_SESSION.value) {
         validate { jwt ->
             val decodedJwt = try {
-                jwtProvider.jwtVerifier.verify(jwt.value)
+                userJwtProvider.jwtVerifier.verify(jwt.value)
             } catch (error: JWTVerificationException) {
                 logger.error("Error decoding jwt", error)
                 null
@@ -51,7 +73,7 @@ private fun AuthenticationConfig.registerJwtSessionsAuthentication(
             val payload = decodedJwt.parsePayload()
             val jwtCredential = JWTCredential(payload)
 
-            jwtProvider.jwtCredentials(jti = jti, jwtCredential = jwtCredential)
+            userJwtProvider.userJwtCredentials(jti = jti, jwtCredential = jwtCredential)
         }
 
         challenge {
@@ -60,21 +82,21 @@ private fun AuthenticationConfig.registerJwtSessionsAuthentication(
     }
 }
 
-private fun AuthenticationConfig.registerJwtAuthentication(
-    jwtProvider: JwtProvider,
+private fun AuthenticationConfig.registerUserJwtAuthentication(
+    userJwtProvider: UserJwtProvider,
     invalidJwtDataSource: InvalidJwtDataSource,
 ) {
-    jwt(AuthenticationConstants.JWT_AUTHENTICATION) {
-        realm = jwtProvider.jwtRealm
+    jwt(AuthenticationType.USER_JWT.value) {
+        realm = JWT_REALM
 
-        verifier(jwtProvider.jwtVerifier)
+        verifier(userJwtProvider.jwtVerifier)
 
         validate { jwtCredential ->
             val jtiString = jwtCredential.jwtId ?: return@validate null
             val jti = jtiString.toUuid() ?: return@validate null
             if (invalidJwtDataSource.isJwtInvalid(jti)) return@validate null
 
-            jwtProvider.jwtCredentials(jti = jti, jwtCredential = jwtCredential)
+            userJwtProvider.userJwtCredentials(jti = jti, jwtCredential = jwtCredential)
         }
 
         challenge { _, _ ->
@@ -83,18 +105,62 @@ private fun AuthenticationConfig.registerJwtAuthentication(
     }
 }
 
-private fun JwtProvider.jwtCredentials(
+private fun AuthenticationConfig.registerHomeJwtAuthentication(
+    homeJwtProvider: HomeJwtProvider,
+    invalidJwtDataSource: InvalidJwtDataSource,
+) {
+    jwt(AuthenticationType.HOME_JWT.value) {
+        realm = JWT_REALM
+
+        verifier(homeJwtProvider.jwtVerifier)
+
+        validate { jwtCredential ->
+            val jtiString = jwtCredential.jwtId ?: return@validate null
+            val jti = jtiString.toUuid() ?: return@validate null
+            if (invalidJwtDataSource.isJwtInvalid(jti)) return@validate null
+
+            homeJwtProvider.homeJwtCredentials(jti = jti, jwtCredential = jwtCredential)
+        }
+
+        challenge { _, _ ->
+            call.respond(HttpStatusCode.Unauthorized)
+        }
+    }
+}
+
+
+private fun UserJwtProvider.userJwtCredentials(
     jti: Uuid,
     jwtCredential: JWTCredential,
-): JwtCredentials? {
-    val claim = jwtCredential.payload.getClaim(jwtClaim).asString()
-    val jwtUserId = claim.toJwtUserId() ?: return null
-    val userId = userId(jwtUserId) ?: return null
-    return JwtCredentials(jti = jti, userId = userId)
+): UserJwtCredentials? {
+    val userIdString = jwtCredential.payload.getClaim(UserJwtProvider.USER_ID_CLAIM).asString()
+    val userJwtId = userIdString.toJwtId() ?: return null
+    val userId = id(userJwtId) ?: return null
+
+    return UserJwtCredentials(jti = jti, userId = userId)
+}
+
+private fun HomeJwtProvider.homeJwtCredentials(
+    jti: Uuid,
+    jwtCredential: JWTCredential,
+): HomeJwtCredentials? {
+    val userIdString = jwtCredential.payload.getClaim(HomeJwtProvider.USER_ID_CLAIM).asString()
+    val userJwtId = userIdString.toJwtId() ?: return null
+    val userId = id(userJwtId) ?: return null
+
+    val homeIdString = jwtCredential.payload.getClaim(HomeJwtProvider.HOME_ID_CLAIM).asString()
+    val homeJwtId = homeIdString.toJwtId() ?: return null
+    val homeId = id(homeJwtId) ?: return null
+
+    return HomeJwtCredentials(jti = jti, userId = userId, homeId = homeId)
 }
 
 @OptIn(ExperimentalEncodingApi::class)
 private fun DecodedJWT.parsePayload(): Payload {
     val payloadString = String(Base64.getDecoder().decode(payload))
     return JWTParser().parsePayload(payloadString)
+}
+
+internal object AuthenticationConstants {
+    const val JWT_REALM = "OneClick api"
 }
