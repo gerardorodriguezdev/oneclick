@@ -1,8 +1,7 @@
 homesByUserId:
 SELECT *
 FROM homes
-JOIN rooms ON homes.home_id = rooms.home_id
-JOIN devices ON rooms.room_id = devices.room_id
+JOIN devices ON homes.home_id = devices.home_id
 WHERE homes.user_id = ? LIMIT ? OFFSET ?;
 
 totalHomes:

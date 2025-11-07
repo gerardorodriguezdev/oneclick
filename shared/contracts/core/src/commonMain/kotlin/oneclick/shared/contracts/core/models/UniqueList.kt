@@ -32,7 +32,7 @@ class UniqueList<T : KeyProvider> private constructor(val elements: List<T>) : L
             UniqueList(this.elements + other.elements)
 
         private fun <T : KeyProvider> List<T>.containsDuplicates(): Boolean {
-            val distinct = distinctBy { it.key }
+            val distinct = distinctBy { element -> element.key }
             return size != distinct.size
         }
     }

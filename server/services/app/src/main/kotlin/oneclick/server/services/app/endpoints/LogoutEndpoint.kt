@@ -14,7 +14,13 @@ internal fun Routing.logoutEndpoint(invalidJwtDataSource: InvalidJwtDataSource) 
     allAuthentication {
         get(ClientEndpoint.LOGOUT.route) {
             val jwtCredentials = requireJwtCredentials()
-            invalidJwtDataSource.saveInvalidJwt(jwtCredentials)
+
+            val isInvalidJwtSaved = invalidJwtDataSource.saveInvalidJwt(jwtCredentials)
+            if (!isInvalidJwtSaved) {
+                call.respond(HttpStatusCode.InternalServerError)
+                return@get
+            }
+
             call.sessions.clear<Jwt>()
             call.respond(HttpStatusCode.OK)
         }

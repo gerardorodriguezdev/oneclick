@@ -1,14 +1,15 @@
 package oneclick.client.apps.features.home.ui.screens
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.lazy.grid.*
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.itemsIndexed
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Card
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,7 +21,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import oneclick.client.apps.features.home.ui.screens.HomesListScreenState.UiHome.UiRoom.UiDevice
+import oneclick.client.apps.features.home.ui.screens.HomesListScreenState.UiHome.UiDevice
 import oneclick.client.apps.user.features.home.generated.resources.*
 import oneclick.client.shared.ui.components.Body
 import oneclick.client.shared.ui.components.Label
@@ -56,18 +57,12 @@ internal fun HomesListScreen(
                 modifier = Modifier.fillMaxSize(),
             ) {
                 state.homes.forEachIndexed { _, home ->
-                    homeName(homeId = home.id, homeName = home.name)
-
-                    home.rooms.forEachIndexed { _, room ->
-                        roomName(roomId = room.id, roomName = room.name)
-
-                        itemsIndexed(
-                            items = room.devices,
-                            key = { _, device -> device.id },
-                            contentType = { _, device -> HomesListContentType.deviceCard(device) },
-                        ) { _, device ->
-                            DeviceCard(device = device)
-                        }
+                    itemsIndexed(
+                        items = home.devices,
+                        key = { _, device -> device.id },
+                        contentType = { _, device -> HomesListContentType.deviceCard(device) },
+                    ) { _, device ->
+                        DeviceCard(device = device)
                     }
                 }
 
@@ -80,27 +75,6 @@ internal fun HomesListScreen(
         } else {
             Empty()
         }
-    }
-}
-
-private fun LazyGridScope.homeName(homeId: String, homeName: String) {
-    stickyHeader(key = homeId, contentType = HomesListContentType.HOME_NAME) {
-        Title(
-            text = stringResource(Res.string.homesListScreen_homeName_home, homeName),
-            modifier = Modifier.background(color = MaterialTheme.colorScheme.background)
-        )
-    }
-}
-
-private fun LazyGridScope.roomName(roomId: String, roomName: String) {
-    stickyHeader(key = roomId, contentType = HomesListContentType.ROOM_NAME) {
-        Title(
-            text = stringResource(
-                Res.string.homesListScreen_roomName_room,
-                roomName
-            ),
-            modifier = Modifier.background(color = MaterialTheme.colorScheme.background)
-        )
     }
 }
 
@@ -121,9 +95,7 @@ private fun DeviceCard(device: UiDevice) {
             )
 
             when (device) {
-                is UiDevice.UiWaterSensor -> WaterSensorInfo(
-                    device
-                )
+                is UiDevice.UiWaterSensor -> WaterSensorInfo(device)
             }
         }
     }
@@ -183,22 +155,15 @@ internal data class HomesListScreenState(
 ) {
     data class UiHome(
         val id: String,
-        val name: String,
-        val rooms: ImmutableList<UiRoom> = persistentListOf(),
+        val devices: ImmutableList<UiDevice> = persistentListOf(),
     ) {
-        data class UiRoom(
-            val id: String,
-            val name: String,
-            val devices: ImmutableList<UiDevice> = persistentListOf(),
-        ) {
-            sealed interface UiDevice {
-                val id: String
+        sealed interface UiDevice {
+            val id: String
 
-                data class UiWaterSensor(
-                    override val id: String,
-                    val level: String,
-                ) : UiDevice
-            }
+            data class UiWaterSensor(
+                override val id: String,
+                val level: String,
+            ) : UiDevice
         }
     }
 }
@@ -209,13 +174,9 @@ internal sealed interface HomesListEvent {
 }
 
 private object HomesListContentType {
-    const val HOME_NAME = 1
-
-    const val ROOM_NAME = 2
-
     fun deviceCard(device: UiDevice): Int =
         when (device) {
-            is UiDevice.UiWaterSensor -> 3
+            is UiDevice.UiWaterSensor -> 1
         }
 }
 

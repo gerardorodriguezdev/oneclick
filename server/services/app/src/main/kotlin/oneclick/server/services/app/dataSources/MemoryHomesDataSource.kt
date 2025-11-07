@@ -3,6 +3,8 @@ package oneclick.server.services.app.dataSources
 import oneclick.server.services.app.dataSources.base.HomesDataSource
 import oneclick.server.services.app.dataSources.models.HomesEntry
 import oneclick.shared.contracts.core.models.*
+import oneclick.shared.contracts.core.models.UniqueList.Companion.toUniqueList
+import oneclick.shared.contracts.homes.models.Home
 
 internal class MemoryHomesDataSource(
     private val homesEntries: LinkedHashMap<Uuid, HomesEntry> = linkedMapOf(),
@@ -53,5 +55,36 @@ internal class MemoryHomesDataSource(
             pageIndex = NonNegativeInt.unsafe(newPageIndex),
             totalPages = NonNegativeInt.unsafe(homesEntry.homes.size),
         )
+    }
+
+    override suspend fun home(
+        userId: Uuid,
+        homeId: Uuid
+    ): Home? {
+        val homesEntry = homesEntries[userId] ?: return null
+        return homesEntry.homes.firstOrNull { home -> home.id == homeId }
+    }
+
+    override suspend fun saveHome(
+        userId: Uuid,
+        home: Home
+    ): Boolean {
+        val currentHomesEntry = homesEntries[userId]
+        if (currentHomesEntry == null) {
+            homesEntries[userId] = HomesEntry(userId, UniqueList.unsafe(listOf(home)))
+            return true
+        } else {
+            val newHomes = buildList {
+                addAll(currentHomesEntry.homes)
+                add(home)
+            }.toUniqueList()
+
+            if (newHomes == null) {
+                return false
+            } else {
+                homesEntries[userId] = currentHomesEntry.copy(homes = newHomes)
+                return true
+            }
+        }
     }
 }

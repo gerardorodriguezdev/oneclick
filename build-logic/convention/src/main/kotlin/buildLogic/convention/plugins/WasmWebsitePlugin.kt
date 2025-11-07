@@ -100,7 +100,7 @@ class WasmWebsitePlugin : Plugin<Project> {
         artifacts {
             add(
                 wasmWebsiteConsumerConfiguration.name,
-                wasmDistributionTask.map { it.outputs.files.singleFile }
+                wasmDistributionTask.map { task -> task.outputs.files.singleFile }
             ) {
                 builtBy(wasmDistributionTask)
             }

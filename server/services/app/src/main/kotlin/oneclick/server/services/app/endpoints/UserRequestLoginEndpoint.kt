@@ -26,8 +26,7 @@ internal fun Routing.userRequestLoginEndpoint(
     userJwtProvider: UserJwtProvider,
 ) {
     post(ClientEndpoint.USER_REQUEST_LOGIN.route) { userRequestLoginRequest: UserRequestLoginRequest ->
-        val username = userRequestLoginRequest.username
-        val password = userRequestLoginRequest.password
+        val (username, password) = userRequestLoginRequest
         val clientType = call.request.clientType
         val user = usersRepository.user(UsersDataSource.Findable.ByUsername(username))
 
@@ -66,7 +65,13 @@ private suspend fun RoutingContext.registerUser(
         username = username,
         hashedPassword = passwordManager.hashPassword(password),
     )
-    usersRepository.saveUser(newUser)
+    
+    val isUserSaved = usersRepository.saveUser(newUser)
+    if (!isUserSaved) {
+        handleError()
+        return
+    }
+
     val jwt = userJwtProvider.jwt(newUser.userId)
     respondJwt(jwt = jwt, clientType = clientType)
 }

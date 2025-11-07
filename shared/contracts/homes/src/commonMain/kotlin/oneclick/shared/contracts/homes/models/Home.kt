@@ -8,7 +8,7 @@ import oneclick.shared.contracts.core.models.Uuid
 @Serializable
 data class Home(
     val id: Uuid,
-    val rooms: UniqueList<Room>,
+    val devices: UniqueList<Device>,
 ) : KeyProvider {
     override val key: String = id.value
 }

@@ -30,6 +30,12 @@ internal fun Application.configureRouting(
             userJwtProvider = userJwtProvider,
             uuidProvider = uuidProvider,
         )
+        homeRequestLoginEndpoint(
+            usersRepository = usersRepository,
+            passwordManager = passwordManager,
+            homeJwtProvider = homeJwtProvider,
+            homesRepository = homesRepository,
+        )
         userHomesEndpoint(homesRepository = homesRepository)
         homeSyncDevicesEndpoint(homesRepository = homesRepository)
         appEndpoint()

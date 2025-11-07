@@ -15,6 +15,8 @@ androidLibrary {
 }
 
 kotlin {
+    applyDefaultHierarchyTemplate()
+
     sourceSets {
         val jvmAndroidMain by sourceSets.creating {
             dependsOn(commonMain.get())

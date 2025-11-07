@@ -33,7 +33,6 @@ sealed class Device : KeyProvider {
 
             fun waterSensor(
                 id: Uuid,
-                name: DeviceName,
                 range: PositiveIntRange,
                 level: NonNegativeInt
             ): WaterSensor? =
