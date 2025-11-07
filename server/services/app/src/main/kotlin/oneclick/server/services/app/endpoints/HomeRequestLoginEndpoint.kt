@@ -29,7 +29,7 @@ internal fun Routing.homeRequestLoginEndpoint(
         val clientType = call.request.clientType
         val user = usersRepository.user(UsersDataSource.Findable.ByUsername(username))
         if (user == null) {
-            handleError()
+            call.respond(HttpStatusCode.BadRequest)
             return@post
         }
 
@@ -39,7 +39,7 @@ internal fun Routing.homeRequestLoginEndpoint(
             !passwordManager.verifyPassword(
                 password = password,
                 hashedPassword = user.hashedPassword
-            ) -> handleError()
+            ) -> call.respond(HttpStatusCode.Unauthorized)
 
             home == null -> registerHome(
                 userId = user.userId,
@@ -71,7 +71,7 @@ private suspend fun RoutingContext.registerHome(
 
     val isHomeSaved = homesRepository.saveHome(userId = userId, home = newHome)
     if (!isHomeSaved) {
-        handleError()
+        call.respond(HttpStatusCode.InternalServerError)
         return
     }
 
@@ -87,10 +87,6 @@ private suspend fun RoutingContext.respondJwt(jwt: Jwt, clientType: ClientType) 
             )
         }
 
-        else -> handleError()
+        else -> call.respond(HttpStatusCode.BadRequest)
     }
-}
-
-private suspend fun RoutingContext.handleError() {
-    call.respond(HttpStatusCode.BadRequest)
 }

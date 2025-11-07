@@ -44,7 +44,7 @@ internal fun Routing.userRequestLoginEndpoint(
             !passwordManager.verifyPassword(
                 password = password,
                 hashedPassword = user.hashedPassword
-            ) -> handleError()
+            ) -> call.respond(HttpStatusCode.Unauthorized)
 
             else -> respondJwt(jwt = userJwtProvider.jwt(user.userId), clientType = clientType)
         }
@@ -65,10 +65,10 @@ private suspend fun RoutingContext.registerUser(
         username = username,
         hashedPassword = passwordManager.hashPassword(password),
     )
-    
+
     val isUserSaved = usersRepository.saveUser(newUser)
     if (!isUserSaved) {
-        handleError()
+        call.respond(HttpStatusCode.InternalServerError)
         return
     }
 
@@ -89,10 +89,6 @@ private suspend fun RoutingContext.respondJwt(jwt: Jwt, clientType: ClientType) 
             call.respond(HttpStatusCode.OK)
         }
 
-        else -> handleError()
+        else -> call.respond(HttpStatusCode.BadRequest)
     }
-}
-
-private suspend fun RoutingContext.handleError() {
-    call.respond(HttpStatusCode.BadRequest)
 }
