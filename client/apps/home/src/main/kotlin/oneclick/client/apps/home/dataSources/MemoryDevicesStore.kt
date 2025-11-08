@@ -1,6 +1,7 @@
 package oneclick.client.apps.home.dataSources
 
 import oneclick.client.apps.home.dataSources.base.DevicesStore
+import oneclick.shared.contracts.core.models.UniqueList
 import oneclick.shared.contracts.core.models.Uuid
 import oneclick.shared.contracts.homes.models.Device
 import java.util.concurrent.ConcurrentHashMap
@@ -12,7 +13,7 @@ internal class MemoryDevicesStore : DevicesStore {
         devices[device.id] = device
     }
 
-    override fun getDevices(): List<Device> = devices.values.toList()
+    override fun getDevices(): UniqueList<Device> = UniqueList.unsafe(devices.values.toList())
 
     override fun clear() = devices.clear()
 }

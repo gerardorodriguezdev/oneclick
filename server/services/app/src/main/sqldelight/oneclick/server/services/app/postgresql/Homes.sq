@@ -1,8 +1,25 @@
+CREATE TABLE IF NOT EXISTS homes (
+    user_id CHAR(36) REFERENCES users(user_id) ON DELETE CASCADE,
+    home_id CHAR(36) PRIMARY KEY
+);
+
+CREATE INDEX IF NOT EXISTS homes_user_id_idx ON homes(user_id);
+
+insertHome:
+INSERT INTO homes(user_id, home_id)
+VALUES ?;
+
 homesByUserId:
 SELECT *
 FROM homes
 JOIN devices ON homes.home_id = devices.home_id
 WHERE homes.user_id = ? LIMIT ? OFFSET ?;
+
+homesByHomeId:
+SELECT *
+FROM homes
+JOIN devices ON homes.home_id = devices.home_id
+WHERE homes.home_id = ?;
 
 totalHomes:
 SELECT COUNT(*) FROM homes;

@@ -5,7 +5,8 @@ import oneclick.shared.contracts.core.models.NonNegativeInt
 import oneclick.shared.contracts.core.models.PositiveIntRange
 import oneclick.shared.contracts.core.models.UniqueList
 import oneclick.shared.contracts.core.models.Uuid
-import oneclick.shared.contracts.homes.models.*
+import oneclick.shared.contracts.homes.models.Device
+import oneclick.shared.contracts.homes.models.Home
 import kotlin.uuid.ExperimentalUuidApi
 import kotlin.uuid.Uuid as KUuid
 
@@ -19,67 +20,34 @@ internal fun mockHomes(number: Int): UniqueList<Home> =
         buildList {
             repeat(number) {
                 add(
-                    mockHome(
-                        name = HomeName.unsafe("H_$it"),
-                    )
+                    mockHome()
                 )
             }
         }
     )
 
 private fun mockHome(
-    name: HomeName = HomeName.unsafe("HomeName"),
-    rooms: UniqueList<Room> = mockRooms(name.value, 5),
+    devices: UniqueList<Device> = mockDevices(5),
 ): Home =
     Home(
         id = mockUuid(),
-        name = name,
-        rooms = rooms,
-    )
-
-private fun mockRooms(parentName: String, number: Int): UniqueList<Room> =
-    UniqueList.unsafe(
-        buildList {
-            repeat(number) {
-                add(
-                    mockRoom(
-                        name = RoomName.unsafe("${parentName}_R_$it"),
-                    )
-                )
-            }
-        }
-    )
-
-private fun mockRoom(
-    name: RoomName = RoomName.unsafe("RoomName"),
-    devices: UniqueList<Device> = mockDevices(name.value, 5),
-): Room =
-    Room(
-        id = mockUuid(),
-        name = name,
         devices = devices,
     )
 
-private fun mockDevices(parentName: String, number: Int): UniqueList<Device> =
+private fun mockDevices(number: Int): UniqueList<Device> =
     UniqueList.unsafe(
         buildList {
             repeat(number) {
                 add(
-                    mockDevice(
-                        name = DeviceName.unsafe("${parentName}_D_$it"),
-                    )
+                    mockDevice()
                 )
             }
         }
     )
 
-private fun mockDevice(
-    name: DeviceName = DeviceName.unsafe("DeviceName"),
-    id: Uuid = mockUuid()
-): Device =
+private fun mockDevice(id: Uuid = mockUuid()): Device =
     Device.WaterSensor.unsafe(
         id = id,
-        name = name,
         range = PositiveIntRange.unsafe(
             start = NonNegativeInt.unsafe(0),
             end = NonNegativeInt.unsafe(10),

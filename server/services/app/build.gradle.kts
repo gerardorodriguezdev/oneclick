@@ -90,7 +90,6 @@ sqldelight {
             name = "AppDatabase",
             configureAction = Action<SqlDelightDatabase> {
                 packageName = "oneclick.server.services.app.postgresql"
-                deriveSchemaFromMigrations = true
                 dialect(libs.kmp.sqldelight.postgresql)
             }
         )

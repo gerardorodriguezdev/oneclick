@@ -7,15 +7,13 @@ import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
-import migrations.Devices
-import migrations.Homes
-import migrations.Rooms
 import oneclick.server.services.app.dataSources.base.HomesDataSource
 import oneclick.server.services.app.dataSources.models.HomesEntry
 import oneclick.server.services.app.postgresql.*
 import oneclick.shared.contracts.core.models.*
 import oneclick.shared.contracts.core.models.NonNegativeInt.Companion.toNonNegativeInt
-import oneclick.shared.contracts.homes.models.*
+import oneclick.shared.contracts.homes.models.Device
+import oneclick.shared.contracts.homes.models.Home
 import oneclick.shared.dispatchers.platform.DispatchersProvider
 
 internal class PostgresHomesDataSource(
@@ -29,89 +27,39 @@ internal class PostgresHomesDataSource(
         pageSize: PositiveInt,
         currentPageIndex: NonNegativeInt
     ): PaginationResult<HomesEntry>? =
-        try {
-            withContext(dispatchersProvider.io()) {
+        withContext(dispatchersProvider.io()) {
+            try {
                 val entries = database.homesQueries.homesByUserId(
                     user_id = userId.value,
                     value_ = pageSize.value.toLong(),
                     value__ = currentPageIndex.value.toLong()
                 ).executeAsList()
 
-                val (homes, rooms, devices) = entries.normalizeData()
+                val (homes, devices) = entries.toBaseEntries().normalizeHomes()
                 PaginationResult(
                     value = HomesEntry(
                         userId = userId,
-                        homes = toHomes(homes, rooms, devices),
+                        homes = toHomes(homes, devices),
                     ),
                     pageIndex = NonNegativeInt.unsafe(currentPageIndex.value + 1),
                     totalPages = totalHomes()
                 )
+            } catch (error: Exception) {
+                logger.error("Error getting homes", error)
+                null
             }
-        } catch (error: Exception) {
-            logger.error("Error getting homes", error)
-            null
         }
-
-    private fun List<HomesByUserId>.normalizeData(): NormalizedData {
-        val homes = hashSetOf<Homes>()
-        val rooms = hashSetOf<Rooms>()
-        val devices = hashSetOf<Devices>()
-
-        forEach { entry ->
-            homes.add(
-                Homes(
-                    user_id = entry.user_id,
-                    home_id = entry.home_id,
-                    home_name = entry.home_name
-                )
-            )
-
-            rooms.add(
-                Rooms(
-                    home_id = entry.home_id,
-                    room_id = entry.room_id,
-                    room_name = entry.room_name,
-                )
-            )
-
-            devices.add(
-                Devices(
-                    room_id = entry.room_id,
-                    device_id = entry.device_id,
-                    device = entry.device,
-                )
-            )
-        }
-
-        return NormalizedData(homes, rooms, devices)
-    }
 
     private suspend fun CoroutineScope.toHomes(
         homes: HashSet<Homes>,
-        rooms: HashSet<Rooms>,
         devices: HashSet<Devices>
     ): UniqueList<Home> =
         UniqueList.unsafe(
             homes.map { home ->
                 async {
-                    val rooms = rooms.filter { room -> room.home_id == home.home_id }
+                    val devices = devices.filter { device -> device.home_id == home.home_id }
                     Home(
                         id = Uuid.unsafe(home.home_id),
-                        name = HomeName.unsafe(home.home_name),
-                        rooms = toRooms(rooms, devices)
-                    )
-                }
-            }.awaitAll()
-        )
-
-    private suspend fun CoroutineScope.toRooms(rooms: List<Rooms>, devices: HashSet<Devices>): UniqueList<Room> =
-        UniqueList.unsafe(
-            rooms.map { room ->
-                async {
-                    val devices = devices.filter { device -> device.room_id == room.room_id }
-                    Room(
-                        id = Uuid.unsafe(room.room_id),
-                        name = RoomName.unsafe(room.room_name),
                         devices = toDevices(devices)
                     )
                 }
@@ -141,9 +89,87 @@ internal class PostgresHomesDataSource(
             ?.toNonNegativeInt()
             ?: NonNegativeInt.zero
 
-    private data class NormalizedData(
+    override suspend fun home(userId: Uuid, homeId: Uuid): Home? =
+        withContext(dispatchersProvider.io()) {
+            try {
+                val entries = database.homesQueries.homesByHomeId(
+                    home_id = homeId.value,
+                ).executeAsList()
+
+                val (homes, devices) = entries.toBaseEntries().normalizeHomes()
+                toHomes(homes, devices).firstOrNull()
+            } catch (error: Exception) {
+                logger.error("Error getting home", error)
+                null
+            }
+        }
+
+    override suspend fun saveHome(userId: Uuid, home: Home): Boolean =
+        withContext(dispatchersProvider.io()) {
+            try {
+                database.homesQueries.insertHome(
+                    Homes(user_id = userId.value, home_id = home.id.value)
+                )
+                true
+            } catch (error: Exception) {
+                logger.error("Error inserting home", error)
+                false
+            }
+        }
+
+    private fun List<Entry>.normalizeHomes(): NormalizedHomes {
+        val homes = hashSetOf<Homes>()
+        val devices = hashSetOf<Devices>()
+
+        forEach { entry ->
+            homes.add(
+                Homes(
+                    user_id = entry.userId,
+                    home_id = entry.homeId,
+                )
+            )
+
+            devices.add(
+                Devices(
+                    home_id = entry.homeId,
+                    device_id = entry.deviceId,
+                    device = entry.device,
+                )
+            )
+        }
+
+        return NormalizedHomes(homes, devices)
+    }
+
+    private fun List<HomesByUserId>.toBaseEntries(): List<Entry> =
+        map { entry ->
+            Entry(
+                userId = entry.user_id,
+                homeId = entry.home_id,
+                deviceId = entry.device_id,
+                device = entry.device,
+            )
+        }
+
+    private fun List<HomesByHomeId>.toBaseEntries(): List<Entry> =
+        map { entry ->
+            Entry(
+                userId = entry.user_id,
+                homeId = entry.home_id,
+                deviceId = entry.device_id,
+                device = entry.device,
+            )
+        }
+
+    private data class NormalizedHomes(
         val homes: HashSet<Homes>,
-        val rooms: HashSet<Rooms>,
         val devices: HashSet<Devices>,
+    )
+
+    private data class Entry(
+        val userId: String?,
+        val homeId: String,
+        val deviceId: String,
+        val device: String,
     )
 }

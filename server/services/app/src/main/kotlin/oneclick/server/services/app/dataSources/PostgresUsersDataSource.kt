@@ -2,10 +2,10 @@ package oneclick.server.services.app.dataSources
 
 import io.ktor.util.logging.*
 import kotlinx.coroutines.withContext
-import migrations.Users
 import oneclick.server.services.app.dataSources.base.UsersDataSource
 import oneclick.server.services.app.dataSources.models.User
 import oneclick.server.services.app.postgresql.AppDatabase
+import oneclick.server.services.app.postgresql.Users
 import oneclick.server.shared.auth.models.HashedPassword
 import oneclick.shared.contracts.auth.models.Username
 import oneclick.shared.contracts.core.models.Uuid
@@ -48,8 +48,10 @@ internal class PostgresUsersDataSource(
 
     override suspend fun saveUser(user: User): Boolean =
         try {
-            database.usersQueries.insertUser(user.toUsers())
-            true
+            withContext(dispatchersProvider.io()) {
+                database.usersQueries.insertUser(user.toUsers())
+                true
+            }
         } catch (error: Exception) {
             logger.error("Error trying to save user", error)
             false
