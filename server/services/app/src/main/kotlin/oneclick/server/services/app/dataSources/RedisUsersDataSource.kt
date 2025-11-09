@@ -48,11 +48,8 @@ internal class RedisUsersDataSource(
         }
 
     private companion object {
-        const val USER_BY_USER_ID_PREFIX = "user:userId:"
-        const val USER_BY_USERNAME_PREFIX = "user:username:"
-
-        fun userByUserId(userId: Uuid): String = USER_BY_USER_ID_PREFIX + userId.value
-        fun userByUsername(username: Username): String = USER_BY_USERNAME_PREFIX + username.value
+        fun userByUserId(userId: Uuid): String = "user:userId:${userId.value}"
+        fun userByUsername(username: Username): String = "user:username:${username.value}"
 
         fun Findable.toKey(): String =
             when (this) {
