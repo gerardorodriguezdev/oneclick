@@ -57,12 +57,21 @@ internal class MemoryHomesDataSource(
         )
     }
 
-    override suspend fun home(
+    override suspend fun hasHome(
         userId: Uuid,
         homeId: Uuid
-    ): Home? {
-        val homesEntry = homesEntries[userId] ?: return null
-        return homesEntry.homes.firstOrNull { home -> home.id == homeId }
+    ): Boolean {
+        val userHomes = homesEntries[userId]?.homes ?: return false
+        return userHomes.any { home -> home.id == homeId }
+    }
+
+    override suspend fun home(homeId: Uuid): Home? {
+        homesEntries.values.forEach { homesEntry ->
+            val home = homesEntry.homes.firstOrNull { home -> home.id == homeId }
+            if (home != null) return home
+        }
+
+        return null
     }
 
     override suspend fun saveHome(
