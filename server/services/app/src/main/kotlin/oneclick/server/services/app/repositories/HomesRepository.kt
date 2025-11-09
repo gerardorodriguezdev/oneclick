@@ -53,12 +53,7 @@ internal class DefaultHomesRepository(
         if (memoryHome != null) return memoryHome
 
         val diskHome = diskHomesDataSource.home(homeId = homeId)
-        return if (diskHome != null) {
-            memoryHomesDataSource.saveHome(userId = userId, home = diskHome)
-            diskHome
-        } else {
-            null
-        }
+        return diskHome
     }
 
     private suspend fun hasHome(

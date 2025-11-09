@@ -77,6 +77,7 @@ internal class PostgresHomesDataSource(
                         Json.decodeFromString<Device>(device.device)
                     } catch (error: SerializationException) {
                         logger.error("Error deserializing device", error)
+                        database.devicesQueries.deleteDevice(device.device_id)
                         null
                     }
                 }
@@ -124,6 +125,18 @@ internal class PostgresHomesDataSource(
                 database.homesQueries.insertHome(
                     Homes(user_id = userId.value, home_id = home.id.value)
                 )
+
+                home.devices.map { device ->
+                    async {
+                        val devices = Devices(
+                            home_id = home.id.value,
+                            device_id = device.id.value,
+                            device = Json.encodeToString(device)
+                        )
+                        database.devicesQueries.insertDevice(devices)
+                    }
+                }.awaitAll()
+
                 true
             } catch (error: Exception) {
                 logger.error("Error inserting home", error)

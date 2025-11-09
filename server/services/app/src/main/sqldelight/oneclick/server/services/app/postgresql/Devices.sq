@@ -10,6 +10,11 @@ insertDevice:
 INSERT INTO devices(home_id, device_id, device)
 VALUES ?;
 
+deleteDevice:
+DELETE
+FROM devices
+WHERE device_id = ?;
+
 devicesByHomeId:
 SELECT *
 FROM devices
