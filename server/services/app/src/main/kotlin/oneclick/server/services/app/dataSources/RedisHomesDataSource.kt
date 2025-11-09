@@ -6,6 +6,7 @@ import io.lettuce.core.api.coroutines.RedisCoroutinesCommands
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import oneclick.server.services.app.dataSources.base.HomesDataSource
 import oneclick.server.services.app.dataSources.models.HomesEntry
@@ -44,6 +45,10 @@ internal class RedisHomesDataSource(
                     pageIndex = NonNegativeInt.unsafe(currentPageIndex.toInt() + 1),
                     totalPages = NonNegativeInt.unsafe(syncCommands.totalHomes(userId)),
                 )
+            } catch (error: SerializationException) {
+                logger.error("Error deserializing homes", error)
+                syncCommands.deleteHomes(userId)
+                null
             } catch (error: Exception) {
                 logger.error("Error getting homes", error)
                 null
@@ -65,6 +70,10 @@ internal class RedisHomesDataSource(
             try {
                 val homeString = syncCommands.home(homeId) ?: return@withContext null
                 Json.decodeFromString<Home>(homeString)
+            } catch (error: SerializationException) {
+                logger.error("Error deserializing homes", error)
+                syncCommands.deleteHomes(homeId)
+                null
             } catch (error: Exception) {
                 logger.error("Error getting home", error)
                 null
@@ -91,6 +100,14 @@ internal class RedisHomesDataSource(
         suspend fun RedisCoroutinesCommands<String, String>.saveHome(userId: Uuid, homeId: Uuid, homeString: String) {
             rpush(homeByUserId(userId), homeString)
             set(homeByHomeId(homeId), homeString)
+        }
+
+        suspend fun RedisCoroutinesCommands<String, String>.deleteHomes(userId: Uuid) {
+            del(homeByUserId(userId))
+        }
+
+        suspend fun RedisCoroutinesCommands<String, String>.deleteHome(homeId: Uuid) {
+            del(homeByHomeId(homeId))
         }
 
         suspend fun RedisCoroutinesCommands<String, String>.hasHome(userId: Uuid, homeId: Uuid): Boolean =
