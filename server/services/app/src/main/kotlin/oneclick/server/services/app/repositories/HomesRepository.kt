@@ -30,23 +30,47 @@ internal class DefaultHomesRepository(
         pageSize: PositiveInt,
         currentPageIndex: NonNegativeInt,
     ): PaginationResult<HomesEntry>? {
-        val memoryHomes = memoryHomesDataSource.homesEntry(userId, pageSize, currentPageIndex)
+        val memoryHomes = memoryHomesDataSource.homesEntry(
+            userId = userId,
+            pageSize = pageSize,
+            currentPageIndex = currentPageIndex
+        )
         if (memoryHomes != null) return memoryHomes
 
-        val diskHomes = diskHomesDataSource.homesEntry(userId, pageSize, currentPageIndex)
+        val diskHomes = diskHomesDataSource.homesEntry(
+            userId = userId,
+            pageSize = pageSize,
+            currentPageIndex = currentPageIndex
+        )
         return diskHomes
     }
 
     override suspend fun home(userId: Uuid, homeId: Uuid): Home? {
-        val memoryHome = memoryHomesDataSource.home(userId = userId, homeId = homeId)
+        val hasHome = hasHome(userId = userId, homeId = homeId)
+        if (!hasHome) return null
+
+        val memoryHome = memoryHomesDataSource.home(homeId = homeId)
         if (memoryHome != null) return memoryHome
 
-        val diskHome = diskHomesDataSource.home(userId = userId, homeId = homeId)
+        val diskHome = diskHomesDataSource.home(homeId = homeId)
         return if (diskHome != null) {
             memoryHomesDataSource.saveHome(userId = userId, home = diskHome)
             diskHome
         } else {
             null
+        }
+    }
+
+    private suspend fun hasHome(
+        userId: Uuid,
+        homeId: Uuid
+    ): Boolean {
+        val hasHome = memoryHomesDataSource.hasHome(userId = userId, homeId = homeId)
+
+        return if (hasHome) {
+            true
+        } else {
+            diskHomesDataSource.hasHome(userId = userId, homeId = homeId)
         }
     }
 

@@ -9,3 +9,8 @@ CREATE INDEX IF NOT EXISTS devices_home_id_idx ON devices(home_id);
 insertDevice:
 INSERT INTO devices(home_id, device_id, device)
 VALUES ?;
+
+devicesByHomeId:
+SELECT *
+FROM devices
+WHERE home_id = ?;

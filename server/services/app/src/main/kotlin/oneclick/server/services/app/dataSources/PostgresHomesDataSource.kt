@@ -9,7 +9,10 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import oneclick.server.services.app.dataSources.base.HomesDataSource
 import oneclick.server.services.app.dataSources.models.HomesEntry
-import oneclick.server.services.app.postgresql.*
+import oneclick.server.services.app.postgresql.AppDatabase
+import oneclick.server.services.app.postgresql.Devices
+import oneclick.server.services.app.postgresql.Homes
+import oneclick.server.services.app.postgresql.HomesByUserId
 import oneclick.shared.contracts.core.models.*
 import oneclick.shared.contracts.core.models.NonNegativeInt.Companion.toNonNegativeInt
 import oneclick.shared.contracts.homes.models.Device
@@ -89,15 +92,26 @@ internal class PostgresHomesDataSource(
             ?.toNonNegativeInt()
             ?: NonNegativeInt.zero
 
-    override suspend fun home(userId: Uuid, homeId: Uuid): Home? =
+    override suspend fun hasHome(
+        userId: Uuid,
+        homeId: Uuid
+    ): Boolean =
+        database.homesQueries.hasHome(
+            home_id = homeId.value,
+            user_id = userId.value,
+        ).executeAsOne()
+
+    override suspend fun home(homeId: Uuid): Home? =
         withContext(dispatchersProvider.io()) {
             try {
-                val entries = database.homesQueries.homesByHomeId(
+                val entries = database.devicesQueries.devicesByHomeId(
                     home_id = homeId.value,
                 ).executeAsList()
-
-                val (homes, devices) = entries.toBaseEntries().normalizeHomes()
-                toHomes(homes, devices).firstOrNull()
+                val devices = toDevices(entries)
+                Home(
+                    id = homeId,
+                    devices = devices,
+                )
             } catch (error: Exception) {
                 logger.error("Error getting home", error)
                 null
@@ -117,50 +131,6 @@ internal class PostgresHomesDataSource(
             }
         }
 
-    private fun List<Entry>.normalizeHomes(): NormalizedHomes {
-        val homes = hashSetOf<Homes>()
-        val devices = hashSetOf<Devices>()
-
-        forEach { entry ->
-            homes.add(
-                Homes(
-                    user_id = entry.userId,
-                    home_id = entry.homeId,
-                )
-            )
-
-            devices.add(
-                Devices(
-                    home_id = entry.homeId,
-                    device_id = entry.deviceId,
-                    device = entry.device,
-                )
-            )
-        }
-
-        return NormalizedHomes(homes, devices)
-    }
-
-    private fun List<HomesByUserId>.toBaseEntries(): List<Entry> =
-        map { entry ->
-            Entry(
-                userId = entry.user_id,
-                homeId = entry.home_id,
-                deviceId = entry.device_id,
-                device = entry.device,
-            )
-        }
-
-    private fun List<HomesByHomeId>.toBaseEntries(): List<Entry> =
-        map { entry ->
-            Entry(
-                userId = entry.user_id,
-                homeId = entry.home_id,
-                deviceId = entry.device_id,
-                device = entry.device,
-            )
-        }
-
     private data class NormalizedHomes(
         val homes: HashSet<Homes>,
         val devices: HashSet<Devices>,
@@ -172,4 +142,40 @@ internal class PostgresHomesDataSource(
         val deviceId: String,
         val device: String,
     )
+
+    private companion object {
+        fun List<Entry>.normalizeHomes(): NormalizedHomes {
+            val homes = hashSetOf<Homes>()
+            val devices = hashSetOf<Devices>()
+
+            forEach { entry ->
+                homes.add(
+                    Homes(
+                        user_id = entry.userId,
+                        home_id = entry.homeId,
+                    )
+                )
+
+                devices.add(
+                    Devices(
+                        home_id = entry.homeId,
+                        device_id = entry.deviceId,
+                        device = entry.device,
+                    )
+                )
+            }
+
+            return NormalizedHomes(homes, devices)
+        }
+
+        fun List<HomesByUserId>.toBaseEntries(): List<Entry> =
+            map { entry ->
+                Entry(
+                    userId = entry.user_id,
+                    homeId = entry.home_id,
+                    deviceId = entry.device_id,
+                    device = entry.device,
+                )
+            }
+    }
 }

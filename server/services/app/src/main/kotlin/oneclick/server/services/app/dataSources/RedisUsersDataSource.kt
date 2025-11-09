@@ -7,6 +7,7 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import oneclick.server.services.app.dataSources.base.UsersDataSource
+import oneclick.server.services.app.dataSources.base.UsersDataSource.Findable
 import oneclick.server.services.app.dataSources.models.User
 import oneclick.shared.contracts.auth.models.Username
 import oneclick.shared.contracts.core.models.Uuid
@@ -19,7 +20,7 @@ internal class RedisUsersDataSource(
     private val logger: Logger,
 ) : UsersDataSource {
 
-    override suspend fun user(findable: UsersDataSource.Findable): User? =
+    override suspend fun user(findable: Findable): User? =
         try {
             withContext(dispatchersProvider.io()) {
                 val userJson = syncCommands.getUser(findable) ?: return@withContext null
@@ -50,24 +51,24 @@ internal class RedisUsersDataSource(
         const val USER_BY_USER_ID_PREFIX = "user:userId:"
         const val USER_BY_USERNAME_PREFIX = "user:username:"
 
-        fun Uuid.toKey(): String = USER_BY_USER_ID_PREFIX + value
-        fun Username.toKey(): String = USER_BY_USERNAME_PREFIX + value
+        fun userByUserId(userId: Uuid): String = USER_BY_USER_ID_PREFIX + userId.value
+        fun userByUsername(username: Username): String = USER_BY_USERNAME_PREFIX + username.value
 
-        fun UsersDataSource.Findable.toKey(): String =
+        fun Findable.toKey(): String =
             when (this) {
-                is UsersDataSource.Findable.ByUserId -> userId.toKey()
-                is UsersDataSource.Findable.ByUsername -> username.toKey()
+                is Findable.ByUserId -> userByUserId(userId)
+                is Findable.ByUsername -> userByUsername(username)
             }
 
-        suspend fun RedisCoroutinesCommands<String, String>.getUser(findable: UsersDataSource.Findable): String? =
+        suspend fun RedisCoroutinesCommands<String, String>.getUser(findable: Findable): String? =
             get(findable.toKey())
 
         suspend fun RedisCoroutinesCommands<String, String>.setUser(user: User, userJson: String) {
-            set(user.userId.toKey(), userJson)
-            set(user.username.toKey(), userJson)
+            set(userByUserId(user.userId), userJson)
+            set(userByUsername(user.username), userJson)
         }
 
-        suspend fun RedisCoroutinesCommands<String, String>.deleteUser(findable: UsersDataSource.Findable) {
+        suspend fun RedisCoroutinesCommands<String, String>.deleteUser(findable: Findable) {
             del(findable.toKey())
         }
     }
