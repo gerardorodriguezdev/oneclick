@@ -70,7 +70,7 @@ dependencies {
     implementation(projects.shared.timeProvider)
     implementation(projects.shared.dispatchers)
     implementation(projects.shared.security)
-    implementation(projects.server.shared.core)
+    implementation(projects.server.shared.utils)
     implementation(projects.server.shared.auth)
     implementation(projects.server.shared.db)
     consumeWasmWebsite(projects.client.apps.user.core.path)

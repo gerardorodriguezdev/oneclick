@@ -1,4 +1,4 @@
-package oneclick.server.shared.core
+package oneclick.server.shared.utils
 
 import io.ktor.http.*
 import io.ktor.server.request.*
