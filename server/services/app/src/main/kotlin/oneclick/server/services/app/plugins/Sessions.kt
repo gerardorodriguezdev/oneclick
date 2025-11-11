@@ -3,7 +3,7 @@ package oneclick.server.services.app.plugins
 import io.ktor.server.application.*
 import io.ktor.server.sessions.*
 import oneclick.server.services.app.plugins.authentication.AuthenticationType
-import oneclick.server.shared.auth.security.UserJwtProvider
+import oneclick.server.shared.authentication.security.UserJwtProvider
 import oneclick.shared.contracts.auth.models.Jwt
 
 internal fun Application.configureSessions() {

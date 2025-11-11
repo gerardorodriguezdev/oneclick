@@ -1,8 +1,8 @@
 package oneclick.server.services.app.plugins.authentication
 
 import kotlinx.serialization.Serializable
-import oneclick.server.shared.auth.security.HomeJwtProvider
-import oneclick.server.shared.auth.security.UserJwtProvider
+import oneclick.server.shared.authentication.security.HomeJwtProvider
+import oneclick.server.shared.authentication.security.UserJwtProvider
 import oneclick.shared.contracts.core.models.Uuid
 
 internal sealed interface JwtCredentials {

@@ -13,7 +13,7 @@ import oneclick.server.services.app.repositories.DefaultHomesRepository
 import oneclick.server.services.app.repositories.DefaultUsersRepository
 import oneclick.server.services.app.repositories.HomesRepository
 import oneclick.server.services.app.repositories.UsersRepository
-import oneclick.server.shared.auth.security.*
+import oneclick.server.shared.authentication.security.*
 import oneclick.server.shared.db.databaseDriver
 import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.dispatchers.platform.dispatchersProvider

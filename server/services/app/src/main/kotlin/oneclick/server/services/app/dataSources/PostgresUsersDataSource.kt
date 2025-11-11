@@ -6,7 +6,7 @@ import oneclick.server.services.app.dataSources.base.UsersDataSource
 import oneclick.server.services.app.dataSources.models.User
 import oneclick.server.services.app.postgresql.AppDatabase
 import oneclick.server.services.app.postgresql.Users
-import oneclick.server.shared.auth.models.HashedPassword
+import oneclick.server.shared.authentication.models.HashedPassword
 import oneclick.shared.contracts.auth.models.Username
 import oneclick.shared.contracts.core.models.Uuid
 import oneclick.shared.dispatchers.platform.DispatchersProvider

@@ -14,9 +14,9 @@ import oneclick.server.services.app.dataSources.base.InvalidJwtDataSource
 import oneclick.server.services.app.plugins.authentication.AuthenticationConstants.JWT_REALM
 import oneclick.server.services.app.plugins.authentication.JwtCredentials.HomeJwtCredentials
 import oneclick.server.services.app.plugins.authentication.JwtCredentials.UserJwtCredentials
-import oneclick.server.shared.auth.models.JwtId.Companion.toJwtId
-import oneclick.server.shared.auth.security.HomeJwtProvider
-import oneclick.server.shared.auth.security.UserJwtProvider
+import oneclick.server.shared.authentication.models.JwtId.Companion.toJwtId
+import oneclick.server.shared.authentication.security.HomeJwtProvider
+import oneclick.server.shared.authentication.security.UserJwtProvider
 import oneclick.shared.contracts.auth.models.Jwt
 import oneclick.shared.contracts.core.models.Uuid
 import oneclick.shared.contracts.core.models.Uuid.Companion.toUuid

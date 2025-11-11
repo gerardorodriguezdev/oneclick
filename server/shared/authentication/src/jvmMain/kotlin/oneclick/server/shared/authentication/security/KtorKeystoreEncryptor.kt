@@ -1,4 +1,4 @@
-package oneclick.server.shared.auth.security
+package oneclick.server.shared.authentication.security
 
 import io.ktor.util.*
 import oneclick.shared.security.SecureRandomProvider

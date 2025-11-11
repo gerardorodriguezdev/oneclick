@@ -1,4 +1,4 @@
-package oneclick.server.shared.auth.security
+package oneclick.server.shared.authentication.security
 
 import oneclick.shared.contracts.core.models.Uuid
 import java.util.*

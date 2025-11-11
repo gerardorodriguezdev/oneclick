@@ -65,6 +65,6 @@ include(
     "server:services:app",
     "server:services:mock",
     "server:shared:utils",
-    "server:shared:auth",
+    "server:shared:authentication",
     "server:shared:db",
 )

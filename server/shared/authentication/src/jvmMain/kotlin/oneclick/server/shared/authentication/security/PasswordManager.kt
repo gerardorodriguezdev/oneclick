@@ -1,7 +1,7 @@
-package oneclick.server.shared.auth.security
+package oneclick.server.shared.authentication.security
 
 import at.favre.lib.crypto.bcrypt.BCrypt
-import oneclick.server.shared.auth.models.HashedPassword
+import oneclick.server.shared.authentication.models.HashedPassword
 import oneclick.shared.contracts.auth.models.Password
 import oneclick.shared.security.SecureRandomProvider
 

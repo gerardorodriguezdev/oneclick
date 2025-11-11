@@ -6,8 +6,8 @@ import io.ktor.server.routing.*
 import oneclick.server.services.app.dataSources.base.UsersDataSource
 import oneclick.server.services.app.repositories.HomesRepository
 import oneclick.server.services.app.repositories.UsersRepository
-import oneclick.server.shared.auth.security.HomeJwtProvider
-import oneclick.server.shared.auth.security.PasswordManager
+import oneclick.server.shared.authentication.security.HomeJwtProvider
+import oneclick.server.shared.authentication.security.PasswordManager
 import oneclick.server.shared.utils.clientType
 import oneclick.shared.contracts.auth.models.Jwt
 import oneclick.shared.contracts.auth.models.requests.LoginRequest.HomeRequestLoginRequest

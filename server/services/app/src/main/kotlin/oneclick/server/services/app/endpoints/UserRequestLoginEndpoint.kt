@@ -7,9 +7,9 @@ import io.ktor.server.sessions.*
 import oneclick.server.services.app.dataSources.base.UsersDataSource
 import oneclick.server.services.app.dataSources.models.User
 import oneclick.server.services.app.repositories.UsersRepository
-import oneclick.server.shared.auth.security.PasswordManager
-import oneclick.server.shared.auth.security.UserJwtProvider
-import oneclick.server.shared.auth.security.UuidProvider
+import oneclick.server.shared.authentication.security.PasswordManager
+import oneclick.server.shared.authentication.security.UserJwtProvider
+import oneclick.server.shared.authentication.security.UuidProvider
 import oneclick.server.shared.utils.clientType
 import oneclick.shared.contracts.auth.models.Jwt
 import oneclick.shared.contracts.auth.models.Password

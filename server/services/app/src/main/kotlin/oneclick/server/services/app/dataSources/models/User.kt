@@ -1,7 +1,7 @@
 package oneclick.server.services.app.dataSources.models
 
 import kotlinx.serialization.Serializable
-import oneclick.server.shared.auth.models.HashedPassword
+import oneclick.server.shared.authentication.models.HashedPassword
 import oneclick.shared.contracts.auth.models.Username
 import oneclick.shared.contracts.core.models.Uuid
 

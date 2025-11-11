@@ -1,11 +1,11 @@
-package oneclick.server.shared.auth.security.base
+package oneclick.server.shared.authentication.security.base
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.JWTVerifier
 import com.auth0.jwt.algorithms.Algorithm
 import com.auth0.jwt.interfaces.Verification
-import oneclick.server.shared.auth.models.JwtId
-import oneclick.server.shared.auth.security.UuidProvider
+import oneclick.server.shared.authentication.models.JwtId
+import oneclick.server.shared.authentication.security.UuidProvider
 import oneclick.shared.contracts.auth.models.Jwt
 import oneclick.shared.contracts.core.models.Uuid
 import oneclick.shared.contracts.core.models.Uuid.Companion.toUuid
