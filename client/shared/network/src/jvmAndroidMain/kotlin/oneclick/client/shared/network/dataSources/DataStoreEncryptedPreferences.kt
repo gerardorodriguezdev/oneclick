@@ -15,6 +15,7 @@ import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.logging.AppLogger
 import oneclick.shared.security.encryption.base.Encryptor
 import java.io.File
+import kotlin.io.encoding.Base64
 
 class DataStoreEncryptedPreferences(
     preferencesFileProvider: () -> File,
@@ -34,7 +35,7 @@ class DataStoreEncryptedPreferences(
             .map { preferences ->
                 val key = stringPreferencesKey(key)
                 val value = preferences[key] ?: return@map null
-                val valueByteArray = value.toByteArray(Charsets.UTF_8)
+                val valueByteArray = Base64.decode(value)
                 val decryptedValueString = encryptor.decrypt(valueByteArray).getOrThrow()
                 val decodedValue = Json.decodeFromString(serializer, decryptedValueString)
                 decodedValue
@@ -57,7 +58,7 @@ class DataStoreEncryptedPreferences(
                     val valueString = Json.encodeToString(serializer, value)
                     val encryptedValue = encryptor.encrypt(valueString).getOrThrow()
                     val key = stringPreferencesKey(key)
-                    preferences[key] = encryptedValue.toString(Charsets.UTF_8)
+                    preferences[key] = Base64.encode(encryptedValue)
                 }
 
             true
