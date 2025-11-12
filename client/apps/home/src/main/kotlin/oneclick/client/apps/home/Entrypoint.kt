@@ -75,7 +75,7 @@ internal class Entrypoint(
     }
 
     private companion object {
-        const val SYNC_INTERVAL = 1_000L
+        const val SYNC_INTERVAL = 5000L
         const val STARTING_SCAN_INTERVAL = 1_000L
     }
 }

@@ -14,7 +14,8 @@ SELECT EXISTS(
 
 insertHome:
 INSERT INTO homes(user_id, home_id)
-VALUES ?;
+VALUES ?
+ON CONFLICT DO NOTHING;
 
 homesByUserId:
 SELECT *
