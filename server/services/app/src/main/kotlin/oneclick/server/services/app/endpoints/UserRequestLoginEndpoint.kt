@@ -1,6 +1,7 @@
 package oneclick.server.services.app.endpoints
 
 import io.ktor.http.*
+import io.ktor.server.application.log
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
@@ -31,20 +32,26 @@ internal fun Routing.userRequestLoginEndpoint(
         val user = usersRepository.user(UsersDataSource.Findable.ByUsername(username))
 
         when {
-            user == null -> registerUser(
-                username = username,
-                password = password,
-                passwordManager = passwordManager,
-                uuidProvider = uuidProvider,
-                userJwtProvider = userJwtProvider,
-                usersRepository = usersRepository,
-                clientType = clientType,
-            )
+            user == null -> {
+                call.application.log.debug("Registrable user")
+                registerUser(
+                    username = username,
+                    password = password,
+                    passwordManager = passwordManager,
+                    uuidProvider = uuidProvider,
+                    userJwtProvider = userJwtProvider,
+                    usersRepository = usersRepository,
+                    clientType = clientType,
+                )
+            }
 
             !passwordManager.verifyPassword(
                 password = password,
                 hashedPassword = user.hashedPassword
-            ) -> call.respond(HttpStatusCode.Unauthorized)
+            ) -> {
+                call.application.log.debug("Invalid password")
+                call.respond(HttpStatusCode.Unauthorized)
+            }
 
             else -> respondJwt(jwt = userJwtProvider.jwt(user.userId), clientType = clientType)
         }
@@ -68,6 +75,7 @@ private suspend fun RoutingContext.registerUser(
 
     val isUserSaved = usersRepository.saveUser(newUser)
     if (!isUserSaved) {
+        call.application.log.debug("User not saved")
         call.respond(HttpStatusCode.InternalServerError)
         return
     }
@@ -89,6 +97,9 @@ private suspend fun RoutingContext.respondJwt(jwt: Jwt, clientType: ClientType) 
             call.respond(HttpStatusCode.OK)
         }
 
-        else -> call.respond(HttpStatusCode.BadRequest)
+        else -> {
+            call.application.log.debug("Invalid client type")
+            call.respond(HttpStatusCode.BadRequest)
+        }
     }
 }

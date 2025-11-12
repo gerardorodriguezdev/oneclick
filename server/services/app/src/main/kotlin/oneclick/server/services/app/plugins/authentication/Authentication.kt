@@ -77,6 +77,7 @@ private fun AuthenticationConfig.registerUserSessionAuthentication(
         }
 
         challenge {
+            call.application.log.debug("Invalid session")
             call.respond(HttpStatusCode.Unauthorized)
         }
     }
@@ -100,6 +101,7 @@ private fun AuthenticationConfig.registerUserJwtAuthentication(
         }
 
         challenge { _, _ ->
+            call.application.log.debug("Invalid user jwt")
             call.respond(HttpStatusCode.Unauthorized)
         }
     }
@@ -123,6 +125,7 @@ private fun AuthenticationConfig.registerHomeJwtAuthentication(
         }
 
         challenge { _, _ ->
+            call.application.log.debug("Invalid home jwt")
             call.respond(HttpStatusCode.Unauthorized)
         }
     }

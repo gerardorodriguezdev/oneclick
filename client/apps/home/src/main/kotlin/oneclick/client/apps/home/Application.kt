@@ -90,5 +90,5 @@ private data class Environment(
     val keyStorePassword: String = System.getenv("KEYSTORE_PASSWORD"),
     val protocol: String = System.getenv("PROTOCOL"),
     val host: String = System.getenv("HOST"),
-    val port: Int = System.getenv("PORT").toInt(),
+    val port: Int? = System.getenv("PORT")?.toIntOrNull(),
 )

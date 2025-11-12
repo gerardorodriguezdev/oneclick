@@ -17,15 +17,18 @@ internal object CommandsParser {
     private const val ARG_SEPARATOR = "--"
     private const val ARG_VALUE_SEPARATOR = "="
 
-    fun parse(string: String): CommandParserResult {
-        val stringWithoutSpaces = string.replace(" ", "")
-        val entries = stringWithoutSpaces.split(ARG_SEPARATOR)
+    fun parse(string: String): CommandParserResult =
+        try {
+            val stringWithoutSpaces = string.replace(" ", "")
+            val entries = stringWithoutSpaces.split(ARG_SEPARATOR)
 
-        val keyString = entries.firstOrNull() ?: return Error("No command key found")
-        val argumentsStrings = entries.drop(1)
+            val keyString = entries.firstOrNull() ?: return Error("No command key found")
+            val argumentsStrings = entries.drop(1)
 
-        return toCommand(keyString = keyString, argumentsEntries = argumentsStrings.toArgumentEntries())
-    }
+            toCommand(keyString = keyString, argumentsEntries = argumentsStrings.toArgumentEntries())
+        } catch (error: Exception) {
+            Error(message = "Exception '${error.stackTraceToString()}' while parsing command")
+        }
 
     private fun List<String>.toArgumentEntries(): Map<String, Entry> {
         val argumentsEntries = map { entryString ->

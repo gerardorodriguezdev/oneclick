@@ -1,6 +1,7 @@
 package oneclick.server.services.app.endpoints
 
 import io.ktor.http.*
+import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import oneclick.server.services.app.dataSources.base.UsersDataSource
@@ -29,6 +30,7 @@ internal fun Routing.homeRequestLoginEndpoint(
         val clientType = call.request.clientType
         val user = usersRepository.user(UsersDataSource.Findable.ByUsername(username))
         if (user == null) {
+            application.log.debug("User not found")
             call.respond(HttpStatusCode.BadRequest)
             return@post
         }
@@ -39,20 +41,28 @@ internal fun Routing.homeRequestLoginEndpoint(
             !passwordManager.verifyPassword(
                 password = password,
                 hashedPassword = user.hashedPassword
-            ) -> call.respond(HttpStatusCode.Unauthorized)
+            ) -> {
+                application.log.debug("Invalid password")
+                call.respond(HttpStatusCode.Unauthorized)
+            }
 
-            home == null -> registerHome(
-                userId = user.userId,
-                clientType = clientType,
-                homesRepository = homesRepository,
-                homeJwtProvider = homeJwtProvider,
-                homeId = homeId,
-            )
+            home == null -> {
+                application.log.debug("Registrable home")
+                registerHome(
+                    userId = user.userId,
+                    clientType = clientType,
+                    homesRepository = homesRepository,
+                    homeJwtProvider = homeJwtProvider,
+                    homeId = homeId,
+                )
+            }
 
-            else -> respondJwt(
-                jwt = homeJwtProvider.jwt(userId = user.userId, homeId = home.id),
-                clientType = clientType
-            )
+            else -> {
+                respondJwt(
+                    jwt = homeJwtProvider.jwt(userId = user.userId, homeId = home.id),
+                    clientType = clientType
+                )
+            }
         }
     }
 }
@@ -71,6 +81,7 @@ private suspend fun RoutingContext.registerHome(
 
     val isHomeSaved = homesRepository.saveHome(userId = userId, home = newHome)
     if (!isHomeSaved) {
+        call.application.log.debug("Home not saved")
         call.respond(HttpStatusCode.InternalServerError)
         return
     }
@@ -87,6 +98,9 @@ private suspend fun RoutingContext.respondJwt(jwt: Jwt, clientType: ClientType) 
             )
         }
 
-        else -> call.respond(HttpStatusCode.BadRequest)
+        else -> {
+            call.application.log.debug("Invalid client")
+            call.respond(HttpStatusCode.BadRequest)
+        }
     }
 }

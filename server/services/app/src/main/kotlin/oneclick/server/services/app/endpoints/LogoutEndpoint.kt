@@ -1,6 +1,7 @@
 package oneclick.server.services.app.endpoints
 
 import io.ktor.http.*
+import io.ktor.server.application.log
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
@@ -17,6 +18,7 @@ internal fun Routing.logoutEndpoint(invalidJwtDataSource: InvalidJwtDataSource) 
 
             val isInvalidJwtSaved = invalidJwtDataSource.saveInvalidJwt(jwtCredentials)
             if (!isInvalidJwtSaved) {
+                call.application.log.debug("Invalid jwt not saved")
                 call.respond(HttpStatusCode.InternalServerError)
                 return@get
             }

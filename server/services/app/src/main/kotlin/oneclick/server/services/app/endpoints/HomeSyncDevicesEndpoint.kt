@@ -1,6 +1,7 @@
 package oneclick.server.services.app.endpoints
 
 import io.ktor.http.*
+import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import oneclick.server.services.app.plugins.authentication.homeAuthentication
@@ -21,6 +22,7 @@ internal fun Routing.homeSyncDevicesEndpoint(homesRepository: HomesRepository) {
             if (isHomeSaved) {
                 call.respond(HttpStatusCode.OK)
             } else {
+                call.application.log.debug("Home not saved")
                 call.respond(HttpStatusCode.InternalServerError)
             }
         }
