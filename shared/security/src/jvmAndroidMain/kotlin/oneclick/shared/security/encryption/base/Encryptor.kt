@@ -20,7 +20,7 @@ abstract class BaseEncryptor(
     override fun encrypt(input: String): Result<ByteArray> =
         runCatching {
             val secretKey = secretKey()
-            val ivBytes = ByteArray(secretKey.encoded.size)
+            val ivBytes = ByteArray(IV_SIZE)
             val secureRandom = secureRandomProvider.secureRandom()
             secureRandom.nextBytes(ivBytes)
             val ivSpec = IvParameterSpec(ivBytes)
@@ -34,10 +34,10 @@ abstract class BaseEncryptor(
 
     override fun decrypt(input: ByteArray): Result<String> =
         runCatching {
-            val iv = input.sliceArray(0 until 16)
-            val ivSpec = IvParameterSpec(iv)
-            val encryptedBytes = input.sliceArray(16 until input.size)
             val secretKey = secretKey()
+            val iv = input.sliceArray(0 until IV_SIZE)
+            val ivSpec = IvParameterSpec(iv)
+            val encryptedBytes = input.sliceArray(IV_SIZE until input.size)
 
             val cipher = cipher()
             cipher.init(Cipher.DECRYPT_MODE, secretKey, ivSpec)
@@ -47,4 +47,8 @@ abstract class BaseEncryptor(
         }
 
     private fun cipher(): Cipher = Cipher.getInstance(transformation)
+
+    private companion object {
+        const val IV_SIZE = 16
+    }
 }
