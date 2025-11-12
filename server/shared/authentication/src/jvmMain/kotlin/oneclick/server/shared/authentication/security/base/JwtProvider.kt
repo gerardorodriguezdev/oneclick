@@ -21,9 +21,8 @@ abstract class BaseEncryptedJwtProvider(
     private val timeProvider: TimeProvider,
     private val encryptor: Encryptor,
     private val uuidProvider: UuidProvider,
+    verifierSetup: Verification.() -> Verification
 ) {
-    abstract val verifierSetup: Verification.() -> Verification
-
     val jwtVerifier: JWTVerifier = JWT
         .require(Algorithm.HMAC256(secretSignKey))
         .withAudience(audience)

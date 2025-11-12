@@ -1,6 +1,5 @@
 package oneclick.server.shared.authentication.security
 
-import com.auth0.jwt.interfaces.Verification
 import oneclick.server.shared.authentication.security.base.BaseEncryptedJwtProvider
 import oneclick.shared.contracts.auth.models.Jwt
 import oneclick.shared.contracts.core.models.Uuid
@@ -22,12 +21,11 @@ class HomeJwtProvider(
     timeProvider = timeProvider,
     encryptor = encryptor,
     uuidProvider = uuidProvider,
-) {
-    override val verifierSetup: Verification.() -> Verification = {
+    verifierSetup = {
         withClaimPresence(USER_ID_CLAIM)
         withClaimPresence(HOME_ID_CLAIM)
     }
-
+) {
     fun jwt(userId: Uuid, homeId: Uuid): Jwt =
         jwt(
             claims = buildMap {
