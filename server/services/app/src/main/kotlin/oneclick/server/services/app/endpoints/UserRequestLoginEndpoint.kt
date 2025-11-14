@@ -28,7 +28,13 @@ internal fun Routing.userRequestLoginEndpoint(
 ) {
     post(ClientEndpoint.USER_REQUEST_LOGIN.route) { userRequestLoginRequest: UserRequestLoginRequest ->
         val (username, password) = userRequestLoginRequest
+
         val clientType = call.request.clientType
+        if (clientType == ClientType.DESKTOP) {
+            respondInvalidClientType()
+            return@post
+        }
+
         val user = usersRepository.user(UsersDataSource.Findable.ByUsername(username))
 
         when {
@@ -97,9 +103,11 @@ private suspend fun RoutingContext.respondJwt(jwt: Jwt, clientType: ClientType) 
             call.respond(HttpStatusCode.OK)
         }
 
-        else -> {
-            call.application.log.debug("Invalid client type")
-            call.respond(HttpStatusCode.BadRequest)
-        }
+        else -> respondInvalidClientType()
     }
+}
+
+private suspend fun RoutingContext.respondInvalidClientType() {
+    call.application.log.debug("Invalid client type")
+    call.respond(HttpStatusCode.BadRequest)
 }

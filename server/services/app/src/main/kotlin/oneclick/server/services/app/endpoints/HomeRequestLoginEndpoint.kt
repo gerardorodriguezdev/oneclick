@@ -27,7 +27,14 @@ internal fun Routing.homeRequestLoginEndpoint(
 ) {
     post(ClientEndpoint.HOME_REQUEST_LOGIN.route) { homeRequestLoginRequest: HomeRequestLoginRequest ->
         val (username, password, homeId) = homeRequestLoginRequest
+
         val clientType = call.request.clientType
+        if (clientType != ClientType.DESKTOP) {
+            application.log.debug("Invalid client type")
+            call.respond(HttpStatusCode.BadRequest)
+            return@post
+        }
+
         val user = usersRepository.user(UsersDataSource.Findable.ByUsername(username))
         if (user == null) {
             application.log.debug("User not found")
@@ -35,41 +42,34 @@ internal fun Routing.homeRequestLoginEndpoint(
             return@post
         }
 
+        val isPasswordValid = !passwordManager.verifyPassword(
+            password = password,
+            hashedPassword = user.hashedPassword
+        )
+        if (!isPasswordValid) {
+            application.log.debug("Invalid password")
+            call.respond(HttpStatusCode.Unauthorized)
+        }
+
         val home = homesRepository.home(userId = user.userId, homeId = homeId)
-
-        when {
-            !passwordManager.verifyPassword(
-                password = password,
-                hashedPassword = user.hashedPassword
-            ) -> {
-                application.log.debug("Invalid password")
-                call.respond(HttpStatusCode.Unauthorized)
-            }
-
-            home == null -> {
-                application.log.debug("Registrable home")
-                registerHome(
-                    userId = user.userId,
-                    clientType = clientType,
-                    homesRepository = homesRepository,
-                    homeJwtProvider = homeJwtProvider,
-                    homeId = homeId,
-                )
-            }
-
-            else -> {
-                respondJwt(
-                    jwt = homeJwtProvider.jwt(userId = user.userId, homeId = home.id),
-                    clientType = clientType
-                )
-            }
+        if (home == null) {
+            application.log.debug("Registrable home")
+            registerHome(
+                userId = user.userId,
+                homesRepository = homesRepository,
+                homeJwtProvider = homeJwtProvider,
+                homeId = homeId,
+            )
+        } else {
+            respondJwt(
+                jwt = homeJwtProvider.jwt(userId = user.userId, homeId = homeId),
+            )
         }
     }
 }
 
 private suspend fun RoutingContext.registerHome(
     userId: Uuid,
-    clientType: ClientType,
     homesRepository: HomesRepository,
     homeJwtProvider: HomeJwtProvider,
     homeId: Uuid,
@@ -87,20 +87,11 @@ private suspend fun RoutingContext.registerHome(
     }
 
     val jwt = homeJwtProvider.jwt(userId = userId, homeId = newHome.id)
-    respondJwt(jwt = jwt, clientType = clientType)
+    respondJwt(jwt = jwt)
 }
 
-private suspend fun RoutingContext.respondJwt(jwt: Jwt, clientType: ClientType) {
-    when (clientType) {
-        ClientType.DESKTOP -> {
-            call.respond(
-                RequestLoginResponse(jwt = jwt)
-            )
-        }
-
-        else -> {
-            call.application.log.debug("Invalid client")
-            call.respond(HttpStatusCode.BadRequest)
-        }
-    }
+private suspend fun RoutingContext.respondJwt(jwt: Jwt) {
+    call.respond(
+        RequestLoginResponse(jwt = jwt)
+    )
 }
