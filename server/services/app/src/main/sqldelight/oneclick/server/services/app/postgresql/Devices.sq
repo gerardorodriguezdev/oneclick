@@ -8,7 +8,9 @@ CREATE INDEX IF NOT EXISTS devices_home_id_idx ON devices(home_id);
 
 insertDevice:
 INSERT INTO devices(home_id, device_id, device)
-VALUES ?;
+VALUES ?
+ON CONFLICT(home_id, device_id)
+DO UPDATE SET device = EXCLUDED.device;
 
 devicesByHomeId:
 SELECT *

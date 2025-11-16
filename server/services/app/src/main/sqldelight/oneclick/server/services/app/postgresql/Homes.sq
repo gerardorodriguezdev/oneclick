@@ -7,7 +7,8 @@ CREATE INDEX IF NOT EXISTS homes_user_id_idx ON homes(user_id);
 
 insertHome:
 INSERT INTO homes(user_id, home_id)
-VALUES ?;
+VALUES ?
+ON CONFLICT DO NOTHING;
 
 homesByUserId:
 SELECT *

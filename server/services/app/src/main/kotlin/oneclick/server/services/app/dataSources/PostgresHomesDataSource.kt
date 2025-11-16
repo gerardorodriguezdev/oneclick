@@ -35,7 +35,7 @@ internal class PostgresHomesDataSource(
                     value__ = currentPageIndex.value.toLong()
                 ).executeAsList()
 
-                val (homes, devices) = entries.toBaseEntries().normalizeHomes()
+                val (homes, devices) = entries.homesByUserIdToEntries().normalizeHomes()
                 PaginationResult(
                     value = HomesEntry(
                         userId = userId,
@@ -97,7 +97,7 @@ internal class PostgresHomesDataSource(
                     home_id = homeId.value,
                 ).executeAsList()
 
-                val (homes, devices) = entries.toBaseEntries().normalizeHomes()
+                val (homes, devices) = entries.homeByUserIdAndHomeIdToEntries().normalizeHomes()
                 toHomes(homes, devices).firstOrNull()
             } catch (error: Exception) {
                 logger.error("Error getting home", error)
@@ -108,12 +108,10 @@ internal class PostgresHomesDataSource(
     override suspend fun saveHome(userId: Uuid, home: Home): Boolean =
         withContext(dispatchersProvider.io()) {
             try {
-                //TODO: Update home
                 database.homesQueries.insertHome(
                     Homes(user_id = userId.value, home_id = home.id.value)
                 )
 
-                //TODO: Update home
                 home.devices.map { device ->
                     async {
                         val devices = Devices(
@@ -169,7 +167,7 @@ internal class PostgresHomesDataSource(
             return NormalizedHomes(homes, devices)
         }
 
-        fun List<HomesByUserId>.toBaseEntries(): List<Entry> =
+        fun List<HomesByUserId>.homesByUserIdToEntries(): List<Entry> =
             map { entry ->
                 Entry(
                     userId = entry.user_id,
@@ -179,7 +177,7 @@ internal class PostgresHomesDataSource(
                 )
             }
 
-        fun List<HomeByUserIdAndHomeId>.toBaseEntries(): List<Entry> =
+        fun List<HomeByUserIdAndHomeId>.homeByUserIdAndHomeIdToEntries(): List<Entry> =
             map { entry ->
                 Entry(
                     userId = entry.user_id,
