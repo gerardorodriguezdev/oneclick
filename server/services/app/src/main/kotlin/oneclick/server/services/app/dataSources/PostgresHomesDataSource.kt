@@ -9,10 +9,7 @@ import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import oneclick.server.services.app.dataSources.base.HomesDataSource
 import oneclick.server.services.app.dataSources.models.HomesEntry
-import oneclick.server.services.app.postgresql.AppDatabase
-import oneclick.server.services.app.postgresql.Devices
-import oneclick.server.services.app.postgresql.Homes
-import oneclick.server.services.app.postgresql.HomesByUserId
+import oneclick.server.services.app.postgresql.*
 import oneclick.shared.contracts.core.models.*
 import oneclick.shared.contracts.core.models.NonNegativeInt.Companion.toNonNegativeInt
 import oneclick.shared.contracts.homes.models.Device
@@ -77,7 +74,6 @@ internal class PostgresHomesDataSource(
                         Json.decodeFromString<Device>(device.device)
                     } catch (error: SerializationException) {
                         logger.error("Error deserializing device", error)
-                        database.devicesQueries.deleteDevice(device.device_id)
                         null
                     }
                 }
@@ -93,26 +89,16 @@ internal class PostgresHomesDataSource(
             ?.toNonNegativeInt()
             ?: NonNegativeInt.zero
 
-    override suspend fun hasHome(
-        userId: Uuid,
-        homeId: Uuid
-    ): Boolean =
-        database.homesQueries.hasHome(
-            home_id = homeId.value,
-            user_id = userId.value,
-        ).executeAsOne()
-
-    override suspend fun home(homeId: Uuid): Home? =
+    override suspend fun home(userId: Uuid, homeId: Uuid): Home? =
         withContext(dispatchersProvider.io()) {
             try {
-                val entries = database.devicesQueries.devicesByHomeId(
+                val entries = database.homesQueries.homeByUserIdAndHomeId(
+                    user_id = userId.value,
                     home_id = homeId.value,
                 ).executeAsList()
-                val devices = toDevices(entries)
-                Home(
-                    id = homeId,
-                    devices = devices,
-                )
+
+                val (homes, devices) = entries.toBaseEntries().normalizeHomes()
+                toHomes(homes, devices).firstOrNull()
             } catch (error: Exception) {
                 logger.error("Error getting home", error)
                 null
@@ -122,10 +108,12 @@ internal class PostgresHomesDataSource(
     override suspend fun saveHome(userId: Uuid, home: Home): Boolean =
         withContext(dispatchersProvider.io()) {
             try {
+                //TODO: Update home
                 database.homesQueries.insertHome(
                     Homes(user_id = userId.value, home_id = home.id.value)
                 )
 
+                //TODO: Update home
                 home.devices.map { device ->
                     async {
                         val devices = Devices(
@@ -182,6 +170,16 @@ internal class PostgresHomesDataSource(
         }
 
         fun List<HomesByUserId>.toBaseEntries(): List<Entry> =
+            map { entry ->
+                Entry(
+                    userId = entry.user_id,
+                    homeId = entry.home_id,
+                    deviceId = entry.device_id,
+                    device = entry.device,
+                )
+            }
+
+        fun List<HomeByUserIdAndHomeId>.toBaseEntries(): List<Entry> =
             map { entry ->
                 Entry(
                     userId = entry.user_id,

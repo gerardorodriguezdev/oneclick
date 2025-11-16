@@ -14,9 +14,7 @@ internal interface HomesDataSource {
         currentPageIndex: NonNegativeInt
     ): PaginationResult<HomesEntry>?
 
-    suspend fun hasHome(userId: Uuid, homeId: Uuid): Boolean
-
-    suspend fun home(homeId: Uuid): Home?
+    suspend fun home(userId: Uuid, homeId: Uuid): Home?
 
     suspend fun saveHome(userId: Uuid, home: Home): Boolean
 }

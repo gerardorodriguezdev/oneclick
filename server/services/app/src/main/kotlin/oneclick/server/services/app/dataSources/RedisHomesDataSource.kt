@@ -6,7 +6,6 @@ import io.lettuce.core.api.coroutines.RedisCoroutinesCommands
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
 import kotlinx.coroutines.withContext
-import kotlinx.serialization.SerializationException
 import kotlinx.serialization.json.Json
 import oneclick.server.services.app.dataSources.base.HomesDataSource
 import oneclick.server.services.app.dataSources.models.HomesEntry
@@ -45,35 +44,17 @@ internal class RedisHomesDataSource(
                     pageIndex = NonNegativeInt.unsafe(currentPageIndex.toInt() + 1),
                     totalPages = NonNegativeInt.unsafe(syncCommands.totalHomes(userId)),
                 )
-            } catch (error: SerializationException) {
-                logger.error("Error deserializing homes", error)
-                syncCommands.deleteHomes(userId)
-                null
             } catch (error: Exception) {
                 logger.error("Error getting homes", error)
                 null
             }
         }
 
-    override suspend fun hasHome(userId: Uuid, homeId: Uuid): Boolean =
+    override suspend fun home(userId: Uuid, homeId: Uuid): Home? =
         withContext(dispatchersProvider.io()) {
             try {
-                syncCommands.hasHome(userId = userId, homeId = homeId)
-            } catch (error: Exception) {
-                logger.error("Error checking home existence", error)
-                false
-            }
-        }
-
-    override suspend fun home(homeId: Uuid): Home? =
-        withContext(dispatchersProvider.io()) {
-            try {
-                val homeString = syncCommands.home(homeId) ?: return@withContext null
+                val homeString = syncCommands.home(userId = userId, homeId = homeId) ?: return@withContext null
                 Json.decodeFromString<Home>(homeString)
-            } catch (error: SerializationException) {
-                logger.error("Error deserializing homes", error)
-                syncCommands.deleteHomes(homeId)
-                null
             } catch (error: Exception) {
                 logger.error("Error getting home", error)
                 null
@@ -92,33 +73,31 @@ internal class RedisHomesDataSource(
         }
 
     private companion object {
-        fun homeByUserId(userId: Uuid): String = "home:userId:${userId.value}"
-        fun homeByHomeId(homeId: Uuid): String = "home:homeId:${homeId.value}"
-        fun homeByUserIdAndHomeId(userId: Uuid, homeId: Uuid): String =
-            "home:userId:${userId.value}:homeId:${homeId.value}"
+        fun userHomeIdsByUserIdKey(userId: Uuid): String = "userHomes:userId:${userId.value}"
+        fun homeByHomeIdKey(homeId: Uuid): String = "home:homeId:${homeId.value}"
 
         suspend fun RedisCoroutinesCommands<String, String>.saveHome(userId: Uuid, homeId: Uuid, homeString: String) {
-            rpush(homeByUserId(userId), homeString)
-            set(homeByHomeId(homeId), homeString)
+            rpush(userHomeIdsByUserIdKey(userId), homeId.value)
+            set(homeByHomeIdKey(homeId), homeString)
         }
 
-        suspend fun RedisCoroutinesCommands<String, String>.deleteHomes(userId: Uuid) {
-            del(homeByUserId(userId))
+        suspend fun RedisCoroutinesCommands<String, String>.home(userId: Uuid, homeId: Uuid): String? {
+            val hasHome = lpos(userHomeIdsByUserIdKey(userId), homeId.value) ?: return null
+            return if (hasHome >= 0) {
+                get(homeByHomeIdKey(homeId))
+            } else {
+                null
+            }
         }
 
-        suspend fun RedisCoroutinesCommands<String, String>.deleteHome(homeId: Uuid) {
-            del(homeByHomeId(homeId))
+        suspend fun RedisCoroutinesCommands<String, String>.homes(userId: Uuid, start: Long, end: Long): List<String> {
+            val homeIds = lrange(userHomeIdsByUserIdKey(userId), start, end)
+            return homeIds.mapNotNull { homeId ->
+                get(homeByHomeIdKey(Uuid.unsafe(homeId)))
+            }
         }
-
-        suspend fun RedisCoroutinesCommands<String, String>.hasHome(userId: Uuid, homeId: Uuid): Boolean =
-            get(homeByUserIdAndHomeId(userId = userId, homeId = homeId)) != null
-
-        suspend fun RedisCoroutinesCommands<String, String>.home(homeId: Uuid): String? = get(homeByHomeId(homeId))
-
-        suspend fun RedisCoroutinesCommands<String, String>.homes(userId: Uuid, start: Long, end: Long): List<String> =
-            lrange(homeByUserId(userId), start, end).toList()
 
         suspend fun RedisCoroutinesCommands<String, String>.totalHomes(userId: Uuid): Int =
-            llen(homeByUserId(userId))?.toInt() ?: 0
+            llen(userHomeIdsByUserIdKey(userId))?.toInt() ?: 0
     }
 }

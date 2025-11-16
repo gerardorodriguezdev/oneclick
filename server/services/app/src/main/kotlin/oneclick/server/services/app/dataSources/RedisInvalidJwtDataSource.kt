@@ -21,7 +21,12 @@ internal class RedisInvalidJwtDataSource(
 
     override suspend fun saveInvalidJwt(jwtCredentials: JwtCredentials): Boolean =
         withContext(dispatchersProvider.io()) {
-            val reply = syncCommands.setex(jwtCredentials.jti.value, jwtCredentials.expirationTime, jwtCredentials.jti.value)
+            val reply =
+                syncCommands.setex(
+                    jwtCredentials.jti.value,
+                    jwtCredentials.expirationTime,
+                    jwtCredentials.jti.value,
+                )
             reply != null
         }
 }

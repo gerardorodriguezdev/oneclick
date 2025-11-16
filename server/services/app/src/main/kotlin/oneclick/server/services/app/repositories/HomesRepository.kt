@@ -46,27 +46,11 @@ internal class DefaultHomesRepository(
     }
 
     override suspend fun home(userId: Uuid, homeId: Uuid): Home? {
-        val hasHome = hasHome(userId = userId, homeId = homeId)
-        if (!hasHome) return null
-
-        val memoryHome = memoryHomesDataSource.home(homeId = homeId)
+        val memoryHome = memoryHomesDataSource.home(userId = userId, homeId = homeId)
         if (memoryHome != null) return memoryHome
 
-        val diskHome = diskHomesDataSource.home(homeId = homeId)
+        val diskHome = diskHomesDataSource.home(userId = userId, homeId = homeId)
         return diskHome
-    }
-
-    private suspend fun hasHome(
-        userId: Uuid,
-        homeId: Uuid
-    ): Boolean {
-        val hasHome = memoryHomesDataSource.hasHome(userId = userId, homeId = homeId)
-
-        return if (hasHome) {
-            true
-        } else {
-            diskHomesDataSource.hasHome(userId = userId, homeId = homeId)
-        }
     }
 
     override suspend fun saveHome(
