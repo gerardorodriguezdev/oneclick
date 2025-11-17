@@ -28,7 +28,7 @@
       },
       {
         "name": "USE_FAKE_DEVICES_CONTROLLER",
-        "value": false
+        "value": true
       }
     ]
   }

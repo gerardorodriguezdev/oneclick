@@ -4,6 +4,7 @@ import oneclick.client.apps.home.commands.DefaultCommandsHandler
 import oneclick.client.apps.home.dataSources.MemoryDevicesStore
 import oneclick.client.apps.home.dataSources.RemoteHomeDataSource
 import oneclick.client.apps.home.devices.BluetoothDevicesController
+import oneclick.client.apps.home.devices.FakeDevicesController
 import oneclick.client.shared.network.dataSources.DataStoreEncryptedPreferences
 import oneclick.client.shared.network.dataSources.LocalTokenDataSource
 import oneclick.client.shared.network.dataSources.RemoteAuthenticationDataSource
@@ -78,10 +79,17 @@ fun main() {
             appLogger = appLogger,
             homeId = environment.homeId,
         ),
-        devicesController = BluetoothDevicesController(
-            appLogger = appLogger,
-            devicesStore = devicesStore,
-        )
+        devicesController = if (environment.useFakeDevicesController) {
+            FakeDevicesController(
+                appLogger = appLogger,
+                devicesStore = devicesStore,
+            )
+        } else {
+            BluetoothDevicesController(
+                appLogger = appLogger,
+                devicesStore = devicesStore,
+            )
+        }
     ).start()
 }
 
@@ -92,4 +100,5 @@ private data class Environment(
     val protocol: String = System.getenv("PROTOCOL"),
     val host: String = System.getenv("HOST"),
     val port: Int? = System.getenv("PORT")?.toIntOrNull(),
+    val useFakeDevicesController: Boolean = System.getenv("USE_FAKE_DEVICES_CONTROLLER") == "true",
 )
