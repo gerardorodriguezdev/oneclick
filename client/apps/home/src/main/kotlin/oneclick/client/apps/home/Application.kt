@@ -94,7 +94,6 @@ fun main() {
         ),
         devicesController = if (environment.useFakeDevicesController) {
             FakeDevicesController(
-                appLogger = appLogger,
                 devicesStore = devicesStore,
             )
         } else {

@@ -18,7 +18,6 @@ internal interface DevicesController {
 }
 
 internal class FakeDevicesController(
-    private val appLogger: AppLogger,
     private val devicesStore: DevicesStore,
 ) : DevicesController {
     override suspend fun scan(): Boolean {

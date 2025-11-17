@@ -1,12 +1,13 @@
 package oneclick.server.services.app.endpoints
 
 import io.ktor.http.*
-import io.ktor.server.application.log
+import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
 import oneclick.server.services.app.dataSources.base.UsersDataSource
 import oneclick.server.services.app.dataSources.models.User
+import oneclick.server.services.app.plugins.apiRateLimit
 import oneclick.server.services.app.repositories.UsersRepository
 import oneclick.server.shared.authentication.security.PasswordManager
 import oneclick.server.shared.authentication.security.UserJwtProvider
@@ -26,40 +27,42 @@ internal fun Routing.userRequestLoginEndpoint(
     uuidProvider: UuidProvider,
     userJwtProvider: UserJwtProvider,
 ) {
-    post(ClientEndpoint.USER_REQUEST_LOGIN.route) { userRequestLoginRequest: UserRequestLoginRequest ->
-        val (username, password) = userRequestLoginRequest
+    apiRateLimit {
+        post(ClientEndpoint.USER_REQUEST_LOGIN.route) { userRequestLoginRequest: UserRequestLoginRequest ->
+            val (username, password) = userRequestLoginRequest
 
-        val clientType = call.request.clientType
-        if (clientType == ClientType.DESKTOP) {
-            respondInvalidClientType()
-            return@post
-        }
+            val clientType = call.request.clientType
+            if (clientType == ClientType.DESKTOP) {
+                respondInvalidClientType()
+                return@post
+            }
 
-        val user = usersRepository.user(UsersDataSource.Findable.ByUsername(username))
+            val user = usersRepository.user(UsersDataSource.Findable.ByUsername(username))
 
-        when {
-            user == null -> {
-                call.application.log.debug("Registrable user")
-                registerUser(
-                    username = username,
+            when {
+                user == null -> {
+                    call.application.log.debug("Registrable user")
+                    registerUser(
+                        username = username,
+                        password = password,
+                        passwordManager = passwordManager,
+                        uuidProvider = uuidProvider,
+                        userJwtProvider = userJwtProvider,
+                        usersRepository = usersRepository,
+                        clientType = clientType,
+                    )
+                }
+
+                !passwordManager.verifyPassword(
                     password = password,
-                    passwordManager = passwordManager,
-                    uuidProvider = uuidProvider,
-                    userJwtProvider = userJwtProvider,
-                    usersRepository = usersRepository,
-                    clientType = clientType,
-                )
-            }
+                    hashedPassword = user.hashedPassword
+                ) -> {
+                    call.application.log.debug("Invalid password")
+                    call.respond(HttpStatusCode.Unauthorized)
+                }
 
-            !passwordManager.verifyPassword(
-                password = password,
-                hashedPassword = user.hashedPassword
-            ) -> {
-                call.application.log.debug("Invalid password")
-                call.respond(HttpStatusCode.Unauthorized)
+                else -> respondJwt(jwt = userJwtProvider.jwt(user.userId), clientType = clientType)
             }
-
-            else -> respondJwt(jwt = userJwtProvider.jwt(user.userId), clientType = clientType)
         }
     }
 }
