@@ -4,6 +4,7 @@ plugins {
     id("oneclick.ios.library")
     alias(libs.plugins.kmp.compose.compiler)
     alias(libs.plugins.kmp.compose.jetbrains)
+    alias(libs.plugins.kmp.stability.analyzer)
 }
 
 androidLibrary {

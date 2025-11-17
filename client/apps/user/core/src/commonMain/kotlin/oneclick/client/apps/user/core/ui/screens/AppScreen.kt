@@ -151,17 +151,23 @@ private fun NavigationBarRoute.NavigationLabel() {
     )
 }
 
+@Immutable
 data class AppScreenState(
     val navigationBar: NavigationBar?,
     val snackbarState: SnackbarState?,
 ) {
+    @Immutable
     sealed interface NavigationBar {
         val selectedRoute: NavigationBarRoute
 
+        @Immutable
         data class Start(override val selectedRoute: NavigationBarRoute) : NavigationBar
+
+        @Immutable
         data class Bottom(override val selectedRoute: NavigationBarRoute) : NavigationBar
     }
 
+    @Immutable
     data class SnackbarState(
         val text: String,
         val isError: Boolean,

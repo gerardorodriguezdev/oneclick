@@ -23,7 +23,10 @@ import androidx.compose.ui.unit.dp
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
 import oneclick.client.apps.features.home.ui.screens.HomesListScreenState.UiHome.UiDevice
-import oneclick.client.apps.user.features.home.generated.resources.*
+import oneclick.client.apps.user.features.home.generated.resources.Res
+import oneclick.client.apps.user.features.home.generated.resources.homesListScreen_placeholder_noHomesFound
+import oneclick.client.apps.user.features.home.generated.resources.homesListScreen_waterSensor_level
+import oneclick.client.apps.user.features.home.generated.resources.homesListScreen_waterSensor_type
 import oneclick.client.shared.ui.components.Body
 import oneclick.client.shared.ui.components.Label
 import oneclick.client.shared.ui.components.ScreenBox
@@ -89,12 +92,6 @@ private fun DeviceCard(device: UiDevice) {
                 .fillMaxWidth()
                 .padding(Tokens.containerPadding),
         ) {
-            Body(
-                text = stringResource(
-                    Res.string.homesListScreen_deviceName_room,
-                )
-            )
-
             when (device) {
                 is UiDevice.UiWaterSensor -> WaterSensorInfo(device)
             }
