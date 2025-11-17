@@ -6,6 +6,7 @@ import oneclick.client.apps.home.commands.CommandsParser
 import oneclick.client.apps.home.commands.CommandsParser.CommandParserResult
 import oneclick.client.apps.home.dataSources.base.DevicesStore
 import oneclick.client.apps.home.dataSources.base.HomeDataSource
+import oneclick.client.apps.home.devices.DevicesController
 import oneclick.client.shared.network.models.UserLoggedResult
 import oneclick.client.shared.network.platform.AuthenticationDataSource
 import oneclick.shared.contracts.homes.models.requests.SyncDevicesRequest
@@ -18,7 +19,7 @@ internal class Entrypoint(
     private val devicesStore: DevicesStore,
     private val homeDataSource: HomeDataSource,
     private val devicesController: DevicesController,
-    private val logger: AppLogger,
+    private val appLogger: AppLogger,
     private val commandsHandler: CommandsHandler,
 ) {
     private var syncJob: Job? = null
@@ -59,7 +60,7 @@ internal class Entrypoint(
             val commandResult = CommandsParser.parse(commandString)
             when (commandResult) {
                 is CommandParserResult.Success -> commandsHandler.execute(commandResult.command)
-                is CommandParserResult.Error -> logger.e(commandResult.message)
+                is CommandParserResult.Error -> appLogger.e(commandResult.message)
             }
         }
     }

@@ -1,4 +1,4 @@
-package oneclick.client.apps.home
+package oneclick.client.apps.home.devices
 
 import com.juul.kable.Advertisement
 import com.juul.kable.State
@@ -7,7 +7,6 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withTimeoutOrNull
 import oneclick.client.apps.home.dataSources.base.DevicesStore
-import oneclick.client.apps.home.devices.WaterSensor
 import oneclick.shared.logging.AppLogger
 
 internal interface DevicesController {

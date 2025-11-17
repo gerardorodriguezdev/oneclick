@@ -3,6 +3,7 @@ package oneclick.client.apps.home
 import oneclick.client.apps.home.commands.DefaultCommandsHandler
 import oneclick.client.apps.home.dataSources.MemoryDevicesStore
 import oneclick.client.apps.home.dataSources.RemoteHomeDataSource
+import oneclick.client.apps.home.devices.BluetoothDevicesController
 import oneclick.client.shared.network.dataSources.DataStoreEncryptedPreferences
 import oneclick.client.shared.network.dataSources.LocalTokenDataSource
 import oneclick.client.shared.network.dataSources.RemoteAuthenticationDataSource
@@ -71,10 +72,10 @@ fun main() {
         authenticationDataSource = authenticationDataSource,
         devicesStore = devicesStore,
         homeDataSource = homeDataSource,
-        logger = appLogger,
+        appLogger = appLogger,
         commandsHandler = DefaultCommandsHandler(
             authenticationDataSource = authenticationDataSource,
-            logger = appLogger,
+            appLogger = appLogger,
             homeId = environment.homeId,
         ),
         devicesController = BluetoothDevicesController(

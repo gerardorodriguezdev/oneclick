@@ -21,7 +21,7 @@ internal interface CommandsHandler {
 
 internal class DefaultCommandsHandler(
     private val authenticationDataSource: AuthenticationDataSource,
-    private val logger: AppLogger,
+    private val appLogger: AppLogger,
     private val homeId: Uuid,
 ) : CommandsHandler {
 
@@ -43,16 +43,16 @@ internal class DefaultCommandsHandler(
             )
 
         when (result) {
-            is ValidLogin -> logger.i("Login successful")
-            is Error -> logger.e("Login failed")
+            is ValidLogin -> appLogger.i("Login successful")
+            is Error -> appLogger.e("Login failed")
         }
     }
 
     private suspend fun CommandsHandler.Command.Logout.handle() {
         val result = authenticationDataSource.logout()
         when (result) {
-            is LogoutResult.Success -> logger.i("Logout successful")
-            is LogoutResult.Error -> logger.e("Logout failed")
+            is LogoutResult.Success -> appLogger.i("Logout successful")
+            is LogoutResult.Error -> appLogger.e("Logout failed")
         }
     }
 }
