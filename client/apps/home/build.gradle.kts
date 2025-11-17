@@ -21,5 +21,6 @@ kotlin {
         implementation(projects.shared.logging)
         implementation(projects.shared.network)
         implementation(projects.shared.security)
+        implementation(projects.shared.timeProvider)
     }
 }

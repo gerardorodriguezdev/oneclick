@@ -5,6 +5,7 @@ import oneclick.client.apps.home.dataSources.MemoryDevicesStore
 import oneclick.client.apps.home.dataSources.RemoteHomeDataSource
 import oneclick.client.apps.home.devices.BluetoothDevicesController
 import oneclick.client.apps.home.devices.FakeDevicesController
+import oneclick.client.apps.home.utils.FileAppLogger
 import oneclick.client.shared.network.dataSources.DataStoreEncryptedPreferences
 import oneclick.client.shared.network.dataSources.LocalTokenDataSource
 import oneclick.client.shared.network.dataSources.RemoteAuthenticationDataSource
@@ -17,22 +18,34 @@ import oneclick.shared.dispatchers.platform.dispatchersProvider
 import oneclick.shared.logging.appLogger
 import oneclick.shared.security.DefaultSecureRandomProvider
 import oneclick.shared.security.encryption.FileKeystoreEncryptor
+import oneclick.shared.timeProvider.SystemTimeProvider
 import java.io.File
 
 fun main() {
     val environment = Environment()
     val dispatchersProvider = dispatchersProvider()
-    val appLogger = appLogger()
+    val timeProvider = SystemTimeProvider()
+
+    val localDirectory = File("local")
+    if (!localDirectory.exists()) localDirectory.mkdirs()
+
+    val appLogger = if (environment.useFileAppLogger) {
+        FileAppLogger(
+            file = File(localDirectory, "logs.txt").apply {
+                createIfNotExists()
+            },
+            timeProvider = timeProvider,
+        )
+    } else {
+        appLogger()
+    }
     val secureRandomProvider = DefaultSecureRandomProvider()
     val tokenDataSource = LocalTokenDataSource(
         preferences = DataStoreEncryptedPreferences(
             preferencesFileProvider = {
-                val localDirectory = File("local")
-                if (!localDirectory.exists()) localDirectory.mkdirs()
-
-                val preferencesFile = File(localDirectory, "settings.preferences_pb")
-                if (!preferencesFile.exists()) preferencesFile.createNewFile()
-                preferencesFile
+                File(localDirectory, "settings.preferences_pb").apply {
+                    createIfNotExists()
+                }
             },
             appLogger = appLogger,
             dispatchersProvider = dispatchersProvider,
@@ -93,6 +106,8 @@ fun main() {
     ).start()
 }
 
+private fun File.createIfNotExists() = if (!exists()) createNewFile() else true
+
 private data class Environment(
     val homeId: Uuid = Uuid.unsafe(System.getenv("HOME_ID")),
     val keyStorePath: String = System.getenv("KEYSTORE_PATH"),
@@ -101,4 +116,5 @@ private data class Environment(
     val host: String = System.getenv("HOST"),
     val port: Int? = System.getenv("PORT")?.toIntOrNull(),
     val useFakeDevicesController: Boolean = System.getenv("USE_FAKE_DEVICES_CONTROLLER") == "true",
+    val useFileAppLogger: Boolean = System.getenv("USE_FILE_APP_LOGGER") == "true",
 )

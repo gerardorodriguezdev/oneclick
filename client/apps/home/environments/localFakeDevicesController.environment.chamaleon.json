@@ -29,6 +29,10 @@
       {
         "name": "USE_FAKE_DEVICES_CONTROLLER",
         "value": true
+      },
+      {
+        "name": "USE_FILE_APP_LOGGER",
+        "value": false
       }
     ]
   }

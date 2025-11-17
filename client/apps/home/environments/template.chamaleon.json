@@ -31,6 +31,10 @@
     {
       "name": "USE_FAKE_DEVICES_CONTROLLER",
       "propertyType": "Boolean"
+    },
+    {
+      "name": "USE_FILE_APP_LOGGER",
+      "propertyType": "Boolean"
     }
   ]
 }
