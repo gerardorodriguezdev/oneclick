@@ -64,5 +64,9 @@ private fun Application.configureRouting() {
         get(ClientEndpoint.LOGOUT.route) {
             call.respond(HttpStatusCode.OK)
         }
+
+        post(ClientEndpoint.HOME_SYNC_DEVICES.route) {
+            call.respond(HttpStatusCode.OK)
+        }
     }
 }
