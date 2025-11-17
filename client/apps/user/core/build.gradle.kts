@@ -12,6 +12,7 @@ plugins {
     alias(libs.plugins.kmp.build.config)
     alias(libs.plugins.kmp.ksp)
     alias(libs.plugins.kmp.chamaleon)
+    alias(libs.plugins.kmp.stability.analyzer)
 }
 
 wasmWebsite {

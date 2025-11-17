@@ -6,6 +6,7 @@ plugins {
     alias(libs.plugins.kmp.compose.jetbrains)
     alias(libs.plugins.kmp.serialization)
     alias(libs.plugins.kmp.ksp)
+    alias(libs.plugins.kmp.stability.analyzer)
 }
 
 androidLibrary {

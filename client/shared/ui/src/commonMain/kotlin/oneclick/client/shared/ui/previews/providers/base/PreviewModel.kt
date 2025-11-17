@@ -1,5 +1,8 @@
 package oneclick.client.shared.ui.previews.providers.base
 
+import androidx.compose.runtime.Immutable
+
+@Immutable
 data class PreviewModel<T>(
     val description: String,
     val isDarkTheme: Boolean,

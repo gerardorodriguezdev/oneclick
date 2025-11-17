@@ -12,6 +12,7 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.onLayoutRectChanged
@@ -148,18 +149,22 @@ private fun Paginator(isLoading: Boolean, onShown: () -> Unit) {
     }
 }
 
+@Immutable
 internal data class HomesListScreenState(
     val homes: ImmutableList<UiHome> = persistentListOf(),
     val isFullScreenLoading: Boolean = false,
     val isPaginationLoading: Boolean = false,
 ) {
+    @Immutable
     data class UiHome(
         val id: String,
         val devices: ImmutableList<UiDevice> = persistentListOf(),
     ) {
+        @Immutable
         sealed interface UiDevice {
             val id: String
 
+            @Immutable
             data class UiWaterSensor(
                 override val id: String,
                 val level: String,

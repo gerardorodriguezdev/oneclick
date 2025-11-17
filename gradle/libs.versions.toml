@@ -17,7 +17,7 @@ jvm-hiraki = "7.0.2"
 jvm-postgresql = "42.7.8"
 jvm-redis = "6.7.1.RELEASE"
 kmp-kable = "0.40.0"
-kmp-kotlin-api = "2.2.20"
+kmp-kotlin-api = "2.2.21"
 kmp-compose = "1.9.0"
 kmp-coroutines = "1.10.2"
 kmp-ktor = "3.2.3"
@@ -39,6 +39,7 @@ gradle-chamaleon = "1.0.19"
 gradle-docker-compose = "0.17.16"
 gradle-kaml = "0.98.0"
 gradle-jib = "3.4.5"
+gradle-stability-analyzer = "0.5.2"
 webpack-compression = "4.0.1"
 webpack-html = "5.6.4"
 
@@ -99,3 +100,4 @@ kmp-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "gradle-detekt"
 kmp-chamaleon = { id = "io.github.gerardorodriguezdev.chamaleon", version.ref = "gradle-chamaleon" }
 kmp-ksp = { id = "com.google.devtools.ksp", version.ref = "gradle-ksp" }
 kmp-jib = { id = "com.google.cloud.tools.jib", version.ref = "gradle-jib" }
+kmp-stability-analyzer = { id = "com.github.skydoves.compose.stability.analyzer", version.ref = "gradle-stability-analyzer" }

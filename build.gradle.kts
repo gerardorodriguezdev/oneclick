@@ -8,4 +8,5 @@ plugins {
     alias(libs.plugins.android.library) apply false
     alias(libs.plugins.kmp.ksp) apply false
     alias(libs.plugins.kmp.jib) apply false
+    alias(libs.plugins.kmp.stability.analyzer) apply false
 }

@@ -2,6 +2,7 @@ package oneclick.client.apps.features.home.ui.screens
 
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Immutable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import oneclick.client.apps.user.features.home.generated.resources.Res
@@ -34,6 +35,7 @@ internal fun UserSettingsScreen(
     }
 }
 
+@Immutable
 internal data class UserSettingsScreenState(
     val isLoading: Boolean = false,
 )
