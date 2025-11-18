@@ -14,6 +14,10 @@ sealed class Device : KeyProvider {
     override val key: String
         get() = id.value
 
+    companion object {
+        const val VERSION = "v1"
+    }
+
     @Poko
     @Serializable
     class WaterSensor private constructor(
@@ -21,14 +25,11 @@ sealed class Device : KeyProvider {
         val range: PositiveIntRange,
         val level: NonNegativeInt,
     ) : Device() {
-
         init {
             require(isValid(level = level, range = range)) { ERROR_MESSAGE }
         }
 
         companion object {
-            const val VERSION = "v1"
-            
             private const val ERROR_MESSAGE = "Level not in range"
 
             private fun isValid(level: NonNegativeInt, range: PositiveIntRange): Boolean = range.inRange(level)

@@ -1,15 +1,16 @@
 CREATE TABLE IF NOT EXISTS devices (
     home_id CHAR(36) REFERENCES homes(home_id) ON DELETE CASCADE,
     device_id CHAR(36) PRIMARY KEY,
+    version VARCHAR(3) NOT NULL,
     device JSON NOT NULL
 );
 
 CREATE INDEX IF NOT EXISTS devices_home_id_idx ON devices(home_id);
 
 insertDevice:
-INSERT INTO devices(home_id, device_id, device)
+INSERT INTO devices(home_id, device_id, version, device)
 VALUES ?
-ON CONFLICT(home_id, device_id)
+ON CONFLICT(home_id, device_id, version)
 DO UPDATE SET device = EXCLUDED.device;
 
 devicesByHomeId:
