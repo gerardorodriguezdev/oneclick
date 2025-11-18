@@ -5,6 +5,7 @@ import io.lettuce.core.ExperimentalLettuceCoroutinesApi
 import io.lettuce.core.api.coroutines.RedisCoroutinesCommands
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import oneclick.server.services.app.dataSources.base.HomesDataSource
@@ -31,10 +32,6 @@ internal class RedisHomesDataSource(
 
                 val homes = syncCommands
                     .homes(userId, start = currentPageIndex, end = pageSize.value.toLong() + currentPageIndex)
-                    .map { homeString ->
-                        async { Json.decodeFromString<Home>(homeString) }
-                    }
-                    .awaitAll()
 
                 PaginationResult(
                     value = HomesEntry(
@@ -53,8 +50,7 @@ internal class RedisHomesDataSource(
     override suspend fun home(userId: Uuid, homeId: Uuid): Home? =
         withContext(dispatchersProvider.io()) {
             try {
-                val homeString = syncCommands.home(userId = userId, homeId = homeId) ?: return@withContext null
-                Json.decodeFromString<Home>(homeString)
+                syncCommands.home(userId = userId, homeId = homeId)
             } catch (error: Exception) {
                 logger.error("Error getting home", error)
                 null
@@ -64,7 +60,7 @@ internal class RedisHomesDataSource(
     override suspend fun saveHome(userId: Uuid, home: Home): Boolean =
         withContext(dispatchersProvider.io()) {
             try {
-                syncCommands.saveHome(userId = userId, homeId = home.id, homeString = Json.encodeToString(home))
+                syncCommands.saveHome(userId = userId, home = home)
                 true
             } catch (error: Exception) {
                 logger.error("Error saving home", error)
@@ -76,24 +72,43 @@ internal class RedisHomesDataSource(
         fun userHomeIdsByUserIdKey(userId: Uuid): String = "userHomes:userId:${userId.value}"
         fun homeByHomeIdKey(homeId: Uuid): String = "home:homeId:${homeId.value}"
 
-        suspend fun RedisCoroutinesCommands<String, String>.saveHome(userId: Uuid, homeId: Uuid, homeString: String) {
-            rpush(userHomeIdsByUserIdKey(userId), homeId.value)
-            set(homeByHomeIdKey(homeId), homeString)
+        suspend fun RedisCoroutinesCommands<String, String>.saveHome(userId: Uuid, home: Home) {
+            rpush(userHomeIdsByUserIdKey(userId), home.id.value)
+
+            val homeString = Json.encodeToString(home)
+            set(homeByHomeIdKey(home.id), "${Home.VERSION}:$homeString")
         }
 
-        suspend fun RedisCoroutinesCommands<String, String>.home(userId: Uuid, homeId: Uuid): String? {
+        suspend fun RedisCoroutinesCommands<String, String>.home(userId: Uuid, homeId: Uuid): Home? {
             val hasHome = lpos(userHomeIdsByUserIdKey(userId), homeId.value) ?: return null
             return if (hasHome >= 0) {
-                get(homeByHomeIdKey(homeId))
+                val homeStringWithVersion = get(homeByHomeIdKey(homeId))
+                homeStringWithVersion?.toHome()
             } else {
                 null
             }
         }
 
-        suspend fun RedisCoroutinesCommands<String, String>.homes(userId: Uuid, start: Long, end: Long): List<String> {
-            val homeIds = lrange(userHomeIdsByUserIdKey(userId), start, end)
-            return homeIds.mapNotNull { homeId ->
-                get(homeByHomeIdKey(Uuid.unsafe(homeId)))
+        suspend fun RedisCoroutinesCommands<String, String>.homes(userId: Uuid, start: Long, end: Long): List<Home> =
+            coroutineScope {
+                val homeIds = lrange(userHomeIdsByUserIdKey(userId), start, end)
+                homeIds
+                    .map { homeId ->
+                        async {
+                            val homeStringWithVersion = get(homeByHomeIdKey(Uuid.unsafe(homeId)))
+                            homeStringWithVersion?.toHome()
+                        }
+                    }
+                    .awaitAll()
+                    .filterNotNull()
+            }
+
+        private fun String.toHome(): Home? {
+            val version = substringBefore(":")
+            val homeString = substringAfter(":")
+            return when (version) {
+                Home.VERSION -> Json.decodeFromString<Home>(homeString)
+                else -> null
             }
         }
 

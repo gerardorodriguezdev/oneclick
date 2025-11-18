@@ -22,8 +22,7 @@ internal class RedisUsersDataSource(
     override suspend fun user(findable: Findable): User? =
         try {
             withContext(dispatchersProvider.io()) {
-                val userJson = syncCommands.getUser(findable) ?: return@withContext null
-                Json.decodeFromString<User>(userJson)
+                syncCommands.getUser(findable)
             }
         } catch (error: Exception) {
             logger.error("Error trying to find user", error)
@@ -33,8 +32,8 @@ internal class RedisUsersDataSource(
     override suspend fun saveUser(user: User): Boolean =
         try {
             withContext(dispatchersProvider.io()) {
-                val userJson = Json.encodeToString(user)
-                syncCommands.setUser(user, userJson)
+                val userString = Json.encodeToString(user)
+                syncCommands.setUser(user, userString)
                 true
             }
         } catch (error: Exception) {
@@ -52,12 +51,22 @@ internal class RedisUsersDataSource(
                 is Findable.ByUsername -> userByUsernameKey(username)
             }
 
-        suspend fun RedisCoroutinesCommands<String, String>.getUser(findable: Findable): String? =
-            get(findable.toKey())
+        suspend fun RedisCoroutinesCommands<String, String>.getUser(findable: Findable): User? {
+            val userStringWithVersion = get(findable.toKey()) ?: return null
 
-        suspend fun RedisCoroutinesCommands<String, String>.setUser(user: User, userJson: String) {
-            set(userByUserIdKey(user.userId), userJson)
-            set(userByUsernameKey(user.username), userJson)
+            val version = userStringWithVersion.substringBefore(':')
+            val userString = userStringWithVersion.substringAfter(':')
+
+            return when (version) {
+                User.VERSION -> Json.decodeFromString<User>(userString)
+                else -> null
+            }
+        }
+
+        suspend fun RedisCoroutinesCommands<String, String>.setUser(user: User, userString: String) {
+            val userStringWithVersion = "${User.VERSION}:$userString"
+            set(userByUserIdKey(user.userId), userStringWithVersion)
+            set(userByUsernameKey(user.username), userStringWithVersion)
         }
     }
 }

@@ -27,6 +27,8 @@ sealed class Device : KeyProvider {
         }
 
         companion object {
+            const val VERSION = "v1"
+            
             private const val ERROR_MESSAGE = "Level not in range"
 
             private fun isValid(level: NonNegativeInt, range: PositiveIntRange): Boolean = range.inRange(level)
