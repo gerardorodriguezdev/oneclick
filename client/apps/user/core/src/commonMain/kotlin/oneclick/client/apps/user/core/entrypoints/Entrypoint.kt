@@ -30,7 +30,7 @@ import oneclick.client.shared.ui.screenProperties.ScreenProperties
 import oneclick.client.shared.ui.theme.OneClickTheme
 import kotlin.reflect.KClass
 
-class AppEntrypoint(
+class Entrypoint(
     private val coreComponent: CoreComponent,
     private val appComponent: AppComponent,
 ) {

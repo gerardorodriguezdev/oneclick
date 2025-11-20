@@ -4,7 +4,7 @@ import kotlinx.cinterop.ExperimentalForeignApi
 import okio.Path.Companion.toPath
 import oneclick.client.apps.user.core.buildkonfig.BuildKonfig
 import oneclick.client.apps.user.core.di.createAppComponent
-import oneclick.client.apps.user.core.entrypoints.AppEntrypoint
+import oneclick.client.apps.user.core.entrypoints.Entrypoint
 import oneclick.client.apps.user.core.mappers.urlProtocol
 import oneclick.client.shared.di.iosCoreComponent
 import oneclick.client.shared.navigation.DefaultNavigationController
@@ -22,7 +22,7 @@ import platform.Foundation.NSUserDomainMask
 
 @OptIn(ExperimentalForeignApi::class)
 internal object OneClickApplication {
-    val appEntrypoint: AppEntrypoint
+    val entrypoint: Entrypoint
 
     init {
         val appLogger = if (BuildKonfig.IS_DEBUG) appLogger() else EmptyAppLogger()
@@ -59,6 +59,6 @@ internal object OneClickApplication {
             notificationsController = DefaultNotificationsController(),
         )
         val appComponent = createAppComponent(coreComponent)
-        appEntrypoint = AppEntrypoint(appComponent = appComponent, coreComponent = coreComponent)
+        entrypoint = Entrypoint(appComponent = appComponent, coreComponent = coreComponent)
     }
 }

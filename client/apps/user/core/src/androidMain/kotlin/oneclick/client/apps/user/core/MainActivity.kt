@@ -11,7 +11,7 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         enableEdgeToEdge()
-        val entrypoint = (application as OneClickApplication).appEntrypoint
+        val entrypoint = (application as OneClickApplication).entrypoint
 
         setContent {
             entrypoint.App()

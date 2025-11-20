@@ -10,7 +10,7 @@ import io.ktor.client.engine.js.*
 import kotlinx.browser.document
 import oneclick.client.apps.user.core.buildkonfig.BuildKonfig
 import oneclick.client.apps.user.core.di.createAppComponent
-import oneclick.client.apps.user.core.entrypoints.AppEntrypoint
+import oneclick.client.apps.user.core.entrypoints.Entrypoint
 import oneclick.client.shared.di.wasmCoreComponent
 import oneclick.client.shared.navigation.DefaultNavigationController
 import oneclick.client.shared.notifications.DefaultNotificationsController
@@ -31,11 +31,11 @@ fun main() {
         notificationsController = DefaultNotificationsController(),
     )
     val appComponent = createAppComponent(coreComponent)
-    val appEntrypoint = AppEntrypoint(appComponent = appComponent, coreComponent = coreComponent)
+    val entrypoint = Entrypoint(appComponent = appComponent, coreComponent = coreComponent)
     ComposeViewport(requireNotNull(document.body)) {
         val navHostController = rememberNavController()
 
-        appEntrypoint.App(navHostController = navHostController)
+        entrypoint.App(navHostController = navHostController)
 
         LaunchedEffect(Unit) {
             navHostController.bindToBrowserNavigation()

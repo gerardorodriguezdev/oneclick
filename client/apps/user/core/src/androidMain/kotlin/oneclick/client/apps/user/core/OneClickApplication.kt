@@ -6,7 +6,7 @@ import com.skydoves.compose.stability.runtime.ComposeStabilityAnalyzer
 import io.ktor.http.*
 import oneclick.client.apps.user.core.buildkonfig.BuildKonfig
 import oneclick.client.apps.user.core.di.createAppComponent
-import oneclick.client.apps.user.core.entrypoints.AppEntrypoint
+import oneclick.client.apps.user.core.entrypoints.Entrypoint
 import oneclick.client.apps.user.core.mappers.urlProtocol
 import oneclick.client.shared.di.androidCoreComponent
 import oneclick.client.shared.navigation.DefaultNavigationController
@@ -22,7 +22,7 @@ import oneclick.shared.security.encryption.AndroidKeystoreEncryptor
 import oneclick.shared.timeProvider.SystemTimeProvider
 
 class OneClickApplication : Application() {
-    lateinit var appEntrypoint: AppEntrypoint
+    lateinit var entrypoint: Entrypoint
         private set
 
     override fun onCreate() {
@@ -60,7 +60,7 @@ class OneClickApplication : Application() {
             notificationsController = DefaultNotificationsController(),
         )
         val appComponent = createAppComponent(coreComponent)
-        appEntrypoint = AppEntrypoint(appComponent = appComponent, coreComponent = coreComponent)
+        entrypoint = Entrypoint(appComponent = appComponent, coreComponent = coreComponent)
     }
 
     private fun setupStrictThreadPolicy() {
