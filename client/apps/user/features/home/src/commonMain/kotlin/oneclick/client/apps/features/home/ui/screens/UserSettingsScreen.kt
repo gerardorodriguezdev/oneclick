@@ -8,11 +8,11 @@ import androidx.compose.ui.unit.dp
 import oneclick.client.apps.user.features.home.generated.resources.Res
 import oneclick.client.apps.user.features.home.generated.resources.userSettingsScreen_snackbar_logout
 import oneclick.client.apps.user.features.home.generated.resources.userSettingsScreen_title_userSettings
-import oneclick.client.shared.ui.components.DefaultButton
-import oneclick.client.shared.ui.components.DialogBox
-import oneclick.client.shared.ui.components.ScreenBox
-import oneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
-import oneclick.client.shared.ui.previews.providers.base.PreviewModel
+import oneclick.client.apps.user.ui.components.DefaultButton
+import oneclick.client.apps.user.ui.components.DialogBox
+import oneclick.client.apps.user.ui.components.ScreenBox
+import oneclick.client.apps.user.ui.previews.dev.ScreenPreviewComposable
+import oneclick.client.apps.user.ui.previews.providers.base.PreviewModel
 import org.jetbrains.compose.resources.stringResource
 
 @Composable

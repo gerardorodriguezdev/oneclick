@@ -14,7 +14,7 @@ import oneclick.client.apps.user.features.home.generated.resources.userSettingsS
 import oneclick.client.apps.user.features.home.generated.resources.userSettingsScreen_snackbar_unknownError
 import oneclick.client.shared.network.models.LogoutResult
 import oneclick.client.shared.network.platform.AuthenticationDataSource
-import oneclick.client.shared.notifications.NotificationsController
+import oneclick.client.apps.user.notifications.NotificationsController
 import org.jetbrains.compose.resources.getString
 
 @Inject

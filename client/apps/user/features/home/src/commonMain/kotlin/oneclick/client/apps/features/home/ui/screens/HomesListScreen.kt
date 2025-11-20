@@ -27,13 +27,13 @@ import oneclick.client.apps.user.features.home.generated.resources.Res
 import oneclick.client.apps.user.features.home.generated.resources.homesListScreen_placeholder_noHomesFound
 import oneclick.client.apps.user.features.home.generated.resources.homesListScreen_waterSensor_level
 import oneclick.client.apps.user.features.home.generated.resources.homesListScreen_waterSensor_type
-import oneclick.client.shared.ui.components.Body
-import oneclick.client.shared.ui.components.Label
-import oneclick.client.shared.ui.components.ScreenBox
-import oneclick.client.shared.ui.components.Title
-import oneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
-import oneclick.client.shared.ui.previews.providers.base.PreviewModel
-import oneclick.client.shared.ui.theme.Tokens
+import oneclick.client.apps.user.ui.components.Body
+import oneclick.client.apps.user.ui.components.Label
+import oneclick.client.apps.user.ui.components.ScreenBox
+import oneclick.client.apps.user.ui.components.Title
+import oneclick.client.apps.user.ui.previews.dev.ScreenPreviewComposable
+import oneclick.client.apps.user.ui.previews.providers.base.PreviewModel
+import oneclick.client.apps.user.ui.theme.Tokens
 import org.jetbrains.compose.resources.stringResource
 
 @OptIn(ExperimentalMaterial3Api::class)

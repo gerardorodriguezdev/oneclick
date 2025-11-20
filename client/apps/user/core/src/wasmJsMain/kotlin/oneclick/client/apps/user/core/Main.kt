@@ -11,9 +11,9 @@ import kotlinx.browser.document
 import oneclick.client.apps.user.core.buildkonfig.BuildKonfig
 import oneclick.client.apps.user.core.di.createAppComponent
 import oneclick.client.apps.user.core.entrypoints.Entrypoint
-import oneclick.client.shared.di.wasmCoreComponent
-import oneclick.client.shared.navigation.DefaultNavigationController
-import oneclick.client.shared.notifications.DefaultNotificationsController
+import oneclick.client.apps.user.di.wasmCoreComponent
+import oneclick.client.apps.user.navigation.DefaultNavigationController
+import oneclick.client.apps.user.notifications.DefaultNotificationsController
 import oneclick.shared.dispatchers.platform.dispatchersProvider
 import oneclick.shared.logging.EmptyAppLogger
 import oneclick.shared.logging.appLogger

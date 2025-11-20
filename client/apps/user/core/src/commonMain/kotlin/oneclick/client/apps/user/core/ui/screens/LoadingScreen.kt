@@ -5,9 +5,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import oneclick.client.apps.user.core.ui.screens.LoadingScreenTestTags.PROGRESS_INDICATOR_TEST_TAG
-import oneclick.client.shared.ui.components.ScreenBox
-import oneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
-import oneclick.client.shared.ui.previews.providers.base.PreviewModel
+import oneclick.client.apps.user.ui.components.ScreenBox
+import oneclick.client.apps.user.ui.previews.dev.ScreenPreviewComposable
+import oneclick.client.apps.user.ui.previews.providers.base.PreviewModel
 
 @Composable
 fun LoadingScreen() {

@@ -16,7 +16,7 @@ import oneclick.client.apps.features.home.ui.screens.HomesListEvent
 import oneclick.client.apps.features.home.ui.screens.HomesListScreenState
 import oneclick.client.apps.user.features.home.generated.resources.Res
 import oneclick.client.apps.user.features.home.generated.resources.homesListScreen_snackbar_unknownError
-import oneclick.client.shared.notifications.NotificationsController
+import oneclick.client.apps.user.notifications.NotificationsController
 import org.jetbrains.compose.resources.getString
 
 @Inject

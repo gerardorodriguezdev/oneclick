@@ -6,12 +6,12 @@ import oneclick.client.apps.user.core.buildkonfig.BuildKonfig
 import oneclick.client.apps.user.core.di.createAppComponent
 import oneclick.client.apps.user.core.entrypoints.Entrypoint
 import oneclick.client.apps.user.core.mappers.urlProtocol
-import oneclick.client.shared.di.iosCoreComponent
-import oneclick.client.shared.navigation.DefaultNavigationController
+import oneclick.client.apps.user.di.iosCoreComponent
+import oneclick.client.apps.user.navigation.DefaultNavigationController
 import oneclick.client.shared.network.dataSources.IOSPreferences
 import oneclick.client.shared.network.dataSources.LocalTokenDataSource
 import oneclick.client.shared.network.iosHttpClientEngine
-import oneclick.client.shared.notifications.DefaultNotificationsController
+import oneclick.client.apps.user.notifications.DefaultNotificationsController
 import oneclick.shared.dispatchers.platform.dispatchersProvider
 import oneclick.shared.logging.EmptyAppLogger
 import oneclick.shared.logging.appLogger

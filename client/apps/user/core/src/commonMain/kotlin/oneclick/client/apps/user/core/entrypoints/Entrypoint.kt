@@ -18,16 +18,16 @@ import kotlinx.coroutines.launch
 import oneclick.client.apps.features.home.entrypoints.HomeEntrypoint
 import oneclick.client.apps.user.core.di.AppComponent
 import oneclick.client.apps.user.core.ui.screens.*
-import oneclick.client.shared.di.CoreComponent
-import oneclick.client.shared.navigation.RegisterNavigationControllerObserver
-import oneclick.client.shared.navigation.models.routes.AppRoute.Init
-import oneclick.client.shared.navigation.models.routes.AppRoute.Login
-import oneclick.client.shared.navigation.models.routes.HomeRoute
-import oneclick.client.shared.navigation.models.routes.HomeRoute.HomesList
-import oneclick.client.shared.notifications.NotificationsController.Notification
-import oneclick.client.shared.ui.screenProperties.LocalScreenProperties
-import oneclick.client.shared.ui.screenProperties.ScreenProperties
-import oneclick.client.shared.ui.theme.OneClickTheme
+import oneclick.client.apps.user.di.CoreComponent
+import oneclick.client.apps.user.navigation.RegisterNavigationControllerObserver
+import oneclick.client.apps.user.navigation.models.routes.AppRoute.Init
+import oneclick.client.apps.user.navigation.models.routes.AppRoute.Login
+import oneclick.client.apps.user.navigation.models.routes.HomeRoute
+import oneclick.client.apps.user.navigation.models.routes.HomeRoute.HomesList
+import oneclick.client.apps.user.notifications.NotificationsController.Notification
+import oneclick.client.apps.user.ui.screenProperties.LocalScreenProperties
+import oneclick.client.apps.user.ui.screenProperties.ScreenProperties
+import oneclick.client.apps.user.ui.theme.OneClickTheme
 import kotlin.reflect.KClass
 
 class Entrypoint(
@@ -99,7 +99,8 @@ class Entrypoint(
             currentDestination.isRouteInHierarchy(navigationBarRoute.route)
         }
         return selectedNavigationBarRoute?.let {
-            val isCompact = LocalScreenProperties.current.isCompact
+            val isCompact =
+                LocalScreenProperties.current.isCompact
             if (isCompact) {
                 AppScreenState.NavigationBar.Bottom(selectedNavigationBarRoute)
             } else {

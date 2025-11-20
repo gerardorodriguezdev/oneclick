@@ -4,7 +4,7 @@ import me.tatarka.inject.annotations.Component
 import me.tatarka.inject.annotations.KmpComponentCreate
 import oneclick.client.apps.user.core.viewModels.InitViewModel
 import oneclick.client.apps.user.core.viewModels.LoginViewModel
-import oneclick.client.shared.di.CoreComponent
+import oneclick.client.apps.user.di.CoreComponent
 
 @Component
 abstract class AppComponent(

@@ -15,10 +15,10 @@ import oneclick.client.apps.features.home.di.HomeComponent
 import oneclick.client.apps.features.home.di.createHomeComponent
 import oneclick.client.apps.features.home.ui.screens.HomesListScreen
 import oneclick.client.apps.features.home.ui.screens.UserSettingsScreen
-import oneclick.client.shared.di.CoreComponent
-import oneclick.client.shared.navigation.models.routes.AppRoute.Home
-import oneclick.client.shared.navigation.models.routes.HomeRoute.HomesList
-import oneclick.client.shared.navigation.models.routes.HomeRoute.UserSettings
+import oneclick.client.apps.user.di.CoreComponent
+import oneclick.client.apps.user.navigation.models.routes.AppRoute.Home
+import oneclick.client.apps.user.navigation.models.routes.HomeRoute.HomesList
+import oneclick.client.apps.user.navigation.models.routes.HomeRoute.UserSettings
 
 class HomeEntrypoint(private val coreComponent: CoreComponent) {
 

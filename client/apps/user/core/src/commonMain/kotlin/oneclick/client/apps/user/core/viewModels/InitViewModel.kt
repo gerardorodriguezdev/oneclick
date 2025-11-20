@@ -5,10 +5,10 @@ import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
-import oneclick.client.shared.navigation.NavigationController
-import oneclick.client.shared.navigation.NavigationController.NavigationEvent.Navigate
-import oneclick.client.shared.navigation.models.routes.AppRoute
-import oneclick.client.shared.navigation.popUpToInclusive
+import oneclick.client.apps.user.navigation.NavigationController
+import oneclick.client.apps.user.navigation.NavigationController.NavigationEvent.Navigate
+import oneclick.client.apps.user.navigation.models.routes.AppRoute
+import oneclick.client.apps.user.navigation.popUpToInclusive
 import oneclick.client.shared.network.models.UserLoggedResult
 import oneclick.client.shared.network.platform.AuthenticationDataSource
 

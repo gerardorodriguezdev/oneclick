@@ -10,7 +10,7 @@ import oneclick.client.apps.features.home.repositories.DefaultHomesRepository
 import oneclick.client.apps.features.home.repositories.HomesRepository
 import oneclick.client.apps.features.home.viewModels.HomesListViewModel
 import oneclick.client.apps.features.home.viewModels.UserSettingsViewModel
-import oneclick.client.shared.di.CoreComponent
+import oneclick.client.apps.user.di.CoreComponent
 
 @HomeScope
 @Component

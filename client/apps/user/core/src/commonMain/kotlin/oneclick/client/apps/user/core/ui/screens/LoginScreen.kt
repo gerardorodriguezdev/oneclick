@@ -24,13 +24,6 @@ import oneclick.client.apps.user.core.ui.screens.LoginScreenTestTags.PASSWORD_PL
 import oneclick.client.apps.user.core.ui.screens.LoginScreenTestTags.PASSWORD_TEXT_FIELD
 import oneclick.client.apps.user.core.ui.screens.LoginScreenTestTags.USERNAME_PLACEHOLDER
 import oneclick.client.apps.user.core.ui.screens.LoginScreenTestTags.USERNAME_TEXT_FIELD
-import oneclick.client.shared.ui.components.Body
-import oneclick.client.shared.ui.components.DefaultButton
-import oneclick.client.shared.ui.components.DialogBox
-import oneclick.client.shared.ui.components.ScreenBox
-import oneclick.client.shared.ui.models.Field
-import oneclick.client.shared.ui.previews.dev.ScreenPreviewComposable
-import oneclick.client.shared.ui.previews.providers.base.PreviewModel
 import org.jetbrains.compose.resources.stringResource
 
 @Composable
@@ -38,8 +31,8 @@ fun LoginScreen(
     state: LoginScreenState,
     onEvent: (event: LoginEvent) -> Unit,
 ) {
-    ScreenBox {
-        DialogBox(header = stringResource(Res.string.loginScreen_title_register)) {
+    _root_ide_package_.oneclick.client.apps.user.ui.components.ScreenBox {
+        _root_ide_package_.oneclick.client.apps.user.ui.components.DialogBox(header = stringResource(Res.string.loginScreen_title_register)) {
             UsernameTextField(
                 username = state.username.text,
                 isUsernameValid = state.username.isValid != false,
@@ -52,7 +45,7 @@ fun LoginScreen(
                 onPasswordChange = { newPassword -> onEvent(LoginEvent.PasswordChanged(newPassword)) },
             )
 
-            DefaultButton(
+            _root_ide_package_.oneclick.client.apps.user.ui.components.DefaultButton(
                 text = stringResource(Res.string.loginScreen_registerButton_register),
                 isEnabled = state.isRegisterButtonEnabled,
                 isLoading = state.isLoading,
@@ -71,7 +64,7 @@ private fun UsernameTextField(
 ) {
     OutlinedTextField(
         placeholder = {
-            Body(
+            _root_ide_package_.oneclick.client.apps.user.ui.components.Body(
                 text = stringResource(Res.string.loginScreen_usernameTextField_username),
                 modifier = Modifier.testTag(USERNAME_PLACEHOLDER)
             )
@@ -98,7 +91,7 @@ private fun PasswordTextField(
 
     OutlinedTextField(
         placeholder = {
-            Body(
+            _root_ide_package_.oneclick.client.apps.user.ui.components.Body(
                 text = stringResource(Res.string.loginScreen_passwordTextField_password),
                 modifier = Modifier.testTag(PASSWORD_PLACEHOLDER)
             )
@@ -141,15 +134,15 @@ sealed interface LoginEvent {
 
 @Immutable
 data class LoginScreenState(
-    val username: Field = Field(),
-    val password: Field = Field(),
+    val username: oneclick.client.apps.user.ui.models.Field = _root_ide_package_.oneclick.client.apps.user.ui.models.Field(),
+    val password: oneclick.client.apps.user.ui.models.Field = _root_ide_package_.oneclick.client.apps.user.ui.models.Field(),
     val isRegisterButtonEnabled: Boolean = false,
     val isLoading: Boolean = false,
 )
 
 @Composable
-fun LoginScreenPreview(previewModel: PreviewModel<LoginScreenState>) {
-    ScreenPreviewComposable(previewModel) {
+fun LoginScreenPreview(previewModel: oneclick.client.apps.user.ui.previews.providers.base.PreviewModel<LoginScreenState>) {
+    _root_ide_package_.oneclick.client.apps.user.ui.previews.dev.ScreenPreviewComposable(previewModel) {
         LoginScreen(
             state = previewModel.model,
             onEvent = {}

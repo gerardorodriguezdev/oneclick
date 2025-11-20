@@ -40,11 +40,11 @@ kotlin {
                 implementation(projects.shared.dispatchers)
                 implementation(projects.shared.timeProvider)
                 implementation(projects.shared.logging)
-                implementation(projects.client.shared.di)
                 implementation(projects.client.shared.network)
-                implementation(projects.client.shared.navigation)
-                implementation(projects.client.shared.ui)
-                implementation(projects.client.shared.notifications)
+                implementation(projects.client.apps.user.navigation)
+                implementation(projects.client.apps.user.di)
+                implementation(projects.client.apps.user.ui)
+                implementation(projects.client.apps.user.notifications)
 
                 project.dependencies {
                     kspAndroid(libs.gradle.ksp.kotlin.inject)
