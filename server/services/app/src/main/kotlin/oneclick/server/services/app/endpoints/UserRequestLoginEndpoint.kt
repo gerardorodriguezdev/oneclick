@@ -19,7 +19,7 @@ import oneclick.shared.contracts.auth.models.Username
 import oneclick.shared.contracts.auth.models.requests.LoginRequest.UserRequestLoginRequest
 import oneclick.shared.contracts.auth.models.responses.RequestLoginResponse
 import oneclick.shared.contracts.core.models.ClientType
-import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
+import oneclick.shared.contracts.core.models.ClientEndpoint
 
 internal fun Routing.userRequestLoginEndpoint(
     usersRepository: UsersRepository,

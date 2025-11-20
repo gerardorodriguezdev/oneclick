@@ -10,7 +10,7 @@ import oneclick.client.shared.network.models.RequestLoginResult
 import oneclick.client.shared.network.models.UserLoggedResult
 import oneclick.shared.contracts.auth.models.requests.LoginRequest
 import oneclick.shared.contracts.auth.models.responses.IsLoggedResponse
-import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
+import oneclick.shared.contracts.core.models.ClientEndpoint
 import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.logging.AppLogger
 

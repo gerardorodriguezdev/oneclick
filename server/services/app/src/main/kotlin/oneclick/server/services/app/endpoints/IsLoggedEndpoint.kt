@@ -10,7 +10,7 @@ import oneclick.server.services.app.plugins.authentication.allAuthentication
 import oneclick.shared.contracts.auth.models.responses.IsLoggedResponse
 import oneclick.shared.contracts.auth.models.responses.IsLoggedResponse.Logged
 import oneclick.shared.contracts.auth.models.responses.IsLoggedResponse.NotLogged
-import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
+import oneclick.shared.contracts.core.models.ClientEndpoint
 
 internal fun Routing.isLoggedEndpoint() {
     apiRateLimit {

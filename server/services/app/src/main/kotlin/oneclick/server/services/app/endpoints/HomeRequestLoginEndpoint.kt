@@ -17,7 +17,7 @@ import oneclick.shared.contracts.auth.models.responses.RequestLoginResponse
 import oneclick.shared.contracts.core.models.ClientType
 import oneclick.shared.contracts.core.models.UniqueList
 import oneclick.shared.contracts.core.models.Uuid
-import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
+import oneclick.shared.contracts.core.models.ClientEndpoint
 import oneclick.shared.contracts.homes.models.Home
 
 internal fun Routing.homeRequestLoginEndpoint(

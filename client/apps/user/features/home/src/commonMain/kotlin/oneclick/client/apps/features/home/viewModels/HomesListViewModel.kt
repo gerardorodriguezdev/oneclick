@@ -2,6 +2,9 @@ package oneclick.client.apps.features.home.viewModels
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import kotlinx.collections.immutable.ImmutableList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
@@ -14,8 +17,6 @@ import oneclick.client.apps.features.home.ui.screens.HomesListScreenState
 import oneclick.client.apps.user.features.home.generated.resources.Res
 import oneclick.client.apps.user.features.home.generated.resources.homesListScreen_snackbar_unknownError
 import oneclick.client.shared.notifications.NotificationsController
-import oneclick.shared.contracts.core.models.UniqueList
-import oneclick.shared.contracts.core.models.UniqueList.Companion.emptyUniqueList
 import oneclick.shared.contracts.homes.models.Home
 import org.jetbrains.compose.resources.getString
 
@@ -40,7 +41,7 @@ internal class HomesListViewModel(
         viewModelScope.launch {
             homesRepository.homesEntry.collect { homeEntry ->
                 homesListViewModelState.value = homesListViewModelState.value.copy(
-                    homes = homeEntry?.homes ?: emptyUniqueList(),
+                    homes = homeEntry?.homes?.toPersistentList() ?: persistentListOf(),
                     canRequestMore = homeEntry?.canRequestMore ?: true,
                 )
             }
@@ -105,7 +106,7 @@ internal class HomesListViewModel(
     }
 
     data class HomesListViewModelState(
-        val homes: UniqueList<Home> = emptyUniqueList(),
+        val homes: ImmutableList<Home> = persistentListOf(),
         val canRequestMore: Boolean = true,
         val isFullPageLoading: Boolean = false,
         val isPaginationLoading: Boolean = false,

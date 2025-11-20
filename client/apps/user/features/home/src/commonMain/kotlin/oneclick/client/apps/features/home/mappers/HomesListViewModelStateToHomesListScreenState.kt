@@ -19,7 +19,7 @@ internal fun HomesListViewModel.HomesListViewModelState.toHomesListScreenState()
         isPaginationLoading = isPaginationLoading,
     )
 
-private fun UniqueList<Home>.toUiHomes(): ImmutableList<UiHome> =
+private fun ImmutableList<Home>.toUiHomes(): ImmutableList<UiHome> =
     map { home -> home.toUiHome() }.toPersistentList()
 
 private fun Home.toUiHome(): UiHome =

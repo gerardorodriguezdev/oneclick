@@ -6,7 +6,7 @@ import io.ktor.http.*
 import kotlinx.coroutines.withContext
 import oneclick.client.apps.home.dataSources.base.HomeDataSource
 import oneclick.client.apps.home.dataSources.base.HomeDataSource.SyncDevicesResult
-import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
+import oneclick.shared.contracts.core.models.ClientEndpoint
 import oneclick.shared.contracts.homes.models.requests.SyncDevicesRequest
 import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.logging.AppLogger

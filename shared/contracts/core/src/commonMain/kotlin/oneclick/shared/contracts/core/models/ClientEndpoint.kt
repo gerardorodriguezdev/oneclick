@@ -1,4 +1,4 @@
-package oneclick.shared.contracts.core.models.endpoints
+package oneclick.shared.contracts.core.models
 
 enum class ClientEndpoint(val route: String) {
     USER_REQUEST_LOGIN("/api/user/request-login"),

@@ -16,7 +16,7 @@ import oneclick.shared.contracts.auth.models.responses.IsLoggedResponse
 import oneclick.shared.contracts.auth.models.responses.RequestLoginResponse
 import oneclick.shared.contracts.core.models.ClientType
 import oneclick.shared.contracts.core.models.NonNegativeInt
-import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
+import oneclick.shared.contracts.core.models.ClientEndpoint
 import oneclick.shared.contracts.homes.models.responses.HomesResponse
 
 internal fun server(): EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration> =

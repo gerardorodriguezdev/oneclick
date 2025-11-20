@@ -6,7 +6,7 @@ import oneclick.server.services.app.plugins.apiRateLimit
 import oneclick.server.services.app.plugins.authentication.requireUserJwtCredentials
 import oneclick.server.services.app.plugins.authentication.userAuthentication
 import oneclick.server.services.app.repositories.HomesRepository
-import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
+import oneclick.shared.contracts.core.models.ClientEndpoint
 import oneclick.shared.contracts.homes.models.requests.HomesRequest
 import oneclick.shared.contracts.homes.models.responses.HomesResponse
 import oneclick.shared.contracts.homes.models.responses.HomesResponse.Data

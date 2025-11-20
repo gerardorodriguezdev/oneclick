@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 import me.tatarka.inject.annotations.Inject
 import oneclick.client.apps.features.home.models.HomesEntry
 import oneclick.client.apps.features.home.models.HomesResult
-import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
+import oneclick.shared.contracts.core.models.ClientEndpoint
 import oneclick.shared.contracts.homes.models.requests.HomesRequest
 import oneclick.shared.contracts.homes.models.responses.HomesResponse
 import oneclick.shared.dispatchers.platform.DispatchersProvider

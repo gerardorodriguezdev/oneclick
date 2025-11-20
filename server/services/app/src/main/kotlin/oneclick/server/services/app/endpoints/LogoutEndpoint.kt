@@ -10,7 +10,7 @@ import oneclick.server.services.app.plugins.apiRateLimit
 import oneclick.server.services.app.plugins.authentication.allAuthentication
 import oneclick.server.services.app.plugins.authentication.requireJwtCredentials
 import oneclick.shared.contracts.auth.models.Jwt
-import oneclick.shared.contracts.core.models.endpoints.ClientEndpoint
+import oneclick.shared.contracts.core.models.ClientEndpoint
 
 internal fun Routing.logoutEndpoint(invalidJwtDataSource: InvalidJwtDataSource) {
     apiRateLimit {
