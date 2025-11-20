@@ -6,9 +6,9 @@ import oneclick.server.services.app.dataSources.base.InvalidJwtDataSource
 import oneclick.server.services.app.endpoints.*
 import oneclick.server.services.app.repositories.HomesRepository
 import oneclick.server.services.app.repositories.UsersRepository
-import oneclick.server.shared.authentication.security.HomeJwtProvider
+import oneclick.server.services.app.authentication.HomeJwtProvider
 import oneclick.server.shared.authentication.security.PasswordManager
-import oneclick.server.shared.authentication.security.UserJwtProvider
+import oneclick.server.services.app.authentication.UserJwtProvider
 import oneclick.server.shared.authentication.security.UuidProvider
 
 internal fun Application.configureRouting(

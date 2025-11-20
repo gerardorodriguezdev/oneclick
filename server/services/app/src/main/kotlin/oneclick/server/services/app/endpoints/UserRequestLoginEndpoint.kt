@@ -10,7 +10,7 @@ import oneclick.server.services.app.dataSources.models.User
 import oneclick.server.services.app.plugins.apiRateLimit
 import oneclick.server.services.app.repositories.UsersRepository
 import oneclick.server.shared.authentication.security.PasswordManager
-import oneclick.server.shared.authentication.security.UserJwtProvider
+import oneclick.server.services.app.authentication.UserJwtProvider
 import oneclick.server.shared.authentication.security.UuidProvider
 import oneclick.server.shared.utils.clientType
 import oneclick.shared.contracts.auth.models.Jwt

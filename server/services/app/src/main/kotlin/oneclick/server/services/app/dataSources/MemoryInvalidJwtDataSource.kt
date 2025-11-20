@@ -1,7 +1,7 @@
 package oneclick.server.services.app.dataSources
 
 import oneclick.server.services.app.dataSources.base.InvalidJwtDataSource
-import oneclick.server.services.app.plugins.authentication.JwtCredentials
+import oneclick.server.services.app.authentication.JwtCredentials
 import oneclick.shared.contracts.core.models.Uuid
 import oneclick.shared.timeProvider.TimeProvider
 import java.util.concurrent.ConcurrentHashMap

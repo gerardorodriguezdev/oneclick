@@ -1,6 +1,6 @@
 package oneclick.server.services.app.dataSources.base
 
-import oneclick.server.services.app.plugins.authentication.JwtCredentials
+import oneclick.server.services.app.authentication.JwtCredentials
 import oneclick.shared.contracts.core.models.Uuid
 
 internal interface InvalidJwtDataSource {

@@ -2,8 +2,10 @@ package oneclick.server.services.app.plugins.authentication
 
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*
-import oneclick.server.services.app.plugins.authentication.JwtCredentials.HomeJwtCredentials
-import oneclick.server.services.app.plugins.authentication.JwtCredentials.UserJwtCredentials
+import oneclick.server.services.app.authentication.AuthenticationType
+import oneclick.server.services.app.authentication.JwtCredentials
+import oneclick.server.services.app.authentication.JwtCredentials.HomeJwtCredentials
+import oneclick.server.services.app.authentication.JwtCredentials.UserJwtCredentials
 
 internal fun Routing.allAuthentication(
     optional: Boolean = false,

@@ -1,4 +1,4 @@
-package oneclick.server.services.app.plugins.authentication
+package oneclick.server.services.app.authentication
 
 internal enum class AuthenticationType(val value: String) {
     USER_SESSION("user_session_authentication"),

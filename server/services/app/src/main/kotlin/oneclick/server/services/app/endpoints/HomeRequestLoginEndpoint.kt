@@ -8,7 +8,7 @@ import oneclick.server.services.app.dataSources.base.UsersDataSource
 import oneclick.server.services.app.plugins.apiRateLimit
 import oneclick.server.services.app.repositories.HomesRepository
 import oneclick.server.services.app.repositories.UsersRepository
-import oneclick.server.shared.authentication.security.HomeJwtProvider
+import oneclick.server.services.app.authentication.HomeJwtProvider
 import oneclick.server.shared.authentication.security.PasswordManager
 import oneclick.server.shared.utils.clientType
 import oneclick.shared.contracts.auth.models.Jwt

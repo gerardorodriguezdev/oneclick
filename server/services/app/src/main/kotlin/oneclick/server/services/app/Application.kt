@@ -5,6 +5,8 @@ import io.ktor.util.logging.*
 import io.lettuce.core.ExperimentalLettuceCoroutinesApi
 import io.lettuce.core.RedisClient
 import io.lettuce.core.api.coroutines
+import oneclick.server.services.app.authentication.HomeJwtProvider
+import oneclick.server.services.app.authentication.UserJwtProvider
 import oneclick.server.services.app.dataSources.*
 import oneclick.server.services.app.dataSources.base.InvalidJwtDataSource
 import oneclick.server.services.app.di.Dependencies

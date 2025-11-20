@@ -1,12 +1,13 @@
-package oneclick.server.shared.authentication.security
+package oneclick.server.services.app.authentication
 
+import oneclick.server.shared.authentication.security.UuidProvider
 import oneclick.server.shared.authentication.security.base.BaseEncryptedJwtProvider
 import oneclick.shared.contracts.auth.models.Jwt
 import oneclick.shared.contracts.core.models.Uuid
 import oneclick.shared.security.encryption.base.Encryptor
 import oneclick.shared.timeProvider.TimeProvider
 
-class HomeJwtProvider(
+internal class HomeJwtProvider(
     secretSignKey: String,
     audience: String,
     issuer: String,

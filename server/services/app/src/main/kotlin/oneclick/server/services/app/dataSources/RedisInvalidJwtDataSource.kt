@@ -4,7 +4,7 @@ import io.lettuce.core.ExperimentalLettuceCoroutinesApi
 import io.lettuce.core.api.coroutines.RedisCoroutinesCommands
 import kotlinx.coroutines.withContext
 import oneclick.server.services.app.dataSources.base.InvalidJwtDataSource
-import oneclick.server.services.app.plugins.authentication.JwtCredentials
+import oneclick.server.services.app.authentication.JwtCredentials
 import oneclick.shared.contracts.core.models.Uuid
 import oneclick.shared.dispatchers.platform.DispatchersProvider
 
