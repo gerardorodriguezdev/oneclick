@@ -31,9 +31,6 @@ kmp-serialization = "1.9.0"
 kmp-kotlin-inject = "0.8.0"
 kmp-sqldelight = "2.1.0"
 kmp-poko = "0.20.0"
-gradle-detekt = "1.23.8"
-gradle-detekt-compose = "0.4.27"
-gradle-detekt-formatting = "1.23.8"
 gradle-ksp = "2.2.20-2.0.2"
 gradle-chamaleon = "1.0.19"
 gradle-docker-compose = "0.17.16"
@@ -71,8 +68,6 @@ kmp-sqldelight = { module = "app.cash.sqldelight:jdbc-driver", version.ref = "km
 kmp-sqldelight-postgresql = { module = "app.cash.sqldelight:postgresql-dialect", version.ref = "kmp-sqldelight" }
 kmp-poko = { module = "dev.drewhamilton.poko:poko-annotations", version.ref = "kmp-poko" }
 gradle-ksp-kotlin-inject = { module = "me.tatarka.inject:kotlin-inject-compiler-ksp", version.ref = "kmp-kotlin-inject" }
-gradle-detekt-compose = { module = "io.nlopez.compose.rules:detekt", version.ref = "gradle-detekt-compose" }
-gradle-detekt-formatting = { module = "io.gitlab.arturbosch.detekt:detekt-formatting", version.ref = "gradle-detekt-formatting" }
 gradle-kmp-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", version.ref = "kmp-kotlin-api" }
 gradle-jvm-kotlin = { module = "org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin", version.ref = "kmp-kotlin-api" }
 gradle-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "kmp-compose" }
@@ -96,7 +91,6 @@ kmp-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.
 kmp-build-config = { id = "com.codingfeline.buildkonfig", version.ref = "kmp-buildconfig" }
 kmp-sqldelight = { id = "app.cash.sqldelight", version.ref = "kmp-sqldelight" }
 kmp-poko = { id = "dev.drewhamilton.poko", version.ref = "kmp-poko" }
-kmp-detekt = { id = "io.gitlab.arturbosch.detekt", version.ref = "gradle-detekt" }
 kmp-chamaleon = { id = "io.github.gerardorodriguezdev.chamaleon", version.ref = "gradle-chamaleon" }
 kmp-ksp = { id = "com.google.devtools.ksp", version.ref = "gradle-ksp" }
 kmp-jib = { id = "com.google.cloud.tools.jib", version.ref = "gradle-jib" }
