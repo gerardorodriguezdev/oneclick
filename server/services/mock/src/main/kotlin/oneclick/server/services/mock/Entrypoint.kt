@@ -1,4 +1,4 @@
-package oneclick.server.services.mock.entrypoint
+package oneclick.server.services.mock
 
 import io.ktor.http.*
 import io.ktor.serialization.kotlinx.json.*
