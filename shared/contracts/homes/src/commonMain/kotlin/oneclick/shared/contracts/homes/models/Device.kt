@@ -14,10 +14,6 @@ sealed class Device : KeyProvider {
     override val key: String
         get() = id.value
 
-    companion object {
-        const val VERSION = "v1"
-    }
-
     @Poko
     @Serializable
     class WaterSensor private constructor(

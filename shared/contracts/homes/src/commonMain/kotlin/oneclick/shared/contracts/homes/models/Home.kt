@@ -11,8 +11,4 @@ data class Home(
     val devices: UniqueList<Device>,
 ) : KeyProvider {
     override val key: String = id.value
-
-    companion object {
-        const val VERSION = "v1"
-    }
 }

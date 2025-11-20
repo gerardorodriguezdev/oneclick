@@ -27,12 +27,12 @@ class LocalTokenDataSource(
     private val preferences: Preferences,
 ) : TokenDataSource {
     override suspend fun token(): String? =
-        preferences.preference(TOKEN_KEY, String.serializer())
+        preferences.preference(key = TOKEN_KEY, serializer = String.serializer())
 
     override suspend fun clear(): Boolean = preferences.clearPreference(TOKEN_KEY)
 
     override suspend fun set(token: String): Boolean =
-        preferences.putPreference(TOKEN_KEY, token, String.serializer())
+        preferences.putPreference(key = TOKEN_KEY, value = token, serializer = String.serializer())
 
     private companion object {
         const val TOKEN_KEY = "token"

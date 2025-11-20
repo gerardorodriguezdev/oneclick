@@ -69,12 +69,9 @@ internal class PostgresHomesDataSource(
         UniqueList.unsafe(
             devices.map { device ->
                 async {
-                    when (device.version) {
-                        Device.VERSION -> Json.decodeFromString<Device>(device.device)
-                        else -> null
-                    }
+                    Json.decodeFromString<Device>(device.device)
                 }
-            }.awaitAll().filterNotNull()
+            }.awaitAll()
         )
 
     private fun totalHomes(): NonNegativeInt =
@@ -114,7 +111,6 @@ internal class PostgresHomesDataSource(
                         val devices = Devices(
                             home_id = home.id.value,
                             device_id = device.id.value,
-                            version = Device.VERSION,
                             device = Json.encodeToString(device)
                         )
                         database.devicesQueries.insertDevice(devices)
@@ -137,7 +133,6 @@ internal class PostgresHomesDataSource(
         val userId: String?,
         val homeId: String,
         val deviceId: String,
-        val version: String,
         val device: String,
     )
 
@@ -158,7 +153,6 @@ internal class PostgresHomesDataSource(
                     Devices(
                         home_id = entry.homeId,
                         device_id = entry.deviceId,
-                        version = entry.version,
                         device = entry.device,
                     )
                 )
@@ -173,7 +167,6 @@ internal class PostgresHomesDataSource(
                     userId = entry.user_id,
                     homeId = entry.home_id,
                     deviceId = entry.device_id,
-                    version = entry.version,
                     device = entry.device,
                 )
             }
@@ -184,7 +177,6 @@ internal class PostgresHomesDataSource(
                     userId = entry.user_id,
                     homeId = entry.home_id,
                     deviceId = entry.device_id,
-                    version = entry.version,
                     device = entry.device,
                 )
             }

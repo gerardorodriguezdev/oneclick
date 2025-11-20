@@ -76,14 +76,14 @@ internal class RedisHomesDataSource(
             rpush(userHomeIdsByUserIdKey(userId), home.id.value)
 
             val homeString = Json.encodeToString(home)
-            set(homeByHomeIdKey(home.id), "${Home.VERSION}:$homeString")
+            set(homeByHomeIdKey(home.id), homeString)
         }
 
         suspend fun RedisCoroutinesCommands<String, String>.home(userId: Uuid, homeId: Uuid): Home? {
             val hasHome = lpos(userHomeIdsByUserIdKey(userId), homeId.value) ?: return null
             return if (hasHome >= 0) {
-                val homeStringWithVersion = get(homeByHomeIdKey(homeId))
-                homeStringWithVersion?.toHome()
+                val homeString = get(homeByHomeIdKey(homeId)) ?: return null
+                Json.decodeFromString<Home>(homeString)
             } else {
                 null
             }
@@ -95,22 +95,13 @@ internal class RedisHomesDataSource(
                 homeIds
                     .map { homeId ->
                         async {
-                            val homeStringWithVersion = get(homeByHomeIdKey(Uuid.unsafe(homeId)))
-                            homeStringWithVersion?.toHome()
+                            val homeString = get(homeByHomeIdKey(Uuid.unsafe(homeId))) ?: return@async null
+                            Json.decodeFromString<Home>(homeString)
                         }
                     }
                     .awaitAll()
                     .filterNotNull()
             }
-
-        private fun String.toHome(): Home? {
-            val version = substringBefore(":")
-            val homeString = substringAfter(":")
-            return when (version) {
-                Home.VERSION -> Json.decodeFromString<Home>(homeString)
-                else -> null
-            }
-        }
 
         suspend fun RedisCoroutinesCommands<String, String>.totalHomes(userId: Uuid): Int =
             llen(userHomeIdsByUserIdKey(userId))?.toInt() ?: 0

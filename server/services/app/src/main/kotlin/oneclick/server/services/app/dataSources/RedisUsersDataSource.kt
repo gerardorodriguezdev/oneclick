@@ -52,21 +52,13 @@ internal class RedisUsersDataSource(
             }
 
         suspend fun RedisCoroutinesCommands<String, String>.getUser(findable: Findable): User? {
-            val userStringWithVersion = get(findable.toKey()) ?: return null
-
-            val version = userStringWithVersion.substringBefore(':')
-            val userString = userStringWithVersion.substringAfter(':')
-
-            return when (version) {
-                User.VERSION -> Json.decodeFromString<User>(userString)
-                else -> null
-            }
+            val userString = get(findable.toKey()) ?: return null
+            return Json.decodeFromString<User>(userString)
         }
 
         suspend fun RedisCoroutinesCommands<String, String>.setUser(user: User, userString: String) {
-            val userStringWithVersion = "${User.VERSION}:$userString"
-            set(userByUserIdKey(user.userId), userStringWithVersion)
-            set(userByUsernameKey(user.username), userStringWithVersion)
+            set(userByUserIdKey(user.userId), userString)
+            set(userByUsernameKey(user.username), userString)
         }
     }
 }

@@ -10,8 +10,4 @@ internal data class User(
     val userId: Uuid,
     val username: Username,
     val hashedPassword: HashedPassword,
-) {
-    companion object {
-        const val VERSION = "v1"
-    }
-}
+)
