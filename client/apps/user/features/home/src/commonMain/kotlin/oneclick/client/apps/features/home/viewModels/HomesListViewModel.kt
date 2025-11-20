@@ -4,12 +4,12 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.persistentListOf
-import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
 import oneclick.client.apps.features.home.mappers.toHomesListScreenState
+import oneclick.client.apps.features.home.mappers.toVMHomes
 import oneclick.client.apps.features.home.models.HomesResult
 import oneclick.client.apps.features.home.repositories.HomesRepository
 import oneclick.client.apps.features.home.ui.screens.HomesListEvent
@@ -17,7 +17,6 @@ import oneclick.client.apps.features.home.ui.screens.HomesListScreenState
 import oneclick.client.apps.user.features.home.generated.resources.Res
 import oneclick.client.apps.user.features.home.generated.resources.homesListScreen_snackbar_unknownError
 import oneclick.client.shared.notifications.NotificationsController
-import oneclick.shared.contracts.homes.models.Home
 import org.jetbrains.compose.resources.getString
 
 @Inject
@@ -41,7 +40,7 @@ internal class HomesListViewModel(
         viewModelScope.launch {
             homesRepository.homesEntry.collect { homeEntry ->
                 homesListViewModelState.value = homesListViewModelState.value.copy(
-                    homes = homeEntry?.homes?.toPersistentList() ?: persistentListOf(),
+                    homes = homeEntry?.homes?.toVMHomes() ?: persistentListOf(),
                     canRequestMore = homeEntry?.canRequestMore ?: true,
                 )
             }
@@ -106,9 +105,23 @@ internal class HomesListViewModel(
     }
 
     data class HomesListViewModelState(
-        val homes: ImmutableList<Home> = persistentListOf(),
+        val homes: ImmutableList<VMHome> = persistentListOf(),
         val canRequestMore: Boolean = true,
         val isFullPageLoading: Boolean = false,
         val isPaginationLoading: Boolean = false,
-    )
+    ) {
+        data class VMHome(
+            val id: String,
+            val devices: ImmutableList<VMDevice> = persistentListOf(),
+        ) {
+            sealed interface VMDevice {
+                val id: String
+
+                data class VMWaterSensor(
+                    override val id: String,
+                    val level: String,
+                ) : VMDevice
+            }
+        }
+    }
 }

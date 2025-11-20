@@ -1,40 +1,29 @@
 package oneclick.client.apps.features.home.mappers
 
-import kotlinx.collections.immutable.ImmutableList
 import kotlinx.collections.immutable.toImmutableList
 import kotlinx.collections.immutable.toPersistentList
 import oneclick.client.apps.features.home.ui.screens.HomesListScreenState
 import oneclick.client.apps.features.home.ui.screens.HomesListScreenState.UiHome
-import oneclick.client.apps.features.home.ui.screens.HomesListScreenState.UiHome.UiDevice
 import oneclick.client.apps.features.home.ui.screens.HomesListScreenState.UiHome.UiDevice.UiWaterSensor
 import oneclick.client.apps.features.home.viewModels.HomesListViewModel
-import oneclick.shared.contracts.core.models.UniqueList
-import oneclick.shared.contracts.homes.models.Device
-import oneclick.shared.contracts.homes.models.Home
+import oneclick.client.apps.features.home.viewModels.HomesListViewModel.HomesListViewModelState.VMHome
 
 internal fun HomesListViewModel.HomesListViewModelState.toHomesListScreenState(): HomesListScreenState =
     HomesListScreenState(
-        homes = homes.toUiHomes(),
+        homes = homes.map { home ->
+            UiHome(
+                id = home.id,
+                devices = home.devices.map { device ->
+                    when (device) {
+                        is VMHome.VMDevice.VMWaterSensor ->
+                            UiWaterSensor(
+                                id = device.id,
+                                level = device.level,
+                            )
+                    }
+                }.toImmutableList()
+            )
+        }.toPersistentList(),
         isFullScreenLoading = isFullPageLoading,
         isPaginationLoading = isPaginationLoading,
     )
-
-private fun ImmutableList<Home>.toUiHomes(): ImmutableList<UiHome> =
-    map { home -> home.toUiHome() }.toPersistentList()
-
-private fun Home.toUiHome(): UiHome =
-    UiHome(
-        id = id.value,
-        devices = devices.toUiDevices()
-    )
-
-private fun UniqueList<Device>.toUiDevices(): ImmutableList<UiDevice> =
-    map { device -> device.toUiDevice() }.toImmutableList()
-
-private fun Device.toUiDevice(): UiDevice =
-    when (this) {
-        is Device.WaterSensor -> UiWaterSensor(
-            id = id.value,
-            level = level.value.toString(),
-        )
-    }
