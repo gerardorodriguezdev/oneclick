@@ -125,6 +125,8 @@ class JvmAppPlugin : Plugin<Project> {
             dependsOn(jibBuildTarTask)
 
             standardInput = System.`in`
+            standardOutput = System.out
+            errorOutput = System.err
 
             commandLine(
                 runDockerCommand(
@@ -157,7 +159,7 @@ class JvmAppPlugin : Plugin<Project> {
         return buildList {
             add("bash")
             add("-c")
-            add("docker run -p $port:$port$environmentVariablesString $fullNameDockerImage")
+            add("docker run -i -p $port:$port$environmentVariablesString $fullNameDockerImage")
         }
     }
 
