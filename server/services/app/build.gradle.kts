@@ -1,7 +1,5 @@
 import app.cash.sqldelight.gradle.SqlDelightDatabase
 import buildLogic.convention.extensions.consumeWasmWebsite
-import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput.PostgresDatabase
-import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput.RedisDatabase
 
 plugins {
     id("oneclick.jvm.server")
@@ -27,17 +25,14 @@ jvmServer {
         dockerExecutablePath = "/usr/local/bin/docker"
         dockerComposeExecutablePath = "/usr/local/bin/docker-compose"
 
-        postgresDatabase =
-            provider {
-                PostgresDatabase(
-                    imageVersion = libs.versions.docker.postgres.api.get().toInt(),
-                    databaseName = stringProvider("POSTGRES_DATABASE").get(),
-                    databaseUsername = stringProvider("POSTGRES_USERNAME").get(),
-                    databasePassword = stringProvider("POSTGRES_PASSWORD").get(),
-                )
-            }
+        postgres(
+            imageVersion = libs.versions.docker.postgres.api.get().toInt(),
+            databaseName = stringProvider("POSTGRES_DATABASE").get(),
+            databaseUsername = stringProvider("POSTGRES_USERNAME").get(),
+            databasePassword = stringProvider("POSTGRES_PASSWORD").get(),
+        )
 
-        redisDatabase = RedisDatabase(
+        redis(
             imageVersion = libs.versions.docker.redis.api.get().toInt(),
         )
     }

@@ -1,13 +1,14 @@
 package buildLogic.convention.extensions.plugins
 
-import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput.PostgresDatabase
-import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput.RedisDatabase
+import buildLogic.convention.models.DockerComposeConfiguration
+import buildLogic.convention.models.DockerConfiguration
+import buildLogic.convention.models.ImageConfiguration
 import org.gradle.api.model.ObjectFactory
 import org.gradle.api.provider.Property
 import org.gradle.kotlin.dsl.newInstance
 import javax.inject.Inject
 
-open class JvmServerExtension @Inject constructor(objects: ObjectFactory) {
+open class JvmServerExtension @Inject constructor(private val objects: ObjectFactory) {
     val jvmTarget: Property<Int> = objects.property(Int::class.java)
     val mainClass: Property<String> = objects.property(String::class.java)
     val dockerConfiguration: DockerConfiguration = objects.newInstance(DockerConfiguration::class)
@@ -21,19 +22,41 @@ open class JvmServerExtension @Inject constructor(objects: ObjectFactory) {
         dockerComposeConfiguration.configure()
     }
 
-    interface DockerConfiguration {
-        val imagePort: Property<Int>
-        val imageName: Property<String>
-        val imageTag: Property<String>
-        val imageRegistryUrl: Property<String>
-        val imageRegistryUsername: Property<String>
-        val imageRegistryPassword: Property<String>
+    fun DockerComposeConfiguration.postgres(
+        imageVersion: Int,
+        port: Int = 5432,
+        volume: String = "/var/lib/postgresql/data",
+        databaseName: String,
+        databaseUsername: String,
+        databasePassword: String,
+    ) {
+        val imageConfiguration = objects.newInstance(ImageConfiguration::class)
+        dockerComposeConfiguration.imagesConfigurations.add(
+            imageConfiguration.apply {
+                name.set("postgres")
+                tag.set(imageVersion.toString())
+                this.port.set(port)
+                this.volume.set(volume)
+                environmentVariables.put("POSTGRES_DB", databaseName)
+                environmentVariables.put("POSTGRES_USER", databaseUsername)
+                environmentVariables.put("POSTGRES_PASSWORD", databasePassword)
+            }
+        )
     }
 
-    interface DockerComposeConfiguration {
-        val dockerExecutablePath: Property<String>
-        val dockerComposeExecutablePath: Property<String>
-        val postgresDatabase: Property<PostgresDatabase>
-        val redisDatabase: Property<RedisDatabase>
+    fun DockerComposeConfiguration.redis(
+        imageVersion: Int,
+        port: Int = 6379,
+        volume: String = "/data",
+    ) {
+        val imageConfiguration = objects.newInstance(ImageConfiguration::class)
+        dockerComposeConfiguration.imagesConfigurations.add(
+            imageConfiguration.apply {
+                name.set("redis")
+                tag.set(imageVersion.toString())
+                this.port.set(port)
+                this.volume.set(volume)
+            }
+        )
     }
 }

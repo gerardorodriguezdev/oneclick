@@ -4,8 +4,7 @@ import buildLogic.convention.extensions.plugins.JvmServerExtension
 import buildLogic.convention.extensions.toJavaLanguageVersion
 import buildLogic.convention.extensions.toJavaVersion
 import buildLogic.convention.extensions.toMap
-import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput
-import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigInput.App
+import buildLogic.convention.models.ImageConfiguration
 import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigTask
 import com.avast.gradle.dockercompose.ComposeExtension
 import com.avast.gradle.dockercompose.DockerComposePlugin
@@ -24,6 +23,7 @@ import org.gradle.api.tasks.JavaExec
 import org.gradle.api.tasks.Sync
 import org.gradle.api.tasks.bundling.Jar
 import org.gradle.kotlin.dsl.named
+import org.gradle.kotlin.dsl.newInstance
 import org.gradle.kotlin.dsl.register
 import org.jetbrains.kotlin.gradle.dsl.KotlinJvmProjectExtension
 import org.jetbrains.kotlin.gradle.plugin.KotlinPluginWrapper
@@ -144,22 +144,27 @@ class JvmServerPlugin : Plugin<Project> {
             }
         }
 
+        val appImageConfiguration = objects.newInstance<ImageConfiguration>()
+        appImageConfiguration.apply {
+            name.set(jvmServerExtension.dockerConfiguration.imageName)
+            tag.set(jvmServerExtension.dockerConfiguration.imageTag)
+            port.set(jvmServerExtension.dockerConfiguration.imagePort)
+            environmentVariables.set(environmentVariablesProvider)
+            dependsOn.set(
+                provider {
+                    val imagesConfigurations = jvmServerExtension.dockerComposeConfiguration.imagesConfigurations.get()
+                    val dependencies = imagesConfigurations.map { imageConfiguration -> imageConfiguration.name.get() }
+                    dependencies
+                }
+            )
+        }
         val dockerComposeFileName = dockerComposeFileName()
         val createDockerComposeConfigTask =
             tasks.register<CreateDockerComposeConfigTask>(CREATE_DOCKER_COMPOSE_TASK_NAME) {
-                input.set(
-                    CreateDockerComposeConfigInput(
-                        app = App(
-                            imageName = jvmServerExtension.dockerConfiguration.imageName.get(),
-                            imageTag = jvmServerExtension.dockerConfiguration.imageTag.get(),
-                            imagePort = jvmServerExtension.dockerConfiguration.imagePort.get(),
-                            environmentVariables = environmentVariablesProvider.get(),
-                        ),
-                        postgresDatabase = jvmServerExtension.dockerComposeConfiguration.postgresDatabase.orNull,
-                        redisDatabase = jvmServerExtension.dockerComposeConfiguration.redisDatabase.orNull,
-                    )
-                )
+                val extensionImageConfigurations =
+                    jvmServerExtension.dockerComposeConfiguration.imagesConfigurations.get()
 
+                imagesConfigurations.set(extensionImageConfigurations + appImageConfiguration)
                 outputFile.set(dockerComposeFileName)
             }
 

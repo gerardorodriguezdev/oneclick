@@ -29,9 +29,10 @@ abstract class CreateWebpackConfigTask : DefaultTask() {
         )
     }
 
-    private fun webpackConfigContent(ignoredFilesString: String): String =
-        //language=javascript
-        """
+    private companion object {
+        private fun webpackConfigContent(ignoredFilesString: String): String =
+            //language=javascript
+            """
             const HtmlWebpackPlugin = require('html-webpack-plugin');
             
             config.plugins.push(
@@ -75,6 +76,7 @@ abstract class CreateWebpackConfigTask : DefaultTask() {
             }
         """.trimIndent()
 
-    private fun List<String>.toIgnoredFilesString(): String =
-        joinToString(separator = ",", transform = { "'$it'" })
+        private fun List<String>.toIgnoredFilesString(): String =
+            joinToString(separator = ",", transform = { "'$it'" })
+    }
 }
