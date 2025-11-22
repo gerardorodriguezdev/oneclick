@@ -33,23 +33,28 @@
     },
     {
       "name": "HOME_ID",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "KEYSTORE_PATH",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "KEYSTORE_PASSWORD",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "PROTOCOL",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "HOST",
-      "propertyType": "String"
+      "propertyType": "String",
+      "nullable": true
     },
     {
       "name": "PORT",
@@ -58,11 +63,13 @@
     },
     {
       "name": "USE_FAKE_DEVICES_CONTROLLER",
-      "propertyType": "Boolean"
+      "propertyType": "Boolean",
+      "nullable": true
     },
     {
       "name": "USE_FILE_APP_LOGGER",
-      "propertyType": "Boolean"
+      "propertyType": "Boolean",
+      "nullable": true
     }
   ]
 }
