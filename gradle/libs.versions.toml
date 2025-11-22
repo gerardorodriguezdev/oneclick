@@ -72,6 +72,7 @@ gradle-kmp-kotlin = { module = "org.jetbrains.kotlin:kotlin-gradle-plugin", vers
 gradle-jvm-kotlin = { module = "org.jetbrains.kotlin.jvm:org.jetbrains.kotlin.jvm.gradle.plugin", version.ref = "kmp-kotlin-api" }
 gradle-compose = { module = "org.jetbrains.compose:compose-gradle-plugin", version.ref = "kmp-compose" }
 gradle-ktor = { module = "io.ktor.plugin:plugin", version.ref = "kmp-ktor" }
+gradle-jib = { module = "com.google.cloud.tools.jib:com.google.cloud.tools.jib.gradle.plugin", version.ref = "gradle-jib" }
 gradle-android-application = { module = "com.android.application:com.android.application.gradle.plugin", version.ref = "android-gradle-plugin" }
 gradle-android-library = { module = "com.android.library:com.android.library.gradle.plugin", version.ref = "android-gradle-plugin" }
 gradle-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:gradle-plugin", version.ref = "gradle-chamaleon" }

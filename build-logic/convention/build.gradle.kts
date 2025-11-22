@@ -16,6 +16,7 @@ dependencies {
     implementation(libs.gradle.android.library)
     implementation(libs.gradle.chamaleon)
     implementation(libs.gradle.serialization)
+    implementation(libs.gradle.jib)
     implementation(libs.gradle.docker.compose)
     implementation(libs.gradle.kaml)
     implementation(libs.gradle.firebase)
