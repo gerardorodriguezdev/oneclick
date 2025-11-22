@@ -9,15 +9,16 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
+import io.ktor.server.sessions.*
 import io.ktor.util.logging.*
 import oneclick.server.services.app.authentication.AuthenticationType
-import oneclick.server.services.app.dataSources.base.InvalidJwtDataSource
-import oneclick.server.services.app.plugins.authentication.AuthenticationConstants.JWT_REALM
+import oneclick.server.services.app.authentication.HomeJwtProvider
 import oneclick.server.services.app.authentication.JwtCredentials.HomeJwtCredentials
 import oneclick.server.services.app.authentication.JwtCredentials.UserJwtCredentials
-import oneclick.server.shared.authentication.models.JwtId.Companion.toJwtId
-import oneclick.server.services.app.authentication.HomeJwtProvider
 import oneclick.server.services.app.authentication.UserJwtProvider
+import oneclick.server.services.app.dataSources.base.InvalidJwtDataSource
+import oneclick.server.services.app.plugins.authentication.AuthenticationConstants.JWT_REALM
+import oneclick.server.shared.authentication.models.JwtId.Companion.toJwtId
 import oneclick.shared.contracts.auth.models.Jwt
 import oneclick.shared.contracts.core.models.Uuid
 import oneclick.shared.contracts.core.models.Uuid.Companion.toUuid
@@ -79,6 +80,7 @@ private fun AuthenticationConfig.registerUserSessionAuthentication(
 
         challenge {
             call.application.log.debug("Invalid session")
+            call.sessions.clear<Jwt>()
             call.respond(HttpStatusCode.Unauthorized)
         }
     }
