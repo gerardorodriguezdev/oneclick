@@ -13,17 +13,17 @@ jvmServer {
     mainClass = "oneclick.server.services.app.ApplicationKt"
 
     dockerConfiguration {
-        imageName = stringProvider("IMAGE_NAME")
-        imagePort = intProvider("IMAGE_PORT")
-        imageTag = stringProvider("IMAGE_TAG")
-        imageRegistryUrl = stringProvider("REGISTRY_LOCATION")
-        imageRegistryUsername = stringProvider("REGISTRY_USERNAME")
-        imageRegistryPassword = stringProvider("REGISTRY_PASSWORD")
+        executablePath = "/usr/local/bin/docker"
+        name = stringProvider("IMAGE_NAME")
+        port = intProvider("IMAGE_PORT")
+        tag = stringProvider("IMAGE_TAG")
+        registryUrl = stringProvider("REGISTRY_LOCATION")
+        registryUsername = stringProvider("REGISTRY_USERNAME")
+        registryPassword = stringProvider("REGISTRY_PASSWORD")
     }
 
     dockerComposeConfiguration {
-        dockerExecutablePath = "/usr/local/bin/docker"
-        dockerComposeExecutablePath = "/usr/local/bin/docker-compose"
+        executablePath = "/usr/local/bin/docker-compose"
 
         postgres(
             imageVersion = libs.versions.docker.postgres.api.get().toInt(),

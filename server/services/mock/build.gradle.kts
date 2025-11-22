@@ -8,12 +8,12 @@ jvmServer {
     mainClass = "oneclick.server.services.mock.ApplicationKt"
 
     dockerConfiguration {
-        imageName = "mock"
-        imagePort = intProvider("IMAGE_PORT")
-        imageTag = stringProvider("IMAGE_TAG")
-        imageRegistryUrl = stringProvider("REGISTRY_LOCATION")
-        imageRegistryUsername = stringProvider("REGISTRY_USERNAME")
-        imageRegistryPassword = stringProvider("REGISTRY_PASSWORD")
+        name = "mock"
+        port = intProvider("IMAGE_PORT")
+        tag = stringProvider("IMAGE_TAG")
+        registryUrl = stringProvider("REGISTRY_LOCATION")
+        registryUsername = stringProvider("REGISTRY_USERNAME")
+        registryPassword = stringProvider("REGISTRY_PASSWORD")
     }
 
     dockerComposeConfiguration {

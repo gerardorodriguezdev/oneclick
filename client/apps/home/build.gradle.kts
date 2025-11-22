@@ -5,10 +5,20 @@ plugins {
 jvmApp {
     jvmTarget = libs.versions.jvm.api.get().toInt()
     mainClass = "oneclick.client.apps.home.ApplicationKt"
+
+    dockerConfiguration {
+        executablePath = "/usr/local/bin/docker"
+        name = stringProvider("IMAGE_NAME")
+        port = intProvider("IMAGE_PORT")
+        tag = stringProvider("IMAGE_TAG")
+        registryUrl = stringProvider("REGISTRY_LOCATION")
+        registryUsername = stringProvider("REGISTRY_USERNAME")
+        registryPassword = stringProvider("REGISTRY_PASSWORD")
+    }
 }
 
 kotlin {
-    dependencies  {
+    dependencies {
         implementation(ktorLibs.client.core)
         implementation(libs.kmp.coroutines)
         implementation(libs.kmp.kable)
@@ -24,3 +34,9 @@ kotlin {
         implementation(projects.shared.timeProvider)
     }
 }
+
+fun stringProvider(name: String): Provider<String> =
+    provider { chamaleon.selectedEnvironment().jvmPlatform.propertyStringValue(name) }
+
+fun intProvider(name: String): Provider<Int> =
+    stringProvider(name).map { value -> value.toInt() }
