@@ -3,10 +3,11 @@ package buildLogic.convention.models
 import org.gradle.api.provider.Property
 
 interface DockerConfiguration {
-    val imagePort: Property<Int>
-    val imageName: Property<String>
-    val imageTag: Property<String>
-    val imageRegistryUrl: Property<String>
-    val imageRegistryUsername: Property<String>
-    val imageRegistryPassword: Property<String>
+    val executablePath: Property<String>
+    val port: Property<Int>
+    val name: Property<String>
+    val tag: Property<String>
+    val registryUrl: Property<String>
+    val registryUsername: Property<String>
+    val registryPassword: Property<String>
 }

@@ -1,5 +1,6 @@
 package buildLogic.convention.plugins
 
+import buildLogic.convention.extensions.externalRegistryProject
 import buildLogic.convention.extensions.plugins.JvmServerExtension
 import buildLogic.convention.extensions.toJavaLanguageVersion
 import buildLogic.convention.extensions.toJavaVersion
@@ -71,19 +72,19 @@ class JvmServerPlugin : Plugin<Project> {
         val ktorExtensions = (ktorExtension as ExtensionAware).extensions
         val dockerImageRegistry = DockerImageRegistry.externalRegistry(
             project = externalRegistryProject(
-                imageRegistryUrl = jvmServerExtension.dockerConfiguration.imageRegistryUrl,
-                imageName = jvmServerExtension.dockerConfiguration.imageName,
+                imageRegistryUrl = jvmServerExtension.dockerConfiguration.registryUrl,
+                imageName = jvmServerExtension.dockerConfiguration.name,
                 identifier = provider { "latest" },
             ),
-            username = jvmServerExtension.dockerConfiguration.imageRegistryUsername,
-            password = jvmServerExtension.dockerConfiguration.imageRegistryPassword,
+            username = jvmServerExtension.dockerConfiguration.registryUsername,
+            password = jvmServerExtension.dockerConfiguration.registryPassword,
         )
         val environmentVariablesProvider = provider { chamaleonExtension.toMap() }
 
         ktorExtensions.configure(DockerExtension::class.java) {
-            localImageName.set(jvmServerExtension.dockerConfiguration.imageName)
+            localImageName.set(jvmServerExtension.dockerConfiguration.name)
             jreVersion.set(jvmServerExtension.jvmTarget.toJavaVersion())
-            imageTag.set(jvmServerExtension.dockerConfiguration.imageTag)
+            imageTag.set(jvmServerExtension.dockerConfiguration.tag)
             externalRegistry.set(dockerImageRegistry)
 
             environmentVariablesProvider.get().forEach { (key, value) ->
@@ -113,8 +114,8 @@ class JvmServerPlugin : Plugin<Project> {
         val dockerComposeFileNameString = dockerComposeFileNameString()
         extensions.configure(ComposeExtension::class.java) {
             useComposeFiles.add(dockerComposeFileNameString)
-            executable.set(jvmServerExtension.dockerComposeConfiguration.dockerComposeExecutablePath)
-            dockerExecutable.set(jvmServerExtension.dockerComposeConfiguration.dockerExecutablePath)
+            executable.set(jvmServerExtension.dockerConfiguration.executablePath)
+            dockerExecutable.set(jvmServerExtension.dockerComposeConfiguration.executablePath)
         }
     }
 
@@ -146,9 +147,9 @@ class JvmServerPlugin : Plugin<Project> {
 
         val appImageConfiguration = objects.newInstance<ImageConfiguration>()
         appImageConfiguration.apply {
-            name.set(jvmServerExtension.dockerConfiguration.imageName)
-            tag.set(jvmServerExtension.dockerConfiguration.imageTag)
-            port.set(jvmServerExtension.dockerConfiguration.imagePort)
+            name.set(jvmServerExtension.dockerConfiguration.name)
+            tag.set(jvmServerExtension.dockerConfiguration.tag)
+            port.set(jvmServerExtension.dockerConfiguration.port)
             environmentVariables.set(environmentVariablesProvider)
             dependsOn.set(
                 provider {
@@ -180,13 +181,6 @@ class JvmServerPlugin : Plugin<Project> {
             dependsOn(loadImageTask)
         }
     }
-
-    private fun Project.externalRegistryProject(
-        imageRegistryUrl: Provider<String>,
-        imageName: Provider<String>,
-        identifier: Provider<String>,
-    ): Provider<String> =
-        provider { "${imageRegistryUrl.get()}/${imageName.get()}:${identifier.get()}" }
 
     private fun Project.dockerComposeFileName(): Provider<RegularFile> =
         project.layout.buildDirectory.file("$DOCKER_COMPOSE_DIRECTORY_NAME/$DOCKER_COMPOSE_FILE_NAME")

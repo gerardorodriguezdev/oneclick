@@ -2,6 +2,7 @@ package buildLogic.convention.extensions
 
 import io.github.gerardorodriguezdev.chamaleon.gradle.plugin.extensions.ChamaleonExtension
 import org.gradle.api.JavaVersion
+import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import kotlin.collections.component1
@@ -32,3 +33,10 @@ internal fun ChamaleonExtension?.toMap(): Map<String, String> =
             }
         }
     }
+
+internal fun Project.externalRegistryProject(
+    imageRegistryUrl: Provider<String>,
+    imageName: Provider<String>,
+    identifier: Provider<String>,
+): Provider<String> =
+    provider { "${imageRegistryUrl.get()}/${imageName.get()}:${identifier.get()}" }
