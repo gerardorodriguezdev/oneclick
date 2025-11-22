@@ -8,6 +8,7 @@ jvmServer {
     mainClass = "oneclick.server.services.mock.ApplicationKt"
 
     dockerConfiguration {
+        executablePath = "/usr/local/bin/docker"
         name = "mock"
         port = intProvider("IMAGE_PORT")
         tag = stringProvider("IMAGE_TAG")
@@ -17,8 +18,7 @@ jvmServer {
     }
 
     dockerComposeConfiguration {
-        dockerExecutablePath = "/usr/local/bin/docker"
-        dockerComposeExecutablePath = "/usr/local/bin/docker-compose"
+        executablePath = "/usr/local/bin/docker-compose"
     }
 }
 

@@ -34,7 +34,7 @@ internal fun ChamaleonExtension?.toMap(): Map<String, String> =
         }
     }
 
-internal fun Project.externalRegistryProject(
+internal fun Project.fullNameDockerImage(
     imageRegistryUrl: Provider<String>,
     imageName: Provider<String>,
     identifier: Provider<String>,

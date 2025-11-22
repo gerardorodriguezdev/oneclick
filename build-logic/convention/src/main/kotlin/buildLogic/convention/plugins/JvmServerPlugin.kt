@@ -1,6 +1,6 @@
 package buildLogic.convention.plugins
 
-import buildLogic.convention.extensions.externalRegistryProject
+import buildLogic.convention.extensions.fullNameDockerImage
 import buildLogic.convention.extensions.plugins.JvmServerExtension
 import buildLogic.convention.extensions.toJavaLanguageVersion
 import buildLogic.convention.extensions.toJavaVersion
@@ -71,7 +71,7 @@ class JvmServerPlugin : Plugin<Project> {
         val ktorExtension = extensions.getByType(KtorExtension::class.java)
         val ktorExtensions = (ktorExtension as ExtensionAware).extensions
         val dockerImageRegistry = DockerImageRegistry.externalRegistry(
-            project = externalRegistryProject(
+            project = fullNameDockerImage(
                 imageRegistryUrl = jvmServerExtension.dockerConfiguration.registryUrl,
                 imageName = jvmServerExtension.dockerConfiguration.name,
                 identifier = provider { "latest" },
