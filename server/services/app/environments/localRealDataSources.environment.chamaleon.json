@@ -39,6 +39,10 @@
         "value": false
       },
       {
+        "name": "DISABLE_SECURE_COOKIE",
+        "value": true
+      },
+      {
         "name": "USE_MEMORY_DATA_SOURCES",
         "value": false
       },

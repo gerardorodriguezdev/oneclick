@@ -19,7 +19,7 @@ internal fun server(dependencies: Dependencies): EmbeddedServer<NettyApplication
 private fun Application.configureModules(dependencies: Dependencies) {
     configureCallLogging(logger = dependencies.logger, timeProvider = dependencies.timeProvider)
     configureSerialization()
-    configureSessions()
+    configureSessions(disableSecureCookies = dependencies.disableSecureCookie)
     configureAuthentication(
         logger = dependencies.logger,
         invalidJwtDataSource = dependencies.invalidJwtDataSource,

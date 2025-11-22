@@ -15,6 +15,7 @@ internal class Dependencies(
     protocol: String,
     host: String,
     val disableRateLimit: Boolean,
+    val disableSecureCookie: Boolean,
     val passwordManager: PasswordManager,
     val timeProvider: TimeProvider,
     val logger: Logger,

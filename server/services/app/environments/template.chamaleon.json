@@ -47,6 +47,11 @@
       "nullable": true
     },
     {
+      "name": "DISABLE_SECURE_COOKIE",
+      "propertyType": "Boolean",
+      "nullable": true
+    },
+    {
       "name": "USE_MEMORY_DATA_SOURCES",
       "propertyType": "Boolean",
       "nullable": true

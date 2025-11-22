@@ -15,7 +15,9 @@ import oneclick.server.services.app.repositories.DefaultHomesRepository
 import oneclick.server.services.app.repositories.DefaultUsersRepository
 import oneclick.server.services.app.repositories.HomesRepository
 import oneclick.server.services.app.repositories.UsersRepository
-import oneclick.server.shared.authentication.security.*
+import oneclick.server.shared.authentication.security.BcryptPasswordManager
+import oneclick.server.shared.authentication.security.DefaultUuidProvider
+import oneclick.server.shared.authentication.security.KtorKeystoreEncryptor
 import oneclick.server.shared.db.databaseDriver
 import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.dispatchers.platform.dispatchersProvider
@@ -69,6 +71,7 @@ fun main() {
         protocol = environment.protocol,
         host = environment.host,
         disableRateLimit = environment.disableRateLimit,
+        disableSecureCookie = environment.disableSecureCookie,
         passwordManager = passwordManager,
         timeProvider = timeProvider,
         logger = logger,
@@ -179,6 +182,7 @@ private data class Environment(
     val postgresPassword: String = System.getenv("POSTGRES_PASSWORD"),
     val redisUrl: String = System.getenv("REDIS_URL"),
     val disableRateLimit: Boolean = System.getenv("DISABLE_RATE_LIMIT") == "true",
+    val disableSecureCookie: Boolean = System.getenv("DISABLE_SECURE_COOKIE") == "true",
     val protocol: String = System.getenv("PROTOCOL"),
     val host: String = System.getenv("HOST"),
 ) {
