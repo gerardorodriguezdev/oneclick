@@ -36,7 +36,6 @@ internal fun Routing.userHomesEndpoint(homesRepository: HomesRepository) {
                 }
             }
         }
-
     }
 }
 
