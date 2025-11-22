@@ -26,14 +26,14 @@ jvmServer {
         executablePath = "/usr/local/bin/docker-compose"
 
         postgres(
-            imageVersion = libs.versions.docker.postgres.api.get().toInt(),
-            databaseName = stringProvider("POSTGRES_DATABASE").get(),
-            databaseUsername = stringProvider("POSTGRES_USERNAME").get(),
-            databasePassword = stringProvider("POSTGRES_PASSWORD").get(),
+            imageVersion = provider { libs.versions.docker.postgres.api.get().toInt() },
+            databaseName = stringProvider("POSTGRES_DATABASE"),
+            databaseUsername = stringProvider("POSTGRES_USERNAME"),
+            databasePassword = stringProvider("POSTGRES_PASSWORD"),
         )
 
         redis(
-            imageVersion = libs.versions.docker.redis.api.get().toInt(),
+            imageVersion = provider { libs.versions.docker.redis.api.get().toInt() },
         )
     }
 }
