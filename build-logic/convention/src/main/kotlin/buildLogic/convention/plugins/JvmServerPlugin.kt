@@ -114,8 +114,9 @@ class JvmServerPlugin : Plugin<Project> {
         val dockerComposeFileNameString = dockerComposeFileNameString()
         extensions.configure(ComposeExtension::class.java) {
             useComposeFiles.add(dockerComposeFileNameString)
-            executable.set(jvmServerExtension.dockerConfiguration.executablePath)
-            dockerExecutable.set(jvmServerExtension.dockerComposeConfiguration.executablePath)
+
+            executable.set(jvmServerExtension.dockerComposeConfiguration.executablePath)
+            dockerExecutable.set(jvmServerExtension.dockerConfiguration.executablePath)
         }
     }
 
