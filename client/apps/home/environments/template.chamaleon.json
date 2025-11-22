@@ -4,6 +4,34 @@
   ],
   "propertyDefinitions": [
     {
+      "name": "IMAGE_NAME",
+      "propertyType": "String"
+    },
+    {
+      "name": "IMAGE_PORT",
+      "propertyType": "String"
+    },
+    {
+      "name": "IMAGE_TAG",
+      "propertyType": "String",
+      "nullable": true
+    },
+    {
+      "name": "REGISTRY_LOCATION",
+      "propertyType": "String",
+      "nullable": true
+    },
+    {
+      "name": "REGISTRY_USERNAME",
+      "propertyType": "String",
+      "nullable": true
+    },
+    {
+      "name": "REGISTRY_PASSWORD",
+      "propertyType": "String",
+      "nullable": true
+    },
+    {
       "name": "HOME_ID",
       "propertyType": "String"
     },
