@@ -105,7 +105,11 @@ fun main() {
     ).start()
 }
 
-private fun File.createIfNotExists() = if (!exists()) createNewFile() else true
+private fun File.createIfNotExists() {
+    if (!exists()) {
+        createNewFile()
+    }
+}
 
 private data class Environment(
     val homeId: Uuid = Uuid.unsafe(System.getenv("HOME_ID")),

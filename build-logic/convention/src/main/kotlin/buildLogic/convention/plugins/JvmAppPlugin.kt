@@ -81,28 +81,37 @@ class JvmAppPlugin : Plugin<Project> {
                     executable = jvmAppExtension.dockerConfiguration.executablePath.get()
                 }
 
-                val jvmImage = "eclipse-temurin:${jvmAppExtension.jvmTarget.get()}-jre"
-                from.image = jvmImage
-
-                to.setImage(
-                    fullNameDockerImage(
-                        imageRegistryUrl = jvmAppExtension.dockerConfiguration.registryUrl,
-                        imageName = jvmAppExtension.dockerConfiguration.name,
-                        identifier = provider { "latest" },
-                    )
-                )
-                to.auth {
-                    setUsername(jvmAppExtension.dockerConfiguration.registryUsername)
-                    setPassword(jvmAppExtension.dockerConfiguration.registryPassword)
+                container {
+                    setFormat("Docker")
                 }
-                to.setTags(
-                    provider {
-                        setOf(
-                            jvmAppExtension.dockerConfiguration.tag.get(),
-                            "latest",
+
+                from {
+                    image = "eclipse-temurin:${jvmAppExtension.jvmTarget.get()}-jre"
+                }
+
+                to {
+                    setImage(
+                        fullNameDockerImage(
+                            imageRegistryUrl = jvmAppExtension.dockerConfiguration.registryUrl,
+                            imageName = jvmAppExtension.dockerConfiguration.name,
+                            identifier = provider { "latest" },
                         )
+                    )
+
+                    auth {
+                        setUsername(jvmAppExtension.dockerConfiguration.registryUsername)
+                        setPassword(jvmAppExtension.dockerConfiguration.registryPassword)
                     }
-                )
+
+                    setTags(
+                        provider {
+                            setOf(
+                                jvmAppExtension.dockerConfiguration.tag.get(),
+                                "latest",
+                            )
+                        }
+                    )
+                }
             }
         }
     }
