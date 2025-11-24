@@ -138,6 +138,8 @@ class JvmAppPlugin : Plugin<Project> {
             errorOutput = System.err
 
             commandLine(
+                "bash",
+                "-c",
                 runDockerCommand(
                     environmentVariables = environmentVariablesProvider.get(),
                     port = jvmAppExtension.dockerConfiguration.port.get().toString(),
@@ -159,17 +161,13 @@ class JvmAppPlugin : Plugin<Project> {
         environmentVariables: Map<String, String>,
         port: String,
         fullNameDockerImage: String,
-    ): List<String> {
+    ): String {
         val environmentVariables = environmentVariables.entries
         val environmentVariablesStrings = environmentVariables.map { (key, value) -> "$key=$value" }
         val environmentVariablesString =
             environmentVariablesStrings.joinToString(prefix = " ", separator = " ", transform = { "-e $it" })
 
-        return buildList {
-            add("bash")
-            add("-c")
-            add("docker run -i -p $port:$port$environmentVariablesString $fullNameDockerImage")
-        }
+        return "docker run -i -p $port:$port$environmentVariablesString $fullNameDockerImage"
     }
 
     private companion object {
