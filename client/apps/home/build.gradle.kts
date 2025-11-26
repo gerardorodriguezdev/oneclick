@@ -22,6 +22,7 @@ kotlin {
         implementation(ktorLibs.client.core)
         implementation(libs.kmp.coroutines)
         implementation(libs.kmp.kable)
+        implementation(libs.jvm.logback.classic)
         implementation(projects.client.shared.network)
         implementation(projects.shared.logging)
         implementation(projects.shared.contracts.core)
