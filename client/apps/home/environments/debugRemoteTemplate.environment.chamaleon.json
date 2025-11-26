@@ -44,7 +44,7 @@
       },
       {
         "name": "HOST",
-        "value": "oneclick-staging.up.railway.app"
+        "value": "url"
       },
       {
         "name": "PORT",
