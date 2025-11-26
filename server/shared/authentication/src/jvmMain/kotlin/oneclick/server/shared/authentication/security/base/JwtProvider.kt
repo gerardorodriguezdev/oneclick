@@ -48,8 +48,8 @@ abstract class BaseEncryptedJwtProvider(
     }
 
     private fun jwtExpiration(): Date {
-        val currentTime = timeProvider.currentTimeMillis()
-        return Date(currentTime + expirationTime)
+        val currentTimeMillis = timeProvider.currentTimeMillis()
+        return Date(currentTimeMillis + expirationTime)
     }
 
     protected fun jwtId(id: Uuid): JwtId {

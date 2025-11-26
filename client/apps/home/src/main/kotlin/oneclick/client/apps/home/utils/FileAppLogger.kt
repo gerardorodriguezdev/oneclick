@@ -29,8 +29,8 @@ internal class FileAppLogger(
 
     private fun log(level: LogLevel, message: String, tag: String? = null) {
         val level = level.value
-        val currentTime = timeProvider.currentTimeMillis()
-        val data = listOfNotNull(tag, level, currentTime, message)
+        val currentTimeMillis = timeProvider.currentTimeMillis()
+        val data = listOfNotNull(tag, level, currentTimeMillis, message)
         val log = data.joinToString(separator = " - ", postfix = "\n---\n")
         file.appendText(log)
     }
