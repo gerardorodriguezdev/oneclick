@@ -1,5 +1,6 @@
 package buildLogic.convention.plugins
 
+import buildLogic.convention.extensions.baseDockerImage
 import buildLogic.convention.extensions.fullNameDockerImage
 import buildLogic.convention.extensions.plugins.JvmAppExtension
 import buildLogic.convention.extensions.toJavaLanguageVersion
@@ -85,7 +86,7 @@ class JvmAppPlugin : Plugin<Project> {
 
                 from {
                     val jvmTarget = jvmAppExtension.jvmTarget.get()
-                    image = "gcr.io/distroless/java$jvmTarget-debian13:latest-arm64"
+                    image = baseDockerImage(jvmTarget)
                 }
 
                 to {

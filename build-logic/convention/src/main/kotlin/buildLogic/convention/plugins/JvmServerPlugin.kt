@@ -1,10 +1,7 @@
 package buildLogic.convention.plugins
 
-import buildLogic.convention.extensions.fullNameDockerImage
+import buildLogic.convention.extensions.*
 import buildLogic.convention.extensions.plugins.JvmServerExtension
-import buildLogic.convention.extensions.toJavaLanguageVersion
-import buildLogic.convention.extensions.toJavaVersion
-import buildLogic.convention.extensions.toMap
 import buildLogic.convention.models.ImageConfiguration
 import buildLogic.convention.tasks.createDockerComposeConfigTask.CreateDockerComposeConfigTask
 import com.avast.gradle.dockercompose.ComposeExtension
@@ -86,6 +83,12 @@ class JvmServerPlugin : Plugin<Project> {
             jreVersion.set(jvmServerExtension.jvmTarget.toJavaVersion())
             imageTag.set(jvmServerExtension.dockerConfiguration.tag)
             externalRegistry.set(dockerImageRegistry)
+            customBaseImage.set(
+                provider {
+                    val jvmTarget = jvmServerExtension.jvmTarget.get()
+                    baseDockerImage(jvmTarget)
+                }
+            )
 
             environmentVariablesProvider.get().forEach { (key, value) ->
                 environmentVariables.add(

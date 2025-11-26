@@ -5,8 +5,6 @@ import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.provider.Provider
 import org.gradle.jvm.toolchain.JavaLanguageVersion
-import kotlin.collections.component1
-import kotlin.collections.component2
 
 internal fun Int.toJavaVersion(): JavaVersion =
     when (this) {
@@ -40,3 +38,6 @@ internal fun Project.fullNameDockerImage(
     identifier: Provider<String>,
 ): Provider<String> =
     provider { "${imageRegistryUrl.get()}/${imageName.get()}:${identifier.get()}" }
+
+internal fun baseDockerImage(jvmTarget: Int): String =
+    "gcr.io/distroless/java$jvmTarget-debian13:latest-arm64"
