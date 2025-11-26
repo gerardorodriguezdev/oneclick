@@ -68,42 +68,44 @@ internal class RedisHomesDataSource(
             }
         }
 
-    private companion object {
-        fun userHomeIdsByUserIdKey(userId: Uuid): String = "userHomes:userId:${userId.value}"
-        fun homeByHomeIdKey(homeId: Uuid): String = "home:homeId:${homeId.value}"
+    private fun userHomeIdsByUserIdKey(userId: Uuid): String = "userHomes:userId:${userId.value}"
+    private fun homeByHomeIdKey(homeId: Uuid): String = "home:homeId:${homeId.value}"
 
-        suspend fun RedisCoroutinesCommands<String, String>.saveHome(userId: Uuid, home: Home) {
-            rpush(userHomeIdsByUserIdKey(userId), home.id.value)
+    private suspend fun RedisCoroutinesCommands<String, String>.saveHome(userId: Uuid, home: Home) {
+        rpush(userHomeIdsByUserIdKey(userId), home.id.value)
 
-            val homeString = Json.encodeToString(home)
-            set(homeByHomeIdKey(home.id), homeString)
-        }
-
-        suspend fun RedisCoroutinesCommands<String, String>.home(userId: Uuid, homeId: Uuid): Home? {
-            val hasHome = lpos(userHomeIdsByUserIdKey(userId), homeId.value) ?: return null
-            return if (hasHome >= 0) {
-                val homeString = get(homeByHomeIdKey(homeId)) ?: return null
-                Json.decodeFromString<Home>(homeString)
-            } else {
-                null
-            }
-        }
-
-        suspend fun RedisCoroutinesCommands<String, String>.homes(userId: Uuid, start: Long, end: Long): List<Home> =
-            coroutineScope {
-                val homeIds = lrange(userHomeIdsByUserIdKey(userId), start, end)
-                homeIds
-                    .map { homeId ->
-                        async {
-                            val homeString = get(homeByHomeIdKey(Uuid.unsafe(homeId))) ?: return@async null
-                            Json.decodeFromString<Home>(homeString)
-                        }
-                    }
-                    .awaitAll()
-                    .filterNotNull()
-            }
-
-        suspend fun RedisCoroutinesCommands<String, String>.totalHomes(userId: Uuid): Int =
-            llen(userHomeIdsByUserIdKey(userId))?.toInt() ?: 0
+        val homeString = Json.encodeToString(home)
+        set(homeByHomeIdKey(home.id), homeString)
     }
+
+    private suspend fun RedisCoroutinesCommands<String, String>.home(userId: Uuid, homeId: Uuid): Home? {
+        val hasHome = lpos(userHomeIdsByUserIdKey(userId), homeId.value) ?: return null
+        return if (hasHome >= 0) {
+            val homeString = get(homeByHomeIdKey(homeId)) ?: return null
+            Json.decodeFromString<Home>(homeString)
+        } else {
+            null
+        }
+    }
+
+    private suspend fun RedisCoroutinesCommands<String, String>.homes(
+        userId: Uuid,
+        start: Long,
+        end: Long
+    ): List<Home> =
+        coroutineScope {
+            val homeIds = lrange(userHomeIdsByUserIdKey(userId), start, end)
+            homeIds
+                .map { homeId ->
+                    async {
+                        val homeString = get(homeByHomeIdKey(Uuid.unsafe(homeId))) ?: return@async null
+                        Json.decodeFromString<Home>(homeString)
+                    }
+                }
+                .awaitAll()
+                .filterNotNull()
+        }
+
+    private suspend fun RedisCoroutinesCommands<String, String>.totalHomes(userId: Uuid): Int =
+        llen(userHomeIdsByUserIdKey(userId))?.toInt() ?: 0
 }

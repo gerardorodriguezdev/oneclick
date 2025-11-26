@@ -136,49 +136,48 @@ internal class PostgresHomesDataSource(
         val device: String,
     )
 
-    private companion object {
-        fun List<Entry>.normalizeHomes(): NormalizedHomes {
-            val homes = hashSetOf<Homes>()
-            val devices = hashSetOf<Devices>()
+    private fun List<Entry>.normalizeHomes(): NormalizedHomes {
+        val homes = hashSetOf<Homes>()
+        val devices = hashSetOf<Devices>()
 
-            forEach { entry ->
-                homes.add(
-                    Homes(
-                        user_id = entry.userId,
-                        home_id = entry.homeId,
-                    )
+        forEach { entry ->
+            homes.add(
+                Homes(
+                    user_id = entry.userId,
+                    home_id = entry.homeId,
                 )
+            )
 
-                devices.add(
-                    Devices(
-                        home_id = entry.homeId,
-                        device_id = entry.deviceId,
-                        device = entry.device,
-                    )
+            devices.add(
+                Devices(
+                    home_id = entry.homeId,
+                    device_id = entry.deviceId,
+                    device = entry.device,
                 )
-            }
-
-            return NormalizedHomes(homes, devices)
+            )
         }
 
-        fun List<HomesByUserId>.homesByUserIdToEntries(): List<Entry> =
-            map { entry ->
-                Entry(
-                    userId = entry.user_id,
-                    homeId = entry.home_id,
-                    deviceId = entry.device_id,
-                    device = entry.device,
-                )
-            }
-
-        fun List<HomeByUserIdAndHomeId>.homeByUserIdAndHomeIdToEntries(): List<Entry> =
-            map { entry ->
-                Entry(
-                    userId = entry.user_id,
-                    homeId = entry.home_id,
-                    deviceId = entry.device_id,
-                    device = entry.device,
-                )
-            }
+        return NormalizedHomes(homes, devices)
     }
+
+    private fun List<HomesByUserId>.homesByUserIdToEntries(): List<Entry> =
+        map { entry ->
+            Entry(
+                userId = entry.user_id,
+                homeId = entry.home_id,
+                deviceId = entry.device_id,
+                device = entry.device,
+            )
+        }
+
+    private fun List<HomeByUserIdAndHomeId>.homeByUserIdAndHomeIdToEntries(): List<Entry> =
+        map { entry ->
+            Entry(
+                userId = entry.user_id,
+                homeId = entry.home_id,
+                deviceId = entry.device_id,
+                device = entry.device,
+            )
+        }
+
 }

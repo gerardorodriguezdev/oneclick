@@ -57,12 +57,10 @@ internal class PostgresUsersDataSource(
             false
         }
 
-    private companion object {
-        fun User.toUsers(): Users =
-            Users(
-                user_id = userId.value,
-                username = username.value,
-                hashed_password = hashedPassword.value,
-            )
-    }
+    private fun User.toUsers(): Users =
+        Users(
+            user_id = userId.value,
+            username = username.value,
+            hashed_password = hashedPassword.value,
+        )
 }

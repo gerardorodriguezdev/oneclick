@@ -41,24 +41,22 @@ internal class RedisUsersDataSource(
             false
         }
 
-    private companion object {
-        fun userByUserIdKey(userId: Uuid): String = "user:userId:${userId.value}"
-        fun userByUsernameKey(username: Username): String = "user:username:${username.value}"
+    private fun userByUserIdKey(userId: Uuid): String = "user:userId:${userId.value}"
+    private fun userByUsernameKey(username: Username): String = "user:username:${username.value}"
 
-        fun Findable.toKey(): String =
-            when (this) {
-                is Findable.ByUserId -> userByUserIdKey(userId)
-                is Findable.ByUsername -> userByUsernameKey(username)
-            }
-
-        suspend fun RedisCoroutinesCommands<String, String>.getUser(findable: Findable): User? {
-            val userString = get(findable.toKey()) ?: return null
-            return Json.decodeFromString<User>(userString)
+    private fun Findable.toKey(): String =
+        when (this) {
+            is Findable.ByUserId -> userByUserIdKey(userId)
+            is Findable.ByUsername -> userByUsernameKey(username)
         }
 
-        suspend fun RedisCoroutinesCommands<String, String>.setUser(user: User, userString: String) {
-            set(userByUserIdKey(user.userId), userString)
-            set(userByUsernameKey(user.username), userString)
-        }
+    private suspend fun RedisCoroutinesCommands<String, String>.getUser(findable: Findable): User? {
+        val userString = get(findable.toKey()) ?: return null
+        return Json.decodeFromString<User>(userString)
+    }
+
+    private suspend fun RedisCoroutinesCommands<String, String>.setUser(user: User, userString: String) {
+        set(userByUserIdKey(user.userId), userString)
+        set(userByUsernameKey(user.username), userString)
     }
 }
