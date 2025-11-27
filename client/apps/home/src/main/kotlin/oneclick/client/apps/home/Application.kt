@@ -100,6 +100,7 @@ fun main() {
             BluetoothDevicesController(
                 appLogger = appLogger,
                 devicesStore = devicesStore,
+                dispatchersProvider = dispatchersProvider,
             )
         }
     ).start()

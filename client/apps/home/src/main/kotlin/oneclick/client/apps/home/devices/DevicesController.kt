@@ -2,15 +2,16 @@ package oneclick.client.apps.home.devices
 
 import com.juul.kable.Advertisement
 import com.juul.kable.State
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.coroutines.withTimeoutOrNull
 import oneclick.client.apps.home.dataSources.base.DevicesStore
 import oneclick.shared.contracts.core.models.NonNegativeInt
 import oneclick.shared.contracts.core.models.PositiveIntRange
 import oneclick.shared.contracts.core.models.Uuid
 import oneclick.shared.contracts.homes.models.Device
+import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.logging.AppLogger
 
 internal interface DevicesController {
@@ -39,23 +40,24 @@ internal class FakeDevicesController(
 internal class BluetoothDevicesController(
     private val appLogger: AppLogger,
     private val devicesStore: DevicesStore,
+    private val dispatchersProvider: DispatchersProvider,
 ) : DevicesController {
 
     override suspend fun scan(): Boolean {
-        try {
-            val advertisements = mutableListOf<Advertisement>()
-            withTimeoutOrNull(SCAN_TIMEOUT) {
-                WaterSensor.scanner.advertisements.collect { advertisement ->
-                    advertisements.add(advertisement)
+        return withContext(dispatchersProvider.io()) {
+            try {
+                val advertisements = mutableListOf<Advertisement>()
+                withTimeoutOrNull(SCAN_TIMEOUT) {
+                    WaterSensor.scanner.advertisements.collect { advertisement ->
+                        advertisements.add(advertisement)
+                    }
                 }
-            }
 
-            if (advertisements.isEmpty()) {
-                appLogger.i("No advertisements found")
-                return false
-            } else {
-                advertisements.forEach { advertisement ->
-                    coroutineScope {
+                if (advertisements.isEmpty()) {
+                    appLogger.i("No advertisements found")
+                    return@withContext false
+                } else {
+                    advertisements.forEach { advertisement ->
                         val waterSensor = WaterSensor(advertisement)
                         launch {
                             var connectionDelay = STARTING_CONNECTION_DELAY
@@ -79,12 +81,12 @@ internal class BluetoothDevicesController(
                             }
                         }
                     }
+                    return@withContext true
                 }
-                return true
+            } catch (error: Exception) {
+                appLogger.e("Exception '${error.stackTraceToString()}' while scanning devices")
+                return@withContext false
             }
-        } catch (error: Exception) {
-            appLogger.e("Exception '${error.stackTraceToString()}' while scanning devices")
-            return false
         }
     }
 
