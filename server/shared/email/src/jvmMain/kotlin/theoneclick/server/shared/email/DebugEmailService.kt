@@ -1,17 +1,15 @@
 package theoneclick.server.shared.email
 
+import oneclick.shared.logging.AppLogger
 import theoneclick.server.shared.email.base.EmailService
-import java.util.logging.Level
-import java.util.logging.Logger
 
-class DebugEmailService(private val logger: Logger) : EmailService {
+class DebugEmailService(private val appLogger: AppLogger) : EmailService {
     override suspend fun sendEmail(
         toEmail: String,
         subject: String,
         body: String
     ): Boolean {
-        logger.log(
-            Level.INFO,
+        appLogger.i(
             """
                 toEmail: $toEmail
                 subject: $subject

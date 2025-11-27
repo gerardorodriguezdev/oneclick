@@ -10,6 +10,7 @@ import oneclick.server.shared.authentication.security.PasswordManager
 import oneclick.server.services.app.authentication.UserJwtProvider
 import oneclick.server.shared.authentication.security.UuidProvider
 import oneclick.shared.timeProvider.TimeProvider
+import theoneclick.server.shared.email.base.EmailService
 
 internal class Dependencies(
     protocol: String,
@@ -25,6 +26,7 @@ internal class Dependencies(
     val usersRepository: UsersRepository,
     val uuidProvider: UuidProvider,
     val homesRepository: HomesRepository,
+    val emailService: EmailService,
     val onShutdown: (application: Application) -> Unit,
 ) {
     val baseUrl: String = "$protocol://$host"

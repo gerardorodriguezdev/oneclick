@@ -21,9 +21,12 @@ import oneclick.server.shared.authentication.security.KtorKeystoreEncryptor
 import oneclick.server.shared.db.databaseDriver
 import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.dispatchers.platform.dispatchersProvider
+import oneclick.shared.logging.AppLogger
 import oneclick.shared.security.DefaultSecureRandomProvider
 import oneclick.shared.timeProvider.SystemTimeProvider
 import oneclick.shared.timeProvider.TimeProvider
+import theoneclick.server.shared.email.DebugEmailService
+import theoneclick.server.shared.email.GmailEmailService
 
 fun main() {
     val environment = Environment()
@@ -67,6 +70,17 @@ fun main() {
             dispatchersProvider = dispatchersProvider,
         )
     }
+    val appLogger = DelegatedAppLogger(logger)
+    val emailService = if (environment.useLogEmailService) {
+        DebugEmailService(appLogger)
+    } else {
+        GmailEmailService(
+            fromEmail = environment.toEmail,
+            fromEmailPassword = environment.emailPassword,
+            dispatchersProvider = dispatchersProvider,
+            appLogger = appLogger,
+        )
+    }
     val dependencies = Dependencies(
         protocol = environment.protocol,
         host = environment.host,
@@ -81,6 +95,7 @@ fun main() {
         usersRepository = repositories.usersRepository,
         homesRepository = repositories.homesRepository,
         uuidProvider = uuidProvider,
+        emailService = emailService,
         invalidJwtDataSource = repositories.invalidJwtDataSource,
     )
 
@@ -176,6 +191,7 @@ private data class Environment(
     val secretEncryptionKey: String = System.getenv("SECRET_ENCRYPTION_KEY"),
     val secretSignKey: String = System.getenv("SECRET_SIGN_KEY"),
     val useMemoryDataSources: Boolean = System.getenv("USE_MEMORY_DATA_SOURCES") == "true",
+    val useLogEmailService: Boolean = System.getenv("USE_LOG_EMAIL_SERVICE") == "true",
     val postgresHost: String = System.getenv("POSTGRES_HOST"),
     val postgresDatabase: String = System.getenv("POSTGRES_DATABASE"),
     val postgresUsername: String = System.getenv("POSTGRES_USERNAME"),
@@ -185,6 +201,8 @@ private data class Environment(
     val disableSecureCookie: Boolean = System.getenv("DISABLE_SECURE_COOKIE") == "true",
     val protocol: String = System.getenv("PROTOCOL"),
     val host: String = System.getenv("HOST"),
+    val toEmail: String = System.getenv("TO_EMAIL"),
+    val emailPassword: String = System.getenv("EMAIL_PASSWORD"),
 ) {
     val baseUrl: String = "$protocol://$host"
     val jwtAudience: String = "$baseUrl/api"
@@ -197,3 +215,10 @@ private class Repositories(
     val invalidJwtDataSource: InvalidJwtDataSource,
     val onShutdown: (application: Application) -> Unit,
 )
+
+private class DelegatedAppLogger(private val logger: Logger) : AppLogger {
+    override fun i(message: String) = logger.info(message)
+    override fun i(tag: String, message: String) = logger.info("$tag: $message")
+    override fun e(message: String) = logger.error(message)
+    override fun e(tag: String, message: String) = logger.error("$tag: $message")
+}

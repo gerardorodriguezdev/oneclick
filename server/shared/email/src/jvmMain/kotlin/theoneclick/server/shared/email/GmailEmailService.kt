@@ -5,16 +5,15 @@ import jakarta.mail.internet.InternetAddress
 import jakarta.mail.internet.MimeMessage
 import kotlinx.coroutines.withContext
 import oneclick.shared.dispatchers.platform.DispatchersProvider
+import oneclick.shared.logging.AppLogger
 import theoneclick.server.shared.email.base.EmailService
 import java.util.*
-import java.util.logging.Level
-import java.util.logging.Logger
 
 class GmailEmailService(
     private val fromEmail: String,
-    private val password: String,
+    private val fromEmailPassword: String,
     private val dispatchersProvider: DispatchersProvider,
-    private val logger: Logger,
+    private val appLogger: AppLogger,
 ) : EmailService {
 
     override suspend fun sendEmail(toEmail: String, subject: String, body: String): Boolean =
@@ -25,7 +24,7 @@ class GmailEmailService(
                 Transport.send(message)
                 true
             } catch (e: Exception) {
-                logger.log(Level.SEVERE, "Error sending email", e)
+                appLogger.e("Exception '${e.stackTraceToString()}' while sending email")
                 false
             }
         }
@@ -49,7 +48,7 @@ class GmailEmailService(
 
     private inner class PasswordAuthenticator : Authenticator() {
         override fun getPasswordAuthentication(): PasswordAuthentication {
-            return PasswordAuthentication(fromEmail, password)
+            return PasswordAuthentication(fromEmail, fromEmailPassword)
         }
     }
 

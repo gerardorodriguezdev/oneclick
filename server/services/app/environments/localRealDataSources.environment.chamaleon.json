@@ -47,6 +47,10 @@
         "value": false
       },
       {
+        "name": "USE_DEBUG_EMAIL_SERVICE",
+        "value": true
+      },
+      {
         "name": "POSTGRES_HOST",
         "value": "postgres"
       },
@@ -73,6 +77,14 @@
       {
         "name": "SECRET_ENCRYPTION_KEY",
         "value": "5a9b2616505a9aebb886ea6fcdb63960"
+      },
+      {
+        "name": "TO_EMAIL",
+        "value": "email@email.com"
+      },
+      {
+        "name": "EMAIL_PASSWORD",
+        "value": "password123"
       }
     ]
   }

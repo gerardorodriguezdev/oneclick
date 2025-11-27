@@ -57,6 +57,11 @@
       "nullable": true
     },
     {
+      "name": "USE_DEBUG_EMAIL_SERVICE",
+      "propertyType": "Boolean",
+      "nullable": true
+    },
+    {
       "name": "POSTGRES_HOST",
       "propertyType": "String",
       "nullable": true
@@ -88,6 +93,16 @@
     },
     {
       "name": "SECRET_ENCRYPTION_KEY",
+      "propertyType": "String",
+      "nullable": true
+    },
+    {
+      "name": "TO_EMAIL",
+      "propertyType": "String",
+      "nullable": true
+    },
+    {
+      "name": "EMAIL_PASSWORD",
       "propertyType": "String",
       "nullable": true
     }
