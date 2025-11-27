@@ -67,4 +67,5 @@ include(
     "server:shared:utils",
     "server:shared:authentication",
     "server:shared:db",
+    "server:shared:email",
 )
