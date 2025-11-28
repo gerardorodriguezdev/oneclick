@@ -5,27 +5,31 @@ import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.sessions.*
+import oneclick.server.services.app.authentication.UserJwtProvider
 import oneclick.server.services.app.dataSources.base.UsersDataSource
-import oneclick.server.services.app.dataSources.models.User
+import oneclick.server.services.app.dataSources.models.RegistrableUser
 import oneclick.server.services.app.plugins.apiRateLimit
+import oneclick.server.services.app.repositories.RegistrableUsersRepository
 import oneclick.server.services.app.repositories.UsersRepository
 import oneclick.server.shared.authentication.security.PasswordManager
-import oneclick.server.services.app.authentication.UserJwtProvider
-import oneclick.server.shared.authentication.security.UuidProvider
+import oneclick.server.shared.authentication.security.RegistrationCodeProvider
 import oneclick.server.shared.utils.clientType
 import oneclick.shared.contracts.auth.models.Jwt
 import oneclick.shared.contracts.auth.models.Password
 import oneclick.shared.contracts.auth.models.Username
 import oneclick.shared.contracts.auth.models.requests.LoginRequest.UserRequestLoginRequest
 import oneclick.shared.contracts.auth.models.responses.RequestLoginResponse
-import oneclick.shared.contracts.core.models.ClientType
 import oneclick.shared.contracts.core.models.ClientEndpoint
+import oneclick.shared.contracts.core.models.ClientType
+import theoneclick.server.shared.email.base.EmailService
 
 internal fun Routing.userRequestLoginEndpoint(
     usersRepository: UsersRepository,
     passwordManager: PasswordManager,
-    uuidProvider: UuidProvider,
     userJwtProvider: UserJwtProvider,
+    registrationCodeProvider: RegistrationCodeProvider,
+    registrableUsersRepository: RegistrableUsersRepository,
+    emailService: EmailService,
 ) {
     apiRateLimit {
         post(ClientEndpoint.USER_REQUEST_LOGIN.route) { userRequestLoginRequest: UserRequestLoginRequest ->
@@ -42,14 +46,13 @@ internal fun Routing.userRequestLoginEndpoint(
             when {
                 user == null -> {
                     call.application.log.debug("Registrable user")
-                    registerUser(
+                    saveRegistrableUser(
                         username = username,
                         password = password,
                         passwordManager = passwordManager,
-                        uuidProvider = uuidProvider,
-                        userJwtProvider = userJwtProvider,
-                        usersRepository = usersRepository,
-                        clientType = clientType,
+                        registrationCodeProvider = registrationCodeProvider,
+                        registrableUsersRepository = registrableUsersRepository,
+                        emailService = emailService,
                     )
                 }
 
@@ -67,30 +70,47 @@ internal fun Routing.userRequestLoginEndpoint(
     }
 }
 
-private suspend fun RoutingContext.registerUser(
+private suspend fun RoutingContext.saveRegistrableUser(
     username: Username,
     password: Password,
-    clientType: ClientType,
     passwordManager: PasswordManager,
-    userJwtProvider: UserJwtProvider,
-    uuidProvider: UuidProvider,
-    usersRepository: UsersRepository,
+    registrationCodeProvider: RegistrationCodeProvider,
+    registrableUsersRepository: RegistrableUsersRepository,
+    emailService: EmailService,
 ) {
-    val newUser = User(
-        userId = uuidProvider.uuid(),
+    val registrableUser = RegistrableUser(
+        registrationCode = registrationCodeProvider.registrationCode(),
         username = username,
         hashedPassword = passwordManager.hashPassword(password),
     )
 
-    val isUserSaved = usersRepository.saveUser(newUser)
-    if (!isUserSaved) {
-        call.application.log.debug("User not saved")
+    val isRegistrableUserSaved = registrableUsersRepository.saveRegistrableUser(registrableUser)
+    if (!isRegistrableUserSaved) {
+        call.application.log.debug("Registrable user not saved")
         call.respond(HttpStatusCode.InternalServerError)
         return
     }
 
-    val jwt = userJwtProvider.jwt(newUser.userId)
-    respondJwt(jwt = jwt, clientType = clientType)
+    sendApprovalEmail(registrableUser = registrableUser, emailService = emailService)
+}
+
+private suspend fun RoutingContext.sendApprovalEmail(
+    registrableUser: RegistrableUser,
+    emailService: EmailService
+) {
+    val isEmailSent = emailService.sendEmail(
+        subject = "User registration requested",
+        body = """
+            username: ${registrableUser.username.value}
+            approvalCode: ${registrableUser.registrationCode.value}
+        """.trimIndent()
+    )
+    if (!isEmailSent) {
+        call.application.log.debug("Email not sent")
+        call.respond(HttpStatusCode.InternalServerError)
+    } else {
+        call.respond(HttpStatusCode.OK, "Approval requested. Wait for approval")
+    }
 }
 
 private suspend fun RoutingContext.respondJwt(jwt: Jwt, clientType: ClientType) {

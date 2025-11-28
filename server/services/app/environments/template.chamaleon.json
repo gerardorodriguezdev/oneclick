@@ -97,6 +97,11 @@
       "nullable": true
     },
     {
+      "name": "FROM_EMAIL",
+      "propertyType": "String",
+      "nullable": true
+    },
+    {
       "name": "TO_EMAIL",
       "propertyType": "String",
       "nullable": true

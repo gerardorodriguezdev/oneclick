@@ -41,5 +41,8 @@ private fun Application.configureModules(dependencies: Dependencies) {
         invalidJwtDataSource = dependencies.invalidJwtDataSource,
         userJwtProvider = dependencies.userJwtProvider,
         homeJwtProvider = dependencies.homeJwtProvider,
+        emailService = dependencies.emailService,
+        registrationCodeProvider = dependencies.registrationCodeProvider,
+        registrableUsersRepository = dependencies.registrableUsersRepository,
     )
 }

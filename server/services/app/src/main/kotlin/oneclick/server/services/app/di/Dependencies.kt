@@ -8,6 +8,8 @@ import oneclick.server.services.app.repositories.UsersRepository
 import oneclick.server.services.app.authentication.HomeJwtProvider
 import oneclick.server.shared.authentication.security.PasswordManager
 import oneclick.server.services.app.authentication.UserJwtProvider
+import oneclick.server.services.app.repositories.RegistrableUsersRepository
+import oneclick.server.shared.authentication.security.RegistrationCodeProvider
 import oneclick.server.shared.authentication.security.UuidProvider
 import oneclick.shared.timeProvider.TimeProvider
 import theoneclick.server.shared.email.base.EmailService
@@ -27,6 +29,8 @@ internal class Dependencies(
     val uuidProvider: UuidProvider,
     val homesRepository: HomesRepository,
     val emailService: EmailService,
+    val registrationCodeProvider: RegistrationCodeProvider,
+    val registrableUsersRepository: RegistrableUsersRepository,
     val onShutdown: (application: Application) -> Unit,
 ) {
     val baseUrl: String = "$protocol://$host"

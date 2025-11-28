@@ -11,15 +11,16 @@ import java.util.*
 
 class GmailEmailService(
     private val fromEmail: String,
+    private val toEmail: String,
     private val fromEmailPassword: String,
     private val dispatchersProvider: DispatchersProvider,
     private val appLogger: AppLogger,
 ) : EmailService {
 
-    override suspend fun sendEmail(toEmail: String, subject: String, body: String): Boolean =
+    override suspend fun sendEmail(subject: String, body: String): Boolean =
         withContext(dispatchersProvider.io()) {
             val session = session()
-            val message = message(session = session, toEmail = toEmail, subject = subject, body = body)
+            val message = message(session = session, subject = subject, body = body)
             try {
                 Transport.send(message)
                 true
@@ -35,7 +36,7 @@ class GmailEmailService(
             PasswordAuthenticator()
         )
 
-    private fun message(session: Session, toEmail: String, subject: String, body: String): MimeMessage =
+    private fun message(session: Session, subject: String, body: String): MimeMessage =
         MimeMessage(session).apply {
             setFrom(InternetAddress(fromEmail))
             setRecipients(
