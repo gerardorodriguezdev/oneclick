@@ -1,10 +1,16 @@
 CREATE TABLE IF NOT EXISTS registrableUsers (
     registration_code CHAR(44) PRIMARY KEY,
     username VARCHAR(20) UNIQUE NOT NULL,
-    hashed_password VARCHAR(60) NOT NULL,
-    expiration_time BIGINT
+    hashed_password VARCHAR(60) NOT NULL
 );
 
 insertRegistrableUser:
-INSERT INTO registrableUsers(registration_code, username, hashed_password, expiration_time)
+INSERT INTO registrableUsers(registration_code, username, hashed_password)
 VALUES ?;
+
+registrableUserByRegistrationCode:
+SELECT * FROM registrableUsers WHERE registration_code = ? LIMIT 1;
+
+deleteByRegistrationCode:
+DELETE FROM registrableUsers
+WHERE registration_code = ?;
