@@ -13,10 +13,10 @@ import oneclick.server.services.mock.utils.mockJwt
 import oneclick.server.shared.utils.clientType
 import oneclick.shared.contracts.auth.models.requests.LoginRequest.UserRequestLoginRequest
 import oneclick.shared.contracts.auth.models.responses.IsLoggedResponse
-import oneclick.shared.contracts.auth.models.responses.RequestLoginResponse
+import oneclick.shared.contracts.auth.models.responses.MobileRequestLoginResponse
+import oneclick.shared.contracts.core.models.ClientEndpoint
 import oneclick.shared.contracts.core.models.ClientType
 import oneclick.shared.contracts.core.models.NonNegativeInt
-import oneclick.shared.contracts.core.models.ClientEndpoint
 import oneclick.shared.contracts.homes.models.responses.HomesResponse
 
 internal fun server(): EmbeddedServer<NettyApplicationEngine, NettyApplicationEngine.Configuration> =
@@ -43,7 +43,7 @@ private fun Application.configureRouting() {
 
         post(ClientEndpoint.USER_REQUEST_LOGIN.route) { _: UserRequestLoginRequest ->
             when (call.request.clientType) {
-                ClientType.MOBILE -> call.respond(RequestLoginResponse(jwt = mockJwt()))
+                ClientType.MOBILE -> call.respond(MobileRequestLoginResponse.ValidLogin(jwt = mockJwt()))
                 ClientType.BROWSER -> call.respond(HttpStatusCode.OK)
                 else -> call.respond(HttpStatusCode.BadRequest)
             }

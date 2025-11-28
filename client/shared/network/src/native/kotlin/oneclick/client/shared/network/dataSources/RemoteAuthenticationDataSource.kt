@@ -10,8 +10,9 @@ import oneclick.client.shared.network.models.RequestLoginResult
 import oneclick.client.shared.network.models.UserLoggedResult
 import oneclick.client.shared.network.platform.AuthenticationDataSource
 import oneclick.shared.contracts.auth.models.requests.LoginRequest
+import oneclick.shared.contracts.auth.models.responses.HomeRequestLoginResponse
 import oneclick.shared.contracts.auth.models.responses.IsLoggedResponse
-import oneclick.shared.contracts.auth.models.responses.RequestLoginResponse
+import oneclick.shared.contracts.auth.models.responses.MobileRequestLoginResponse
 import oneclick.shared.contracts.core.models.ClientEndpoint
 import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.logging.AppLogger
@@ -65,9 +66,13 @@ class RemoteAuthenticationDataSource(
 
                 when (response.status) {
                     HttpStatusCode.OK -> {
-                        val requestLoginResponse: RequestLoginResponse = response.body()
-                        tokenDataSource.set(requestLoginResponse.jwt.value)
-                        RequestLoginResult.ValidLogin
+                        when (request) {
+                            is LoginRequest.UserRequestLoginRequest ->
+                                response.body<MobileRequestLoginResponse>().handle()
+
+                            is LoginRequest.HomeRequestLoginRequest ->
+                                response.body<HomeRequestLoginResponse>().handle()
+                        }
                     }
 
                     else -> RequestLoginResult.Error
@@ -78,6 +83,24 @@ class RemoteAuthenticationDataSource(
                             "while requesting logging user '${request.username.value}'"
                 )
                 RequestLoginResult.Error
+            }
+        }
+
+    private suspend fun MobileRequestLoginResponse.handle(): RequestLoginResult =
+        when (this) {
+            is MobileRequestLoginResponse.ValidLogin -> {
+                tokenDataSource.set(jwt.value)
+                RequestLoginResult.ValidLogin
+            }
+
+            is MobileRequestLoginResponse.WaitForApproval -> RequestLoginResult.WaitForApproval
+        }
+
+    private suspend fun HomeRequestLoginResponse.handle(): RequestLoginResult =
+        when (this) {
+            is HomeRequestLoginResponse.ValidLogin -> {
+                tokenDataSource.set(jwt.value)
+                RequestLoginResult.ValidLogin
             }
         }
 

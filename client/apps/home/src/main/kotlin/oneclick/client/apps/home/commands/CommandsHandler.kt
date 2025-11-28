@@ -1,8 +1,7 @@
 package oneclick.client.apps.home.commands
 
 import oneclick.client.shared.network.models.LogoutResult
-import oneclick.client.shared.network.models.RequestLoginResult.Error
-import oneclick.client.shared.network.models.RequestLoginResult.ValidLogin
+import oneclick.client.shared.network.models.RequestLoginResult.*
 import oneclick.client.shared.network.platform.AuthenticationDataSource
 import oneclick.shared.contracts.auth.models.Password
 import oneclick.shared.contracts.auth.models.Username
@@ -44,6 +43,7 @@ internal class DefaultCommandsHandler(
 
         when (result) {
             is ValidLogin -> appLogger.i("Login successful")
+            is WaitForApproval -> appLogger.e("Invalid result")
             is Error -> appLogger.e("Login failed")
         }
     }

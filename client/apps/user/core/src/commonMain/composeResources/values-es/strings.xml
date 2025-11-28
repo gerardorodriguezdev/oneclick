@@ -7,4 +7,5 @@
     <string name="loginScreen_passwordTextField_password">Contraseña</string>
     <string name="loginScreen_registerButton_register">Registrar</string>
     <string name="loginScreen_snackbar_unknownError">Error desconocido</string>
+    <string name="loginScreen_snackbar_waitForApproval">Espera a ser aprobado</string>
 </resources>

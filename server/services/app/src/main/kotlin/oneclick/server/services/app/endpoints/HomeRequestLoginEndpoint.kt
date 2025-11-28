@@ -4,20 +4,20 @@ import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import oneclick.server.services.app.authentication.HomeJwtProvider
 import oneclick.server.services.app.dataSources.base.UsersDataSource
 import oneclick.server.services.app.plugins.apiRateLimit
 import oneclick.server.services.app.repositories.HomesRepository
 import oneclick.server.services.app.repositories.UsersRepository
-import oneclick.server.services.app.authentication.HomeJwtProvider
 import oneclick.server.shared.authentication.security.PasswordManager
 import oneclick.server.shared.utils.clientType
 import oneclick.shared.contracts.auth.models.Jwt
 import oneclick.shared.contracts.auth.models.requests.LoginRequest.HomeRequestLoginRequest
-import oneclick.shared.contracts.auth.models.responses.RequestLoginResponse
+import oneclick.shared.contracts.auth.models.responses.HomeRequestLoginResponse
+import oneclick.shared.contracts.core.models.ClientEndpoint
 import oneclick.shared.contracts.core.models.ClientType
 import oneclick.shared.contracts.core.models.UniqueList
 import oneclick.shared.contracts.core.models.Uuid
-import oneclick.shared.contracts.core.models.ClientEndpoint
 import oneclick.shared.contracts.homes.models.Home
 
 internal fun Routing.homeRequestLoginEndpoint(
@@ -63,7 +63,7 @@ internal fun Routing.homeRequestLoginEndpoint(
                     homeId = homeId,
                 )
             } else {
-                respondJwt(
+                respondValidLogin(
                     jwt = homeJwtProvider.jwt(userId = user.userId, homeId = homeId),
                 )
             }
@@ -90,11 +90,11 @@ private suspend fun RoutingContext.registerHome(
     }
 
     val jwt = homeJwtProvider.jwt(userId = userId, homeId = newHome.id)
-    respondJwt(jwt = jwt)
+    respondValidLogin(jwt = jwt)
 }
 
-private suspend fun RoutingContext.respondJwt(jwt: Jwt) {
+private suspend fun RoutingContext.respondValidLogin(jwt: Jwt) {
     call.respond(
-        RequestLoginResponse(jwt = jwt)
+        HomeRequestLoginResponse.ValidLogin(jwt = jwt)
     )
 }

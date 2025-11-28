@@ -8,6 +8,7 @@ import kotlinx.coroutines.launch
 import me.tatarka.inject.annotations.Inject
 import oneclick.client.apps.user.core.generated.resources.Res
 import oneclick.client.apps.user.core.generated.resources.loginScreen_snackbar_unknownError
+import oneclick.client.apps.user.core.generated.resources.loginScreen_snackbar_waitForApproval
 import oneclick.client.apps.user.core.mappers.toLoginScreenState
 import oneclick.client.apps.user.core.ui.screens.LoginEvent
 import oneclick.client.apps.user.core.ui.screens.LoginScreenState
@@ -75,6 +76,12 @@ class LoginViewModel(
 
             when (requestLoginResult) {
                 is RequestLoginResult.ValidLogin -> navigateToHome()
+
+                is RequestLoginResult.WaitForApproval -> {
+                    notificationsController.showSuccessNotification(
+                        getString(Res.string.loginScreen_snackbar_waitForApproval)
+                    )
+                }
 
                 is RequestLoginResult.Error -> {
                     notificationsController.showErrorNotification(

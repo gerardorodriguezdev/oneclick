@@ -18,7 +18,8 @@ import oneclick.shared.contracts.auth.models.Jwt
 import oneclick.shared.contracts.auth.models.Password
 import oneclick.shared.contracts.auth.models.Username
 import oneclick.shared.contracts.auth.models.requests.LoginRequest.UserRequestLoginRequest
-import oneclick.shared.contracts.auth.models.responses.RequestLoginResponse
+import oneclick.shared.contracts.auth.models.responses.MobileRequestLoginResponse
+import oneclick.shared.contracts.auth.models.responses.WebsiteRequestLoginResponse
 import oneclick.shared.contracts.core.models.ClientEndpoint
 import oneclick.shared.contracts.core.models.ClientType
 import theoneclick.server.shared.email.base.EmailService
@@ -53,6 +54,7 @@ internal fun Routing.userRequestLoginEndpoint(
                         registrationCodeProvider = registrationCodeProvider,
                         registrableUsersRepository = registrableUsersRepository,
                         emailService = emailService,
+                        clientType = clientType,
                     )
                 }
 
@@ -64,7 +66,7 @@ internal fun Routing.userRequestLoginEndpoint(
                     call.respond(HttpStatusCode.Unauthorized)
                 }
 
-                else -> respondJwt(jwt = userJwtProvider.jwt(user.userId), clientType = clientType)
+                else -> respondValidLogin(jwt = userJwtProvider.jwt(user.userId), clientType = clientType)
             }
         }
     }
@@ -77,6 +79,7 @@ private suspend fun RoutingContext.saveRegistrableUser(
     registrationCodeProvider: RegistrationCodeProvider,
     registrableUsersRepository: RegistrableUsersRepository,
     emailService: EmailService,
+    clientType: ClientType,
 ) {
     val registrableUser = RegistrableUser(
         registrationCode = registrationCodeProvider.registrationCode(),
@@ -91,41 +94,52 @@ private suspend fun RoutingContext.saveRegistrableUser(
         return
     }
 
-    sendApprovalEmail(registrableUser = registrableUser, emailService = emailService)
+    sendApprovalEmail(registrableUser = registrableUser, emailService = emailService, clientType = clientType)
 }
 
 private suspend fun RoutingContext.sendApprovalEmail(
     registrableUser: RegistrableUser,
-    emailService: EmailService
+    emailService: EmailService,
+    clientType: ClientType,
 ) {
+    val emailBody = """
+            |username: ${registrableUser.username.value}
+            |approvalCode: ${registrableUser.registrationCode.value}
+        """.trimMargin()
+
     val isEmailSent = emailService.sendEmail(
         subject = "User registration requested",
-        body = """
-            username: ${registrableUser.username.value}
-            approvalCode: ${registrableUser.registrationCode.value}
-        """.trimIndent()
+        body = emailBody,
     )
     if (!isEmailSent) {
         call.application.log.debug("Email not sent")
         call.respond(HttpStatusCode.InternalServerError)
     } else {
-        call.respond(HttpStatusCode.OK, "Approval requested. Wait for approval")
+        respondWaitForApproval(clientType = clientType)
     }
 }
 
-private suspend fun RoutingContext.respondJwt(jwt: Jwt, clientType: ClientType) {
+private suspend fun RoutingContext.respondValidLogin(jwt: Jwt, clientType: ClientType) {
     when (clientType) {
         ClientType.MOBILE -> {
             call.respond(
-                RequestLoginResponse(jwt = jwt)
+                MobileRequestLoginResponse.ValidLogin(jwt = jwt)
             )
         }
 
         ClientType.BROWSER -> {
             call.sessions.set(jwt)
-            call.respond(HttpStatusCode.OK)
+            call.respond(WebsiteRequestLoginResponse.ValidLogin)
         }
 
+        else -> respondInvalidClientType()
+    }
+}
+
+private suspend fun RoutingContext.respondWaitForApproval(clientType: ClientType) {
+    when (clientType) {
+        ClientType.BROWSER -> call.respond(WebsiteRequestLoginResponse.WaitForApproval)
+        ClientType.MOBILE -> call.respond(MobileRequestLoginResponse.WaitForApproval)
         else -> respondInvalidClientType()
     }
 }
