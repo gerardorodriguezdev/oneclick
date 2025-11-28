@@ -10,7 +10,7 @@ import oneclick.client.shared.network.models.RequestLoginResult
 import oneclick.client.shared.network.models.UserLoggedResult
 import oneclick.shared.contracts.auth.models.requests.LoginRequest
 import oneclick.shared.contracts.auth.models.responses.IsLoggedResponse
-import oneclick.shared.contracts.auth.models.responses.WebsiteRequestLoginResponse
+import oneclick.shared.contracts.auth.models.responses.BrowserRequestLoginResponse
 import oneclick.shared.contracts.core.models.ClientEndpoint
 import oneclick.shared.dispatchers.platform.DispatchersProvider
 import oneclick.shared.logging.AppLogger
@@ -47,8 +47,8 @@ class WasmRemoteAuthenticationDataSource(
 
                 when (response.status) {
                     HttpStatusCode.OK -> {
-                        val websiteRequestLoginResponse: WebsiteRequestLoginResponse = response.body()
-                        websiteRequestLoginResponse.handle()
+                        val browserRequestLoginResponse: BrowserRequestLoginResponse = response.body()
+                        browserRequestLoginResponse.handle()
                     }
 
                     else -> RequestLoginResult.Error
@@ -62,10 +62,10 @@ class WasmRemoteAuthenticationDataSource(
             }
         }
 
-    private fun WebsiteRequestLoginResponse.handle(): RequestLoginResult =
+    private fun BrowserRequestLoginResponse.handle(): RequestLoginResult =
         when (this) {
-            is WebsiteRequestLoginResponse.ValidLogin -> RequestLoginResult.ValidLogin
-            is WebsiteRequestLoginResponse.WaitForApproval -> RequestLoginResult.WaitForApproval
+            is BrowserRequestLoginResponse.ValidLogin -> RequestLoginResult.ValidLogin
+            is BrowserRequestLoginResponse.WaitForApproval -> RequestLoginResult.WaitForApproval
         }
 
     override suspend fun logout(): LogoutResult =

@@ -14,6 +14,7 @@ import oneclick.server.shared.utils.clientType
 import oneclick.shared.contracts.auth.models.requests.LoginRequest.UserRequestLoginRequest
 import oneclick.shared.contracts.auth.models.responses.IsLoggedResponse
 import oneclick.shared.contracts.auth.models.responses.MobileRequestLoginResponse
+import oneclick.shared.contracts.auth.models.responses.BrowserRequestLoginResponse
 import oneclick.shared.contracts.core.models.ClientEndpoint
 import oneclick.shared.contracts.core.models.ClientType
 import oneclick.shared.contracts.core.models.NonNegativeInt
@@ -43,8 +44,8 @@ private fun Application.configureRouting() {
 
         post(ClientEndpoint.USER_REQUEST_LOGIN.route) { _: UserRequestLoginRequest ->
             when (call.request.clientType) {
-                ClientType.MOBILE -> call.respond(MobileRequestLoginResponse.ValidLogin(jwt = mockJwt()))
-                ClientType.BROWSER -> call.respond(HttpStatusCode.OK)
+                ClientType.MOBILE -> call.respond<MobileRequestLoginResponse>(MobileRequestLoginResponse.ValidLogin(jwt = mockJwt()))
+                ClientType.BROWSER -> call.respond<BrowserRequestLoginResponse>(BrowserRequestLoginResponse.ValidLogin)
                 else -> call.respond(HttpStatusCode.BadRequest)
             }
         }

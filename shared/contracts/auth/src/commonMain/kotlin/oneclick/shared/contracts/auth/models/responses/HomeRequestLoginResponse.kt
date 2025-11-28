@@ -4,6 +4,7 @@ import kotlinx.serialization.Serializable
 import oneclick.shared.contracts.auth.models.Jwt
 
 sealed interface HomeRequestLoginResponse {
+
     @Serializable
     data class ValidLogin(val jwt: Jwt) : HomeRequestLoginResponse
 }

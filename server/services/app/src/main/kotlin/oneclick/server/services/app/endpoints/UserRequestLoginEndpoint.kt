@@ -19,7 +19,7 @@ import oneclick.shared.contracts.auth.models.Password
 import oneclick.shared.contracts.auth.models.Username
 import oneclick.shared.contracts.auth.models.requests.LoginRequest.UserRequestLoginRequest
 import oneclick.shared.contracts.auth.models.responses.MobileRequestLoginResponse
-import oneclick.shared.contracts.auth.models.responses.WebsiteRequestLoginResponse
+import oneclick.shared.contracts.auth.models.responses.BrowserRequestLoginResponse
 import oneclick.shared.contracts.core.models.ClientEndpoint
 import oneclick.shared.contracts.core.models.ClientType
 import theoneclick.server.shared.email.base.EmailService
@@ -122,14 +122,14 @@ private suspend fun RoutingContext.sendApprovalEmail(
 private suspend fun RoutingContext.respondValidLogin(jwt: Jwt, clientType: ClientType) {
     when (clientType) {
         ClientType.MOBILE -> {
-            call.respond(
+            call.respond<MobileRequestLoginResponse>(
                 MobileRequestLoginResponse.ValidLogin(jwt = jwt)
             )
         }
 
         ClientType.BROWSER -> {
             call.sessions.set(jwt)
-            call.respond(WebsiteRequestLoginResponse.ValidLogin)
+            call.respond<BrowserRequestLoginResponse>(BrowserRequestLoginResponse.ValidLogin)
         }
 
         else -> respondInvalidClientType()
@@ -138,8 +138,8 @@ private suspend fun RoutingContext.respondValidLogin(jwt: Jwt, clientType: Clien
 
 private suspend fun RoutingContext.respondWaitForApproval(clientType: ClientType) {
     when (clientType) {
-        ClientType.BROWSER -> call.respond(WebsiteRequestLoginResponse.WaitForApproval)
-        ClientType.MOBILE -> call.respond(MobileRequestLoginResponse.WaitForApproval)
+        ClientType.BROWSER -> call.respond<BrowserRequestLoginResponse>(BrowserRequestLoginResponse.WaitForApproval)
+        ClientType.MOBILE -> call.respond<MobileRequestLoginResponse>(MobileRequestLoginResponse.WaitForApproval)
         else -> respondInvalidClientType()
     }
 }

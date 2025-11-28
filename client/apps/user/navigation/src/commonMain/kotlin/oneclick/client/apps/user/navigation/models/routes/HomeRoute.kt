@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 import oneclick.client.apps.user.navigation.models.routes.base.Route
 
 sealed interface HomeRoute : Route {
+
     @Serializable
     @SerialName("home--homes-list")
     data object HomesList : HomeRoute
