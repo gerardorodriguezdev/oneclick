@@ -217,7 +217,7 @@ private data class Environment(
     val secretEncryptionKey: String = System.getenv("SECRET_ENCRYPTION_KEY"),
     val secretSignKey: String = System.getenv("SECRET_SIGN_KEY"),
     val useMemoryDataSources: Boolean = System.getenv("USE_MEMORY_DATA_SOURCES") == "true",
-    val useLogEmailService: Boolean = System.getenv("USE_LOG_EMAIL_SERVICE") == "true",
+    val useLogEmailService: Boolean = System.getenv("USE_DEBUG_EMAIL_SERVICE") == "true",
     val postgresHost: String = System.getenv("POSTGRES_HOST"),
     val postgresDatabase: String = System.getenv("POSTGRES_DATABASE"),
     val postgresUsername: String = System.getenv("POSTGRES_USERNAME"),
