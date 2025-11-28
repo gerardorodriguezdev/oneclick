@@ -3,7 +3,6 @@ package oneclick.server.services.app.repositories
 import oneclick.server.services.app.dataSources.models.RegistrableUser
 import oneclick.server.shared.authentication.models.RegistrationCode
 
-//TODO: Finish implementation
 internal interface RegistrableUsersRepository {
     suspend fun saveRegistrableUser(registrableUser: RegistrableUser): Boolean
     suspend fun registrableUser(registrationCode: RegistrationCode): RegistrableUser?
