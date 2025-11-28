@@ -11,11 +11,9 @@ import oneclick.server.services.app.dataSources.*
 import oneclick.server.services.app.dataSources.base.InvalidJwtDataSource
 import oneclick.server.services.app.di.Dependencies
 import oneclick.server.services.app.postgresql.AppDatabase
-import oneclick.server.services.app.repositories.DefaultHomesRepository
-import oneclick.server.services.app.repositories.DefaultUsersRepository
-import oneclick.server.services.app.repositories.HomesRepository
-import oneclick.server.services.app.repositories.UsersRepository
+import oneclick.server.services.app.repositories.*
 import oneclick.server.shared.authentication.security.BcryptPasswordManager
+import oneclick.server.shared.authentication.security.DefaultRegistrationCodeProvider
 import oneclick.server.shared.authentication.security.DefaultUuidProvider
 import oneclick.server.shared.authentication.security.KtorKeystoreEncryptor
 import oneclick.server.shared.db.databaseDriver
@@ -75,7 +73,8 @@ fun main() {
         DebugEmailService(appLogger)
     } else {
         GmailEmailService(
-            fromEmail = environment.toEmail,
+            fromEmail = environment.fromEmail,
+            toEmail = environment.toEmail,
             fromEmailPassword = environment.emailPassword,
             dispatchersProvider = dispatchersProvider,
             appLogger = appLogger,
@@ -97,6 +96,10 @@ fun main() {
         uuidProvider = uuidProvider,
         emailService = emailService,
         invalidJwtDataSource = repositories.invalidJwtDataSource,
+        registrationCodeProvider = DefaultRegistrationCodeProvider(
+            secureRandomProvider = secureRandomProvider,
+        ),
+        registrableUsersRepository = repositories.registrableUsersRepository,
     )
 
     server(dependencies = dependencies).start(wait = true)
@@ -119,10 +122,17 @@ private fun memoryRepositories(timeProvider: TimeProvider): Repositories {
         timeProvider = timeProvider,
     )
 
+    val memoryRegistrableUsersDataSource = MemoryRegistrableUsersDataSource()
+    val registrableUsersRepository = DefaultRegistrableUsersRepository(
+        memoryRegistrableUsersDataSource = memoryRegistrableUsersDataSource,
+        diskRegistrableUsersDataSource = memoryRegistrableUsersDataSource,
+    )
+
     return Repositories(
         usersRepository = usersRepository,
         homesRepository = homesRepository,
         invalidJwtDataSource = memoryInvalidJwtDataSource,
+        registrableUsersRepository = registrableUsersRepository,
         onShutdown = {},
     )
 }
@@ -175,10 +185,26 @@ private fun databaseRepositories(
         dispatchersProvider = dispatchersProvider,
     )
 
+    val memoryRegistrableUsersDataSource = RedisRegistrableUsersDataSource(
+        syncCommands = redisConnection.coroutines(),
+        dispatchersProvider = dispatchersProvider,
+        logger = logger,
+    )
+    val diskRegistrableUsersDataSource = PostgresRegistrableUsersDataSource(
+        database = appDatabase,
+        dispatchersProvider = dispatchersProvider,
+        logger = logger,
+    )
+    val registrableUsersRepository = DefaultRegistrableUsersRepository(
+        memoryRegistrableUsersDataSource = memoryRegistrableUsersDataSource,
+        diskRegistrableUsersDataSource = diskRegistrableUsersDataSource,
+    )
+
     return Repositories(
         usersRepository = usersRepository,
         homesRepository = homesRepository,
         invalidJwtDataSource = invalidJwtDataSource,
+        registrableUsersRepository = registrableUsersRepository,
         onShutdown = {
             databaseDriver.close()
             redisConnection.close()
@@ -201,6 +227,7 @@ private data class Environment(
     val disableSecureCookie: Boolean = System.getenv("DISABLE_SECURE_COOKIE") == "true",
     val protocol: String = System.getenv("PROTOCOL"),
     val host: String = System.getenv("HOST"),
+    val fromEmail: String = System.getenv("FROM_EMAIL"),
     val toEmail: String = System.getenv("TO_EMAIL"),
     val emailPassword: String = System.getenv("EMAIL_PASSWORD"),
 ) {
@@ -213,6 +240,7 @@ private class Repositories(
     val usersRepository: UsersRepository,
     val homesRepository: HomesRepository,
     val invalidJwtDataSource: InvalidJwtDataSource,
+    val registrableUsersRepository: RegistrableUsersRepository,
     val onShutdown: (application: Application) -> Unit,
 )
 
