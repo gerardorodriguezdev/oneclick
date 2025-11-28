@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS registrableUsers (
+    registration_code CHAR(44) PRIMARY KEY,
+    username VARCHAR(20) UNIQUE NOT NULL,
+    hashed_password VARCHAR(60) NOT NULL,
+    expiration_time BIGINT
+);
+
+insertRegistrableUser:
+INSERT INTO registrableUsers(registration_code, username, hashed_password, expiration_time)
+VALUES ?;
