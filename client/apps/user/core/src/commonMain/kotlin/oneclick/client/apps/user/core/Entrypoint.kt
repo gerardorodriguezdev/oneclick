@@ -1,4 +1,4 @@
-package oneclick.client.apps.user.core.entrypoints
+package oneclick.client.apps.user.core
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
@@ -20,11 +20,9 @@ import oneclick.client.apps.user.core.di.AppComponent
 import oneclick.client.apps.user.core.ui.screens.*
 import oneclick.client.apps.user.di.CoreComponent
 import oneclick.client.apps.user.navigation.RegisterNavigationControllerObserver
-import oneclick.client.apps.user.navigation.models.routes.AppRoute.Init
-import oneclick.client.apps.user.navigation.models.routes.AppRoute.Login
+import oneclick.client.apps.user.navigation.models.routes.AppRoute
 import oneclick.client.apps.user.navigation.models.routes.HomeRoute
-import oneclick.client.apps.user.navigation.models.routes.HomeRoute.HomesList
-import oneclick.client.apps.user.notifications.NotificationsController.Notification
+import oneclick.client.apps.user.notifications.NotificationsController
 import oneclick.client.apps.user.ui.screenProperties.LocalScreenProperties
 import oneclick.client.apps.user.ui.screenProperties.ScreenProperties
 import oneclick.client.apps.user.ui.theme.OneClickTheme
@@ -66,14 +64,14 @@ class Entrypoint(
                 ) {
                     NavHost(
                         navController = navHostController,
-                        startDestination = Init,
+                        startDestination = AppRoute.Init,
                     ) {
-                        composable<Init> {
+                        composable<AppRoute.Init> {
                             val initViewModel = viewModel { appComponent.initViewModelFactory() }
                             LoadingScreen()
                         }
 
-                        composable<Login> {
+                        composable<AppRoute.Login> {
                             val loginViewModel = viewModel { appComponent.loginViewModelFactory() }
                             val state by loginViewModel.loginScreenState.collectAsState()
                             LoginScreen(
@@ -111,14 +109,14 @@ class Entrypoint(
 
     private fun NavHostController.handleNavigationBarClick(navigationBarRoute: NavigationBarRoute) {
         val destination = when (navigationBarRoute) {
-            NavigationBarRoute.HOMES_LIST -> HomesList
+            NavigationBarRoute.HOMES_LIST -> HomeRoute.HomesList
             NavigationBarRoute.USER_SETTINGS -> HomeRoute.UserSettings
         }
 
         navigate(destination) {
             launchSingleTop = true
             restoreState = true
-            popUpTo(HomesList) {
+            popUpTo(HomeRoute.HomesList) {
                 saveState = true
             }
         }
@@ -132,13 +130,13 @@ class Entrypoint(
         val notification = coreComponent.notificationsController.notificationEvents.collectAsState(null).value
         return when (notification) {
             null -> null
-            is Notification.Success ->
+            is NotificationsController.Notification.Success ->
                 AppScreenState.SnackbarState(
                     text = notification.message,
                     isError = false
                 )
 
-            is Notification.Error ->
+            is NotificationsController.Notification.Error ->
                 AppScreenState.SnackbarState(
                     text = notification.message,
                     isError = true
