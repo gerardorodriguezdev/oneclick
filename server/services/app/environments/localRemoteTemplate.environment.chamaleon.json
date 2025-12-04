@@ -1,0 +1,95 @@
+[
+  {
+    "platformType": "jvm",
+    "properties": [
+      {
+        "name": "IMAGE_NAME",
+        "value": "service-app-local"
+      },
+      {
+        "name": "IMAGE_PORT",
+        "value": "8080"
+      },
+      {
+        "name": "IMAGE_TAG",
+        "value": "123"
+      },
+      {
+        "name": "REGISTRY_LOCATION",
+        "value": "local"
+      },
+      {
+        "name": "REGISTRY_USERNAME",
+        "value": "username"
+      },
+      {
+        "name": "REGISTRY_PASSWORD",
+        "value": "password"
+      },
+      {
+        "name": "PROTOCOL",
+        "value": "http"
+      },
+      {
+        "name": "HOST",
+        "value": "0.0.0.0"
+      },
+      {
+        "name": "DISABLE_RATE_LIMIT",
+        "value": false
+      },
+      {
+        "name": "DISABLE_SECURE_COOKIE",
+        "value": true
+      },
+      {
+        "name": "USE_MEMORY_DATA_SOURCES",
+        "value": false
+      },
+      {
+        "name": "USE_DEBUG_EMAIL_SERVICE",
+        "value": false
+      },
+      {
+        "name": "POSTGRES_HOST",
+        "value": "postgres"
+      },
+      {
+        "name": "POSTGRES_DATABASE",
+        "value": "postgres"
+      },
+      {
+        "name": "POSTGRES_USERNAME",
+        "value": "postgres"
+      },
+      {
+        "name": "POSTGRES_PASSWORD",
+        "value": "postgres"
+      },
+      {
+        "name": "REDIS_URL",
+        "value": "redis://redis:6379"
+      },
+      {
+        "name": "SECRET_SIGN_KEY",
+        "value": "v09XYkjI+P+8wSz4gXSmRic6TiMZxf3jNmlDhvZHpUE="
+      },
+      {
+        "name": "SECRET_ENCRYPTION_KEY",
+        "value": "5a9b2616505a9aebb886ea6fcdb63960"
+      },
+      {
+        "name": "FROM_EMAIL",
+        "value": "email@email.com"
+      },
+      {
+        "name": "TO_EMAIL",
+        "value": "email@email.com"
+      },
+      {
+        "name": "EMAIL_PASSWORD",
+        "value": "password123"
+      }
+    ]
+  }
+]
