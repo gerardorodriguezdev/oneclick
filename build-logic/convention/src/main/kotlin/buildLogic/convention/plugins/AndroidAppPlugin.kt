@@ -5,9 +5,6 @@ import buildLogic.convention.extensions.toJavaLanguageVersion
 import com.android.build.api.dsl.ApplicationExtension
 import com.android.build.api.variant.AndroidComponentsExtension
 import com.android.build.gradle.AppPlugin
-import com.google.firebase.appdistribution.gradle.AppDistributionPlugin
-import com.google.firebase.appdistribution.gradle.firebaseAppDistribution
-import com.google.gms.googleservices.GoogleServicesPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.jetbrains.kotlin.gradle.ExperimentalKotlinGradlePluginApi
@@ -29,8 +26,6 @@ class AndroidAppPlugin : Plugin<Project> {
         pluginManager.apply {
             apply(KotlinMultiplatformPluginWrapper::class.java)
             apply(AppPlugin::class.java)
-            apply(GoogleServicesPlugin::class.java)
-            apply(AppDistributionPlugin::class.java)
         }
     }
 
@@ -88,9 +83,6 @@ class AndroidAppPlugin : Plugin<Project> {
                                 getDefaultProguardFile("proguard-android-optimize.txt"),
                                 "src/androidMain/proguard-rules.pro"
                             )
-                            firebaseAppDistribution {
-                                artifactType = "APK"
-                            }
                         }
                     }
 

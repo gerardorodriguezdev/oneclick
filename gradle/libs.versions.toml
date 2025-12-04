@@ -5,11 +5,9 @@ android-activity = "1.10.0"
 android-gradle-plugin = "8.12.3"
 android-api = "35"
 android-datastore = "1.2.0"
-android-test-junit = "1.9.5"
+android-test-junit = "1.10.0"
 android-test-leak-canary = "2.14"
 android-test-navigation = "2.9.6"
-android-google-services = "4.4.4"
-android-firebase = "5.2.0"
 client-app-user = "6"
 jvm-api = "21"
 jvm-bcrypt = "0.10.2"
@@ -83,8 +81,6 @@ gradle-chamaleon = { module = "io.github.gerardorodriguezdev.chamaleon:gradle-pl
 gradle-serialization = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kmp-serialization" }
 gradle-docker-compose = { module = "com.avast.gradle.docker-compose:com.avast.gradle.docker-compose.gradle.plugin", version.ref = "gradle-docker-compose" }
 gradle-kaml = { module = "com.charleskorn.kaml:kaml", version.ref = "gradle-kaml" }
-gradle-firebase = { module = "com.google.firebase.appdistribution:com.google.firebase.appdistribution.gradle.plugin", version.ref = "android-firebase" }
-gradle-google-services = { module = "com.google.gms.google-services:com.google.gms.google-services.gradle.plugin", version.ref = "android-google-services" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
