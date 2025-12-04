@@ -67,9 +67,3 @@ jobs:
       - name: Build client user image
         run: |
           ./gradlew :client:apps:user:core:assembleRelease
-
-      - name: Publish client user image
-        uses: softprops/action-gh-release@v2
-        with:
-          files: |
-            ./client/apps/user/core/build/outputs/apk/release/core-release.apk
